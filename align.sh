@@ -3,9 +3,9 @@ echo "*** align.sh ***"
 
 ds9 -scale mode 98 data/r.fits data/i.fits data/v.fits -match frames wcs -single
 
-ds9 -zscale -mosaicimage iraf mosaic/megacam.fits -mosaicimage wcs mosaic/megacam.fits -single
+ds9 -zscale -mosaicimage iraf mosaic/mosaicimage.fits -mosaicimage wcs mosaic/mosaicimage.fits -single
 
-ds9 -zscale -mosaic wcs mosaic/megacam.fits[1] mosaic/megacam.fits[2] mosaic/megacam.fits[3] -rgb -red mosaic/megacam.fits[1] -green mosaic/megacam.fits[2] -blue mosaic/megacam.fits[3] -single
+ds9 -zscale -mosaic wcs mosaic/mosaicimage.fits[1] mosaic/mosaicimage.fits[2] mosaic/mosaicimage.fits[3] -rgb -red mosaic/mosaicimage.fits[1] -green mosaic/mosaicimage.fits[2] -blue mosaic/mosaicimage.fits[3] -single
 
 ds9 -zscale -mosaic wcs data/m51hst.fits data/img.fits -fits -rgb -red data/m51hst.fits -green data/img.fits -single
 

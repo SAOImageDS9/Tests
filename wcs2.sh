@@ -33,8 +33,8 @@ testit () {
 xpaset -p ds9 grid yes
 xpaset -p ds9 wcs skyformat deg
 
-echo "DSS"
-testit wcs2/wcen.fits.gz 1
+#echo "DSS"
+#testit wcs2/wcen.fits.gz 1
 
 echo "SAO Plate"
 testit wcs2/ac.fits 1
@@ -46,8 +46,8 @@ testit wcs2/ast.fits 1
 echo "FITS WCS II TAN+PV2_1=0 PV2_2=0"
 testit wcs2/a68.fits 1
 
-echo "OLD SCAMP TAN+PVx_10"
-testit wcs2/paucam_0_0_t7_0_science.fits 1
+#echo "OLD SCAMP TAN+PVx_10"
+#testit wcs2/paucam_0_0_t7_0_science.fits 1
 
 echo "WCSTools TAN+PVx_30"
 testit wcs2/ngc6819.fits 1
@@ -62,7 +62,7 @@ echo "IRAF TNX"
 testit wcs2/30s_01.fits 1
 
 echo "IRAF ZPX"
-testit wcs2/E5.3090.fits 1
+testit wcs2/E5.3090.fits.gz 1
 
 echo "SIRTF TAN-SIP"
 testit wcs2/sip.fits 2
