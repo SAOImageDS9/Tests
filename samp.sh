@@ -20,7 +20,6 @@ testit () {
     echo 
     echo "Testing $1"
     tclsh ../admin/samp.tcl block < samp/${1}.samp
-#    tclsh85sg ../admin/samp.tcl block < samp/${1}.samp
     echo "PASSED"
 }
 
@@ -34,6 +33,7 @@ echo
 echo "*** samp.sh ***"
 
 # must be invoked
+#  dssstsci
 #  iexam
 #  samp
 #  skyview
@@ -66,7 +66,7 @@ doit "$1" cursor
 doit "$1" data
 doit "$1" dsssao
 doit "$1" dsseso
-doit "$1" dssstsci
+#doit "$1" dssstsci
 doit "$1" export
 # backward compatibility
 doit "$1" file

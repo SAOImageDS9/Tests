@@ -22,6 +22,7 @@ echo "*** command.sh ***"
 delay=.5
 
 # must be invoked
+# -dssstsci
 # -private
 # -samp
 # -skyview
@@ -589,7 +590,7 @@ doit
 fi
 
 tt="dssstsci"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 initit "$tt"
 testit "-dssstsci open"
 testit "-dssstsci close"
