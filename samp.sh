@@ -19,7 +19,7 @@ fi
 testit () {
     echo 
     echo "Testing $1"
-    tclsh ../admin/samp.tcl block < samp/${1}.samp
+    tclsh samp.tcl block < samp/${1}.samp
     echo "PASSED"
 }
 
