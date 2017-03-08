@@ -10,6 +10,7 @@ get contour nlevels
 get contour scale
 get contour log exp
 get contour mode
+get contour scope
 get contour limits
 get contour levels
 
@@ -68,6 +69,7 @@ set {} contour width 2
 set {} contour scale sqrt
 set {} contour log exp 1000
 set {} contour mode zscale
+set {} contour scope local
 set {} contour limits 1 100
 set {} contour levels "{1 10 100 1000}"
 

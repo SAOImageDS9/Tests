@@ -484,6 +484,7 @@ xpaget ds9 contour nlevels >> ${tt}.out
 xpaget ds9 contour scale >> ${tt}.out
 xpaget ds9 contour log exp >> ${tt}.out
 xpaget ds9 contour mode >> ${tt}.out
+xpaget ds9 contour scope >> ${tt}.out
 xpaget ds9 contour limits >> ${tt}.out
 xpaget ds9 contour levels >> ${tt}.out
 
@@ -547,6 +548,7 @@ xpaset -p ds9 contour width 2
 xpaset -p ds9 contour scale sqrt
 xpaset -p ds9 contour log exp 1000
 xpaset -p ds9 contour mode zscale
+xpaset -p ds9 contour scope local
 xpaset -p ds9 contour limits 1 100
 xpaset -p ds9 contour levels "{1 10 100 1000}"
 

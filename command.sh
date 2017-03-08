@@ -452,6 +452,7 @@ testit "-contour width 2"
 testit "-contour scale sqrt"
 testit "-contour log exp 1000"
 testit "-contour mode zscale"
+testit "-contour scope local"
 testit "-contour limits 1 100"
 testit "-contour levels '1 10 100 1000'"
 
