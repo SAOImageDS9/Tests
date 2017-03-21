@@ -1,26 +1,26 @@
 # format: degrees (ecliptic)
 #Circle
-+circle(175.11239,50.952749,20) # This is a Comment
++circle(175.112,50.9528,20) # This is a Comment
 #Ellipse
--ellipse(175.11239,50.948139,40,20,45) # background
+-ellipse(175.112,50.9481,40,20,45) # background
 #Box
--box(175.11097,50.943264,80,40,45) # yellow
+-box(175.111,50.9433,80,40,45) # yellow
 #Polygon
-+polygon(175.1088,50.939654,175.1049,50.938041,175.10746,50.935584,175.11136,50.937197) # green
++polygon(175.109,50.9397,175.105,50.938,175.107,50.9356,175.111,50.9372) # green
 #Line
--line(175.10913,50.933889,175.10371,50.931224) # cyan
-+text(175.10581,50.925946, "Region") # magenta
+-line(175.1091464,50.93389603,175.1037204,50.93123109) # cyan
++text(175.1058212,50.92595276, "Region") # magenta
 #Circle Point
-+point(175.13006,50.950834) # green
++point(175.130072,50.95084104) # green
 #Box Point
-+point(175.12865,50.946014) # red
++point(175.1286627,50.94602094) # red
 #Diamond Point
-+point(175.12704,50.94167) # green
++point(175.1270536,50.94167683) # green
 #Cross Point
-+point(175.13398,50.949478) # blue
++point(175.1339983,50.94948418) # blue
 #X Point
-+point(175.13255,50.945392) # green
++point(175.1325629,50.94539848) # green
 #Arrow Point
-+point(175.13144,50.941207) # magenta
++point(175.1314522,50.94121411) # magenta
 #BoxCircle Point
-+point(175.13696,50.944702) # green
++point(175.1369763,50.94470874) # green

@@ -1,26 +1,26 @@
 # format: degrees (icrs)
 #Circle
-+circle(202.48643,47.208449,20) # This is a Comment
++circle(202.486,47.2084,20) # This is a Comment
 #Ellipse
--ellipse(202.48247,47.204705,40,20,45) # background
+-ellipse(202.482,47.2047,40,20,45) # background
 #Box
--box(202.47721,47.20127,80,40,45) # yellow
+-box(202.477,47.2013,80,40,45) # yellow
 #Polygon
-+polygon(202.47248,47.199135,202.46815,47.199257,202.46797,47.19632,202.4723,47.196198) # green
++polygon(202.472,47.1991,202.468,47.1993,202.468,47.1963,202.472,47.1962) # green
 #Line
--line(202.46778,47.194329,202.4614,47.194159) # cyan
-+text(202.45846,47.189099, "Region") # magenta
+-line(202.4677801,47.19432896,202.4614049,47.19415884) # cyan
++text(202.4584574,47.18909897, "Region") # magenta
 #Circle Point
-+point(202.49809,47.200401) # green
++point(202.4980887,47.20040143) # green
 #Box Point
-+point(202.49289,47.197004) # red
++point(202.4928892,47.1970043) # red
 #Diamond Point
-+point(202.48795,47.194067) # green
++point(202.4879481,47.19406715) # green
 #Cross Point
-+point(202.49988,47.197856) # blue
++point(202.4998807,47.1978564) # blue
 #X Point
-+point(202.49529,47.195065) # green
++point(202.4952923,47.19506532) # green
 #Arrow Point
-+point(202.49086,47.192075) # magenta
++point(202.490864,47.19207467) # magenta
 #BoxCircle Point
-+point(202.49802,47.192883) # green
++point(202.4980242,47.19288309) # green

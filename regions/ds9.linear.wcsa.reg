@@ -4,15 +4,15 @@ wcsa
 # tile 2
 circle(121.5,3969.5,40) # color=pink width=3 font="times 10 normal roman" text={Circle} tag={foo} tag={foo bar} This is a Comment
 # tile 2
--ellipse(285.5,3935.5,80,40,45) # color=#0ff font="helvetica 10 normal italic" text={Ellipse} background
+-ellipse(285.5,3935.5,80,40,135) # color=#0ff font="helvetica 10 normal italic" text={Ellipse} background
 # tile 2
--box(465.5,3931.5,160,80,45) # color=yellow font="helvetica 10 bold roman" text={Box}
+-box(465.5,3931.5,160,80,135) # color=yellow font="helvetica 10 bold roman" text={Box}
 # tile 2
 polygon(603.9945,3953.5,679.5,4029.0055,755.0055,3953.5,679.5,3877.9945) # font="courier 10 normal roman" text={Polygon} edit=0 rotate=0
 # tile 2
 -line(807.5,3903.5,927.5,4005.5) # line=1 1 color=cyan text={Line}
 # tile 2
-# vector(995.5,3947.5,80,45) vector=1 color=red text={Vector}
+# vector(995.5,3947.5,80,135) vector=1 color=red text={Vector}
 # tile 2
 # text(1105.5,3919.5) color=magenta font="helvetica 14 bold roman" text={Region}
 # tile 2
@@ -20,9 +20,9 @@ polygon(603.9945,3953.5,679.5,4029.0055,755.0055,3953.5,679.5,3877.9945) # font=
 # tile 2
 annulus(121.5,3745.5,20,40,60) # color=magenta font="helvetica 10 bold roman" text={Annulus}
 # tile 2
-ellipse(291.5,3737.5,30,15,60,30,45) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
+ellipse(291.5,3737.5,30,15,60,30,135) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 # tile 2
-box(465.5,3735.5,80,40,120,60,45) # font="helvetica 10 bold roman" text={Box Annulus}
+box(465.5,3735.5,80,40,120,60,135) # font="helvetica 10 bold roman" text={Box Annulus}
 # tile 2
 point(107.5,3559.5) # point=circle text={Circle Point}
 # tile 2
@@ -40,49 +40,49 @@ point(293.5,3359.5) # point=boxcircle text={BoxCircle Point}
 # tile 2
 # projection(771.5,3661.5,957.5,3793.5,40) text={Projection}
 # tile 2
-panda(645.5,3559.5,0,270,3,0,60,2) # text={Panda}
+panda(645.5,3559.5,180,270,3,0,60,2) # text={Panda}
 # tile 2
-panda(649.5,3377.5,51.5819,90,1,0,30,1) # panda=(51.5819 90 180 270)(0 30 60) text={Panda 2}
+panda(649.5,3377.5,128.4181,450,1,0,30,1) # panda=(128.4181 90 0 270)(0 30 60) text={Panda 2}
 # tile 2
-panda(649.5,3377.5,51.5819,90,1,30,60,1) # panda=ignore
+panda(649.5,3377.5,128.4181,450,1,30,60,1) # panda=ignore
 # tile 2
-panda(649.5,3377.5,90,180,1,0,30,1) # panda=ignore
+panda(649.5,3377.5,90,360,1,0,30,1) # panda=ignore
 # tile 2
-panda(649.5,3377.5,90,180,1,30,60,1) # panda=ignore
+panda(649.5,3377.5,90,360,1,30,60,1) # panda=ignore
 # tile 2
-panda(649.5,3377.5,180,270,1,0,30,1) # panda=ignore
+panda(649.5,3377.5,0,270,1,0,30,1) # panda=ignore
 # tile 2
-panda(649.5,3377.5,180,270,1,30,60,1) # panda=ignore
+panda(649.5,3377.5,0,270,1,30,60,1) # panda=ignore
 # tile 2
 # compass(1015.5,3703.5,80) compass=physical {N} {E} 1 1 text={Compass}
 # tile 2
-epanda(809.5,3543.5,0,270,3,30,15,60,30,1,45) # text={Epanda}
+epanda(809.5,3543.5,180,270,3,30,15,60,30,1,135) # text={Epanda}
 # tile 2
-epanda(815.5,3365.5,45,90,1,30,15,60,30,1,45) # epanda=(45 90 180 270)(30 15 60 30)(45) text={Epanda 2}
+epanda(815.5,3365.5,135,450,1,30,15,60,30,1,135) # epanda=(135 90 0 270)(30 15 60 30)(135) text={Epanda 2}
 # tile 2
-epanda(815.5,3365.5,90,180,1,30,15,60,30,1,45) # epanda=ignore
+epanda(815.5,3365.5,90,360,1,30,15,60,30,1,135) # epanda=ignore
 # tile 2
-epanda(815.5,3365.5,180,270,1,30,15,60,30,1,45) # epanda=ignore
+epanda(815.5,3365.5,0,270,1,30,15,60,30,1,135) # epanda=ignore
 # tile 2
-bpanda(983.5,3543.5,0,270,3,80,40,120,60,1,45) # text={Bpanda}
+bpanda(983.5,3543.5,180,270,3,80,40,120,60,1,135) # text={Bpanda}
 # tile 2
-bpanda(975.5,3367.5,45,90,1,80,40,120,60,1,45) # bpanda=(45 90 180 270)(80 40 120 60)(45) text={Bpanda 2}
+bpanda(975.5,3367.5,135,450,1,80,40,120,60,1,135) # bpanda=(135 90 0 270)(80 40 120 60)(135) text={Bpanda 2}
 # tile 2
-bpanda(975.5,3367.5,90,180,1,80,40,120,60,1,45) # bpanda=ignore
+bpanda(975.5,3367.5,90,360,1,80,40,120,60,1,135) # bpanda=ignore
 # tile 2
-bpanda(975.5,3367.5,180,270,1,80,40,120,60,1,45) # bpanda=ignore
+bpanda(975.5,3367.5,0,270,1,80,40,120,60,1,135) # bpanda=ignore
 # tile 7
 circle(931.5,3419.5,40) # color=pink width=3 font="times 10 normal roman" text={Circle} tag={foo} tag={foo bar} This is a Comment
 # tile 7
--ellipse(767.5,3453.5,80,40,45) # color=#0ff font="helvetica 10 normal italic" text={Ellipse} background
+-ellipse(767.5,3453.5,80,40,135) # color=#0ff font="helvetica 10 normal italic" text={Ellipse} background
 # tile 7
--box(587.5,3457.5,160,80,45) # color=yellow font="helvetica 10 bold roman" text={Box}
+-box(587.5,3457.5,160,80,135) # color=yellow font="helvetica 10 bold roman" text={Box}
 # tile 7
 polygon(449.0055,3435.5,373.5,3359.9945,297.9945,3435.5,373.5,3511.0055) # font="courier 10 normal roman" text={Polygon} edit=0 rotate=0
 # tile 7
 -line(245.5,3485.5,125.5,3383.5) # line=1 1 color=cyan text={Line}
 # tile 7
-# vector(57.5,3441.5,80,45) vector=1 color=red text={Vector}
+# vector(57.5,3441.5,80,135) vector=1 color=red text={Vector}
 # tile 6
 # text(1995.5,3469.5) color=magenta font="helvetica 14 bold roman" text={Region}
 # tile 7
@@ -90,9 +90,9 @@ polygon(449.0055,3435.5,373.5,3359.9945,297.9945,3435.5,373.5,3511.0055) # font=
 # tile 7
 annulus(931.5,3643.5,20,40,60) # color=magenta font="helvetica 10 bold roman" text={Annulus}
 # tile 7
-ellipse(761.5,3651.5,30,15,60,30,45) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
+ellipse(761.5,3651.5,30,15,60,30,135) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 # tile 7
-box(587.5,3653.5,80,40,120,60,45) # font="helvetica 10 bold roman" text={Box Annulus}
+box(587.5,3653.5,80,40,120,60,135) # font="helvetica 10 bold roman" text={Box Annulus}
 # tile 7
 point(945.5,3829.5) # point=circle text={Circle Point}
 # tile 7
@@ -110,34 +110,34 @@ point(759.5,4029.5) # point=boxcircle text={BoxCircle Point}
 # tile 7
 # projection(281.5,3727.5,95.5,3595.5,40) text={Projection}
 # tile 7
-panda(407.5,3829.5,0,270,3,0,60,2) # text={Panda}
+panda(407.5,3829.5,180,270,3,0,60,2) # text={Panda}
 # tile 7
-panda(403.5,4011.5,51.5819,90,1,0,30,1) # panda=(51.5819 90 180 270)(0 30 60) text={Panda 2}
+panda(403.5,4011.5,128.4181,450,1,0,30,1) # panda=(128.4181 90 0 270)(0 30 60) text={Panda 2}
 # tile 7
-panda(403.5,4011.5,51.5819,90,1,30,60,1) # panda=ignore
+panda(403.5,4011.5,128.4181,450,1,30,60,1) # panda=ignore
 # tile 7
-panda(403.5,4011.5,90,180,1,0,30,1) # panda=ignore
+panda(403.5,4011.5,90,360,1,0,30,1) # panda=ignore
 # tile 7
-panda(403.5,4011.5,90,180,1,30,60,1) # panda=ignore
+panda(403.5,4011.5,90,360,1,30,60,1) # panda=ignore
 # tile 7
-panda(403.5,4011.5,180,270,1,0,30,1) # panda=ignore
+panda(403.5,4011.5,0,270,1,0,30,1) # panda=ignore
 # tile 7
-panda(403.5,4011.5,180,270,1,30,60,1) # panda=ignore
+panda(403.5,4011.5,0,270,1,30,60,1) # panda=ignore
 # tile 7
 # compass(37.5,3685.5,80) compass=physical {N} {E} 1 1 text={Compass}
 # tile 7
-epanda(243.5,3845.5,0,270,3,30,15,60,30,1,45) # text={Epanda}
+epanda(243.5,3845.5,180,270,3,30,15,60,30,1,135) # text={Epanda}
 # tile 7
-epanda(237.5,4023.5,45,90,1,30,15,60,30,1,45) # epanda=(45 90 180 270)(30 15 60 30)(45) text={Epanda 2}
+epanda(237.5,4023.5,135,450,1,30,15,60,30,1,135) # epanda=(135 90 0 270)(30 15 60 30)(135) text={Epanda 2}
 # tile 7
-epanda(237.5,4023.5,90,180,1,30,15,60,30,1,45) # epanda=ignore
+epanda(237.5,4023.5,90,360,1,30,15,60,30,1,135) # epanda=ignore
 # tile 7
-epanda(237.5,4023.5,180,270,1,30,15,60,30,1,45) # epanda=ignore
+epanda(237.5,4023.5,0,270,1,30,15,60,30,1,135) # epanda=ignore
 # tile 7
-bpanda(69.5,3845.5,0,270,3,80,40,120,60,1,45) # text={Bpanda}
+bpanda(69.5,3845.5,180,270,3,80,40,120,60,1,135) # text={Bpanda}
 # tile 7
-bpanda(77.5,4021.5,45,90,1,80,40,120,60,1,45) # bpanda=(45 90 180 270)(80 40 120 60)(45) text={Bpanda 2}
+bpanda(77.5,4021.5,135,450,1,80,40,120,60,1,135) # bpanda=(135 90 0 270)(80 40 120 60)(135) text={Bpanda 2}
 # tile 7
-bpanda(77.5,4021.5,90,180,1,80,40,120,60,1,45) # bpanda=ignore
+bpanda(77.5,4021.5,90,360,1,80,40,120,60,1,135) # bpanda=ignore
 # tile 7
-bpanda(77.5,4021.5,180,270,1,80,40,120,60,1,45) # bpanda=ignore
+bpanda(77.5,4021.5,0,270,1,80,40,120,60,1,135) # bpanda=ignore
