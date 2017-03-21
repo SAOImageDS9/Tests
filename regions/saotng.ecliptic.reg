@@ -1,6 +1,6 @@
 # format: degrees (ecliptic)
 #Circle
-+circle(175.1124054,50.95275582,20) # This is a Comment
++circle(175.112407,50.9527564,19.999795) # This is a Comment
 #Ellipse
 -ellipse(175.1124057,50.94814527,40,20,45) # background
 #Box

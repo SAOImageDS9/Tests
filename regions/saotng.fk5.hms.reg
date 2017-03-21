@@ -1,6 +1,6 @@
 # format: hms (fk5)
 #Circle
-+circle(13:29:56.743,+47:12:30.416,20) # This is a Comment
++circle(13:29:56.743,+47:12:30.416,19.999795) # This is a Comment
 #Ellipse
 -ellipse(13:29:55.792,+47:12:16.936,40,20,45) # background
 #Box

@@ -1,6 +1,6 @@
 # format: degrees (fk4)
 #Circle
-+circle(201.959934,47.46604574,20) # This is a Comment
++circle(201.9599357,47.46604563,19.999795) # This is a Comment
 #Ellipse
 -ellipse(201.9559404,47.46230837,40,20,45) # background
 #Box

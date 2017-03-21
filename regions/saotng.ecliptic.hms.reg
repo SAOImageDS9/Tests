@@ -1,6 +1,6 @@
 # format: hms (ecliptic)
 #Circle
-+circle(+175:06:44.660,+50:57:09.921,20) # This is a Comment
++circle(+175:06:44.665,+50:57:09.923,19.999795) # This is a Comment
 #Ellipse
 -ellipse(+175:06:44.660,+50:56:53.323,40,20,45) # background
 #Box

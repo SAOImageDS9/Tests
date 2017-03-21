@@ -1,6 +1,6 @@
 # format: hms (galactic)
 #Circle
-+circle(+104:50:15.532,+68:32:38.380,20) # This is a Comment
++circle(+104:50:15.521,+68:32:38.379,19.999795) # This is a Comment
 #Ellipse
 -ellipse(+104:50:24.720,+68:32:54.634,40,20,45) # background
 #Box

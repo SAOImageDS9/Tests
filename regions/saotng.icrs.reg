@@ -1,6 +1,6 @@
 # format: degrees (icrs)
 #Circle
-+circle(202.4864279,47.20844941,20) # This is a Comment
++circle(202.4864295,47.2084493,19.999795) # This is a Comment
 #Ellipse
 -ellipse(202.4824686,47.20470473,40,20,45) # background
 #Box
