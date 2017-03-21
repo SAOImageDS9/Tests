@@ -1,7 +1,7 @@
 # Region file format: DS9 version 4.1
 global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
 galactic
-circle(104.8376477,68.54399445,3.964") # color=pink width=3 font="times 10 normal roman" text={Circle} tag={foo} tag={foo bar} This is a Comment
+circle(104.8376477,68.54399445,3.964") # fill=1 color=pink width=3 font="times 10 normal roman" text={Circle} tag={foo} tag={foo bar} This is a Comment
 -ellipse(104.8402001,68.54850951,7.928",3.964",158.38935) # color=#0ff font="helvetica 10 normal italic" text={Ellipse} background
 -box(104.8453047,68.55310078,15.856",7.928",158.38935) # color=yellow font="helvetica 10 bold roman" text={Box}
 polygon(104.8509666,68.55635905,104.858443,68.55744071,104.8554843,68.56017394,104.8480071,68.55909216) # font="courier 10 normal roman" text={Polygon} edit=0 rotate=0
