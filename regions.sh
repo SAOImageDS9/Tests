@@ -96,7 +96,7 @@ if [ `xpaaccess ds9` = no ]; then
     done
 fi
 
-if [ "$1" = "ds9" -o  -z "$1" ]; then
+if [ "$1" = "ds9" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Format..."
 xpaset -p ds9 frame clear
@@ -116,7 +116,7 @@ testit ds9 wcs ecliptic degrees regions/ds9.ecliptic.reg
 testit ds9 wcs ecliptic sexagesimal regions/ds9.ecliptic.hms.reg
 fi
 
-if [ "$1" = "color" -o  -z "$1" ]; then
+if [ "$1" = "color" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Color..."
 xpaset -p ds9 frame clear
@@ -125,7 +125,7 @@ xpaset -p ds9 fits data/img.fits
 testit ds9 wcs fk5 sexagesimal regions/ds9.color.reg
 fi
 
-if [ "$1" = "comment" -o  -z "$1" ]; then
+if [ "$1" = "comment" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Format Comments..."
 xpaset -p ds9 frame clear
@@ -137,7 +137,7 @@ xpaset -p ds9 regions deleteall
 echo "PASSED"
 fi
 
-if [ "$1" = "strip" -o  -z "$1" ]; then
+if [ "$1" = "strip" -o -z "$1" ]; then
 echo
 echo "Testing DS9 strip Regions Format..."
 xpaset -p ds9 frame clear
@@ -160,7 +160,7 @@ testit2 ds9 wcs ecliptic sexagesimal regions/ds9.ecliptic.hms.reg regions/ds9.ec
 xpaset -p ds9 regions strip no
 fi
 
-if [ "$1" = "composite" -o  -z "$1" ]; then
+if [ "$1" = "composite" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Composite Format..."
 xpaset -p ds9 frame clear
@@ -169,7 +169,7 @@ xpaset -p ds9 fits data/img.fits
 testit ds9 wcs fk5 degrees regions/ds9.composite.reg
 fi
 
-if [ "$1" = "mosaic" -o  -z "$1" ]; then
+if [ "$1" = "mosaic" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Mosaic Format..."
 xpaset -p ds9 frame clear
@@ -190,12 +190,9 @@ testit ds9 wcs ecliptic degrees regions/ds9.mosaic.ecliptic.reg
 testit ds9 wcs ecliptic sexagesimal regions/ds9.mosaic.ecliptic.hms.reg
 fi
 
-if [ "$1" = "linear" -o  -z "$1" ]; then
+if [ "$1" = "linear" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Linear Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
-xpaset -p ds9 scale minmax
 xpaset -p ds9 frame clear
 xpaset -p ds9 mosaicimage mosaic/ds9_8amp_2x2.fits
 xpaset -p ds9 zoom .5
@@ -208,7 +205,7 @@ testit ds9 wcsi fk5 degrees regions/ds9.linear.wcsi.reg
 testit ds9 wcsp fk5 degrees regions/ds9.linear.wcsp.reg
 fi
 
-if [ "$1" = "xml" -o  -z "$1" ]; then
+if [ "$1" = "xml" -o -z "$1" ]; then
 echo
 echo "Testing XML Format..."
 xpaset -p ds9 frame clear
@@ -228,7 +225,7 @@ testit xml wcs ecliptic degrees regions/xml.ecliptic.reg
 testit xml wcs ecliptic sexagesimal regions/xml.ecliptic.hms.reg
 fi
 
-if [ "$1" = "xmlmosaic" -o  -z "$1" ]; then
+if [ "$1" = "xmlmosaic" -o -z "$1" ]; then
 echo
 echo "Testing XML Mosaic Format..."
 xpaset -p ds9 frame clear
@@ -249,7 +246,7 @@ testit xml wcs ecliptic degrees regions/xml.mosaic.ecliptic.reg
 testit xml wcs ecliptic sexagesimal regions/xml.mosaic.ecliptic.hms.reg
 fi
 
-if [ "$1" = "ciao" -o  -z "$1" ]; then
+if [ "$1" = "ciao" -o -z "$1" ]; then
 echo
 echo "Testing CIAO Format..."
 xpaset -p ds9 frame clear
@@ -259,7 +256,7 @@ testit ciao physical fk5 degrees regions/ciao.physical.reg
 testit ciao wcs fk5 sexagesimal regions/ciao.fk5.reg
 fi
 
-if [ "$1" = "saotng" -o  -z "$1" ]; then
+if [ "$1" = "saotng" -o -z "$1" ]; then
 echo
 echo "Testing SAOtng Format..."
 xpaset -p ds9 frame clear
@@ -278,7 +275,7 @@ testit saotng wcs ecliptic degrees regions/saotng.ecliptic.reg
 testit saotng wcs ecliptic sexagesimal regions/saotng.ecliptic.hms.reg
 fi
 
-if [ "$1" = "pros" -o  -z "$1" ]; then
+if [ "$1" = "pros" -o -z "$1" ]; then
 echo
 echo "Testing IRAF Pros Format..."
 xpaset -p ds9 frame clear
@@ -296,7 +293,7 @@ testit pros wcs ecliptic degrees regions/pros.ecliptic.reg
 testit pros wcs ecliptic sexagesimal regions/pros.ecliptic.hms.reg
 fi
 
-if [ "$1" = "saoimage" -o  -z "$1" ]; then
+if [ "$1" = "saoimage" -o -z "$1" ]; then
 echo
 echo "Testing SAOimage Format..."
 xpaset -p ds9 frame clear
@@ -305,7 +302,7 @@ xpaset -p ds9 fits data/img.fits
 testit saoimage image fk5 degrees regions/saoimage.reg
 fi
 
-if [ "$1" = "xy" -o  -z "$1" ]; then
+if [ "$1" = "xy" -o -z "$1" ]; then
 echo
 echo "Testing X Y Format..."
 xpaset -p ds9 frame clear
@@ -325,7 +322,7 @@ testit xy wcs ecliptic degrees regions/xy.ecliptic.reg
 testit xy wcs ecliptic sexagesimal regions/xy.ecliptic.hms.reg
 fi
 
-if [ "$1" = "fits" -o  -z "$1" ]; then
+if [ "$1" = "fits" -o -z "$1" ]; then
 echo
 echo "Testing FITS Regions Format..."
 xpaset -p ds9 frame clear

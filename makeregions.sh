@@ -32,13 +32,12 @@ if [ `xpaaccess ds9` = no ]; then
     done
 fi
 
-echo "Loading Data..."
-xpaset -p ds9 file data/img.fits
-echo "DONE"
-
-if [ "$1" = "ds9" ]; then
+if [ "$1" = "ds9" -o -z "$1" ]; then
 echo
 echo "DS9 Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 physical fk5 degrees regions/ds9.physical.reg 
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 degrees regions/ds9.fk4.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 sexagesimal regions/ds9.fk4.hms.reg
@@ -50,28 +49,19 @@ doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs galactic degrees region
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs galactic sexagesimal regions/ds9.galactic.hms.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs ecliptic degrees regions/ds9.ecliptic.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs ecliptic sexagesimal regions/ds9.ecliptic.hms.reg
-
-echo
-echo "XML Format..."
-doit ds9 image fk5 degrees regions/ds9.image.reg xml image fk5 degrees regions/xml.image.reg 
-doit ds9 image fk5 degrees regions/ds9.image.reg xml physical fk5 degrees regions/xml.physical.reg 
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk4 degrees regions/xml.fk4.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk4 sexagesimal regions/xml.fk4.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk5 degrees regions/xml.fk5.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk5 sexagesimal regions/xml.fk5.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs icrs degrees regions/xml.icrs.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs icrs sexagesimal regions/xml.icrs.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs galactic degrees regions/xml.galactic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs galactic sexagesimal regions/xml.galactic.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs ecliptic degrees regions/xml.ecliptic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs ecliptic sexagesimal regions/xml.ecliptic.hms.reg
 fi
 
-if [ "$1" = "ds9strip" ]; then
+# test not generated: color
+
+# test not generated: comment
+
+if [ "$1" = "strip" -o -z "$1" ]; then
 echo
+echo "DS9 strip Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
 xpaset -p ds9 regions strip yes
 
-echo "DS9 strip Format..."
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 image fk5 degrees regions/ds9.image.strip.reg 
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 physical fk5 degrees regions/ds9.physical.strip.reg 
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 degrees regions/ds9.fk4.strip.reg
@@ -88,70 +78,15 @@ doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs ecliptic sexagesimal re
 xpaset -p ds9 regions strip yes
 fi
 
-if [ "$1" = "ciao" ]; then
-echo
-echo "DS9 Format..."
-doit ds9 image fk5 degrees regions/ds9.image.reg ciao physical fk5 degrees regions/ciao.physical.reg 
-doit ds9 image fk5 degrees regions/ds9.image.reg ciao wcs fk5 sexagesimal regions/ciao.fk5.reg 
-fi
+# test not generated: composite
 
-if [ "$1" = "saotng" ]; then
-echo
-echo "SAOtng Format..."
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng image fk5 degrees regions/saotng.image.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk4 degrees regions/saotng.fk4.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk4 sexagesimal regions/saotng.fk4.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk5 degrees regions/saotng.fk5.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk5 sexagesimal regions/saotng.fk5.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs icrs degrees regions/saotng.icrs.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs icrs sexagesimal regions/saotng.icrs.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs galactic degrees regions/saotng.galactic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs galactic sexagesimal regions/saotng.galactic.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs ecliptic degrees regions/saotng.ecliptic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs ecliptic sexagesimal regions/saotng.ecliptic.hms.reg
-fi
-
-if [ "$1" = "pros" ]; then
-echo
-echo "IRAF Pros Format..."
-doit ds9 image fk5 degrees regions/ds9.image.reg pros image fk5 degrees regions/pros.image.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros physical fk5 degrees regions/pros.physical.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk4 degrees regions/pros.fk4.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk4 sexagesimal regions/pros.fk4.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk5 degrees regions/pros.fk5.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk5 sexagesimal regions/pros.fk5.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs galactic degrees regions/pros.galactic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs galactic sexagesimal regions/pros.galactic.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs ecliptic degrees regions/pros.ecliptic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs ecliptic sexagesimal regions/pros.ecliptic.hms.reg
-fi
-
-if [ "$1" = "xy" ]; then
-echo
-echo "X Y Format..."
-doit ds9 image fk5 degrees regions/ds9.image.reg xy image fk5 degrees regions/xy.image.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy physical fk5 degrees regions/xy.physical.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk4 degrees regions/xy.fk4.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk4 sexagesimal regions/xy.fk4.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk5 degrees regions/xy.fk5.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk5 sexagesimal regions/xy.fk5.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs icrs degrees regions/xy.icrs.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs icrs sexagesimal regions/xy.icrs.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs galactic degrees regions/xy.galactic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs galactic sexagesimal regions/xy.galactic.hms.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs ecliptic degrees regions/xy.ecliptic.reg
-doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs ecliptic sexagesimal regions/xy.ecliptic.hms.reg
-fi
-
-if [ "$1" = "mosaic" ]; then
-echo
-echo "Loading Mosaic Data..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 file mosaicimage mosaic/mosaicimage.fits
-echo "DONE"
-
+if [ "$1" = "mosaic" -o -z "$1" ]; then
 echo
 echo "DS9 Mosaic Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 file mosaicimage mosaic/mosaicimage.fits
+xpaset -p ds9 zoom .5
+
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 physical fk5 degrees regions/ds9.mosaic.physical.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 wcs fk4 degrees regions/ds9.mosaic.fk4.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 wcs fk4 sexagesimal regions/ds9.mosaic.fk4.hms.reg
@@ -163,9 +98,49 @@ doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 wcs galactic degrees
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 wcs galactic sexagesimal regions/ds9.mosaic.galactic.hms.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 wcs ecliptic degrees regions/ds9.mosaic.ecliptic.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 wcs ecliptic sexagesimal regions/ds9.mosaic.ecliptic.hms.reg
+fi
 
+if [ "$1" = "linear" -o -z "$1" ]; then
+echo
+echo "DS9 Linear Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 mosaicimage mosaic/ds9_8amp_2x2.fits
+xpaset -p ds9 zoom .5
+
+doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsa fk5 degrees regions/ds9.linear.wcsa.reg
+doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsc fk5 degrees regions/ds9.linear.wcsc.reg
+doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsd fk5 degrees regions/ds9.linear.wcsd.reg
+doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsi fk5 degrees regions/ds9.linear.wcsi.reg
+doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsp fk5 degrees regions/ds9.linear.wcsp.reg
+fi
+
+if [ "$1" = "xml" -o -z "$1" ]; then
+echo
+echo "XML Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+
+doit ds9 image fk5 degrees regions/ds9.image.reg xml image fk5 degrees regions/xml.image.reg 
+doit ds9 image fk5 degrees regions/ds9.image.reg xml physical fk5 degrees regions/xml.physical.reg 
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk4 degrees regions/xml.fk4.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk4 sexagesimal regions/xml.fk4.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk5 degrees regions/xml.fk5.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk5 sexagesimal regions/xml.fk5.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs icrs degrees regions/xml.icrs.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs icrs sexagesimal regions/xml.icrs.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs galactic degrees regions/xml.galactic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs galactic sexagesimal regions/xml.galactic.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs ecliptic degrees regions/xml.ecliptic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs ecliptic sexagesimal regions/xml.ecliptic.hms.reg
+fi
+
+if [ "$1" = "xmlmosaic" -o -z "$1" ]; then
 echo
 echo "XML Mosaic Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 mosaicimage mosaic/mosaicimage.fits
+xpaset -p ds9 zoom .5
+
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg xml image fk5 degrees regions/xml.mosaic.image.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg xml physical fk5 degrees regions/xml.mosaic.physical.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg xml wcs fk4 degrees regions/xml.mosaic.fk4.reg
@@ -180,21 +155,82 @@ doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg xml wcs ecliptic degrees
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg xml wcs ecliptic sexagesimal regions/xml.mosaic.ecliptic.hms.reg
 fi
 
-if [ "$1" = "linear" ]; then
+if [ "$1" = "ciao" -o -z "$1" ]; then
 echo
-echo "Loading Linear Data..."
-xpaset -p ds9 scale minmax
+echo "CIAO Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 file mosaicimage mosaic/ds9_8amp_2x2.fits
-echo "DONE"
+xpaset -p ds9 fits data/img.fits
 
-echo
-echo "DS9 Linear Format..."
-doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsa fk5 degrees regions/ds9.linear.wcsa.reg
-doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsc fk5 degrees regions/ds9.linear.wcsc.reg
-doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsd fk5 degrees regions/ds9.linear.wcsd.reg
-doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsi fk5 degrees regions/ds9.linear.wcsi.reg
-doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsp fk5 degrees regions/ds9.linear.wcsp.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg ciao physical fk5 degrees regions/ciao.physical.reg 
+doit ds9 image fk5 degrees regions/ds9.image.reg ciao wcs fk5 sexagesimal regions/ciao.fk5.reg 
 fi
+
+if [ "$1" = "saotng" -o -z "$1" ]; then
+echo
+echo "SAOtng Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng image fk5 degrees regions/saotng.image.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk4 degrees regions/saotng.fk4.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk4 sexagesimal regions/saotng.fk4.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk5 degrees regions/saotng.fk5.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk5 sexagesimal regions/saotng.fk5.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs icrs degrees regions/saotng.icrs.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs icrs sexagesimal regions/saotng.icrs.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs galactic degrees regions/saotng.galactic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs galactic sexagesimal regions/saotng.galactic.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs ecliptic degrees regions/saotng.ecliptic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs ecliptic sexagesimal regions/saotng.ecliptic.hms.reg
+fi
+
+if [ "$1" = "pros" -o -z "$1" ]; then
+echo
+echo "IRAF Pros Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+
+doit ds9 image fk5 degrees regions/ds9.image.reg pros image fk5 degrees regions/pros.image.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros physical fk5 degrees regions/pros.physical.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk4 degrees regions/pros.fk4.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk4 sexagesimal regions/pros.fk4.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk5 degrees regions/pros.fk5.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs fk5 sexagesimal regions/pros.fk5.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs galactic degrees regions/pros.galactic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs galactic sexagesimal regions/pros.galactic.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs ecliptic degrees regions/pros.ecliptic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg pros wcs ecliptic sexagesimal regions/pros.ecliptic.hms.reg
+fi
+
+if [ "$1" = "saoimage" -o -z "$1" ]; then
+echo
+echo "SAOImage Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+
+doit ds9 image fk5 degrees regions/ds9.image.reg saoimage image fk5 degrees regions/saoimage.reg
+fi
+
+if [ "$1" = "xy" -o -z "$1" ]; then
+echo
+echo "X Y Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+
+doit ds9 image fk5 degrees regions/ds9.image.reg xy image fk5 degrees regions/xy.image.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy physical fk5 degrees regions/xy.physical.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk4 degrees regions/xy.fk4.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk4 sexagesimal regions/xy.fk4.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk5 degrees regions/xy.fk5.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs fk5 sexagesimal regions/xy.fk5.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs icrs degrees regions/xy.icrs.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs icrs sexagesimal regions/xy.icrs.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs galactic degrees regions/xy.galactic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs galactic sexagesimal regions/xy.galactic.hms.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs ecliptic degrees regions/xy.ecliptic.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xy wcs ecliptic sexagesimal regions/xy.ecliptic.hms.reg
+fi
+
+# test not generated: fits
 
 xpaset -p ds9 quit
