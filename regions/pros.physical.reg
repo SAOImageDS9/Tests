@@ -1,7 +1,7 @@
 physical; circle 331 1091 20
 physical; ellipse 495 1057 40 20 45
 physical; box 675 1053 80 40 45
-physical; polygon 813.494 1075 889 1150.51 964.506 1075 889 999.494
+physical; polygon 813.49446 1075 889 1150.5055 964.50554 1075 889 999.49446
 physical; annulus 331 867 10 20 30
 physical; ellipse 501 859 15 7.5 45
 physical; ellipse 501 859 30 15 45 & !ellipse 501 859 15 7.5 45
