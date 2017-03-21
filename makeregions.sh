@@ -75,7 +75,7 @@ doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs galactic sexagesimal re
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs ecliptic degrees regions/ds9.ecliptic.strip.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs ecliptic sexagesimal regions/ds9.ecliptic.hms.strip.reg
 
-xpaset -p ds9 regions strip yes
+xpaset -p ds9 regions strip no
 fi
 
 # test not generated: composite
