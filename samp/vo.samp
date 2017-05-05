@@ -10,8 +10,8 @@ set {} vo server "http://cxc.harvard.edu/chandraed/list.txt"
 set {} vo internal yes
 set {} vo delay 10
 set {} vo connect foo
-set {} vo chandra-ed
-set {} vo disconnect chandra-ed
+set {} vo xray1.physics.rutgers
+set {} vo disconnect xray1.physics.rutgers
 set {} vo close
 set {} web close
 

@@ -3255,8 +3255,8 @@ xpaset -p ds9 vo server "http://cxc.harvard.edu/chandraed/list.txt"
 xpaset -p ds9 vo internal yes
 xpaset -p ds9 vo delay 15
 xpaset -p ds9 vo connect foo
-xpaset -p ds9 vo chandra-ed
-xpaset -p ds9 vo disconnect chandra-ed
+xpaset -p ds9 vo xray1.physics.rutgers
+xpaset -p ds9 vo disconnect xray1.physics.rutgers
 xpaset -p ds9 vo close
 xpaset -p ds9 web close
 
