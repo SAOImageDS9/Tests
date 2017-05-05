@@ -21,7 +21,6 @@ doit () {
     dd=1
     ddd=4
 
-#    xpaset -p ds9 vo chandra-ed
     xpaset -p ds9 vo xray1.physics.rutgers
     xpaset -p ds9 web click 4
     sleep $ddd
