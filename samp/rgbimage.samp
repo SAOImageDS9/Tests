@@ -1,6 +1,6 @@
 set {} frame new rgb
 set {} rgbimage mecube/float.fits
-set file://localhost/Users/joye/saods9/tests/mecube/float.fits rgbimage
+set file:mecube/float.fits rgbimage
 get rgbimage
 set {} frame delete
 

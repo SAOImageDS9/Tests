@@ -2,7 +2,7 @@ set {} frame new
 set {} mosaicwcs mosaic/mosaicimage.fits
 get mosaicwcs
 set {} frame clear
-set file://localhost/Users/joye/saods9/tests/mosaic/mosaicimage.fits mosaicwcs 
+set file:mosaic/mosaicimage.fits mosaicwcs 
 set {} frame delete
 
 set {} mosaicwcs new mosaic/mosaicimage.fits

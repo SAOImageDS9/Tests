@@ -14,6 +14,9 @@ doit () {
     eval ds9 -zscale data/img.fits "$opt" -exit
     echo "PASSED"
     echo ""
+    if [ $slow = "1" ]; then
+	sleep 1
+    fi
 }
 
 echo
@@ -37,6 +40,13 @@ delay=.5
 # -geometry
 # --help
 # -visual
+
+# slow down?
+slow=0
+if [ "$1" = "slow" ]; then
+    slow=1
+    shift
+fi
 
 tt="2mass"
 if [ "$1" = "$tt" -o -z "$1" ]; then

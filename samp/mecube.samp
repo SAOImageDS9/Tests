@@ -1,6 +1,6 @@
 set {} frame new
 set {} mecube mecube/float.fits
-set file://localhost/Users/joye/saods9/tests/mecube/float.fits mecube
+set file:mecube/float.fits mecube
 get mecube
 set {} frame delete
 

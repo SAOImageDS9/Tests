@@ -30,6 +30,10 @@ testit () {
     else
         echo "PASSED"
     fi
+
+    if [ $slow = "1" ]; then
+	sleep 1
+    fi
     rm -f ${1}.out
 
     xpaset -p ds9 single
@@ -55,6 +59,13 @@ delay=.5
 # smosaic
 # smosaicwcs
 # smosaiciraf
+
+# slow down?
+slow=0
+if [ "$1" = "slow" ]; then
+    slow=1
+    shift
+fi
 
 rm -f *.out
 xpaset -p ds9 scale zscale

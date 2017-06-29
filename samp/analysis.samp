@@ -12,13 +12,13 @@ set {} analysis clear
 set {} analysis load analysis/analysis.ans
 set {} analysis clear load analysis/analysis.ans
 set {} analysis clear
-set file://localhost/Users/joye/saods9/tests/analysis/analysis.ans analysis load
+set file:analysis/analysis.ans analysis load
 set {} analysis clear
 #set {} analysis message {This is a message}
 #set {} analysis message yesno {This is a message}
 set {} analysis text {This is text}
 set {} analysis mode none
-set file://localhost/Users/joye/saods9/tests/analysis.txt analysis text
+set file:analysis.txt analysis text
 
 set {} single
 set {} raise

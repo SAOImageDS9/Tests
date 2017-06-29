@@ -2,7 +2,7 @@ set {} regions delete all
 set {} regions system physical
 set {} regions sky fk5
 set {} regions skyformat degrees
-set file://localhost/Users/joye/saods9/tests/regions/samp.reg regions
+set file:regions/samp.reg regions
 
 get regions
 get regions epsilon

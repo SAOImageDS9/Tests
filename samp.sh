@@ -27,16 +27,24 @@ doit () {
     if [ "$1" = "$2" -o  -z "$1" ]; then
     testit "$2"
     fi
+    if [ $slow = "1" ]; then
+	sleep 1
+    fi
 }
 
 echo
 echo "*** samp.sh ***"
 
 # must be invoked
-#  dssstsci
 #  iexam
 #  samp
-#  skyview
+
+# slow down?
+slow=0
+if [ "$1" = "slow" ]; then
+    slow=1
+    shift
+fi
 
 # load default image
 xpaset -p ds9 scale zscale
@@ -66,7 +74,7 @@ doit "$1" cursor
 doit "$1" data
 doit "$1" dsssao
 doit "$1" dsseso
-#doit "$1" dssstsci
+doit "$1" dssstsci
 doit "$1" export
 # backward compatibility
 doit "$1" file
@@ -107,7 +115,7 @@ doit "$1" multiframe
 doit "$1" nameserver
 doit "$1" nan
 doit "$1" nrrd
-#doit "$1" nvss
+doit "$1" nvss
 doit "$1" orient
 doit "$1" pagesetup
 doit "$1" pan
@@ -137,7 +145,7 @@ doit "$1" single
 # no tests
 #doit "$1" shm
 doit "$1" sia
-#doit "$1" skyview
+doit "$1" skyview
 doit "$1" sleep
 # no tests
 #doit "$1" smosaic

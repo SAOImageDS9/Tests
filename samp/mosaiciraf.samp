@@ -1,7 +1,7 @@
 set {} frame new
 set {} mosaiciraf mosaic/mosaicimage.fits
 set {} frame clear
-set file://localhost/Users/joye/saods9/tests/mosaic/mosaicimage.fits mosaiciraf
+set file:mosaic/mosaicimage.fits mosaiciraf
 set {} frame delete
 
 set {} mosaiciraf new mosaic/mosaicimage.fits
