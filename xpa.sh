@@ -46,19 +46,11 @@ echo "*** xpa.sh ***"
 delay=.5
 
 # must be invoked
-# dssstsci
 # iexam
-# shm
+# movie
+# print
 # source
 # tcl
-# print
-# skyview
-
-# no test
-# shm
-# smosaic
-# smosaicwcs
-# smosaiciraf
 
 # slow down?
 slow=0
@@ -732,7 +724,7 @@ testit $tt
 fi
 
 tt="dssstsci"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 dssstsci open
 xpaset -p ds9 dssstsci close
@@ -2861,7 +2853,7 @@ testit $tt
 fi
 
 tt="shm"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt...no test..."
 
 testit $tt
@@ -2893,7 +2885,7 @@ testit $tt
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 skyview open
 xpaset -p ds9 skyview close

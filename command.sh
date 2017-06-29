@@ -25,16 +25,9 @@ echo "*** command.sh ***"
 delay=.5
 
 # must be invoked
-# -dssstsci
+# -movie
 # -private
 # -samp
-# -skyview
-
-# no test
-# -shm
-# -smosaic
-# -smosaicwcs
-# -smosaiciraf
 
 # not tested
 # -geometry
@@ -601,7 +594,7 @@ doit
 fi
 
 tt="dssstsci"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-dssstsci open"
 testit "-dssstsci close"
@@ -2029,7 +2022,7 @@ testit "-cube close"
 doit
 fi
 
-# movie will fail if moved from corner
+# saveimage will fail if moved from corner
 tt="saveimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -2169,7 +2162,7 @@ doit
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-skyview open"
 testit "-skyview close"

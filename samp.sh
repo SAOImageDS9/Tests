@@ -36,8 +36,9 @@ echo
 echo "*** samp.sh ***"
 
 # must be invoked
-#  iexam
-#  samp
+# iexam
+# movie
+# samp
 
 # slow down?
 slow=0
