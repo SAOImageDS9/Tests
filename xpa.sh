@@ -565,6 +565,7 @@ tt="crop"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 mode crop
+xpaset -p ds9 crop open
 xpaset -p ds9 crop  978 970  356 308 
 xpaget ds9 crop >> ${tt}.out
 xpaget ds9 crop wcs fk5 sexagesimal arcsec >> ${tt}.out
@@ -583,6 +584,7 @@ xpaset -p ds9 crop lock none
 xpaset -p ds9 frame delete
 xpaset -p ds9 mode none
 
+xpaset -p ds9 crop close
 xpaset -p ds9 3d close
 xpaset -p ds9 cube close
 testit $tt
