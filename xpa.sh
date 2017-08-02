@@ -2962,11 +2962,13 @@ echo -n "$tt..."
 xpaget ds9 smooth >> ${tt}.out
 xpaget ds9 smooth function >> ${tt}.out
 xpaget ds9 smooth radius >> ${tt}.out
+xpaget ds9 smooth kernel >> ${tt}.out
 xpaset -p ds9 smooth open
 xpaset -p ds9 smooth
 xpaset -p ds9 smooth yes
 xpaset -p ds9 smooth function tophat
 xpaset -p ds9 smooth radius 5
+xpaset -p ds9 smooth kernel 5
 xpaset -p ds9 smooth match
 xpaset -p ds9 smooth lock yes
 xpaset -p ds9 smooth lock no

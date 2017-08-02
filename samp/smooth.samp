@@ -1,11 +1,13 @@
 get smooth
 get smooth function
 get smooth radius
+get smooth kernel
 set {} smooth open
 set {} smooth
 set {} smooth yes
 set {} smooth function tophat
 set {} smooth radius 5
+set {} smooth kernel 5
 set {} smooth match
 set {} smooth lock yes
 set {} smooth lock no
