@@ -8,7 +8,7 @@ polygon(175.1088116,50.93966084,175.1049126,50.93804729,175.1074731,50.93559032,
 -line(175.1091464,50.93389603,175.1037204,50.93123109) # line=1 1 color=cyan text={Line}
 # vector(175.1055984,50.92907422,7.928",326.71725) vector=1 color=red text={Vector}
 # text(175.1058212,50.92595276) color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(175.1208057,50.93923235,175.1146231,50.93644172) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(175.1208057,50.93923235,175.1146231,50.93644172) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(175.1219897,50.95150386,1.982",3.964",5.946") # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(175.1208234,50.94687694,2.973",1.487",5.946",2.973",326.71725) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(175.1193652,50.94217573,7.928",3.964",11.892",5.946",326.71725) # font="helvetica 10 bold roman" text={Box Annulus}

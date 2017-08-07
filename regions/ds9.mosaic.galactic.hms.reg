@@ -8,7 +8,7 @@ polygon(+58:27:40.774,+20:54:25.404,+58:27:48.872,+20:54:41.494,+58:27:31.648,+2
 -line(+58:27:20.091,+20:54:54.458,+58:27:29.943,+20:55:19.013) # line=1 1 color=cyan text={Line}
 # vector(+58:27:16.106,+20:55:26.390,13.320",115.14338) vector=1 color=red text={Vector}
 # text(+58:27:04.761,+20:55:42.039) color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(+58:26:57.615,+20:54:03.705,+58:27:09.664,+20:54:30.417) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(+58:26:57.615,+20:54:03.705,+58:27:09.664,+20:54:30.417) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(+58:27:35.056,+20:52:58.085,3.330",6.660",9.990") # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(+58:27:23.442,+20:53:24.262,4.995",2.498",9.990",4.995",115.14338) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(+58:27:12.592,+20:53:51.404,13.320",6.660",19.980",9.990",115.14338) # font="helvetica 10 bold roman" text={Box Annulus}
@@ -44,7 +44,7 @@ polygon(+58:32:04.216,+20:51:17.271,+58:32:12.319,+20:51:33.357,+58:31:55.104,+2
 -line(+58:31:43.554,+20:51:46.334,+58:31:53.414,+20:52:10.884) # line=1 1 color=cyan text={Line}
 # vector(+58:31:39.586,+20:52:18.267,13.320",115.14338) vector=1 color=red text={Vector}
 # text(+58:31:28.253,+20:52:33.921) color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(+58:31:21.061,+20:50:55.590,+58:31:33.118,+20:51:22.297) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(+58:31:21.061,+20:50:55.590,+58:31:33.118,+20:51:22.297) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(+58:31:58.457,+20:49:49.955,3.330",6.660",9.990") # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(+58:31:46.860,+20:50:16.136,4.995",2.498",9.990",4.995",115.14338) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(+58:31:36.026,+20:50:43.282,13.320",6.660",19.980",9.990",115.14338) # font="helvetica 10 bold roman" text={Box Annulus}

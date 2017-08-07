@@ -8,7 +8,7 @@ polygon(273.3546667,31.38376838,273.3505977,31.38727889,273.3464856,31.3838051,2
 -line(273.3436277,31.38150528,273.3371552,31.38625137) # line=1 1 color=cyan text={Line}
 # vector(273.3334551,31.38358501,13.320",45.26226) vector=1 color=red text={Vector}
 # text(273.3274882,31.38231584) color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(273.3567822,31.37117863,273.3498823,31.37666733) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(273.3567822,31.37117863,273.3498823,31.37666733) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(273.3807436,31.37402774,3.330",6.660",9.990") # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(273.3715324,31.37370091,4.995",2.498",9.990",4.995",45.26226) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(273.3621063,31.3736519,13.320",6.660",19.980",9.990",45.26226) # font="helvetica 10 bold roman" text={Box Annulus}
@@ -44,7 +44,7 @@ polygon(273.4397278,31.42997669,273.43566,31.43348988,273.4315427,31.43001881,27
 -line(273.4286813,31.42772087,273.4222099,31.43247124) # line=1 1 color=cyan text={Line}
 # vector(273.4185056,31.42980732,13.320",45.26226) vector=1 color=red text={Vector}
 # text(273.4125346,31.42854209) color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(273.4418329,31.41738555,273.4349346,31.42287879) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(273.4418329,31.41738555,273.4349346,31.42287879) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(273.4658087,31.42021882,3.330",6.660",9.990") # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(273.4565927,31.41989808,4.995",2.498",9.990",4.995",45.26226) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(273.4471619,31.4198553,13.320",6.660",19.980",9.990",45.26226) # font="helvetica 10 bold roman" text={Box Annulus}

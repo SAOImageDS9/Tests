@@ -16,7 +16,7 @@ polygon(363.24723,1938,401,1975.7528,438.75277,1938,401,1900.2472) # font="couri
 # tile 1
 # text(614,1921) color=magenta font="helvetica 14 bold roman" text={Region}
 # tile 1
-# ruler(343,1802,407,1861) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(343,1802,407,1861) ruler=physical physical coloformat={%2.2f} r=white font="helvetica 12 normal roman" text={Ruler}
 # tile 1
 annulus(122,1834,10,20,30) # color=magenta font="helvetica 10 bold roman" text={Annulus}
 # tile 1
@@ -88,7 +88,7 @@ polygon(1713.2472,350,1751,387.75275,1788.7528,350,1751,312.24723) # font="couri
 # tile 3
 # text(1964,333) color=magenta font="helvetica 14 bold roman" text={Region}
 # tile 3
-# ruler(1693,214,1757,273) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(1693,214,1757,273) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 # tile 3
 annulus(1472,246,10,20,30) # color=magenta font="helvetica 10 bold roman" text={Annulus}
 # tile 3

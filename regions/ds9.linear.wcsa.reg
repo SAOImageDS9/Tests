@@ -16,7 +16,7 @@ polygon(661.9945,3911.5,737.5,3987.0055,813.0055,3911.5,737.5,3835.9945) # font=
 # tile 2
 # text(1163.5,3877.5) color=magenta font="helvetica 14 bold roman" text={Region}
 # tile 2
-# ruler(621.5,3639.5,749.5,3757.5) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(621.5,3639.5,749.5,3757.5) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 # tile 2
 annulus(179.5,3703.5,20,40,60) # color=magenta font="helvetica 10 bold roman" text={Annulus}
 # tile 2

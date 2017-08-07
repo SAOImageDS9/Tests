@@ -9,7 +9,7 @@ polygon(202.4724763,47.19913412,202.4681539,47.19925674,202.4679735,47.19631986,
 -line(202.4677797,47.19432855,202.4614045,47.19415843) || # line=1 1 color=cyan text={Line}
 # vector(202.4609681,47.19171605,7.928",2.3983109) || vector=1 color=red text={Vector}
 # text(202.458457,47.18909856) || color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(202.4811433,47.19437753,202.4740906,47.19438325) || ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(202.4811433,47.19437753,202.4740906,47.19438325) || ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(202.4925706,47.20390971,1.982",3.964",5.946") || # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(202.4877193,47.20058032,2.973",1.487",5.946",2.973",2.3983109) || # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(202.4825849,47.19729778,7.928",3.964",11.892",5.946",2.3983109) || # font="helvetica 10 bold roman" text={Box Annulus}

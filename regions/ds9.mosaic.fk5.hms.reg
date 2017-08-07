@@ -8,7 +8,7 @@ polygon(18:15:18.230,+31:24:04.363,18:15:17.248,+31:24:16.930,18:15:16.266,+31:2
 -line(18:15:15.584,+31:23:56.024,18:15:14.022,+31:24:12.996) # line=1 1 color=cyan text={Line}
 # vector(18:15:13.139,+31:24:03.333,13.320",44.939783) vector=1 color=red text={Vector}
 # text(18:15:11.708,+31:23:58.660) color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(18:15:18.758,+31:23:19.078,18:15:17.093,+31:23:38.717) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(18:15:18.758,+31:23:19.078,18:15:17.093,+31:23:38.717) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(18:15:24.505,+31:23:29.753,3.330",6.660",9.990") # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(18:15:22.294,+31:23:28.415,4.995",2.498",9.990",4.995",44.939783) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(18:15:20.032,+31:23:28.075,13.320",6.660",19.980",9.990",44.939783) # font="helvetica 10 bold roman" text={Box Annulus}
@@ -44,7 +44,7 @@ polygon(18:15:38.574,+31:26:52.195,18:15:37.592,+31:27:04.771,18:15:36.609,+31:2
 -line(18:15:35.926,+31:26:43.882,18:15:34.365,+31:27:00.870) # line=1 1 color=cyan text={Line}
 # vector(18:15:33.480,+31:26:51.215,13.320",44.939783) vector=1 color=red text={Vector}
 # text(18:15:32.049,+31:26:46.556) color=magenta font="helvetica 14 bold roman" text={Region}
-# ruler(18:15:39.100,+31:26:06.905,18:15:37.435,+31:26:26.559) ruler=physical physical color=white font="helvetica 12 normal roman" text={Ruler}
+# ruler(18:15:39.100,+31:26:06.905,18:15:37.435,+31:26:26.559) ruler=physical physical format={%2.2f} color=white font="helvetica 12 normal roman" text={Ruler}
 annulus(18:15:44.850,+31:26:17.523,3.330",6.660",9.990") # color=magenta font="helvetica 10 bold roman" text={Annulus}
 ellipse(18:15:42.639,+31:26:16.207,4.995",2.498",9.990",4.995",44.939783) # color=red width=3 font="helvetica 10 bold roman" text={Ellipse Annulus}
 box(18:15:40.375,+31:26:15.888,13.320",6.660",19.980",9.990",44.939783) # font="helvetica 10 bold roman" text={Box Annulus}
