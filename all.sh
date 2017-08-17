@@ -6,6 +6,7 @@
 
 parse.sh
 compress.sh
+compress2.sh
 
 crop.sh
 regions.sh
