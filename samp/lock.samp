@@ -34,6 +34,8 @@ set {} lock block yes
 set {} lock block no
 set {} lock smooth yes
 set {} lock smooth no
+set {} lock 3d yes
+set {} lock 3d no
 set {} mode none
 set {} frame delete
 set {} wcs align no

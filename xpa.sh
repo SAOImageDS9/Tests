@@ -117,6 +117,7 @@ xpaget ds9 3d compass >> ${tt}.out
 xpaget ds9 3d compass color >> ${tt}.out
 xpaget ds9 3d highlite >> ${tt}.out
 xpaget ds9 3d highlite color >> ${tt}.out
+xpaget ds9 3d lock >> ${tt}.out
 xpaset -p ds9 3d view 45 30
 xpaset -p ds9 3d az 45
 xpaset -p ds9 3d el 30
@@ -129,6 +130,9 @@ xpaset -p ds9 3d compass yes
 xpaset -p ds9 3d compass color red
 xpaset -p ds9 3d highlite yes
 xpaset -p ds9 3d highlite color red
+xpaset -p ds9 3d match
+xpaset -p ds9 3d lock
+xpaset -p ds9 3d lock yes
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 3d close
@@ -1477,6 +1481,7 @@ xpaget ds9 lock scalelimits >> ${tt}.out
 xpaget ds9 lock colorbar >> ${tt}.out
 xpaget ds9 lock block >> ${tt}.out
 xpaget ds9 lock smooth >> ${tt}.out
+xpaget ds9 lock 3d >> ${tt}.out
 xpaset -p ds9 fits new data/img.fits
 xpaset -p ds9 tile
 xpaset -p ds9 mode crosshair
@@ -1501,6 +1506,8 @@ xpaset -p ds9 lock colorbar yes
 xpaset -p ds9 lock colorbar no
 xpaset -p ds9 lock smooth yes
 xpaset -p ds9 lock smooth no
+xpaset -p ds9 lock 3d yes
+xpaset -p ds9 lock 3d no
 xpaset -p ds9 mode none
 xpaset -p ds9 frame delete
 xpaset -p ds9 wcs align no
@@ -1566,6 +1573,7 @@ xpaset -p ds9 match scalelimits
 xpaset -p ds9 match colorbar
 xpaset -p ds9 match block
 xpaset -p ds9 match smooth
+xpaset -p ds9 match 3d
 xpaset -p ds9 frame delete
 xpaset -p ds9 mode none
 xpaset -p ds9 scale zscale

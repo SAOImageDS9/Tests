@@ -13,6 +13,7 @@ set {} match scalelimits
 set {} match colorbar
 set {} match block
 set {} match smooth
+set {} match 3d
 set {} frame delete
 set {} mode none
 set {} scale zscale
