@@ -132,7 +132,7 @@ xpaset -p ds9 3d highlite yes
 xpaset -p ds9 3d highlite color red
 xpaset -p ds9 3d match
 xpaset -p ds9 3d lock
-xpaset -p ds9 3d lock yes
+xpaset -p ds9 3d lock no
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 3d close

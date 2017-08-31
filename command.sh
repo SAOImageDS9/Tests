@@ -90,7 +90,7 @@ testit "-3d highlite yes"
 testit "-3d highlite color red"
 testit "-3d match"
 testit "-3d lock"
-testit "-3d lock yes"
+testit "-3d lock no"
 testit "-frame delete"
 
 testit "-3d close"

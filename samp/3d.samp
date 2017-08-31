@@ -29,7 +29,7 @@ set {} 3d highlite yes
 set {} 3d highlite color red
 set {} 3d match
 set {} 3d lock
-set {} 3d lock yes
+set {} 3d lock no
 set {} frame delete
 
 set {} 3d close
