@@ -27,6 +27,7 @@ for f in wcs/*.fits
 do
 echo $f
 xpaset -p ds9 fits $f
+read
 xpaset -p ds9 align
 read
 done
