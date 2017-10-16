@@ -384,7 +384,10 @@ xpaset -p ds9 catalog match function 1and2
 xpaset -p ds9 catalog match error 2 arcsec
 xpaset -p ds9 catalog match return 1only
 xpaset -p ds9 catalog match unique no
+xpaset -p ds9 catalog match
 xpaset -p ds9 catalog match 2mass xmm
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 xpaset -p ds9 catalog clear
