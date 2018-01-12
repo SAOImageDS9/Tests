@@ -2393,6 +2393,15 @@ xpaset -p ds9 frame delete
 testit $tt
 fi
 
+tt="precision"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaget ds9 precision >> ${tt}.out
+xpaset -p ds9 precision 8 10 4 3 5 3
+
+testit $tt
+fi
+
 tt="prefs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo "$tt..."
@@ -2402,10 +2411,12 @@ xpaset -p ds9 prefs clear
 xpaget ds9 prefs bgcolor >> ${tt}.out
 xpaget ds9 prefs nancolor >> ${tt}.out
 xpaget ds9 prefs threads >> ${tt}.out
+xpaget ds9 prefs precision >> ${tt}.out
 xpaget ds9 prefs irafalign >> ${tt}.out
 xpaset -p ds9 prefs bgcolor white
 xpaset -p ds9 prefs nancolor white
 xpaset -p ds9 prefs threads 4
+xpaset -p ds9 prefs precision 8 10 4 3 5 3
 xpaset -p ds9 prefs irafalign yes
 
 testit $tt

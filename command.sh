@@ -1727,6 +1727,14 @@ testit "-pow"
 doit
 fi
 
+tt="precision"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-precision 8 10 4 3 5 3"
+
+doit
+fi
+
 tt="prefs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -1737,6 +1745,7 @@ testit "-prefs clear"
 testit "-prefs bgcolor white"
 testit "-prefs nancolor white"
 testit "-prefs threads 4"
+testit "-precision 8 10 4 3 5 3"
 testit "-prefs irafalign yes"
 
 doit

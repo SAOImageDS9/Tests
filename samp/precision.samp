@@ -1,0 +1,5 @@
+get precision
+set {} precision 8 10 4 3 5 3
+
+set {} single
+set {} raise
