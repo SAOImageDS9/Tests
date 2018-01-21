@@ -61,8 +61,8 @@ testit wcs2/UKIDDS_K_3219_606_17_67_3.fits 1
 echo "IRAF TNX"
 testit wcs2/30s_01.fits 1
 
-echo "IRAF ZPX"
-testit wcs2/E5.3090.fits.gz 1
+#echo "IRAF ZPX"
+#testit wcs2/E5.3090.fits.gz 1
 
 echo "SIRTF TAN-SIP"
 testit wcs2/sip.fits 2
@@ -85,7 +85,6 @@ echo "GLON-ZEA"
 testit wcs2/South_galactic.fits 1
 
 echo "RA-CAR"
-testit wcs2/CAR_model.fits 1
 testit wcs2/car_01.fits 1
 
 echo "GLON-CAR"
