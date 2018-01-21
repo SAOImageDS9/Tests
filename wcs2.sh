@@ -69,8 +69,8 @@ testit wcs2/sip.fits 2
 testit wcs2/sst.fits 2
 testit wcs2/mos8.fits 1
 
-#echo "TAB"
-#testit wcs2/sparse.fits
+echo "TAB"
+testit wcs2/ngc4579_test_LL1_cube.fits 4
 
 echo "WCSDEP"
 testit wcs2/ngc6819.fits 1
