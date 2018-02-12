@@ -7,6 +7,9 @@ plio.sh
 #fits64.sh
 #shm.sh
 
+compress.sh
+compress2.sh
+
 rgbimage.sh
 rgbcube.sh
 mecube.sh
