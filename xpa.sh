@@ -95,6 +95,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 
 testit $tt
 fi
@@ -695,6 +697,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 
 testit $tt
 fi
@@ -731,6 +735,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 
 testit $tt
 fi
@@ -761,6 +767,8 @@ xpaset -p ds9 mode crosshair
 xpaset -p ds9 dssstsci update crosshair
 xpaset -p ds9 dssstsci close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -1880,6 +1888,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 
 testit $tt
 fi
@@ -2947,6 +2957,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 
 testit $tt
 fi
@@ -3245,6 +3257,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 
 testit $tt
 fi
@@ -3273,6 +3287,8 @@ xpaset -p ds9 mode crosshair
 xpaset -p ds9 vlss update crosshair
 xpaset -p ds9 vlss close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete

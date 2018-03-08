@@ -29,6 +29,8 @@ set {} frame delete
 set {} frame delete
 set {} frame delete
 set {} frame delete
+set {} frame delete
+set {} frame delete
 
 set {} single
 set {} raise

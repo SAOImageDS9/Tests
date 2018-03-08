@@ -67,6 +67,8 @@ testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
+testit "-frame delete"
+testit "-frame delete"
 
 doit
 fi
@@ -570,6 +572,8 @@ testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
+testit "-frame delete"
+testit "-frame delete"
 
 doit
 fi
@@ -600,6 +604,8 @@ testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
+testit "-frame delete"
+testit "-frame delete"
 
 doit
 fi
@@ -624,6 +630,8 @@ testit "-mode crosshair"
 testit "-dssstsci update crosshair"
 testit "-dssstsci close"
 testit "-mode none"
+testit "-frame delete"
+testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
@@ -1267,6 +1275,8 @@ testit "-mode crosshair"
 testit "-nvss update crosshair"
 testit "-nvss close"
 testit "-mode none"
+testit "-frame delete"
+testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
@@ -2213,6 +2223,8 @@ testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
+testit "-frame delete"
+testit "-frame delete"
 
 doit
 fi
@@ -2504,6 +2516,8 @@ testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
+testit "-frame delete"
+testit "-frame delete"
 
 doit
 fi
@@ -2527,6 +2541,8 @@ testit "-mode crosshair"
 testit "-vlss update crosshair"
 testit "-vlss close"
 testit "-mode none"
+testit "-frame delete"
+testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
 testit "-frame delete"
