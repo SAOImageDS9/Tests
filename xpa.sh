@@ -702,7 +702,7 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 dsseso open
 xpaset -p ds9 dsseso close
-xpaset -p ds9 dsseso survey DSS2-red
+xpaset -p ds9 dsseso survey DSS1
 xpaget ds9 dsseso survey >> ${tt}.out
 xpaset -p ds9 dsseso size 30 30 arcsec
 xpaget ds9 dsseso size >> ${tt}.out
@@ -2913,7 +2913,7 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 skyview open
 xpaset -p ds9 skyview close
-#xpaset -p ds9 skyview survey sdssi
+xpaset -p ds9 skyview survey DSS
 xpaget ds9 skyview survey >> ${tt}.out
 xpaset -p ds9 skyview size 30 30 arcsec
 xpaget ds9 skyview size >> ${tt}.out
@@ -2928,7 +2928,7 @@ xpaset -p ds9 skyview m51
 xpaset -p ds9 skyview name m51
 xpaget ds9 skyview name >> ${tt}.out
 xpaset -p ds9 skyview name {}
-xpaset -p ds9 skyview coord 13:29:55.301 +47:11:37.73 sexagesimal
+xpaset -p ds9 skyview coord 00:42:44.404 +41:16:08.78 sexagesimal
 xpaget ds9 skyview coord >> ${tt}.out
 xpaset -p ds9 skyview update frame
 xpaset -p ds9 mode crosshair
