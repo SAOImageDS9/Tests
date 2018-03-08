@@ -12,6 +12,7 @@ set {} nvss name m51
 get nvss name
 set {} nvss name {}
 set {} nvss coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} nvss 13:29:52.37 +47:11:40.8
 get nvss coord
 set {} nvss update frame
 set {} mode crosshair

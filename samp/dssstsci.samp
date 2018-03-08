@@ -13,7 +13,8 @@ set {} dssstsci m1
 set {} dssstsci name m51
 get dssstsci name
 set {} dssstsci name {}
-set {} dssstsci coord 00:42:44.404 +41:16:08.78 sexagesimal
+set {} dssstsci coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} dssstsci 13:29:52.37 +47:11:40.8
 get dssstsci coord
 set {} dssstsci update frame
 set {} mode crosshair

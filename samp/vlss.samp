@@ -12,6 +12,7 @@ set {} vlss name m51
 get vlss name
 set {} vlss name {}
 set {} vlss coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} vlss 13:29:52.37 +47:11:40.8
 get vlss coord
 set {} vlss update frame
 set {} mode crosshair
