@@ -474,7 +474,7 @@ testit $tt
 fi
 
 tt="console"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 console
 
@@ -579,8 +579,25 @@ xpaset -p ds9 crop  978 970  356 308
 xpaget ds9 crop >> ${tt}.out
 xpaget ds9 crop wcs fk5 sexagesimal arcsec >> ${tt}.out
 xpaget ds9 crop lock >> ${tt}.out
-xpaset -p ds9 crop  978 970  356 308 
-xpaset -p ds9 crop 13:29:52.908 +47:11:38.19  35.279606 30.522805 wcs fk5 arcsec
+
+xpaset -p ds9 crop 978 970  356 308
+xpaset -p ds9 crop 978 970  356 308 physical
+
+xpaset -p ds9 crop 202.470451 47.19394108 0.0097 0.0084 wcs
+xpaset -p ds9 crop 202.470451 47.19394108 35.279606 30.522805 wcs arcsec
+xpaset -p ds9 crop 202.470451 47.19394108 0.0097 0.0084 fk5
+xpaset -p ds9 crop 202.470451 47.19394108 35.279606 30.522805 fk5 arcsec
+xpaset -p ds9 crop 202.470451 47.19394108 0.0097 0.0084 wcs fk5
+xpaset -p ds9 crop 202.470451 47.19394108 35.279606 30.522805 wcs fk5 arcsec
+
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs arcsec
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 fk5
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 fk5 arcsec
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs fk5
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs fk5 arcsec
+
 xpaset -p ds9 crop reset
 xpaset -p ds9 3d
 xpaset -p ds9 fits data/3d.fits

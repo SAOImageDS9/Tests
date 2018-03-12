@@ -398,7 +398,7 @@ doit
 fi
 
 tt="console"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 initit "$tt"
 testit "-console"
 
@@ -478,8 +478,25 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-mode crop"
 testit "-crop open"
+
 testit "-crop 978 970  356 308"
-testit "-crop 13:29:52.908 +47:11:38.19  35.279606 30.522805 wcs fk5 arcsec"
+testit "-crop 978 970  356 308 physical"
+
+testit "-crop 202.470451 47.19394108 0.0097 0.0084 wcs"
+testit "-crop 202.470451 47.19394108 35.279606 30.522805 wcs arcsec"
+testit "-crop 202.470451 47.19394108 0.0097 0.0084 fk5"
+testit "-crop 202.470451 47.19394108 35.279606 30.522805 fk5 arcsec"
+testit "-crop 202.470451 47.19394108 0.0097 0.0084 wcs fk5"
+testit "-crop 202.470451 47.19394108 35.279606 30.522805 wcs fk5 arcsec"
+
+testit "-crop 13:29:52.908 +47:11:38.19 0.0097 0.0084"
+testit "-crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs"
+testit "-crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs arcsec"
+testit "-crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 fk5"
+testit "-crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 fk5 arcsec"
+testit "-crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs fk5"
+testit "-crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs fk5 arcsec"
+
 testit "-crop reset"
 testit "-3d"
 testit "-fits data/3d.fits"
