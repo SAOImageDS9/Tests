@@ -6,6 +6,7 @@ set {} scale log
 set {} scale minmax
 set {} bin buffersize 1024
 set {} bin filter 'circle(4096,4096,200)'
+set {} bin filter clear
 set {} bin filter {}
 set {} bin cols rawx rawy
 set {} bin about center

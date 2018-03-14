@@ -187,6 +187,7 @@ testit "-scale log"
 testit "-scale minmax"
 testit "-bin buffersize 1024"
 testit "-bin filter 'circle(4096,4096,200)'"
+testit "-bin filter clear
 testit "-bin filter ''"
 testit "-bin cols rawx rawy"
 testit "-bin about center"
@@ -777,6 +778,7 @@ testit "-frame new"
 testit "-gif -slice photo/rose.gif -noslice"
 testit "-frame delete"
 
+testit "-cube close"
 doit
 fi
 

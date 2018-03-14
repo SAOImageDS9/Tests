@@ -243,7 +243,8 @@ xpaset -p ds9 scale log
 xpaset -p ds9 scale minmax
 xpaset -p ds9 bin buffersize 1024
 xpaset -p ds9 bin filter 'circle(4096,4096,200)'
-xpaset -p ds9 bin filter ''
+xpaset -p ds9 bin filter clear
+xpaset -p ds9 bin filter '""'
 xpaset -p ds9 bin cols rawx rawy
 xpaset -p ds9 bin about center
 xpaset -p ds9 bin colsz x y pha
@@ -1244,6 +1245,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 gif new photo/rose.gif
 xpaset -p ds9 gif slice photo/rose.gif
 xpaset -p ds9 frame delete
+
+xpaset -p ds9 cube close
 
 testit $tt
 fi

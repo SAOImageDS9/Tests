@@ -8,5 +8,6 @@ set {} gif new photo/rose.gif
 set {} gif slice photo/rose.gif
 set {} frame delete
 
+set {} cube close
 set {} single
 set {} raise
