@@ -2,7 +2,18 @@ set {} mode crosshair
 get crosshair
 get crosshair wcs fk5 sexagesimal
 get crosshair lock
-set {} crosshair 13:29:55.287 +47:11:37.73 wcs fk5
+
+set {} crosshair 978 970
+set {} crosshair 978 970 physical
+set {} crosshair 202.470451 47.19394108 wcs
+set {} crosshair 202.470451 47.19394108 fk5
+set {} crosshair 202.470451 47.19394108 wcs fk5
+
+set {} crosshair 13:29:52.908 +47:11:38.19
+set {} crosshair 13:29:52.908 +47:11:38.19 wcs
+set {} crosshair 13:29:52.908 +47:11:38.19 fk5
+set {} crosshair 13:29:52.908 +47:11:38.19 wcs fk5
+
 set {} crosshair match wcs
 set {} crosshair lock wcs
 set {} crosshair lock none

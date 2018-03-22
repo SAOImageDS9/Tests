@@ -520,7 +520,18 @@ tt="crosshair"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-mode crosshair"
-testit "-crosshair 13:29:55.287 +47:11:37.73 wcs fk5"
+
+testit "-crosshair 978 970"
+testit "-crosshair 978 970 physical"
+testit "-crosshair 202.470451 47.19394108 wcs"
+testit "-crosshair 202.470451 47.19394108 fk5"
+testit "-crosshair 202.470451 47.19394108 wcs fk5"
+
+testit "-crosshair 13:29:52.908 +47:11:38.19"
+testit "-crosshair 13:29:52.908 +47:11:38.19 wcs"
+testit "-crosshair 13:29:52.908 +47:11:38.19 fk5"
+testit "-crosshair 13:29:52.908 +47:11:38.19 wcs fk5"
+
 testit "-crosshair match wcs"
 testit "-crosshair lock wcs"
 testit "-crosshair lock none"
@@ -1330,7 +1341,18 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-pan open"
 testit "-pan 100 100 image"
-testit "-pan to 13:29:55.666 +47:12:16.29 wcs fk5"
+
+testit "-pan to 978 970"
+testit "-pan to 978 970 physical"
+testit "-pan to 202.470451 47.19394108 wcs"
+testit "-pan to 202.470451 47.19394108 fk5"
+testit "-pan to 202.470451 47.19394108 wcs fk5"
+
+testit "-pan to 13:29:52.908 +47:11:38.19"
+testit "-pan to 13:29:52.908 +47:11:38.19 wcs"
+testit "-pan to 13:29:52.908 +47:11:38.19 fk5"
+testit "-pan to 13:29:52.908 +47:11:38.19 wcs fk5"
+
 testit "-pan close"
 testit "-frame reset"
 

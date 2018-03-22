@@ -624,7 +624,18 @@ xpaset -p ds9 mode crosshair
 xpaget ds9 crosshair >> ${tt}.out
 xpaget ds9 crosshair wcs fk5 sexagesimal >> ${tt}.out
 xpaget ds9 crosshair lock >> ${tt}.out
-xpaset -p ds9 crosshair 13:29:55.287 +47:11:37.73 wcs fk5
+
+xpaset -p ds9 crosshair 978 970
+xpaset -p ds9 crosshair 978 970 physical
+xpaset -p ds9 crosshair 202.470451 47.19394108 wcs
+xpaset -p ds9 crosshair 202.470451 47.19394108 fk5
+xpaset -p ds9 crosshair 202.470451 47.19394108 wcs fk5
+
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19 wcs
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19 fk5
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19 wcs fk5
+
 xpaset -p ds9 crosshair match wcs
 xpaset -p ds9 crosshair lock wcs
 xpaset -p ds9 crosshair lock none
@@ -1944,7 +1955,18 @@ xpaget ds9 pan physical >> ${tt}.out
 xpaget ds9 pan wcs fk5 sexagesimal >> ${tt}.out
 xpaset -p ds9 pan open
 xpaset -p ds9 pan 100 100 image
-xpaset -p ds9 pan to 13:29:55.666 +47:12:16.29 wcs fk5
+
+xpaset -p ds9 pan to 978 970
+xpaset -p ds9 pan to 978 970 physical
+xpaset -p ds9 pan to 202.470451 47.19394108 wcs
+xpaset -p ds9 pan to 202.470451 47.19394108 fk5
+xpaset -p ds9 pan to 202.470451 47.19394108 wcs fk5
+
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19 wcs
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19 fk5
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19 wcs fk5
+
 xpaset -p ds9 pan close
 xpaset -p ds9 frame reset
 
