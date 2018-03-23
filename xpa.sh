@@ -525,11 +525,9 @@ xpaset -p ds9 tile
 xpaset -p ds9 contour yes
 xpaset -p ds9 contour copy
 xpaset -p ds9 frame first
-# backward compatibility
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour paste wcs red 2 yes
 sleep $delay
-#
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour paste
 sleep $delay

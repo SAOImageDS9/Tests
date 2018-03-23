@@ -36,10 +36,8 @@ set {} tile
 set {} contour yes
 set {} contour copy
 set {} frame first
-# backward compatibility
 set {} contour clear
 set {} contour paste wcs red 2 yes
-#
 set {} contour clear
 set {} contour paste
 set {} frame next

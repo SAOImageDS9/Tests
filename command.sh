@@ -431,10 +431,8 @@ testit "-tile"
 testit "-contour yes"
 testit "-contour copy"
 testit "-frame first"
-# backward compatibility
 testit "-contour clear"
 testit "-contour paste wcs red 2 yes"
-#
 testit "-contour clear"
 testit "-contour paste"
 testit "-frame next"
