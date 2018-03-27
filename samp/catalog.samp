@@ -70,8 +70,8 @@ set {} catalog match function 1and2
 set {} catalog match error 2 arcsec
 set {} catalog match return 1only
 set {} catalog match unique no
-set {} catalog match
 set {} catalog match 2mass xmm
+set {} catalog match
 set {} catalog clear
 set {} catalog close
 set {} catalog clear
