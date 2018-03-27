@@ -24,7 +24,6 @@ set {} catalog symbol condition {$Jmag>15}
 set {} catalog symbol shape {boxcircle point}
 set {} catalog symbol color red
 set {} catalog symbol condition {}
-set {} catalog symbol color red
 set {} catalog symbol shape text
 set {} catalog symbol font times
 set {} catalog symbol fontsize 14

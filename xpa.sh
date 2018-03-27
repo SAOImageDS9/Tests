@@ -339,7 +339,6 @@ xpaset -p ds9 catalog symbol condition '$Jmag>15'
 xpaset -p ds9 catalog symbol shape "{boxcircle point}"
 xpaset -p ds9 catalog symbol color red
 xpaset -p ds9 catalog symbol condition "{}"
-xpaset -p ds9 catalog symbol color red
 xpaset -p ds9 catalog symbol shape text
 xpaset -p ds9 catalog symbol font times
 xpaset -p ds9 catalog symbol fontsize 14
