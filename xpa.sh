@@ -375,7 +375,7 @@ xpaset -p ds9 catalog psky fk5
 xpaset -p ds9 catalog hide
 xpaset -p ds9 catalog show
 xpaset -p ds9 catalog panto no
-#xpaset -p ds9 catalog edit yes
+xpaset -p ds9 catalog edit yes
 xpaset -p ds9 catalog location 400
 xpaset -p ds9 catalog header
 xpaset -p ds9 catalog clear
