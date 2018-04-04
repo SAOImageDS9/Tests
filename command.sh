@@ -1385,30 +1385,37 @@ fi
 tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-plot"
-testit "-plot close"
+#testit "-plot"
+#testit "-plot close"
 
-testit "-plot new"
+testit "-plot line"
 testit "-plot bar"
-testit "-plot new bar"
 testit "-plot scatter"
-testit "-plot new scatter"
 testit "-sleep $delay"
-testit "-plot close"
-testit "-plot close"
 testit "-plot close"
 testit "-plot close"
 testit "-plot close"
 
-testit "-plot new name foo"
-testit "-plot new name foo line"
-testit "-plot new name foo bar"
-testit "-plot new name foo scatter"
+#testit "-plot new name foo"
+#testit "-plot new name foo line"
+#testit "-plot new name foo bar"
+#testit "-plot new name foo scatter"
+#testit "-sleep $delay"
+#testit "-plot close"
+#testit "-plot close"
+#testit "-plot close"
+#testit "-plot close"
+
+testit "-plot new 'The Title' 'X Axis' 'Y Axis' xy"
+testit "-plot new line 'The Title' 'X Axis' 'Y Axis' xy"
+testit "-plot new bar 'The Title' 'X Axis' 'Y Axis' xy"
+testit "-plot new scatter 'The Title' 'X Axis' 'Y Axis' xy"
 testit "-sleep $delay"
 testit "-plot close"
 testit "-plot close"
 testit "-plot close"
 testit "-plot close"
+doit
 
 testit "-plot new name foo 'The Title' 'X Axis' 'Y Axis' xy"
 testit "-plot new name foo line 'The Title' 'X Axis' 'Y Axis' xy"
@@ -1422,7 +1429,7 @@ testit "-plot close"
 doit
 
 initit "..save/load"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot save foo.dat"
 testit "-sleep $delay"
@@ -1430,7 +1437,7 @@ testit "-plot close"
 doit
 
 initit "..clear"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-sleep $delay"
 testit "-plot clear"
@@ -1438,7 +1445,7 @@ testit "-plot close"
 doit
 
 initit "..duplicate"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot dup"
 testit "-plot duplicate 1"
@@ -1447,7 +1454,7 @@ testit "-plot close"
 doit
 
 initit "..stats"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot stats"
 testit "-sleep $delay"
@@ -1455,7 +1462,7 @@ testit "-plot close"
 doit
 
 initit "..list"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot list"
 testit "-sleep $delay"
@@ -1463,7 +1470,7 @@ testit "-plot close"
 doit
 
 initit "..saveconfig/loadconfig"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot saveconfig foo.plt"
 testit "-plot loadconfig foo.plt"
@@ -1472,7 +1479,7 @@ testit "-plot close"
 doit
 
 initit "..pagesetup"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot pagesetup orient portrait"
 testit "-plot pagesetup pagesize letter"
@@ -1481,7 +1488,7 @@ testit "-plot close"
 doit
 
 initit "..print"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 #testit "-plot print"
 testit "-plot print destination printer"
@@ -1493,7 +1500,7 @@ testit "-plot close"
 doit
 
 initit "..mode"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot mode pointer"
 testit "-sleep $delay"
@@ -1501,7 +1508,7 @@ testit "-plot close"
 doit
 
 initit "..axis"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot axis x grid no"
 testit "-plot axis x grid yes"
@@ -1528,7 +1535,7 @@ testit "-plot close"
 doit
 
 initit "..legend"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot legend yes"
 testit "-plot legend position left"
@@ -1540,7 +1547,7 @@ testit "-plot close"
 doit
 
 initit "..font"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot title 'This is a Title'"
 testit "-plot title xaxis 'X Axis'"
@@ -1572,7 +1579,7 @@ testit "-plot close"
 doit
 
 initit "..title"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot title 'This is a Title'"
 testit "-plot title x 'X Axis'"
@@ -1583,7 +1590,7 @@ testit "-plot close"
 doit
 
 initit "..barmode"
-testit "-plot new bar"
+testit "-plot bar"
 testit "-plot load plot/xy.dat xy"
 testit "-plot load plot/xyey.dat xyey"
 testit "-plot barmode normal"
@@ -1595,7 +1602,7 @@ testit "-plot close"
 doit
 
 initit "..show"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot show no"
 testit "-plot show yes"
@@ -1604,7 +1611,7 @@ testit "-plot close"
 doit
 
 initit "..shape"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot shape circle"
 testit "-plot shape square"
@@ -1623,7 +1630,7 @@ testit "-plot close"
 doit
 
 initit "..smooth"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot smooth step"
 testit "-plot smooth linear"
@@ -1635,7 +1642,7 @@ testit "-plot close"
 doit
 
 initit "..color"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot color magenta"
 testit "-plot color '#2C8'"
@@ -1644,7 +1651,7 @@ testit "-plot close"
 doit
 
 initit "..width"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot width 2"
 testit "-plot dash yes"
@@ -1653,7 +1660,7 @@ testit "-plot close"
 doit
 
 initit "..error"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xyexey.dat xyexey"
 testit "-plot error no"
 testit "-plot error yes"
@@ -1666,7 +1673,7 @@ testit "-plot close"
 doit
 
 initit "..name"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot legend yes"
 testit "-plot name 'This is a test'"
@@ -1675,7 +1682,7 @@ testit "-plot close"
 doit
 
 initit "..select"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot load plot/xyey.dat xyey"
 testit "-plot select 2"
@@ -1685,7 +1692,7 @@ testit "-plot close"
 doit
 
 initit "..backward compatibility graph"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot graph grid x no"
 testit "-plot graph grid y yes"
@@ -1709,7 +1716,7 @@ testit "-plot close"
 doit
 
 initit "..backward compatibility view"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot view discrete yes"
 testit "-plot view line yes"
@@ -1721,7 +1728,7 @@ testit "-plot close"
 doit
 
 initit "..backward compatibility line"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot line discrete cross"
 testit "-plot line linear width 2"
@@ -1737,7 +1744,7 @@ testit "-plot close"
 doit
 
 initit "..backward compatibility color"
-testit "-plot new"
+testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot color discrete red"
 testit "-plot color step blue"

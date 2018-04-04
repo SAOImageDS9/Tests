@@ -2378,6 +2378,7 @@ xpaset -p ds9 plot graph format y {}
 xpaset -p ds9 plot graph labels title "{The Title}"
 xpaset -p ds9 plot graph labels xaxis "{X Axis}"
 xpaset -p ds9 plot graph labels yaxis "{Y Axis}"
+xpaset -p ds9 plot graph labels legend "{This is the Legend}"
 xpaset -p ds9 plot graph type line
 sleep $delay
 xpaset -p ds9 plot close
