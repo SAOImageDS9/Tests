@@ -1711,6 +1711,7 @@ testit "-plot graph format y ''"
 testit "-plot graph labels title 'The Title'"
 testit "-plot graph labels xaxis 'X Axis'"
 testit "-plot graph labels yaxis 'Y Axis'"
+testit "-plot graph labels legend 'This is the Legend'"
 testit "-sleep $delay"
 testit "-plot close"
 doit

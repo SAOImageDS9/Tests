@@ -364,6 +364,7 @@ set {} plot graph format y {}
 set {} plot graph labels title "The Title"
 set {} plot graph labels xaxis "X Axis"
 set {} plot graph labels yaxis "Y Axis"
+set {} plot graph labels legend "This is the Legend"
 set {} sleep .5
 set {} plot close
 
