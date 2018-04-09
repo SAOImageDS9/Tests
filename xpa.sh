@@ -2616,13 +2616,14 @@ xpaset -p ds9 regions select all
 xpaset -p ds9 regions copy
 xpaset -p ds9 regions cut
 xpaset -p ds9 regions paste
+xpaset -p ds9 regions paste wcs
 xpaset -p ds9 regions undo
 xpaset -p ds9 regions delete all
 
 xpaset -p ds9 regions load regions/ds9.physical.reg
 xpaset -p ds9 regions select all
 xpaset -p ds9 regions composite
-xpaset -p ds9 regions desolve
+xpaset -p ds9 regions dissolve
 xpaset -p ds9 regions delete all
 
 xpaset -p ds9 regions command {circle 100 100 20}
