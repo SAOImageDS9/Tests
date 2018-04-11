@@ -2597,7 +2597,7 @@ fi
 tt="vo"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-vo method open"
+testit "-vo open"
 testit "-vo method mime"
 testit "-vo server 'http://cxc.harvard.edu/chandraed/list.txt'"
 testit "-vo internal yes"
@@ -2605,7 +2605,7 @@ testit "-vo delay 10"
 testit "-vo connect foo"
 testit "-vo xray1.physics.rutgers"
 testit "-vo disconnect xray1.physics.rutgers"
-testit "-vo method close"
+testit "-vo close"
 testit "-web close"
 
 doit
