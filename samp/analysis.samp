@@ -17,7 +17,6 @@ set {} analysis clear
 #set {} analysis message {This is a message}
 #set {} analysis message yesno {This is a message}
 set {} analysis text {This is text}
-set {} analysis mode none
 set file:analysis.txt analysis text
 
 set {} single

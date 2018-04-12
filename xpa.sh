@@ -168,7 +168,6 @@ xpaset -p ds9 analysis analysis/analysis.ans
 xpaget ds9 analysis > /dev/null
 xpaget ds9 analysis task > /dev/null
 #xpaget ds9 analysis entry 'hello world'
-xpaget ds9 analysis mode > /dev/null
 
 xpaset -p ds9 analysis 0
 xpaset -p ds9 analysis task 1
@@ -182,7 +181,6 @@ xpaset -p ds9 analysis clear
 #xpaset -p ds9 analysis message {This is a message}
 #xpaset -p ds9 analysis message yesno {This is a message}
 xpaset -p ds9 analysis text {This is text}
-xpaset -p ds9 analysis mode none
 cat analysis/analysis.txt | xpaset ds9 analysis text
 
 testit $tt

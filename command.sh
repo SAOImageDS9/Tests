@@ -123,7 +123,7 @@ testit "-analysis clear"
 testit "-analysis analysis/analysis.ans"
 testit "-analysis 0"
 testit "-analysis task 1"
-testit "-analysis task '{Basic Help}'"
+testit "-analysis task 'Basic Help'"
 testit "-analysis clear"
 testit "-analysis load analysis/analysis.ans"
 testit "-analysis clear load analysis/analysis.ans"
@@ -131,7 +131,6 @@ testit "-analysis clear"
 #testit "-analysis message 'This is a message'"
 #testit "-analysis message yesno 'This is a message'"
 testit "-analysis text 'This is text'"
-testit "-analysis mode none"
 
 doit
 fi
