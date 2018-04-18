@@ -1826,7 +1826,7 @@ testit "-psprint command lp"
 testit "-psprint filename ds9.ps"
 testit "-psprint color rgb"
 testit "-psprint level 2"
-testit "-psprint resolution 75"
+testit "-psprint resolution 150"
 
 doit
 fi
