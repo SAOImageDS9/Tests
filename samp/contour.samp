@@ -24,8 +24,6 @@ set {} contour load aux/ds9.con wcs fk5 red 2 no
 #
 set {} contour clear
 set {} contour load aux/ds9.ctr
-set {} contour clear
-set {} contour load aux/ds9.ctr blue 2 yes
 set {} contour save foo.ctr wcs fk5
 
 # paste

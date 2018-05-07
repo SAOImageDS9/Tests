@@ -509,9 +509,6 @@ sleep $delay
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour load aux/ds9.ctr
 sleep $delay
-xpaset -p ds9 contour clear
-xpaset -p ds9 contour load aux/ds9.ctr blue 2 yes
-sleep $delay
 xpaset -p ds9 contour save foo.ctr wcs fk5
 
 # paste

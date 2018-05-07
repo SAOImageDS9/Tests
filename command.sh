@@ -419,8 +419,6 @@ testit "-contour load aux/ds9.con wcs fk5 red 2 yes"
 #
 testit "-contour clear"
 testit "-contour load aux/ds9.ctr"
-testit "-contour clear"
-testit "-contour load aux/ds9.ctr blue 2 yes"
 testit "-contour save foo.con wcs fk5"
 
 # paste
