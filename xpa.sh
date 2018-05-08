@@ -2460,7 +2460,7 @@ xpaget ds9 prefs precision >> ${tt}.out
 xpaget ds9 prefs irafalign >> ${tt}.out
 xpaset -p ds9 prefs bgcolor white
 xpaset -p ds9 prefs nancolor white
-xpaset -p ds9 prefs threads 4
+xpaset -p ds9 prefs threads 12
 xpaset -p ds9 prefs precision 8 10 4 3 5 3
 xpaset -p ds9 prefs irafalign yes
 
@@ -3092,7 +3092,7 @@ tt="threads"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaget ds9 threads >> ${tt}.out
-xpaset -p ds9 threads 4
+xpaset -p ds9 threads 12
 
 testit $tt
 fi

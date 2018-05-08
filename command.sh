@@ -1799,7 +1799,7 @@ testit "-prefs clear"
 # backward compatibility
 testit "-prefs bgcolor white"
 testit "-prefs nancolor white"
-testit "-prefs threads 4"
+testit "-prefs threads 12"
 testit "-precision 8 10 4 3 5 3"
 testit "-prefs irafalign yes"
 
@@ -2382,7 +2382,7 @@ fi
 tt="threads"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/tread"
-testit "-threads 4"
+testit "-threads 12"
 
 doit
 fi

@@ -8,7 +8,7 @@ get prefs precision
 get prefs irafalign
 set {} prefs bgcolor white
 set {} prefs nancolor white
-set {} prefs threads 4
+set {} prefs threads 12
 set {} prefs precision 8 10 4 3 5 3
 set {} prefs irafalign yes
 
