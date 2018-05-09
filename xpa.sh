@@ -796,6 +796,18 @@ xpaset -p ds9 frame delete
 testit $tt
 fi
 
+tt="envi"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 frame new
+xpaset -p ds9 envi envi/cube_float_little.hdr envi/cube_float_little.bsq
+xpaset -p ds9 envi envi/cube_float_little.hdr
+xpaset -p ds9 frame delete
+xpaset -p ds9 envi new envi/cube_float_little.hdr envi/cube_float_little.bsq
+xpaset -p ds9 frame delete
+testit $tt
+fi
+
 tt="export"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."

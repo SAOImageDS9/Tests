@@ -1,0 +1,9 @@
+set {} frame new
+set {} envi envi envi/cube_float_little.hdr envi/cube_float_little.bsq
+set {} envi envi/cube_float_little.hdr
+set {} frame delete
+set {} envi envi new envi/cube_float_little.hdr envi/cube_float_little.bsq
+set {} frame delete
+
+set {} single
+set {} raise

@@ -663,6 +663,16 @@ testit "-frame delete"
 doit
 fi
 
+tt="envi"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new"
+testit "-envi envi/cube_float_little.hdr envi/cube_float_little.bsq"
+testit "-envi envi/cube_float_little.hdr"
+testit "-frame delete"
+doit
+fi
+
 tt="export"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
