@@ -242,7 +242,6 @@ xpaset -p ds9 scale minmax
 xpaset -p ds9 bin buffersize 1024
 xpaset -p ds9 bin filter 'circle(4096,4096,200)'
 xpaset -p ds9 bin filter clear
-xpaset -p ds9 bin filter '""'
 xpaset -p ds9 bin cols rawx rawy
 xpaset -p ds9 bin about center
 xpaset -p ds9 bin colsz x y pha
@@ -347,6 +346,8 @@ xpaset -p ds9 catalog symbol remove
 xpaset -p ds9 catalog symbol load aux/ds9.sym
 xpaset -p ds9 catalog symbol save foo.sym
 xpaset -p ds9 catalog name m51
+xpaset -p ds9 catalog 202.48 47.21 fk5
+# backward compatibility
 xpaset -p ds9 catalog coordinate 202.48 47.21 fk5
 xpaset -p ds9 catalog system wcs
 xpaset -p ds9 catalog sky fk5
@@ -418,11 +419,18 @@ xpaget ds9 cmap lock >> ${tt}.out
 xpaset -p ds9 cmap open
 xpaset -p ds9 cmap Heat
 xpaset -p ds9 cmap load aux/ds9.sao
+# backward compatibility
+xpaset -p ds9 cmap file aux/ds9.sao
 xpaset -p ds9 cmap save foo.sao
 xpaset -p ds9 cmap invert yes
+xpaset -p ds9 cmap 5 .2
+# backward compatibility
 xpaset -p ds9 cmap value 5 .2
+# backward compatibility
 xpaset -p ds9 cmap match
+# backward compatibility
 xpaset -p ds9 cmap lock yes
+# backward compatibility
 xpaset -p ds9 cmap lock no
 xpaset -p ds9 cmap tag load aux/ds9.tag
 xpaset -p ds9 cmap tag save foo.tag
@@ -451,6 +459,8 @@ xpaset -p ds9 colorbar no
 xpaset -p ds9 colorbar yes
 xpaset -p ds9 colorbar vertical
 xpaset -p ds9 colorbar horizontal
+# backward compatibility
+xpaset -p ds9 colorbar orientation horizontal
 xpaset -p ds9 colorbar numerics no
 xpaset -p ds9 colorbar numerics yes
 xpaset -p ds9 colorbar space value
@@ -458,13 +468,19 @@ xpaset -p ds9 colorbar space distance
 xpaset -p ds9 colorbar font times
 xpaset -p ds9 colorbar fontsize 30
 xpaset -p ds9 colorbar fontweight bold
-xpaset -p ds9 colorbar fontslant roman
+xpaset -p ds9 colorbar fontslant italic
+# backward compatibility
+xpaset -p ds9 colorbar fontstyle bold
+xpaset -p ds9 colorbar size 30
+xpaset -p ds9 colorbar ticks 9
+xpaset -p ds9 colorbar match
+xpaset -p ds9 colorbar lock yes
+xpaset -p ds9 colorbar lock no
+
 xpaset -p ds9 colorbar font helvetica
 xpaset -p ds9 colorbar fontsize 10
 xpaset -p ds9 colorbar fontweight normal
 xpaset -p ds9 colorbar fontslant roman
-xpaset -p ds9 colorbar size 30
-xpaset -p ds9 colorbar ticks 9
 xpaset -p ds9 colorbar size 20
 xpaset -p ds9 colorbar ticks 11
 
@@ -917,11 +933,6 @@ echo "PASSED"
 echo -n " multiframe..."
 xpaset -p ds9 frame new
 xpaset -p ds9 file multiframe mecube/float.fits
-xpaset -p ds9 frame delete
-xpaset -p ds9 frame delete
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new multiframe mecube/float.fits
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -2463,6 +2474,7 @@ tt="prefs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo "$tt..."
 xpaset -p ds9 prefs clear
+xpaset -p ds9 prefs irafalign yes
 
 # backward compatibility
 xpaget ds9 prefs bgcolor >> ${tt}.out
@@ -2474,7 +2486,6 @@ xpaset -p ds9 prefs bgcolor white
 xpaset -p ds9 prefs nancolor white
 xpaset -p ds9 prefs threads 12
 xpaset -p ds9 prefs precision 8 10 4 3 5 3
-xpaset -p ds9 prefs irafalign yes
 
 testit $tt
 fi
@@ -3396,12 +3407,13 @@ echo -n "$tt..."
 xpaset -p ds9 web ds9.si.edu/doc/acknowledgment.html
 sleep $delay
 xpaget ds9 web >> ${tt}.out
-xpaset -p ds9 web ds9.si.edu/doc/helpdesk.html
+xpaset -p ds9 web new foobar ds9.si.edu/doc/helpdesk.html
 sleep $delay
 xpaset -p ds9 web hvweb click back
 sleep $delay
 xpaset -p ds9 web click forward
 xpaset -p ds9 web clear
+xpaset -p ds9 web close
 xpaset -p ds9 web close
 
 testit $tt

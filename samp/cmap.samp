@@ -6,14 +6,21 @@ get cmap lock
 set {} cmap open
 set {} cmap Heat
 set {} cmap load aux/ds9.sao
+# backward compatibility
+set {} cmap file aux/ds9.sao
 set {} cmap save foo.sao
 set {} cmap invert yes
+set {} cmap 5 .2
+# backward compatibility
 set {} cmap value 5 .2
 set {} cmap tag load aux/ds9.tag
 set {} cmap tag save foo.tag
 set {} cmap tag delete
+# backward compatibility
 set {} cmap match
+# backward compatibility
 set {} cmap lock yes
+# backward compatibility
 set {} cmap lock no
 set {} cmap Grey
 set {} cmap close
