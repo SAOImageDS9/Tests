@@ -341,6 +341,8 @@ xpaset -p ds9 catalog symbol font times
 xpaset -p ds9 catalog symbol fontsize 14
 xpaset -p ds9 catalog symbol fontweight bold
 xpaset -p ds9 catalog symbol fontslant italic
+# backward compatibility
+xpaset -p ds9 catalog symbol fontstyle italic
 xpaset -p ds9 catalog symbol add
 xpaset -p ds9 catalog symbol remove
 xpaset -p ds9 catalog symbol load aux/ds9.sym
@@ -371,8 +373,9 @@ xpaset -p ds9 catalog ra "RAJ2000"
 xpaset -p ds9 catalog dec "DEJ2000"
 xpaset -p ds9 catalog psystem wcs
 xpaset -p ds9 catalog psky fk5
+# backward compatibility
 xpaset -p ds9 catalog hide
-xpaset -p ds9 catalog show
+xpaset -p ds9 catalog show yes
 xpaset -p ds9 catalog panto no
 xpaset -p ds9 catalog edit yes
 xpaset -p ds9 catalog location 400
@@ -470,7 +473,7 @@ xpaset -p ds9 colorbar fontsize 30
 xpaset -p ds9 colorbar fontweight bold
 xpaset -p ds9 colorbar fontslant italic
 # backward compatibility
-xpaset -p ds9 colorbar fontstyle bold
+xpaset -p ds9 colorbar fontstyle italic
 xpaset -p ds9 colorbar size 30
 xpaset -p ds9 colorbar ticks 9
 xpaset -p ds9 colorbar match

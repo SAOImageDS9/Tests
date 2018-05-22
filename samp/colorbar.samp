@@ -24,7 +24,7 @@ set {} colorbar fontsize 30
 set {} colorbar fontweight bold
 set {} colorbar fontslant italic
 # backward compatibility
-set {} colorbar fontstyle bold
+set {} colorbar fontstyle italic
 set {} colorbar size 30
 set {} colorbar ticks 9
 set {} colorbar match

@@ -29,6 +29,8 @@ set {} catalog symbol font times
 set {} catalog symbol fontsize 14
 set {} catalog symbol fontweight bold
 set {} catalog symbol fontslant italic
+# backward compatibility
+set {} catalog symbol fontstyle italic
 set {} catalog symbol add
 set {} catalog symbol remove
 set {} catalog symbol load aux/ds9.sym
@@ -58,8 +60,9 @@ set {} catalog ra {RAJ2000}
 set {} catalog dec {DEJ2000}
 set {} catalog psystem wcs
 set {} catalog psky fk5
+# backward compatibility
 set {} catalog hide
-set {} catalog show
+set {} catalog show yes
 set {} catalog panto no
 #set {} catalog edit yes
 set {} catalog location 400
