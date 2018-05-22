@@ -6,6 +6,9 @@ get catalog cat2mass header
 set {} catalog clear
 set {} catalog close
 
+set {} catalog new
+set {} catalog close
+# backward compatibility
 set {} catalog
 set {} catalog close
 

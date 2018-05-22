@@ -262,6 +262,9 @@ testit "-catalog close"
 #testit "-catalog"
 #testit "-catalog close"
 
+testit "-catalog new"
+testit "-catalog close"
+
 testit "-catalog cds 'I/284'"
 testit "-catalog clear"
 testit "-catalog close"

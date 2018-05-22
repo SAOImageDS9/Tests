@@ -318,6 +318,9 @@ xpaget ds9 catalog cat2mass header > /dev/null
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
+xpaset -p ds9 catalog new
+xpaset -p ds9 catalog close
+# backward compatibility
 xpaset -p ds9 catalog
 xpaset -p ds9 catalog close
 
