@@ -1500,7 +1500,7 @@ doit
 initit "..stats"
 testit "-plot line"
 testit "-plot load plot/xy.dat xy"
-testit "-plot stats"
+testit "-plot stats yes"
 testit "-sleep $delay"
 testit "-plot close"
 doit
@@ -1508,7 +1508,7 @@ doit
 initit "..list"
 testit "-plot line"
 testit "-plot load plot/xy.dat xy"
-testit "-plot list"
+testit "-plot list yes"
 testit "-sleep $delay"
 testit "-plot close"
 doit
@@ -1602,22 +1602,32 @@ testit "-plot font title font times"
 testit "-plot font title size 12"
 testit "-plot font title weight bold"
 testit "-plot font title slant roman"
+# backward compatibility
+testit "-plot font title style normal"
 testit "-plot font labels font times"
 testit "-plot font labels size 12"
 testit "-plot font labels weight bold"
 testit "-plot font labels slant roman"
+# backward compatibility
+testit "-plot font labels style normal"
 testit "-plot font numbers font times"
 testit "-plot font numbers size 12"
 testit "-plot font numbers weight bold"
 testit "-plot font numbers slant roman"
+# backward compatibility
+testit "-plot font numbers style normal"
 testit "-plot font legendtitle font times"
 testit "-plot font legendtitle size 12"
 testit "-plot font legendtitle weight bold"
 testit "-plot font legendtitle slant roman"
+# backward compatibility
+testit "-plot font legendtitle style normal"
 testit "-plot font legend font times"
 testit "-plot font legend size 12"
 testit "-plot font legend weight bold"
 testit "-plot font legend slant roman"
+# backward compatibility
+testit "-plot font legend style normal"
 testit "-sleep $delay"
 testit "-plot close"
 doit

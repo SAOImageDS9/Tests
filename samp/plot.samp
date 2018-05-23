@@ -71,7 +71,7 @@ set {} plot close
 set {} plot new
 set {} plot load plot/xy.dat xy
 get plot stats
-set {} plot stats
+set {} plot stats yes
 set {} sleep .5
 set {} plot close
 
@@ -79,7 +79,7 @@ set {} plot close
 set {} plot new
 set {} plot load plot/xy.dat xy
 get plot list
-set {} plot list
+set {} plot list yes
 set {} sleep .5
 set {} plot close
 
@@ -183,42 +183,62 @@ get plot font title font
 get plot font title size
 get plot font title weight
 get plot font title slant
+# backward compatibility
+get plot font title style
 get plot font labels font
 get plot font labels size
 get plot font labels weight
 get plot font labels slant
+# backward compatibility
+get plot font labels style
 get plot font numbers font
 get plot font numbers size
 get plot font numbers weight
 get plot font numbers slant
+# backward compatibility
+get plot font numbers style
 get plot font legendtitle font
 get plot font legendtitle size
 get plot font legendtitle weight
 get plot font legendtitle slant
+# backward compatibility
+get plot font legendtitle style
 get plot font legend font
 get plot font legend size
 get plot font legend weight
 get plot font legend slant
+# backward compatibility
+get plot font legend style
 set {} plot font title font times
 set {} plot font title size 12
 set {} plot font title weight bold
 set {} plot font title slant roman
+# backward compatibility
+set {} plot font title style roman
 set {} plot font labels font times
 set {} plot font labels size 12
 set {} plot font labels weight bold
 set {} plot font labels slant roman
+# backward compatibility
+set {} plot font labels style roman
 set {} plot font numbers font times
 set {} plot font numbers size 12
 set {} plot font numbers weight bold
 set {} plot font numbers slant roman
+# backward compatibility
+set {} plot font numbers style roman
 set {} plot font legendtitle font times
 set {} plot font legendtitle size 12
 set {} plot font legendtitle weight bold
 set {} plot font legendtitle slant roman
+# backward compatibility
+set {} plot font legendtitle style roman
 set {} plot font legend font times
 set {} plot font legend size 12
 set {} plot font legend weight bold
 set {} plot font legend slant roman
+# backward compatibility
+set {} plot font legend style roman
 set {} sleep .5
 set {} plot close
 

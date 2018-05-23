@@ -2121,7 +2121,7 @@ echo -n " stats..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
 xpaget ds9 plot stats >> /dev/null
-xpaset -p ds9 plot stats
+xpaset -p ds9 plot stats yes
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2130,7 +2130,7 @@ echo -n " list..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
 xpaget ds9 plot list >> /dev/null
-xpaset -p ds9 plot list
+xpaset -p ds9 plot list yes
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2241,42 +2241,62 @@ xpaget ds9 plot font title font >> ${tt}.out
 xpaget ds9 plot font title size >> ${tt}.out
 xpaget ds9 plot font title weight >> ${tt}.out
 xpaget ds9 plot font title slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font title style >> ${tt}.out
 xpaget ds9 plot font labels font >> ${tt}.out
 xpaget ds9 plot font labels size >> ${tt}.out
 xpaget ds9 plot font labels weight >> ${tt}.out
 xpaget ds9 plot font labels slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font labels style >> ${tt}.out
 xpaget ds9 plot font numbers font >> ${tt}.out
 xpaget ds9 plot font numbers size >> ${tt}.out
 xpaget ds9 plot font numbers weight >> ${tt}.out
 xpaget ds9 plot font numbers slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font numbers style >> ${tt}.out
 xpaget ds9 plot font legendtitle font >> ${tt}.out
 xpaget ds9 plot font legendtitle size >> ${tt}.out
 xpaget ds9 plot font legendtitle weight >> ${tt}.out
 xpaget ds9 plot font legendtitle slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font legendtitle style >> ${tt}.out
 xpaget ds9 plot font legend font >> ${tt}.out
 xpaget ds9 plot font legend size >> ${tt}.out
 xpaget ds9 plot font legend weight >> ${tt}.out
 xpaget ds9 plot font legend slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font legend style >> ${tt}.out
 xpaset -p ds9 plot font title font times
 xpaset -p ds9 plot font title size 12
 xpaset -p ds9 plot font title weight bold
 xpaset -p ds9 plot font title slant roman
+# backward compatibility
+xpaset -p ds9 plot font title style normal
 xpaset -p ds9 plot font labels font times
 xpaset -p ds9 plot font labels size 12
 xpaset -p ds9 plot font labels weight bold
 xpaset -p ds9 plot font labels slant roman
+# backward compatibility
+xpaset -p ds9 plot font labels style normal
 xpaset -p ds9 plot font numbers font times
 xpaset -p ds9 plot font numbers size 12
 xpaset -p ds9 plot font numbers weight bold
 xpaset -p ds9 plot font numbers slant roman
+# backward compatibility
+xpaset -p ds9 plot font numbers style normal
 xpaset -p ds9 plot font legendtitle font times
 xpaset -p ds9 plot font legendtitle size 12
 xpaset -p ds9 plot font legendtitle weight bold
 xpaset -p ds9 plot font legendtitle slant roman
+# backward compatibility
+xpaset -p ds9 plot font legendtitle style normal
 xpaset -p ds9 plot font legend font times
 xpaset -p ds9 plot font legend size 12
 xpaset -p ds9 plot font legend weight bold
 xpaset -p ds9 plot font legend slant roman
+# backward compatibility
+xpaset -p ds9 plot font legend style normal
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
