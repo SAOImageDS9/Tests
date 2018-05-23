@@ -285,6 +285,7 @@ testit "-catalog symbol font times"
 testit "-catalog symbol fontsize 14"
 testit "-catalog symbol fontweight bold"
 testit "-catalog symbol fontslant italic"
+# backward compatibility
 testit "-catalog symbol fontstyle italic"
 testit "-catalog symbol add"
 testit "-catalog symbol remove"
@@ -292,6 +293,7 @@ testit "-catalog symbol load aux/ds9.sym"
 testit "-catalog symbol save foo.sym"
 testit "-catalog name m51"
 testit "-catalog 202.48 47.21 fk5"
+# backward compatibility
 testit "-catalog coordinate 202.48 47.21 fk5"
 testit "-catalog system wcs"
 testit "-catalog sky fk5"
@@ -315,6 +317,7 @@ testit "-catalog ra 'RAJ2000'"
 testit "-catalog dec 'DEJ2000'"
 testit "-catalog psystem wcs"
 testit "-catalog psky fk5"
+# backward compatibility
 testit "-catalog hide"
 testit "-catalog show yes"
 testit "-catalog panto no"
@@ -358,19 +361,24 @@ initit "$tt"
 testit "-cmap open"
 testit "-cmap Heat"
 testit "-cmap load aux/ds9.sao"
+# backward compatibility
 testit "-cmap file aux/ds9.sao"
 testit "-cmap save foo.sao"
 testit "-cmap invert yes"
 testit "-cmap invert no"
 testit "-invert"
 testit "-cmap 5 .2"
+# backward compatibility
 testit "-cmap value 5 .2"
+# backward compatibility
+testit "-cmap match"
+# backward compatibility
+testit "-cmap lock yes"
+# backward compatibility
+testit "-cmap lock no"
 testit "-cmap tag load aux/ds9.tag"
 testit "-cmap tag save foo.tag"
 testit "-cmap tag delete"
-testit "-cmap match"
-testit "-cmap lock yes"
-testit "-cmap lock no"
 testit "-cmap Grey"
 testit "-cmap close"
 
@@ -384,6 +392,7 @@ testit "-colorbar no"
 testit "-colorbar yes"
 testit "-colorbar vertical"
 testit "-colorbar horizontal"
+# backward compatibility
 testit "-colorbar orientation horizontal"
 testit "-colorbar numerics no"
 testit "-colorbar numerics yes"
@@ -393,6 +402,7 @@ testit "-colorbar font times"
 testit "-colorbar fontsize 30"
 testit "-colorbar fontweight bold"
 testit "-colorbar fontslant italic"
+# backward compatibility
 testit "-colorbar fontstyle italic"
 testit "-colorbar size 30"
 testit "-colorbar ticks 9"
@@ -449,10 +459,10 @@ testit "-frame delete"
 
 testit "-contour clear"
 testit "-contour loadlevels aux/ds9.ctr"
-# backward compatibility
 testit "-contour clear"
+# backward compatibility
 testit "-contour loadlevels aux/ds9.lev"
-#
+
 testit "-contour savelevels foo.lev"
 
 testit "-contour clear"
@@ -837,13 +847,18 @@ testit "-grid skyformat degrees"
 testit "-grid grid yes"
 testit "-grid grid color red"
 testit "-grid grid width 2"
+testit "-grid grid dash yes"
+# backward compatibility
 testit "-grid grid style 1"
 testit "-grid grid gap1 .01"
 testit "-grid grid gap2 .01"
+testit "-grid grid gap3 .01"
  
 testit "-grid axes yes"
 testit "-grid axes color red"
 testit "-grid axes width 2"
+testit "-grid axes dash yes"
+# backward compatibility
 testit "-grid axes style 1"
 testit "-grid axes type exterior"
 testit "-grid axes origin lll"
@@ -853,21 +868,28 @@ testit "-grid format2 d.2"
 
 testit "-grid tickmarks color red"
 testit "-grid tickmarks width 2"
+testit "-grid tickmarks dash yes"
+# backward compatibility
 testit "-grid tickmarks style 1"
 
 testit "-grid border yes"
 testit "-grid border color red"
 testit "-grid border width 2"
+testit "-grid border dash yes"
+# backward compatibility
 testit "-grid border style 1"
 
 testit "-grid numerics yes"
 testit "-grid numerics font courier"
+testit "-grid numerics fontsize 12"
 testit "-grid numerics fontweight bold"
 testit "-grid numerics fontslant roman"
-testit "-grid numerics fontsize 12"
+# backward compatibility
+testit "-grid numerics fontstyle italic"
 testit "-grid numerics color red"
 testit "-grid numerics gap1 10"
 testit "-grid numerics gap2 10"
+testit "-grid numerics gap3 10"
 testit "-grid numerics type exterior"
 testit "-grid numerics vertical yes"
 
@@ -876,9 +898,11 @@ testit "-grid title text 'Hello World'"
 testit "-grid title def yes"
 testit "-grid title gap 10"
 testit "-grid title font courier"
+testit "-grid title fontsize 12"
 testit "-grid title fontweight bold"
 testit "-grid title fontslant roman"
-testit "-grid title fontsize 12"
+# backward compatibility
+testit "-grid title fontstyle italic"
 testit "-grid title color red"
 
 testit "-grid labels yes"
@@ -889,9 +913,11 @@ testit "-grid labels text2 'Hello World'"
 testit "-grid labels def2 yes"
 testit "-grid labels gap2 10"
 testit "-grid labels font courier"
+testit "-grid labels fontsize 12"
 testit "-grid labels fontweight bold"
 testit "-grid labels fontslant roman"
-testit "-grid labels fontsize 12"
+# backward compatibility
+testit "-grid labels fontstyle italic"
 testit "-grid labels color red"
 
 testit "-grid save foo.grd"

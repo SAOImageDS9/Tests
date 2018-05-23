@@ -553,10 +553,10 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour loadlevels aux/ds9.ctr
 sleep $delay
-# backward compatibility
 xpaset -p ds9 contour clear
+# backward compatibility
 xpaset -p ds9 contour loadlevels aux/ds9.lev
-#
+
 xpaset -p ds9 contour savelevels foo.lev
 
 xpaset -p ds9 contour clear
@@ -1297,13 +1297,18 @@ xpaget ds9 grid skyformat >> ${tt}.out
 xpaget ds9 grid grid >> ${tt}.out
 xpaget ds9 grid grid color >> ${tt}.out
 xpaget ds9 grid grid width >> ${tt}.out
+xpaget ds9 grid grid dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid grid style >> ${tt}.out
 xpaget ds9 grid grid gap1 >> ${tt}.out
 xpaget ds9 grid grid gap2 >> ${tt}.out
+xpaget ds9 grid grid gap3 >> ${tt}.out
  
 xpaget ds9 grid axes >> ${tt}.out
 xpaget ds9 grid axes color >> ${tt}.out
 xpaget ds9 grid axes width >> ${tt}.out
+xpaget ds9 grid axes dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid axes style >> ${tt}.out
 xpaget ds9 grid axes type >> ${tt}.out
 xpaget ds9 grid axes origin >> ${tt}.out
@@ -1314,21 +1319,28 @@ xpaget ds9 grid format2 >> ${tt}.out
 xpaget ds9 grid tickmarks >> ${tt}.out
 xpaget ds9 grid tickmarks color >> ${tt}.out
 xpaget ds9 grid tickmarks width >> ${tt}.out
+xpaget ds9 grid tickmarks dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid tickmarks style >> ${tt}.out
 
 xpaget ds9 grid border >> ${tt}.out
 xpaget ds9 grid border color >> ${tt}.out
 xpaget ds9 grid border width >> ${tt}.out
+xpaget ds9 grid border dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid border style >> ${tt}.out
 
 xpaget ds9 grid numerics >> ${tt}.out
 xpaget ds9 grid numerics font >> ${tt}.out
+xpaget ds9 grid numerics fontsize >> ${tt}.out
 xpaget ds9 grid numerics fontweight >> ${tt}.out
 xpaget ds9 grid numerics fontslant >> ${tt}.out
-xpaget ds9 grid numerics fontsize >> ${tt}.out
+# backward compatibilty
+xpaget ds9 grid numerics fontstyle >> ${tt}.out
 xpaget ds9 grid numerics color >> ${tt}.out
 xpaget ds9 grid numerics gap1 >> ${tt}.out
 xpaget ds9 grid numerics gap2 >> ${tt}.out
+xpaget ds9 grid numerics gap3 >> ${tt}.out
 xpaget ds9 grid numerics type >> ${tt}.out
 xpaget ds9 grid numerics vertical >> ${tt}.out
 
@@ -1337,9 +1349,11 @@ xpaget ds9 grid title text >> ${tt}.out
 xpaget ds9 grid title def >> ${tt}.out
 xpaget ds9 grid title gap >> ${tt}.out
 xpaget ds9 grid title font >> ${tt}.out
+xpaget ds9 grid title fontsize >> ${tt}.out
 xpaget ds9 grid title fontweight >> ${tt}.out
 xpaget ds9 grid title fontslant >> ${tt}.out
-xpaget ds9 grid title fontsize >> ${tt}.out
+# backward compatibilty
+xpaget ds9 grid title fontstyle >> ${tt}.out
 xpaget ds9 grid title color >> ${tt}.out
 
 xpaget ds9 grid labels >> ${tt}.out
@@ -1350,9 +1364,11 @@ xpaget ds9 grid labels text2 >> ${tt}.out
 xpaget ds9 grid labels def2 >> ${tt}.out
 xpaget ds9 grid labels gap2 >> ${tt}.out
 xpaget ds9 grid labels font >> ${tt}.out
+xpaget ds9 grid labels fontsize >> ${tt}.out
 xpaget ds9 grid labels fontweight >> ${tt}.out
 xpaget ds9 grid labels fontslant >> ${tt}.out
-xpaget ds9 grid labels fontsize >> ${tt}.out
+# backward compatibilty
+xpaget ds9 grid labels fontstyle >> ${tt}.out
 xpaget ds9 grid labels color >> ${tt}.out
 
 xpaset -p ds9 grid open
@@ -1369,13 +1385,18 @@ xpaset -p ds9 grid skyformat degrees
 xpaset -p ds9 grid grid yes
 xpaset -p ds9 grid grid color red
 xpaset -p ds9 grid grid width 2
+xpaset -p ds9 grid grid dash yes
+# backward compatibilty
 xpaset -p ds9 grid grid style 1
 xpaset -p ds9 grid grid gap1 .01
 xpaset -p ds9 grid grid gap2 .01
+xpaset -p ds9 grid grid gap3 .01
  
 xpaset -p ds9 grid axes yes
 xpaset -p ds9 grid axes color red
 xpaset -p ds9 grid axes width 2
+xpaset -p ds9 grid axes dash yes
+# backward compatibilty
 xpaset -p ds9 grid axes style 1
 xpaset -p ds9 grid axes type exterior
 xpaset -p ds9 grid axes origin lll
@@ -1386,21 +1407,28 @@ xpaset -p ds9 grid format2 d.2
 xpaset -p ds9 grid tickmarks yes
 xpaset -p ds9 grid tickmarks color red
 xpaset -p ds9 grid tickmarks width 2
+xpaset -p ds9 grid tickmarks dash yes
+# backward compatibilty
 xpaset -p ds9 grid tickmarks style 1
 
 xpaset -p ds9 grid border yes
 xpaset -p ds9 grid border color red
 xpaset -p ds9 grid border width 2
+xpaset -p ds9 grid border dash yes
+# backward compatibilty
 xpaset -p ds9 grid border style 1
 
 xpaset -p ds9 grid numerics yes
 xpaset -p ds9 grid numerics font courier
+xpaset -p ds9 grid numerics fontsize 12
 xpaset -p ds9 grid numerics fontweight bold
 xpaset -p ds9 grid numerics fontslant roman
-xpaset -p ds9 grid numerics fontsize 12
+# backward compatibilty
+xpaset -p ds9 grid numerics fontstyle italic
 xpaset -p ds9 grid numerics color red
 xpaset -p ds9 grid numerics gap1 10
 xpaset -p ds9 grid numerics gap2 10
+xpaset -p ds9 grid numerics gap3 10
 xpaset -p ds9 grid numerics type exterior
 xpaset -p ds9 grid numerics vertical yes
 
@@ -1409,9 +1437,11 @@ xpaset -p ds9 grid title text {Hello World}
 xpaset -p ds9 grid title def yes
 xpaset -p ds9 grid title gap 10
 xpaset -p ds9 grid title font courier
+xpaset -p ds9 grid title fontsize 12
 xpaset -p ds9 grid title fontweight bold
 xpaset -p ds9 grid title fontslant roman
-xpaset -p ds9 grid title fontsize 12
+# backward compatibilty
+xpaset -p ds9 grid title fontstyle italic
 xpaset -p ds9 grid title color red
 
 xpaset -p ds9 grid labels yes
@@ -1422,9 +1452,11 @@ xpaset -p ds9 grid labels text2 {Hello World}
 xpaset -p ds9 grid labels def2 yes
 xpaset -p ds9 grid labels gap2 10
 xpaset -p ds9 grid labels font courier
+xpaset -p ds9 grid labels fontsize 12
 xpaset -p ds9 grid labels fontweight bold
 xpaset -p ds9 grid labels fontslant roman
-xpaset -p ds9 grid labels fontsize 12
+# backward compatibilty
+xpaset -p ds9 grid labels fontstyle italic
 xpaset -p ds9 grid labels color red
 
 xpaset -p ds9 grid save foo.grd
@@ -2488,6 +2520,7 @@ xpaget ds9 prefs nancolor >> ${tt}.out
 xpaget ds9 prefs threads >> ${tt}.out
 xpaget ds9 prefs precision >> ${tt}.out
 xpaget ds9 prefs irafalign >> ${tt}.out
+# backward compatibility
 xpaset -p ds9 prefs bgcolor white
 xpaset -p ds9 prefs nancolor white
 xpaset -p ds9 prefs threads 12
@@ -2863,7 +2896,7 @@ xpaset -p ds9 saveimage foo.jpeg
 xpaset -p ds9 saveimage png foo.png
 xpaset -p ds9 saveimage foo.png
 
-# backward compatibility (6.2)
+# backward compatibility
 xpaset -p ds9 saveimage tiff none foo.tiff
 xpaset -p ds9 saveimage jpeg 100 foo.jpeg
 #xpaset -p ds9 saveimage mpeg foo.mpeg

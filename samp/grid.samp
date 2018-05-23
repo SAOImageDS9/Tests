@@ -9,13 +9,18 @@ get grid skyformat
 get grid grid
 get grid grid color
 get grid grid width
+get grid grid dash
+# backward compatibility
 get grid grid style
 get grid grid gap1
 get grid grid gap2
+get grid grid gap3
  
 get grid axes
 get grid axes color
 get grid axes width
+get grid axes dash
+# backward compatibility
 get grid axes style
 get grid axes type
 get grid axes origin
@@ -26,21 +31,28 @@ get grid format2
 get grid tickmarks
 get grid tickmarks color
 get grid tickmarks width
+get grid tickmarks dash
+# backward compatibility
 get grid tickmarks style
 
 get grid border
 get grid border color
 get grid border width
+get grid border dash
+# backward compatibility
 get grid border style
 
 get grid numlab
 get grid numlab font
+get grid numlab fontsize
 get grid numlab fontweight
 get grid numlab fontslant
-get grid numlab fontsize
+# backward compatibility
+get grid numlab fontstyle
 get grid numlab color
 get grid numlab gap1
 get grid numlab gap2
+get grid numlab gap3
 get grid numlab type
 get grid numlab vertical
 
@@ -49,9 +61,11 @@ get grid title text
 get grid title def
 get grid title gap
 get grid title font
+get grid title fontsize
 get grid title fontweight
 get grid title fontslant
-get grid title fontsize
+# backward compatibility
+get grid title fontstyle
 get grid title color
 
 get grid textlab
@@ -62,9 +76,11 @@ get grid textlab text2
 get grid textlab def2
 get grid textlab gap2
 get grid textlab font
+get grid textlab fontsize
 get grid textlab fontweight
 get grid textlab fontslant
-get grid textlab fontsize
+# backward compatibility
+get grid textlab fontstyle
 get grid textlab color
 
 set {} grid open
@@ -81,13 +97,18 @@ set {} grid skyformat degrees
 set {} grid grid yes
 set {} grid grid color red
 set {} grid grid width 2
+set {} grid grid dash yes
+# backward compatibility
 set {} grid grid style 1
 set {} grid grid gap1 .01
 set {} grid grid gap2 .01
+set {} grid grid gap3 .01
  
 set {} grid axes yes
 set {} grid axes color red
 set {} grid axes width 2
+set {} grid axes dash yes
+# backward compatibility
 set {} grid axes style 1
 set {} grid axes type exterior
  
@@ -97,21 +118,27 @@ set {} grid format2 d.2
 set {} grid tickmarks yes
 set {} grid tickmarks color red
 set {} grid tickmarks width 2
+# backward compatibility
 set {} grid tickmarks style 1
 
 set {} grid border yes
 set {} grid border color red
 set {} grid border width 2
+set {} grid border dash yes
+# backward compatibility
 set {} grid border style 1
 
 set {} grid numerics yes
 set {} grid numerics font courier
+set {} grid numerics fontsize 12
 set {} grid numerics fontweigth bold
 set {} grid numerics fontslant roman
-set {} grid numerics fontsize 12
+# backward compatibility
+set {} grid numerics fontstyle italic
 set {} grid numerics color red
 set {} grid numerics gap1 10
 set {} grid numerics gap2 10
+set {} grid numerics gap3 10
 set {} grid numerics type exterior
 set {} grid numerics vertical yes
 
@@ -120,9 +147,11 @@ set {} grid title text {Hello World}
 set {} grid title def yes
 set {} grid title gap 10
 set {} grid title font courier
+set {} grid title fontsize 12
 set {} grid title fontweight bold
 set {} grid title fontslant roman
-set {} grid title fontsize 12
+# backward compatibility
+set {} grid title fontstyle italic
 set {} grid title color red
 
 set {} grid labels yes
@@ -133,9 +162,11 @@ set {} grid labels text2 {Hello World}
 set {} grid labels def2 yes
 set {} grid labels gap2 10
 set {} grid labels font courier
+set {} grid labels fontsize 12
 set {} grid labels fontweight bold
 set {} grid labels fontslant roman
-set {} grid labels fontsize 12
+# backward compatibility
+set {} grid labels fontstyle italic
 set {} grid labels color red
 
 set {} grid save foo.grd
