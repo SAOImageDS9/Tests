@@ -111,6 +111,7 @@ set {} grid axes dash yes
 # backward compatibility
 set {} grid axes style 1
 set {} grid axes type exterior
+set {} grid axes origin lll
  
 set {} grid format1 d.2
 set {} grid format2 d.2
