@@ -523,14 +523,15 @@ xpaget ds9 contour levels >> ${tt}.out
 xpaget ds9 contour wcs fk5 >> /dev/null
 
 # load/save
-# backward compatibility
 xpaset -p ds9 contour clear
+# backward compatibility
 xpaset -p ds9 contour load aux/ds9.con wcs fk5 red 2 no
 sleep $delay
 #
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour load aux/ds9.ctr
 sleep $delay
+xpaset -p ds9 contour save foo.ctr
 xpaset -p ds9 contour save foo.ctr wcs fk5
 
 # paste
@@ -542,6 +543,8 @@ xpaset -p ds9 contour yes
 xpaset -p ds9 contour copy
 xpaset -p ds9 frame first
 xpaset -p ds9 contour clear
+xpaset -p ds9 contour paste
+sleep $delay
 xpaset -p ds9 contour paste wcs red 2 yes
 sleep $delay
 xpaset -p ds9 contour clear
@@ -551,12 +554,16 @@ xpaset -p ds9 frame next
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 contour clear
+xpaset -p ds9 contour load levels aux/ds9.ctr
+# backward compatibility
 xpaset -p ds9 contour loadlevels aux/ds9.ctr
 sleep $delay
 xpaset -p ds9 contour clear
 # backward compatibility
 xpaset -p ds9 contour loadlevels aux/ds9.lev
 
+xpaset -p ds9 contour save levels foo.lev
+# backward compatibility
 xpaset -p ds9 contour savelevels foo.lev
 
 xpaset -p ds9 contour clear

@@ -434,12 +434,13 @@ testit "-contour yes"
 testit "-contour open"
 
 # load/save
-# backward compatibility
 testit "-contour clear"
+# backward compatibility
 testit "-contour load aux/ds9.con wcs fk5 red 2 yes"
 #
 testit "-contour clear"
 testit "-contour load aux/ds9.ctr"
+testit "-contour save foo.con"
 testit "-contour save foo.con wcs fk5"
 
 # paste
@@ -451,6 +452,7 @@ testit "-contour yes"
 testit "-contour copy"
 testit "-frame first"
 testit "-contour clear"
+testit "-contour paste"
 testit "-contour paste wcs red 2 yes"
 testit "-contour clear"
 testit "-contour paste"
@@ -458,11 +460,15 @@ testit "-frame next"
 testit "-frame delete"
 
 testit "-contour clear"
+testit "-contour load levels aux/ds9.ctr"
+# backward compatibility
 testit "-contour loadlevels aux/ds9.ctr"
 testit "-contour clear"
 # backward compatibility
 testit "-contour loadlevels aux/ds9.lev"
 
+testit "-contour save levels foo.lev"
+# backward compatibility
 testit "-contour savelevels foo.lev"
 
 testit "-contour clear"
@@ -1429,6 +1435,7 @@ fi
 tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
+# parse error -plot -cmd
 #testit "-plot"
 #testit "-plot close"
 
