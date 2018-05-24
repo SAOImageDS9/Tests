@@ -1435,46 +1435,27 @@ fi
 tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-# parse error -plot -cmd
+
 #testit "-plot"
-#testit "-plot close"
-
-testit "-plot line"
 testit "-plot bar"
-testit "-plot scatter"
-testit "-sleep $delay"
-testit "-plot close"
-testit "-plot close"
-testit "-plot close"
-
-#testit "-plot new name foo"
-#testit "-plot new name foo line"
-#testit "-plot new name foo bar"
-#testit "-plot new name foo scatter"
-#testit "-sleep $delay"
-#testit "-plot close"
-#testit "-plot close"
-#testit "-plot close"
-#testit "-plot close"
-
+#testit "-plot new"
+#testit "-plot new bar"
 testit "-plot new 'The Title' 'X Axis' 'Y Axis' xy"
-testit "-plot new line 'The Title' 'X Axis' 'Y Axis' xy"
 testit "-plot new bar 'The Title' 'X Axis' 'Y Axis' xy"
-testit "-plot new scatter 'The Title' 'X Axis' 'Y Axis' xy"
-testit "-sleep $delay"
-testit "-plot close"
-testit "-plot close"
-testit "-plot close"
-testit "-plot close"
-doit
-
+#testit "-plot new name foo"
+#testit "-plot new name foo bar"
 testit "-plot new name foo 'The Title' 'X Axis' 'Y Axis' xy"
-testit "-plot new name foo line 'The Title' 'X Axis' 'Y Axis' xy"
 testit "-plot new name foo bar 'The Title' 'X Axis' 'Y Axis' xy"
-testit "-plot new name foo scatter 'The Title' 'X Axis' 'Y Axis' xy"
+
 testit "-sleep $delay"
+#testit "-plot close"
+testit "-plot close"
+#testit "-plot close"
+#testit "-plot close"
 testit "-plot close"
 testit "-plot close"
+#testit "-plot close"
+#testit "-plot close"
 testit "-plot close"
 testit "-plot close"
 doit

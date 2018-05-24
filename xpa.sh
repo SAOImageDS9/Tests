@@ -336,9 +336,9 @@ xpaset -p ds9 catalog cds 2mass
 xpaset -p ds9 raise
 xpaset -p ds9 catalog plot '$Jmag' '$Hmag' '$e_Jmag' '$e_Hmag'
 xpaset -p ds9 catalog symbol condition '$Jmag>15'
-xpaset -p ds9 catalog symbol shape "{boxcircle point}"
+xpaset -p ds9 catalog symbol shape {boxcircle point}
 xpaset -p ds9 catalog symbol color red
-xpaset -p ds9 catalog symbol condition "{}"
+xpaset -p ds9 catalog symbol condition {}
 xpaset -p ds9 catalog symbol shape text
 xpaset -p ds9 catalog symbol font times
 xpaset -p ds9 catalog symbol fontsize 14
@@ -584,7 +584,7 @@ xpaset -p ds9 contour log exp 1000
 xpaset -p ds9 contour mode zscale
 xpaset -p ds9 contour scope local
 xpaset -p ds9 contour limits 1 100
-xpaset -p ds9 contour levels "{1 10 100 1000}"
+xpaset -p ds9 contour levels {1 10 100 1000}
 
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour close
@@ -2056,32 +2056,37 @@ xpaget ds9 plot >> ${tt}.out
 sleep $delay
 xpaset -p ds9 plot close
 
-xpaset -p ds9 plot new
+xpaset -p ds9 plot
 xpaset -p ds9 plot bar
+xpaset -p ds9 plot new
 xpaset -p ds9 plot new bar
-xpaset -p ds9 plot scatter
-xpaset -p ds9 plot new scatter
-sleep $delay
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-
 xpaset -p ds9 plot new name foo
-xpaset -p ds9 plot new name foo line
 xpaset -p ds9 plot new name foo bar
-xpaset -p ds9 plot new name foo scatter
+sleep $delay
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " stdin..."
+cat plot/xy.dat | xpaset ds9 plot new {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot new bar {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot new name foo {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot new name foo bar {The Title} {X Axis} {Y Axis} xy
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
-xpaset -p ds9 plot new name foo "{The Title}" "{X Axis}" "{Y Axis}" xy
-xpaset -p ds9 plot new name foo line "{The Title}" "{X Axis}" "{Y Axis}" xy
-xpaset -p ds9 plot new name foo bar "{The Title}" "{X Axis}" "{Y Axis}" xy
-xpaset -p ds9 plot new name foo scatter "{The Title}" "{X Axis}" "{Y Axis}" xy
+echo -n " stdin with header..."
+cat plot/stdin.2.dat | xpaset ds9 plot new stdin
+cat plot/stdin.2.dat | xpaset ds9 plot new line stdin
+cat plot/stdin.2.dat | xpaset ds9 plot new name foo stdin
+cat plot/stdin.2.dat | xpaset ds9 plot new name foo line stdin
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
@@ -2239,10 +2244,10 @@ echo "PASSED"
 echo -n " font..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
-xpaset -p ds9 plot title "{This is a Title}"
-xpaset -p ds9 plot title xaxis "{X Axis}"
-xpaset -p ds9 plot title yaxis "{Y Axis}"
-xpaset -p ds9 plot title legend "{This is the Legend}"
+xpaset -p ds9 plot title {This is a Title}
+xpaset -p ds9 plot title xaxis {X Axis}
+xpaset -p ds9 plot title yaxis {Y Axis}
+xpaset -p ds9 plot title legend {This is the Legend}
 xpaset -p ds9 plot legend yes
 xpaget ds9 plot font title font >> ${tt}.out
 xpaget ds9 plot font title size >> ${tt}.out
@@ -2311,10 +2316,10 @@ echo "PASSED"
 echo -n " title..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
-xpaset -p ds9 plot title "{This is a Title}"
-xpaset -p ds9 plot title x "{X Axis}"
-xpaset -p ds9 plot title y "{Y Axis}"
-xpaset -p ds9 plot title legend "{This is the Legend}"
+xpaset -p ds9 plot title {This is a Title}
+xpaset -p ds9 plot title x {X Axis}
+xpaset -p ds9 plot title y {Y Axis}
+xpaset -p ds9 plot title legend {This is the Legend}
 xpaget ds9 plot title >> ${tt}.out
 xpaget ds9 plot title x >> ${tt}.out
 xpaget ds9 plot title y >> ${tt}.out
@@ -2424,7 +2429,7 @@ xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
 xpaget ds9 plot name >> ${tt}.out
 xpaset -p ds9 plot legend yes
-xpaset -p ds9 plot name "{This is a test}"
+xpaset -p ds9 plot name {This is a test}
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2458,10 +2463,10 @@ xpaset -p ds9 plot graph range x auto yes
 xpaset -p ds9 plot graph range y auto yes
 xpaset -p ds9 plot graph format x {}
 xpaset -p ds9 plot graph format y {}
-xpaset -p ds9 plot graph labels title "{The Title}"
-xpaset -p ds9 plot graph labels xaxis "{X Axis}"
-xpaset -p ds9 plot graph labels yaxis "{Y Axis}"
-xpaset -p ds9 plot graph labels legend "{This is the Legend}"
+xpaset -p ds9 plot graph labels title {The Title}
+xpaset -p ds9 plot graph labels xaxis {X Axis}
+xpaset -p ds9 plot graph labels yaxis {Y Axis}
+xpaset -p ds9 plot graph labels legend {This is the Legend}
 xpaset -p ds9 plot graph type line
 sleep $delay
 xpaset -p ds9 plot close
