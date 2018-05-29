@@ -27,15 +27,7 @@ tt="-sia cxc -sia sdss -header"
 testit "$tt"
 doit
 
-tt="-sia cxc -sia sky fk4 -sia -header"
-testit "$tt"
-doit
-
 tt="-sia cxc -sia sky fk4 -sia sdss -header"
-testit "$tt"
-doit
-
-tt="-sia cxc -sia cxc sky fk4 -sia -header"
 testit "$tt"
 doit
 
