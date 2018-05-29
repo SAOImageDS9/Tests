@@ -19,7 +19,7 @@ fi
 
 
 xpaset -p ds9 grid on
-xpaset -p ds9 grid wcs
+xpaset -p ds9 grid system wcs
 xpaset -p ds9 scale zscale
 xpaset -p ds9 wcs skyformat degrees
 
