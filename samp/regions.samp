@@ -91,13 +91,14 @@ set {} regions select all
 set {} regions copy
 set {} regions cut
 set {} regions paste
+set {} regions paste wcs
 set {} regions undo
 set {} regions delete all
 
 set {} regions load regions/ds9.physical.reg
 set {} regions select all
 set {} regions composite
-set {} regions desolve
+set {} regions dissolve
 set {} regions delete all
 
 set {} regions command "circle 100 100 20"

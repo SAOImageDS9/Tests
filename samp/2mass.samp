@@ -13,13 +13,15 @@ set {} 2mass m51
 set {} 2mass name m51
 get 2mass name
 set {} 2mass name {}
-set {} 2mass coord 00:42:44.404 +41:16:08.78 sexagesimal
+set {} 2mass coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} 2mass 13:29:52.37 +47:11:40.8
 get 2mass coord
 set {} 2mass update frame
 set {} mode crosshair
 set {} 2mass update crosshair
 set {} 2mass close
 set {} mode none
+set {} frame delete
 set {} frame delete
 set {} frame delete
 set {} frame delete

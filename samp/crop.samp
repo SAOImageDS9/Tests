@@ -4,8 +4,25 @@ set {} crop  978 970  356 308
 get crop
 get crop wcs fk5 sexagesimal arcsec
 get crop lock
-set {} crop  978 970  356 308 
-set {} crop 13:29:52.908 +47:11:38.19  35.279606 30.522805 wcs fk5 arcsec
+
+set {} crop 978 970  356 308
+set {} crop 978 970  356 308 physical
+
+set {} crop 202.470451 47.19394108 0.0097 0.0084 wcs
+set {} crop 202.470451 47.19394108 35.279606 30.522805 wcs arcsec
+set {} crop 202.470451 47.19394108 0.0097 0.0084 fk5
+set {} crop 202.470451 47.19394108 35.279606 30.522805 fk5 arcsec
+set {} crop 202.470451 47.19394108 0.0097 0.0084 wcs fk5
+set {} crop 202.470451 47.19394108 35.279606 30.522805 wcs fk5 arcsec
+
+set {} crop 13:29:52.908 +47:11:38.19 0.0097 0.0084
+set {} crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs
+set {} crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs arcsec
+set {} crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 fk5
+set {} crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 fk5 arcsec
+set {} crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs fk5
+set {} crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs fk5 arcsec
+
 set {} crop reset
 set {} 3d
 set {} file data/3d.fits

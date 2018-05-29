@@ -11,13 +11,15 @@ set {} dsssao m51
 set {} dsssao name m51
 get dsssao name
 set {} dsssao name {}
-set {} dsssao coord 00:42:44.404 +41:16:08.78 sexagesimal
+set {} dsssao coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} dsssao 13:29:52.37 +47:11:40.8
 get dsssao coord
 set {} dsssao update frame
 set {} mode crosshair
 set {} dsssao update crosshair
 set {} dsssao close
 set {} mode none
+set {} frame delete
 set {} frame delete
 set {} frame delete
 set {} frame delete

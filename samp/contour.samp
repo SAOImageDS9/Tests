@@ -17,15 +17,13 @@ get contour levels
 get contour wcs fk5
 
 # load/save
-# backward compatibility
 set {} contour clear
-set {} contour yes
+# backward compatibility
 set {} contour load aux/ds9.con wcs fk5 red 2 no
 #
 set {} contour clear
 set {} contour load aux/ds9.ctr
-set {} contour clear
-set {} contour load aux/ds9.ctr blue 2 yes
+set {} contour save foo.ctr
 set {} contour save foo.ctr wcs fk5
 
 # paste
@@ -36,21 +34,24 @@ set {} tile
 set {} contour yes
 set {} contour copy
 set {} frame first
-# backward compatibility
 set {} contour clear
+set {} contour paste
 set {} contour paste wcs red 2 yes
-#
 set {} contour clear
 set {} contour paste
 set {} frame next
 set {} frame delete
 
 set {} contour clear
+set {} contour load levels aux/ds9.ctr
+# backward compatibility
 set {} contour loadlevels aux/ds9.ctr
 # backward compatibility
 set {} contour clear
 set {} contour loadlevels aux/ds9.lev
 #
+set {} contour save levels foo.lev
+# backward compatibility
 set {} contour savelevels foo.lev
 
 set {} contour clear

@@ -81,13 +81,15 @@ xpaset -p ds9 2mass m51
 xpaset -p ds9 2mass name m51
 xpaget ds9 2mass name >> ${tt}.out
 xpaset -p ds9 2mass name {}
-xpaset -p ds9 2mass coord 00:42:44.404 +41:16:08.78 sexagesimal
+xpaset -p ds9 2mass coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 2mass 13:29:52.37 +47:11:40.8
 xpaget ds9 2mass coord >> ${tt}.out
 xpaset -p ds9 2mass update frame
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 2mass update crosshair
 xpaset -p ds9 2mass close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -166,7 +168,6 @@ xpaset -p ds9 analysis analysis/analysis.ans
 xpaget ds9 analysis > /dev/null
 xpaget ds9 analysis task > /dev/null
 #xpaget ds9 analysis entry 'hello world'
-xpaget ds9 analysis mode > /dev/null
 
 xpaset -p ds9 analysis 0
 xpaset -p ds9 analysis task 1
@@ -180,7 +181,6 @@ xpaset -p ds9 analysis clear
 #xpaset -p ds9 analysis message {This is a message}
 #xpaset -p ds9 analysis message yesno {This is a message}
 xpaset -p ds9 analysis text {This is text}
-xpaset -p ds9 analysis mode none
 cat analysis/analysis.txt | xpaset ds9 analysis text
 
 testit $tt
@@ -241,7 +241,7 @@ xpaset -p ds9 scale log
 xpaset -p ds9 scale minmax
 xpaset -p ds9 bin buffersize 1024
 xpaset -p ds9 bin filter 'circle(4096,4096,200)'
-xpaset -p ds9 bin filter ''
+xpaset -p ds9 bin filter clear
 xpaset -p ds9 bin cols rawx rawy
 xpaset -p ds9 bin about center
 xpaset -p ds9 bin colsz x y pha
@@ -318,6 +318,9 @@ xpaget ds9 catalog cat2mass header > /dev/null
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
+xpaset -p ds9 catalog new
+xpaset -p ds9 catalog close
+# backward compatibility
 xpaset -p ds9 catalog
 xpaset -p ds9 catalog close
 
@@ -333,20 +336,23 @@ xpaset -p ds9 catalog cds 2mass
 xpaset -p ds9 raise
 xpaset -p ds9 catalog plot '$Jmag' '$Hmag' '$e_Jmag' '$e_Hmag'
 xpaset -p ds9 catalog symbol condition '$Jmag>15'
-xpaset -p ds9 catalog symbol shape "{boxcircle point}"
+xpaset -p ds9 catalog symbol shape {boxcircle point}
 xpaset -p ds9 catalog symbol color red
-xpaset -p ds9 catalog symbol condition "{}"
-xpaset -p ds9 catalog symbol color red
+xpaset -p ds9 catalog symbol condition {}
 xpaset -p ds9 catalog symbol shape text
 xpaset -p ds9 catalog symbol font times
 xpaset -p ds9 catalog symbol fontsize 14
 xpaset -p ds9 catalog symbol fontweight bold
 xpaset -p ds9 catalog symbol fontslant italic
+# backward compatibility
+xpaset -p ds9 catalog symbol fontstyle italic
 xpaset -p ds9 catalog symbol add
 xpaset -p ds9 catalog symbol remove
 xpaset -p ds9 catalog symbol load aux/ds9.sym
 xpaset -p ds9 catalog symbol save foo.sym
 xpaset -p ds9 catalog name m51
+xpaset -p ds9 catalog 202.48 47.21 fk5
+# backward compatibility
 xpaset -p ds9 catalog coordinate 202.48 47.21 fk5
 xpaset -p ds9 catalog system wcs
 xpaset -p ds9 catalog sky fk5
@@ -370,10 +376,11 @@ xpaset -p ds9 catalog ra "RAJ2000"
 xpaset -p ds9 catalog dec "DEJ2000"
 xpaset -p ds9 catalog psystem wcs
 xpaset -p ds9 catalog psky fk5
+# backward compatibility
 xpaset -p ds9 catalog hide
-xpaset -p ds9 catalog show
+xpaset -p ds9 catalog show yes
 xpaset -p ds9 catalog panto no
-#xpaset -p ds9 catalog edit yes
+xpaset -p ds9 catalog edit yes
 xpaset -p ds9 catalog location 400
 xpaset -p ds9 catalog header
 xpaset -p ds9 catalog clear
@@ -384,8 +391,8 @@ xpaset -p ds9 catalog match function 1and2
 xpaset -p ds9 catalog match error 2 arcsec
 xpaset -p ds9 catalog match return 1only
 xpaset -p ds9 catalog match unique no
-xpaset -p ds9 catalog match
 xpaset -p ds9 catalog match 2mass xmm
+xpaset -p ds9 catalog match
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 xpaset -p ds9 catalog clear
@@ -418,11 +425,18 @@ xpaget ds9 cmap lock >> ${tt}.out
 xpaset -p ds9 cmap open
 xpaset -p ds9 cmap Heat
 xpaset -p ds9 cmap load aux/ds9.sao
+# backward compatibility
+xpaset -p ds9 cmap file aux/ds9.sao
 xpaset -p ds9 cmap save foo.sao
 xpaset -p ds9 cmap invert yes
+xpaset -p ds9 cmap 5 .2
+# backward compatibility
 xpaset -p ds9 cmap value 5 .2
+# backward compatibility
 xpaset -p ds9 cmap match
+# backward compatibility
 xpaset -p ds9 cmap lock yes
+# backward compatibility
 xpaset -p ds9 cmap lock no
 xpaset -p ds9 cmap tag load aux/ds9.tag
 xpaset -p ds9 cmap tag save foo.tag
@@ -451,6 +465,8 @@ xpaset -p ds9 colorbar no
 xpaset -p ds9 colorbar yes
 xpaset -p ds9 colorbar vertical
 xpaset -p ds9 colorbar horizontal
+# backward compatibility
+xpaset -p ds9 colorbar orientation horizontal
 xpaset -p ds9 colorbar numerics no
 xpaset -p ds9 colorbar numerics yes
 xpaset -p ds9 colorbar space value
@@ -458,13 +474,19 @@ xpaset -p ds9 colorbar space distance
 xpaset -p ds9 colorbar font times
 xpaset -p ds9 colorbar fontsize 30
 xpaset -p ds9 colorbar fontweight bold
-xpaset -p ds9 colorbar fontslant roman
+xpaset -p ds9 colorbar fontslant italic
+# backward compatibility
+xpaset -p ds9 colorbar fontstyle italic
+xpaset -p ds9 colorbar size 30
+xpaset -p ds9 colorbar ticks 9
+xpaset -p ds9 colorbar match
+xpaset -p ds9 colorbar lock yes
+xpaset -p ds9 colorbar lock no
+
 xpaset -p ds9 colorbar font helvetica
 xpaset -p ds9 colorbar fontsize 10
 xpaset -p ds9 colorbar fontweight normal
 xpaset -p ds9 colorbar fontslant roman
-xpaset -p ds9 colorbar size 30
-xpaset -p ds9 colorbar ticks 9
 xpaset -p ds9 colorbar size 20
 xpaset -p ds9 colorbar ticks 11
 
@@ -472,7 +494,7 @@ testit $tt
 fi
 
 tt="console"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 console
 
@@ -501,17 +523,15 @@ xpaget ds9 contour levels >> ${tt}.out
 xpaget ds9 contour wcs fk5 >> /dev/null
 
 # load/save
-# backward compatibility
 xpaset -p ds9 contour clear
+# backward compatibility
 xpaset -p ds9 contour load aux/ds9.con wcs fk5 red 2 no
 sleep $delay
 #
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour load aux/ds9.ctr
 sleep $delay
-xpaset -p ds9 contour clear
-xpaset -p ds9 contour load aux/ds9.ctr blue 2 yes
-sleep $delay
+xpaset -p ds9 contour save foo.ctr
 xpaset -p ds9 contour save foo.ctr wcs fk5
 
 # paste
@@ -522,11 +542,11 @@ xpaset -p ds9 tile
 xpaset -p ds9 contour yes
 xpaset -p ds9 contour copy
 xpaset -p ds9 frame first
-# backward compatibility
 xpaset -p ds9 contour clear
+xpaset -p ds9 contour paste
+sleep $delay
 xpaset -p ds9 contour paste wcs red 2 yes
 sleep $delay
-#
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour paste
 sleep $delay
@@ -534,12 +554,16 @@ xpaset -p ds9 frame next
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 contour clear
+xpaset -p ds9 contour load levels aux/ds9.ctr
+# backward compatibility
 xpaset -p ds9 contour loadlevels aux/ds9.ctr
 sleep $delay
-# backward compatibility
 xpaset -p ds9 contour clear
+# backward compatibility
 xpaset -p ds9 contour loadlevels aux/ds9.lev
-#
+
+xpaset -p ds9 contour save levels foo.lev
+# backward compatibility
 xpaset -p ds9 contour savelevels foo.lev
 
 xpaset -p ds9 contour clear
@@ -560,7 +584,7 @@ xpaset -p ds9 contour log exp 1000
 xpaset -p ds9 contour mode zscale
 xpaset -p ds9 contour scope local
 xpaset -p ds9 contour limits 1 100
-xpaset -p ds9 contour levels "{1 10 100 1000}"
+xpaset -p ds9 contour levels {1 10 100 1000}
 
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour close
@@ -577,8 +601,25 @@ xpaset -p ds9 crop  978 970  356 308
 xpaget ds9 crop >> ${tt}.out
 xpaget ds9 crop wcs fk5 sexagesimal arcsec >> ${tt}.out
 xpaget ds9 crop lock >> ${tt}.out
-xpaset -p ds9 crop  978 970  356 308 
-xpaset -p ds9 crop 13:29:52.908 +47:11:38.19  35.279606 30.522805 wcs fk5 arcsec
+
+xpaset -p ds9 crop 978 970  356 308
+xpaset -p ds9 crop 978 970  356 308 physical
+
+xpaset -p ds9 crop 202.470451 47.19394108 0.0097 0.0084 wcs
+xpaset -p ds9 crop 202.470451 47.19394108 35.279606 30.522805 wcs arcsec
+xpaset -p ds9 crop 202.470451 47.19394108 0.0097 0.0084 fk5
+xpaset -p ds9 crop 202.470451 47.19394108 35.279606 30.522805 fk5 arcsec
+xpaset -p ds9 crop 202.470451 47.19394108 0.0097 0.0084 wcs fk5
+xpaset -p ds9 crop 202.470451 47.19394108 35.279606 30.522805 wcs fk5 arcsec
+
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs arcsec
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 fk5
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 fk5 arcsec
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 0.0097 0.0084 wcs fk5
+xpaset -p ds9 crop 13:29:52.908 +47:11:38.19 35.279606 30.522805 wcs fk5 arcsec
+
 xpaset -p ds9 crop reset
 xpaset -p ds9 3d
 xpaset -p ds9 fits data/3d.fits
@@ -604,7 +645,18 @@ xpaset -p ds9 mode crosshair
 xpaget ds9 crosshair >> ${tt}.out
 xpaget ds9 crosshair wcs fk5 sexagesimal >> ${tt}.out
 xpaget ds9 crosshair lock >> ${tt}.out
-xpaset -p ds9 crosshair 13:29:55.287 +47:11:37.73 wcs fk5
+
+xpaset -p ds9 crosshair 978 970
+xpaset -p ds9 crosshair 978 970 physical
+xpaset -p ds9 crosshair 202.470451 47.19394108 wcs
+xpaset -p ds9 crosshair 202.470451 47.19394108 fk5
+xpaset -p ds9 crosshair 202.470451 47.19394108 wcs fk5
+
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19 wcs
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19 fk5
+xpaset -p ds9 crosshair 13:29:52.908 +47:11:38.19 wcs fk5
+
 xpaset -p ds9 crosshair match wcs
 xpaset -p ds9 crosshair lock wcs
 xpaset -p ds9 crosshair lock none
@@ -680,13 +732,15 @@ xpaset -p ds9 dsssao m51
 xpaset -p ds9 dsssao name m51
 xpaget ds9 dsssao name >> ${tt}.out
 xpaset -p ds9 dsssao name {}
-xpaset -p ds9 dsssao coord 00:42:44.404 +41:16:08.78 sexagesimal
+xpaset -p ds9 dsssao coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 dsssao 13:29:52.37 +47:11:40.8
 xpaget ds9 dsssao coord >> ${tt}.out
 xpaset -p ds9 dsssao update frame
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 dsssao update crosshair
 xpaset -p ds9 dsssao close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -715,13 +769,15 @@ xpaset -p ds9 dsseso m51
 xpaset -p ds9 dsseso name m51
 xpaget ds9 dsseso name >> ${tt}.out
 xpaset -p ds9 dsseso name {}
-xpaset -p ds9 dsseso coord 00:42:44.404 +41:16:08.78 sexagesimal
+xpaset -p ds9 dsseso coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 dsseso 13:29:52.37 +47:11:40.8
 xpaget ds9 dsseso coord >> ${tt}.out
 xpaset -p ds9 dsseso update frame
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 dsseso update crosshair
 xpaset -p ds9 dsseso close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -750,7 +806,8 @@ xpaset -p ds9 dssstsci m51
 xpaset -p ds9 dssstsci name m51
 xpaget ds9 dssstsci name >> ${tt}.out
 xpaset -p ds9 dssstsci name {}
-xpaset -p ds9 dssstsci coord 00:42:44.404 +41:16:08.78 sexagesimal
+xpaset -p ds9 dssstsci coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 dssstsci 13:29:52.37 +47:11:40.8
 xpaget ds9 dssstsci coord >> ${tt}.out
 xpaset -p ds9 dssstsci update frame
 xpaset -p ds9 mode crosshair
@@ -763,7 +820,20 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame delete
 
+testit $tt
+fi
+
+tt="envi"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 frame new
+xpaset -p ds9 envi envi/cube_float_little.hdr envi/cube_float_little.bsq
+xpaset -p ds9 envi envi/cube_float_little.hdr
+xpaset -p ds9 frame delete
+xpaset -p ds9 envi new envi/cube_float_little.hdr envi/cube_float_little.bsq
+xpaset -p ds9 frame delete
 testit $tt
 fi
 
@@ -876,11 +946,6 @@ echo "PASSED"
 echo -n " multiframe..."
 xpaset -p ds9 frame new
 xpaset -p ds9 file multiframe mecube/float.fits
-xpaset -p ds9 frame delete
-xpaset -p ds9 frame delete
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new multiframe mecube/float.fits
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -1220,6 +1285,8 @@ xpaset -p ds9 gif new photo/rose.gif
 xpaset -p ds9 gif slice photo/rose.gif
 xpaset -p ds9 frame delete
 
+xpaset -p ds9 cube close
+
 testit $tt
 fi
 
@@ -1237,13 +1304,18 @@ xpaget ds9 grid skyformat >> ${tt}.out
 xpaget ds9 grid grid >> ${tt}.out
 xpaget ds9 grid grid color >> ${tt}.out
 xpaget ds9 grid grid width >> ${tt}.out
+xpaget ds9 grid grid dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid grid style >> ${tt}.out
 xpaget ds9 grid grid gap1 >> ${tt}.out
 xpaget ds9 grid grid gap2 >> ${tt}.out
+xpaget ds9 grid grid gap3 >> ${tt}.out
  
 xpaget ds9 grid axes >> ${tt}.out
 xpaget ds9 grid axes color >> ${tt}.out
 xpaget ds9 grid axes width >> ${tt}.out
+xpaget ds9 grid axes dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid axes style >> ${tt}.out
 xpaget ds9 grid axes type >> ${tt}.out
 xpaget ds9 grid axes origin >> ${tt}.out
@@ -1254,21 +1326,28 @@ xpaget ds9 grid format2 >> ${tt}.out
 xpaget ds9 grid tickmarks >> ${tt}.out
 xpaget ds9 grid tickmarks color >> ${tt}.out
 xpaget ds9 grid tickmarks width >> ${tt}.out
+xpaget ds9 grid tickmarks dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid tickmarks style >> ${tt}.out
 
 xpaget ds9 grid border >> ${tt}.out
 xpaget ds9 grid border color >> ${tt}.out
 xpaget ds9 grid border width >> ${tt}.out
+xpaget ds9 grid border dash >> ${tt}.out
+# backward compatibilty
 xpaget ds9 grid border style >> ${tt}.out
 
 xpaget ds9 grid numerics >> ${tt}.out
 xpaget ds9 grid numerics font >> ${tt}.out
+xpaget ds9 grid numerics fontsize >> ${tt}.out
 xpaget ds9 grid numerics fontweight >> ${tt}.out
 xpaget ds9 grid numerics fontslant >> ${tt}.out
-xpaget ds9 grid numerics fontsize >> ${tt}.out
+# backward compatibilty
+xpaget ds9 grid numerics fontstyle >> ${tt}.out
 xpaget ds9 grid numerics color >> ${tt}.out
 xpaget ds9 grid numerics gap1 >> ${tt}.out
 xpaget ds9 grid numerics gap2 >> ${tt}.out
+xpaget ds9 grid numerics gap3 >> ${tt}.out
 xpaget ds9 grid numerics type >> ${tt}.out
 xpaget ds9 grid numerics vertical >> ${tt}.out
 
@@ -1277,9 +1356,11 @@ xpaget ds9 grid title text >> ${tt}.out
 xpaget ds9 grid title def >> ${tt}.out
 xpaget ds9 grid title gap >> ${tt}.out
 xpaget ds9 grid title font >> ${tt}.out
+xpaget ds9 grid title fontsize >> ${tt}.out
 xpaget ds9 grid title fontweight >> ${tt}.out
 xpaget ds9 grid title fontslant >> ${tt}.out
-xpaget ds9 grid title fontsize >> ${tt}.out
+# backward compatibilty
+xpaget ds9 grid title fontstyle >> ${tt}.out
 xpaget ds9 grid title color >> ${tt}.out
 
 xpaget ds9 grid labels >> ${tt}.out
@@ -1290,9 +1371,11 @@ xpaget ds9 grid labels text2 >> ${tt}.out
 xpaget ds9 grid labels def2 >> ${tt}.out
 xpaget ds9 grid labels gap2 >> ${tt}.out
 xpaget ds9 grid labels font >> ${tt}.out
+xpaget ds9 grid labels fontsize >> ${tt}.out
 xpaget ds9 grid labels fontweight >> ${tt}.out
 xpaget ds9 grid labels fontslant >> ${tt}.out
-xpaget ds9 grid labels fontsize >> ${tt}.out
+# backward compatibilty
+xpaget ds9 grid labels fontstyle >> ${tt}.out
 xpaget ds9 grid labels color >> ${tt}.out
 
 xpaset -p ds9 grid open
@@ -1309,13 +1392,18 @@ xpaset -p ds9 grid skyformat degrees
 xpaset -p ds9 grid grid yes
 xpaset -p ds9 grid grid color red
 xpaset -p ds9 grid grid width 2
+xpaset -p ds9 grid grid dash yes
+# backward compatibilty
 xpaset -p ds9 grid grid style 1
 xpaset -p ds9 grid grid gap1 .01
 xpaset -p ds9 grid grid gap2 .01
+xpaset -p ds9 grid grid gap3 .01
  
 xpaset -p ds9 grid axes yes
 xpaset -p ds9 grid axes color red
 xpaset -p ds9 grid axes width 2
+xpaset -p ds9 grid axes dash yes
+# backward compatibilty
 xpaset -p ds9 grid axes style 1
 xpaset -p ds9 grid axes type exterior
 xpaset -p ds9 grid axes origin lll
@@ -1326,21 +1414,28 @@ xpaset -p ds9 grid format2 d.2
 xpaset -p ds9 grid tickmarks yes
 xpaset -p ds9 grid tickmarks color red
 xpaset -p ds9 grid tickmarks width 2
+xpaset -p ds9 grid tickmarks dash yes
+# backward compatibilty
 xpaset -p ds9 grid tickmarks style 1
 
 xpaset -p ds9 grid border yes
 xpaset -p ds9 grid border color red
 xpaset -p ds9 grid border width 2
+xpaset -p ds9 grid border dash yes
+# backward compatibilty
 xpaset -p ds9 grid border style 1
 
 xpaset -p ds9 grid numerics yes
 xpaset -p ds9 grid numerics font courier
+xpaset -p ds9 grid numerics fontsize 12
 xpaset -p ds9 grid numerics fontweight bold
 xpaset -p ds9 grid numerics fontslant roman
-xpaset -p ds9 grid numerics fontsize 12
+# backward compatibilty
+xpaset -p ds9 grid numerics fontstyle italic
 xpaset -p ds9 grid numerics color red
 xpaset -p ds9 grid numerics gap1 10
 xpaset -p ds9 grid numerics gap2 10
+xpaset -p ds9 grid numerics gap3 10
 xpaset -p ds9 grid numerics type exterior
 xpaset -p ds9 grid numerics vertical yes
 
@@ -1349,9 +1444,11 @@ xpaset -p ds9 grid title text {Hello World}
 xpaset -p ds9 grid title def yes
 xpaset -p ds9 grid title gap 10
 xpaset -p ds9 grid title font courier
+xpaset -p ds9 grid title fontsize 12
 xpaset -p ds9 grid title fontweight bold
 xpaset -p ds9 grid title fontslant roman
-xpaset -p ds9 grid title fontsize 12
+# backward compatibilty
+xpaset -p ds9 grid title fontstyle italic
 xpaset -p ds9 grid title color red
 
 xpaset -p ds9 grid labels yes
@@ -1362,9 +1459,11 @@ xpaset -p ds9 grid labels text2 {Hello World}
 xpaset -p ds9 grid labels def2 yes
 xpaset -p ds9 grid labels gap2 10
 xpaset -p ds9 grid labels font courier
+xpaset -p ds9 grid labels fontsize 12
 xpaset -p ds9 grid labels fontweight bold
 xpaset -p ds9 grid labels fontslant roman
-xpaset -p ds9 grid labels fontsize 12
+# backward compatibilty
+xpaset -p ds9 grid labels fontstyle italic
 xpaset -p ds9 grid labels color red
 
 xpaset -p ds9 grid save foo.grd
@@ -1863,12 +1962,14 @@ xpaset -p ds9 nvss name m51
 xpaget ds9 nvss name >> ${tt}.out
 xpaset -p ds9 nvss name {}
 xpaset -p ds9 nvss coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 nvss 13:29:52.37 +47:11:40.8
 xpaget ds9 nvss coord >> ${tt}.out
 xpaset -p ds9 nvss update frame
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 nvss update crosshair
 xpaset -p ds9 nvss close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -1914,7 +2015,18 @@ xpaget ds9 pan physical >> ${tt}.out
 xpaget ds9 pan wcs fk5 sexagesimal >> ${tt}.out
 xpaset -p ds9 pan open
 xpaset -p ds9 pan 100 100 image
-xpaset -p ds9 pan to 13:29:55.666 +47:12:16.29 wcs fk5
+
+xpaset -p ds9 pan to 978 970
+xpaset -p ds9 pan to 978 970 physical
+xpaset -p ds9 pan to 202.470451 47.19394108 wcs
+xpaset -p ds9 pan to 202.470451 47.19394108 fk5
+xpaset -p ds9 pan to 202.470451 47.19394108 wcs fk5
+
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19 wcs
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19 fk5
+xpaset -p ds9 pan to 13:29:52.908 +47:11:38.19 wcs fk5
+
 xpaset -p ds9 pan close
 xpaset -p ds9 frame reset
 
@@ -1944,32 +2056,37 @@ xpaget ds9 plot >> ${tt}.out
 sleep $delay
 xpaset -p ds9 plot close
 
-xpaset -p ds9 plot new
+xpaset -p ds9 plot
 xpaset -p ds9 plot bar
+xpaset -p ds9 plot new
 xpaset -p ds9 plot new bar
-xpaset -p ds9 plot scatter
-xpaset -p ds9 plot new scatter
-sleep $delay
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-
 xpaset -p ds9 plot new name foo
-xpaset -p ds9 plot new name foo line
 xpaset -p ds9 plot new name foo bar
-xpaset -p ds9 plot new name foo scatter
+sleep $delay
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " stdin..."
+cat plot/xy.dat | xpaset ds9 plot new {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot new bar {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot new name foo {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot new name foo bar {The Title} {X Axis} {Y Axis} xy
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
-xpaset -p ds9 plot new name foo "{The Title}" "{X Axis}" "{Y Axis}" xy
-xpaset -p ds9 plot new name foo line "{The Title}" "{X Axis}" "{Y Axis}" xy
-xpaset -p ds9 plot new name foo bar "{The Title}" "{X Axis}" "{Y Axis}" xy
-xpaset -p ds9 plot new name foo scatter "{The Title}" "{X Axis}" "{Y Axis}" xy
+echo -n " stdin with header..."
+cat plot/stdin.2.dat | xpaset ds9 plot new stdin
+cat plot/stdin.2.dat | xpaset ds9 plot new line stdin
+cat plot/stdin.2.dat | xpaset ds9 plot new name foo stdin
+cat plot/stdin.2.dat | xpaset ds9 plot new name foo line stdin
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
@@ -2016,7 +2133,7 @@ echo -n " stats..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
 xpaget ds9 plot stats >> /dev/null
-xpaset -p ds9 plot stats
+xpaset -p ds9 plot stats yes
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2025,7 +2142,7 @@ echo -n " list..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
 xpaget ds9 plot list >> /dev/null
-xpaset -p ds9 plot list
+xpaset -p ds9 plot list yes
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2127,51 +2244,71 @@ echo "PASSED"
 echo -n " font..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
-xpaset -p ds9 plot title "{This is a Title}"
-xpaset -p ds9 plot title xaxis "{X Axis}"
-xpaset -p ds9 plot title yaxis "{Y Axis}"
-xpaset -p ds9 plot title legend "{This is the Legend}"
+xpaset -p ds9 plot title {This is a Title}
+xpaset -p ds9 plot title xaxis {X Axis}
+xpaset -p ds9 plot title yaxis {Y Axis}
+xpaset -p ds9 plot title legend {This is the Legend}
 xpaset -p ds9 plot legend yes
 xpaget ds9 plot font title font >> ${tt}.out
 xpaget ds9 plot font title size >> ${tt}.out
 xpaget ds9 plot font title weight >> ${tt}.out
 xpaget ds9 plot font title slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font title style >> ${tt}.out
 xpaget ds9 plot font labels font >> ${tt}.out
 xpaget ds9 plot font labels size >> ${tt}.out
 xpaget ds9 plot font labels weight >> ${tt}.out
 xpaget ds9 plot font labels slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font labels style >> ${tt}.out
 xpaget ds9 plot font numbers font >> ${tt}.out
 xpaget ds9 plot font numbers size >> ${tt}.out
 xpaget ds9 plot font numbers weight >> ${tt}.out
 xpaget ds9 plot font numbers slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font numbers style >> ${tt}.out
 xpaget ds9 plot font legendtitle font >> ${tt}.out
 xpaget ds9 plot font legendtitle size >> ${tt}.out
 xpaget ds9 plot font legendtitle weight >> ${tt}.out
 xpaget ds9 plot font legendtitle slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font legendtitle style >> ${tt}.out
 xpaget ds9 plot font legend font >> ${tt}.out
 xpaget ds9 plot font legend size >> ${tt}.out
 xpaget ds9 plot font legend weight >> ${tt}.out
 xpaget ds9 plot font legend slant >> ${tt}.out
+# backward compatibility
+xpaget ds9 plot font legend style >> ${tt}.out
 xpaset -p ds9 plot font title font times
 xpaset -p ds9 plot font title size 12
 xpaset -p ds9 plot font title weight bold
 xpaset -p ds9 plot font title slant roman
+# backward compatibility
+xpaset -p ds9 plot font title style normal
 xpaset -p ds9 plot font labels font times
 xpaset -p ds9 plot font labels size 12
 xpaset -p ds9 plot font labels weight bold
 xpaset -p ds9 plot font labels slant roman
+# backward compatibility
+xpaset -p ds9 plot font labels style normal
 xpaset -p ds9 plot font numbers font times
 xpaset -p ds9 plot font numbers size 12
 xpaset -p ds9 plot font numbers weight bold
 xpaset -p ds9 plot font numbers slant roman
+# backward compatibility
+xpaset -p ds9 plot font numbers style normal
 xpaset -p ds9 plot font legendtitle font times
 xpaset -p ds9 plot font legendtitle size 12
 xpaset -p ds9 plot font legendtitle weight bold
 xpaset -p ds9 plot font legendtitle slant roman
+# backward compatibility
+xpaset -p ds9 plot font legendtitle style normal
 xpaset -p ds9 plot font legend font times
 xpaset -p ds9 plot font legend size 12
 xpaset -p ds9 plot font legend weight bold
 xpaset -p ds9 plot font legend slant roman
+# backward compatibility
+xpaset -p ds9 plot font legend style normal
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2179,10 +2316,10 @@ echo "PASSED"
 echo -n " title..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
-xpaset -p ds9 plot title "{This is a Title}"
-xpaset -p ds9 plot title x "{X Axis}"
-xpaset -p ds9 plot title y "{Y Axis}"
-xpaset -p ds9 plot title legend "{This is the Legend}"
+xpaset -p ds9 plot title {This is a Title}
+xpaset -p ds9 plot title x {X Axis}
+xpaset -p ds9 plot title y {Y Axis}
+xpaset -p ds9 plot title legend {This is the Legend}
 xpaget ds9 plot title >> ${tt}.out
 xpaget ds9 plot title x >> ${tt}.out
 xpaget ds9 plot title y >> ${tt}.out
@@ -2292,7 +2429,7 @@ xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
 xpaget ds9 plot name >> ${tt}.out
 xpaset -p ds9 plot legend yes
-xpaset -p ds9 plot name "{This is a test}"
+xpaset -p ds9 plot name {This is a test}
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2326,9 +2463,10 @@ xpaset -p ds9 plot graph range x auto yes
 xpaset -p ds9 plot graph range y auto yes
 xpaset -p ds9 plot graph format x {}
 xpaset -p ds9 plot graph format y {}
-xpaset -p ds9 plot graph labels title "{The Title}"
-xpaset -p ds9 plot graph labels xaxis "{X Axis}"
-xpaset -p ds9 plot graph labels yaxis "{Y Axis}"
+xpaset -p ds9 plot graph labels title {The Title}
+xpaset -p ds9 plot graph labels xaxis {X Axis}
+xpaset -p ds9 plot graph labels yaxis {Y Axis}
+xpaset -p ds9 plot graph labels legend {This is the Legend}
 xpaset -p ds9 plot graph type line
 sleep $delay
 xpaset -p ds9 plot close
@@ -2406,6 +2544,7 @@ tt="prefs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo "$tt..."
 xpaset -p ds9 prefs clear
+xpaset -p ds9 prefs irafalign yes
 
 # backward compatibility
 xpaget ds9 prefs bgcolor >> ${tt}.out
@@ -2413,11 +2552,11 @@ xpaget ds9 prefs nancolor >> ${tt}.out
 xpaget ds9 prefs threads >> ${tt}.out
 xpaget ds9 prefs precision >> ${tt}.out
 xpaget ds9 prefs irafalign >> ${tt}.out
+# backward compatibility
 xpaset -p ds9 prefs bgcolor white
 xpaset -p ds9 prefs nancolor white
-xpaset -p ds9 prefs threads 4
+xpaset -p ds9 prefs threads 12
 xpaset -p ds9 prefs precision 8 10 4 3 5 3
-xpaset -p ds9 prefs irafalign yes
 
 testit $tt
 fi
@@ -2566,13 +2705,14 @@ xpaset -p ds9 regions select all
 xpaset -p ds9 regions copy
 xpaset -p ds9 regions cut
 xpaset -p ds9 regions paste
+xpaset -p ds9 regions paste wcs
 xpaset -p ds9 regions undo
 xpaset -p ds9 regions delete all
 
 xpaset -p ds9 regions load regions/ds9.physical.reg
 xpaset -p ds9 regions select all
 xpaset -p ds9 regions composite
-xpaset -p ds9 regions desolve
+xpaset -p ds9 regions dissolve
 xpaset -p ds9 regions delete all
 
 xpaset -p ds9 regions command {circle 100 100 20}
@@ -2788,7 +2928,7 @@ xpaset -p ds9 saveimage foo.jpeg
 xpaset -p ds9 saveimage png foo.png
 xpaset -p ds9 saveimage foo.png
 
-# backward compatibility (6.2)
+# backward compatibility
 xpaset -p ds9 saveimage tiff none foo.tiff
 xpaset -p ds9 saveimage jpeg 100 foo.jpeg
 #xpaset -p ds9 saveimage mpeg foo.mpeg
@@ -2928,13 +3068,15 @@ xpaset -p ds9 skyview m51
 xpaset -p ds9 skyview name m51
 xpaget ds9 skyview name >> ${tt}.out
 xpaset -p ds9 skyview name {}
-xpaset -p ds9 skyview coord 00:42:44.404 +41:16:08.78 sexagesimal
+xpaset -p ds9 skyview coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 skyview 13:29:52.37 +47:11:40.8
 xpaget ds9 skyview coord >> ${tt}.out
 xpaset -p ds9 skyview update frame
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 skyview update crosshair
 xpaset -p ds9 skyview close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -3044,7 +3186,7 @@ tt="threads"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaget ds9 threads >> ${tt}.out
-xpaset -p ds9 threads 4
+xpaset -p ds9 threads 12
 
 testit $tt
 fi
@@ -3226,12 +3368,14 @@ xpaset -p ds9 vla name m51
 xpaget ds9 vla name >> ${tt}.out
 xpaset -p ds9 vla name {}
 xpaset -p ds9 vla coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 vla 13:29:52.37 +47:11:40.8
 xpaget ds9 vla coord >> ${tt}.out
 xpaset -p ds9 vla update frame
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 vla update crosshair
 xpaset -p ds9 vla close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -3259,12 +3403,14 @@ xpaset -p ds9 vlss name m51
 xpaget ds9 vlss name >> ${tt}.out
 xpaset -p ds9 vlss name {}
 xpaset -p ds9 vlss coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 vlss 13:29:52.37 +47:11:40.8
 xpaget ds9 vlss coord >> ${tt}.out
 xpaset -p ds9 vlss update frame
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 vlss update crosshair
 xpaset -p ds9 vlss close
 xpaset -p ds9 mode none
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete
@@ -3332,12 +3478,13 @@ echo -n "$tt..."
 xpaset -p ds9 web ds9.si.edu/doc/acknowledgment.html
 sleep $delay
 xpaget ds9 web >> ${tt}.out
-xpaset -p ds9 web ds9.si.edu/doc/helpdesk.html
+xpaset -p ds9 web new foobar ds9.si.edu/doc/helpdesk.html
 sleep $delay
 xpaset -p ds9 web hvweb click back
 sleep $delay
 xpaset -p ds9 web click forward
 xpaset -p ds9 web clear
+xpaset -p ds9 web close
 xpaset -p ds9 web close
 
 testit $tt
