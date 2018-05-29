@@ -13,7 +13,7 @@ doit () {
 }
 
 echo
-echo "*** command.sh ***"
+echo "*** cat.sh ***"
 
 tt="-cat"
 testit "$tt"
