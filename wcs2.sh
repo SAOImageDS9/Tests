@@ -31,7 +31,7 @@ testit () {
 
 # load default image
 xpaset -p ds9 grid yes
-xpaset -p ds9 wcs skyformat degress
+xpaset -p ds9 wcs skyformat degrees
 
 #echo "DSS"
 #testit wcs2/wcen.fits.gz 1
