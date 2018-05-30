@@ -15,22 +15,6 @@ doit () {
 echo
 echo "*** cat.sh ***"
 
-tt="-cat"
-testit "$tt"
-doit
-
-tt="-cat -header"
-testit "$tt"
-doit
-
-tt="-cat -cat sky fk4 -header"
-testit "$tt"
-doit
-
-tt="-cat -cat 2mass -header"
-testit "$tt"
-doit
-
 tt="-cat 2mass -header"
 testit "$tt"
 doit
@@ -43,15 +27,11 @@ tt="-cat 2mass -cat iras -header"
 testit "$tt"
 doit
 
-tt="-cat 2mass -cat sky fk4 -cat -header"
-testit "$tt"
-doit
-
 tt="-cat 2mass -cat sky fk4 -cat iras -header"
 testit "$tt"
 doit
 
-tt="-cat 2mass -cat 2mass sky fk4 -cat -header"
+tt="-cat 2mass -cat 2mass sky fk4 -header"
 testit "$tt"
 doit
 
