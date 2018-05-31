@@ -65,7 +65,7 @@ for f in $where/*.$ext
 do 
     echo " ${f#$where/} 1"
     opt="-tile -$what ${f%.$ext}.hdr $f"
-    opt="$opt -$save $what foo.hdr"
+    opt="$opt -$save $what foo.hdr foo.bsq"
     opt="$opt -frame new -$what foo.hdr -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"

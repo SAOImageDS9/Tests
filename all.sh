@@ -1,4 +1,4 @@
-#io.sh
+io.sh
 
 xpa.sh
 command.sh
