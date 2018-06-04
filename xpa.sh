@@ -314,7 +314,7 @@ xpaset -p ds9 catalog cds 2mass
 
 xpaget ds9 catalog >> ${tt}.out
 xpaget ds9 catalog header > /dev/null
-xpaget ds9 catalog cat2mass header > /dev/null
+xpaget ds9 catalog 2mass header > /dev/null
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
