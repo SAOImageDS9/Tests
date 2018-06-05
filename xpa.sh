@@ -2617,7 +2617,7 @@ xpaget ds9 regions showtext >> ${tt}.out
 xpaget ds9 regions centroid auto >> ${tt}.out
 xpaget ds9 regions centroid radius >> ${tt}.out
 xpaget ds9 regions centroid iteration >> ${tt}.out
-xpaget ds9 regions -format pros -system wcs -sky fk5 -skyformat sexagesimal -delim nl -prop edit 1 -group foo -strip yes >> ${tt}.out
+xpaget ds9 regions -format pros -system wcs -sky fk5 -skyformat sexagesimal -prop edit 1 -group foo -strip yes >> ${tt}.out
 xpaget ds9 regions include >> ${tt}.out
 xpaget ds9 regions exclude >> ${tt}.out
 xpaget ds9 regions source >> ${tt}.out
@@ -2632,7 +2632,6 @@ xpaget ds9 regions strip >> ${tt}.out
 xpaget ds9 regions shape >> ${tt}.out
 xpaget ds9 regions color >> ${tt}.out
 xpaget ds9 regions width >> ${tt}.out
-xpaget ds9 regions delim >> ${tt}.out
 xpaget ds9 regions groups >> ${tt}.out
 
 echo "image; circle 100 100 20" | xpaset ds9 regions
@@ -2675,7 +2674,6 @@ xpaset -p ds9 regions format ds9
 xpaset -p ds9 regions system physical
 xpaset -p ds9 regions sky fk5
 xpaset -p ds9 regions skyformat degrees
-xpaset -p ds9 regions delim nl
 xpaset -p ds9 regions strip no
 xpaset -p ds9 regions shape circle
 xpaset -p ds9 regions color green
