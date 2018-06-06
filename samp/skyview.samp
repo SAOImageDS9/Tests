@@ -14,9 +14,10 @@ set {} skyview update frame
 set {} skyview m51
 set {} skyview name m51
 get skyview name
-set {} skyview name {}
-set {} skyview coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} skyview name clear
 set {} skyview 13:29:52.37 +47:11:40.8
+# backward compatibility
+set {} skyview coord 13:29:52.37 +47:11:40.8 sexagesimal
 get skyview coord
 set {} skyview update frame
 set {} mode crosshair

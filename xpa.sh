@@ -80,9 +80,10 @@ xpaset -p ds9 2mass update frame
 xpaset -p ds9 2mass m51
 xpaset -p ds9 2mass name m51
 xpaget ds9 2mass name >> ${tt}.out
-xpaset -p ds9 2mass name {}
-xpaset -p ds9 2mass coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 2mass name clear
 xpaset -p ds9 2mass 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 2mass coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 2mass coord >> ${tt}.out
 xpaset -p ds9 2mass update frame
 xpaset -p ds9 mode crosshair
@@ -731,9 +732,10 @@ xpaset -p ds9 dsssao update frame
 xpaset -p ds9 dsssao m51
 xpaset -p ds9 dsssao name m51
 xpaget ds9 dsssao name >> ${tt}.out
-xpaset -p ds9 dsssao name {}
-xpaset -p ds9 dsssao coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 dsssao name clear
 xpaset -p ds9 dsssao 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 dsssao coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 dsssao coord >> ${tt}.out
 xpaset -p ds9 dsssao update frame
 xpaset -p ds9 mode crosshair
@@ -768,9 +770,10 @@ xpaset -p ds9 dsseso update frame
 xpaset -p ds9 dsseso m51
 xpaset -p ds9 dsseso name m51
 xpaget ds9 dsseso name >> ${tt}.out
-xpaset -p ds9 dsseso name {}
-xpaset -p ds9 dsseso coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 dsseso name clear
 xpaset -p ds9 dsseso 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 dsseso coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 dsseso coord >> ${tt}.out
 xpaset -p ds9 dsseso update frame
 xpaset -p ds9 mode crosshair
@@ -805,9 +808,10 @@ xpaset -p ds9 dssstsci update frame
 xpaset -p ds9 dssstsci m51
 xpaset -p ds9 dssstsci name m51
 xpaget ds9 dssstsci name >> ${tt}.out
-xpaset -p ds9 dssstsci name {}
-xpaset -p ds9 dssstsci coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 dssstsci name clear
 xpaset -p ds9 dssstsci 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 dssstsci coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 dssstsci coord >> ${tt}.out
 xpaset -p ds9 dssstsci update frame
 xpaset -p ds9 mode crosshair
@@ -1960,9 +1964,10 @@ xpaset -p ds9 nvss update frame
 xpaset -p ds9 nvss m51
 xpaset -p ds9 nvss name m51
 xpaget ds9 nvss name >> ${tt}.out
-xpaset -p ds9 nvss name {}
-xpaset -p ds9 nvss coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 nvss name clear
 xpaset -p ds9 nvss 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 nvss coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 nvss coord >> ${tt}.out
 xpaset -p ds9 nvss update frame
 xpaset -p ds9 mode crosshair
@@ -3065,9 +3070,10 @@ xpaset -p ds9 skyview update frame
 xpaset -p ds9 skyview m51
 xpaset -p ds9 skyview name m51
 xpaget ds9 skyview name >> ${tt}.out
-xpaset -p ds9 skyview name {}
-xpaset -p ds9 skyview coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 skyview name clear
 xpaset -p ds9 skyview 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 skyview coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 skyview coord >> ${tt}.out
 xpaset -p ds9 skyview update frame
 xpaset -p ds9 mode crosshair
@@ -3364,9 +3370,10 @@ xpaset -p ds9 vla update frame
 xpaset -p ds9 vla m51
 xpaset -p ds9 vla name m51
 xpaget ds9 vla name >> ${tt}.out
-xpaset -p ds9 vla name {}
-xpaset -p ds9 vla coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 vla name clear
 xpaset -p ds9 vla 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 vla coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 vla coord >> ${tt}.out
 xpaset -p ds9 vla update frame
 xpaset -p ds9 mode crosshair
@@ -3399,9 +3406,10 @@ xpaset -p ds9 vlss update frame
 xpaset -p ds9 vlss m51
 xpaset -p ds9 vlss name m51
 xpaget ds9 vlss name >> ${tt}.out
-xpaset -p ds9 vlss name {}
-xpaset -p ds9 vlss coord 13:29:52.37 +47:11:40.8 sexagesimal
+xpaset -p ds9 vlss name clear
 xpaset -p ds9 vlss 13:29:52.37 +47:11:40.8
+# backward compatibility
+xpaset -p ds9 vlss coord 13:29:52.37 +47:11:40.8 sexagesimal
 xpaget ds9 vlss coord >> ${tt}.out
 xpaset -p ds9 vlss update frame
 xpaset -p ds9 mode crosshair

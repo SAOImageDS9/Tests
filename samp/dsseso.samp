@@ -12,9 +12,10 @@ set {} dsseso update frame
 set {} dsseso m51
 set {} dsseso name m51
 get dsseso name
-set {} dsseso name {}
-set {} dsseso coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} dsseso name clear
 set {} dsseso 13:29:52.37 +47:11:40.8
+# backward compatibility
+set {} dsseso coord 13:29:52.37 +47:11:40.8 sexagesimal
 get dsseso coord
 set {} dsseso update frame
 set {} mode crosshair

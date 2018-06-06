@@ -12,9 +12,10 @@ set {} 2mass update frame
 set {} 2mass m51
 set {} 2mass name m51
 get 2mass name
-set {} 2mass name {}
-set {} 2mass coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} 2mass name clear
 set {} 2mass 13:29:52.37 +47:11:40.8
+# backward compatibility
+set {} 2mass coord 13:29:52.37 +47:11:40.8 sexagesimal
 get 2mass coord
 set {} 2mass update frame
 set {} mode crosshair

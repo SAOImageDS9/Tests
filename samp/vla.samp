@@ -12,9 +12,10 @@ set {} vla update frame
 set {} vla m51
 set {} vla name m51
 get vla name
-set {} vla name {}
-set {} vla coord 13:29:52.37 +47:11:40.8 sexagesimal
+set {} vla name clear
 set {} vla 13:29:52.37 +47:11:40.8
+# backward compatibility
+set {} vla coord 13:29:52.37 +47:11:40.8 sexagesimal
 get vla coord
 set {} vla update frame
 set {} mode crosshair
