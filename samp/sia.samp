@@ -10,7 +10,9 @@ set {} sia coordinate 202.48 47.21 fk5
 set {} sia system wcs
 set {} sia sky fk5
 set {} sia skyformat degrees
-set {} sia size 22 22 arcmin
+set {} sia radius 22 arcmin
+# backward compatibility
+set {} sia size 20 24 arcmin
 set {} sia retrieve
 set {} sia save foo.xml
 set {} sia cancel

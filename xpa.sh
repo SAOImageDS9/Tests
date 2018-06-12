@@ -3043,7 +3043,9 @@ xpaset -p ds9 sia coordinate 202.48 47.21 fk5
 xpaset -p ds9 sia system wcs
 xpaset -p ds9 sia sky fk5
 xpaset -p ds9 sia skyformat degrees
-xpaset -p ds9 sia size 22 22 arcmin
+xpaset -p ds9 sia radius 22 arcmin
+# backward compatibility
+xpaset -p ds9 sia size 20 24 arcmin
 xpaset -p ds9 sia retrieve
 xpaset -p ds9 sia save foo.xml
 xpaset -p ds9 sia cancel
