@@ -45,7 +45,9 @@ set {} catalog coordinate 202.48 47.21 fk5
 set {} catalog system wcs
 set {} catalog sky fk5
 set {} catalog skyformat degrees
-set {} catalog size 22 22 arcmin
+set {} catalog radius 22 arcmin
+# backward compatibility
+set {} catalog size 20 24 arcmin
 set {} catalog save foo.cat
 set {} catalog filter {$Jmag>15}
 set {} catalog filter load aux/ds9.flt

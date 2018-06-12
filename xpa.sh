@@ -358,7 +358,9 @@ xpaset -p ds9 catalog coordinate 202.48 47.21 fk5
 xpaset -p ds9 catalog system wcs
 xpaset -p ds9 catalog sky fk5
 xpaset -p ds9 catalog skyformat degrees
-xpaset -p ds9 catalog size 22 22 arcmin
+xpaset -p ds9 catalog radius 22 arcmin
+# backward compatibility
+xpaset -p ds9 catalog size 20 24 arcmin
 xpaset -p ds9 catalog retrieve
 xpaset -p ds9 catalog regions
 xpaset -p ds9 regions delete all
