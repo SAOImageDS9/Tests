@@ -1129,6 +1129,7 @@ xpaget ds9 fits width >> ${tt}.out
 xpaget ds9 fits height >> ${tt}.out
 xpaget ds9 fits depth >> ${tt}.out
 xpaget ds9 fits bitpix >> ${tt}.out
+# backward compatibility
 xpaget ds9 fits type >> ${tt}.out
 xpaget ds9 fits size wcs fk5 arcsec >> ${tt}.out
 xpaget ds9 fits header >> /dev/null
