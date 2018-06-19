@@ -1553,7 +1553,7 @@ echo "Press any:"
 xpaget ds9 iexam any data
 echo "  ok"
 echo "Macro string:"
-xpaget ds9 iexam any 'Click at $x,$y in file $filename'
+xpaget ds9 iexam any {'Click at $x,$y in file $filename'}
 echo "  ok"
 sleep $delay
 
