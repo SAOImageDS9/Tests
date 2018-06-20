@@ -1,5 +1,5 @@
 set file:aux/hello.tcl tcl
-set {} tcl "puts {Hello Again, World}"
+set {} tcl {puts {Hello Again, World}}
 
 set {} single
 set {} raise

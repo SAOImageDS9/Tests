@@ -3186,7 +3186,8 @@ tt="tcl"
 if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 cat aux/hello.tcl | xpaset ds9 tcl
-xpaset -p ds9 tcl 'puts "Hello Again, World"'
+echo 'puts "Hello World"' | xpaset ds9 tcl
+xpaset -p ds9 tcl {puts {Hello Again, World}}
 
 testit $tt
 fi
