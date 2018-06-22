@@ -72,11 +72,6 @@ set {} file multiframe mecube/float.fits
 set {} frame delete
 set {} frame delete
 set {} frame delete
-
-set {} file new multiframe mecube/float.fits
-set {} frame delete
-set {} frame delete
-set {} frame delete
 set {} single
 
 # mosaic...
