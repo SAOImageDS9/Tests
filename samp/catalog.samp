@@ -2,7 +2,7 @@ set {} catalog cds 2mass
 
 get catalog
 get catalog header
-get catalog cat2mass header
+get catalog 2mass header
 set {} catalog clear
 set {} catalog close
 
