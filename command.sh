@@ -129,7 +129,7 @@ testit "-analysis clear"
 testit "-analysis load analysis/analysis.ans"
 testit "-analysis clear load analysis/analysis.ans"
 testit "-analysis clear"
-testit "-analysis message 'This is a message'"
+#testit "-analysis message 'This is a message'"
 testit "-analysis text 'This is text'"
 
 doit
