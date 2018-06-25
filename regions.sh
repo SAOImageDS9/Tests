@@ -205,6 +205,31 @@ testit ds9 wcsi fk5 degrees regions/ds9.linear.wcsi.reg
 testit ds9 wcsp fk5 degrees regions/ds9.linear.wcsp.reg
 fi
 
+if [ "$1" = "fits" -o -z "$1" ]; then
+echo
+echo "Testing FITS Regions Format..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+testit2 ds9 physical fk5 degrees regions/ds9.reg.fits regions/ds9.fits.reg
+
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits regions/ciao.fits
+testit3 ciao physical fk5 degrees regions/ciao.fits.reg
+fi
+
+if [ "$1" = "compress" -o -z "$1" ]; then
+echo
+echo "Testing DS9 Format Compressed..."
+xpaset -p ds9 frame clear
+xpaset -p ds9 fits data/img.fits
+
+testit2 ds9 wcs fk5 degrees regions/ds9.fk5.reg.gz regions/ds9.fk5.reg
+testit2 ds9 wcs fk5 degrees regions/ds9.fk5.reg.bz regions/ds9.fk5.reg
+testit2 ds9 wcs fk5 degrees regions/ds9.fk5.reg.Z regions/ds9.fk5.reg
+testit2 ds9 physical fk5 degrees regions/ds9.reg.fits.gz regions/ds9.fits.reg
+
+fi
+
 if [ "$1" = "xml" -o -z "$1" ]; then
 echo
 echo "Testing XML Format..."
@@ -320,18 +345,6 @@ testit xy wcs galactic degrees regions/xy.galactic.reg
 testit xy wcs galactic sexagesimal regions/xy.galactic.hms.reg
 testit xy wcs ecliptic degrees regions/xy.ecliptic.reg
 testit xy wcs ecliptic sexagesimal regions/xy.ecliptic.hms.reg
-fi
-
-if [ "$1" = "fits" -o -z "$1" ]; then
-echo
-echo "Testing FITS Regions Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
-testit2 ds9 physical fk5 degrees regions/ds9.reg.fits regions/ds9.fits.reg
-
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits regions/ciao.fits
-testit3 ciao physical fk5 degrees regions/ciao.fits.reg
 fi
 
 if [ -z "$1" ]; then
