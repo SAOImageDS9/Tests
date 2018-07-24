@@ -1225,7 +1225,8 @@ xpaget ds9 frame has marker select >> ${tt}.out
 xpaget ds9 frame has marker undo >> ${tt}.out
 xpaget ds9 frame has system physical >> ${tt}.out
 xpaget ds9 frame has wcs wcsa >> ${tt}.out
-xpaget ds9 frame has wcs equatorial wcsa >> ${tt}.out
+xpaget ds9 frame has wcs celestial wcsa >> ${tt}.out
+xpaget ds9 frame has wcs linear wcsa >> ${tt}.out
 xpaset -p ds9 frame new rgb
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame new 3d
