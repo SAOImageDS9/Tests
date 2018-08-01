@@ -3058,7 +3058,7 @@ testit $tt
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 skyview open
 xpaset -p ds9 skyview close

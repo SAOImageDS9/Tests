@@ -146,7 +146,7 @@ doit "$1" single
 # no tests
 #doit "$1" shm
 doit "$1" sia
-doit "$1" skyview
+#doit "$1" skyview
 doit "$1" sleep
 # no tests
 #doit "$1" smosaic
