@@ -21,6 +21,7 @@ scale.sh
 lock.sh
 matrix.sh
 align.sh
+posang.sh
 wcs.sh
 wcs2.sh
 #vo.sh xpa
