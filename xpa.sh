@@ -46,6 +46,7 @@ echo "*** xpa.sh ***"
 delay=.5
 
 # must be invoked
+# console
 # iexam
 # movie
 # print
@@ -3058,7 +3059,7 @@ testit $tt
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 skyview open
 xpaset -p ds9 skyview close
