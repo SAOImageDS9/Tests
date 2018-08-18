@@ -677,13 +677,15 @@ xpaset -p ds9 cube close
 xpaset -p ds9 fits new data/3d.fits
 xpaget ds9 cube >> ${tt}.out
 xpaget ds9 cube interval >> ${tt}.out
+# backward compatibility
 xpaget ds9 cube axis >> ${tt}.out
 xpaget ds9 cube lock >> ${tt}.out
 xpaget ds9 cube order >> ${tt}.out
 xpaget ds9 cube axes lock >> ${tt}.out
 xpaset -p ds9 cube 2
 xpaset -p ds9 cube interval .5
-xpaset -p ds9 cube axis 3
+# backward compatibility
+xpaset -p ds9 cube axis 2
 xpaset -p ds9 cube play
 xpaset -p ds9 cube stop
 xpaset -p ds9 cube match wcs
