@@ -15,6 +15,7 @@ ds9 -mosaicimage iraf mosaic/ds9_2amp.fits -orient x -mosaicimage wcs mosaic/ds9
 
 ds9 -mosaicimage iraf mosaic/ds9_8amp_2x2.fits -orient x -mosaicimage wcs mosaic/ds9_8amp_2x2.fits -single -orient none
 
+ds9 data/f475w_sub.fits.gz -linear -zscale -frame new data/acisf01423N002_evt2.fits -log -minmax -rgb data/f475w_sub.fits.gz -linear -zscale -green data/acisf01423N002_evt2.fits -log -minmax -frame 2 -lock frame wcs -zoom 2
 echo "Done"
 
 
