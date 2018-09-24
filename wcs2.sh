@@ -40,6 +40,9 @@ echo "SAO Plate"
 testit wcs2/ac.fits 1
 testit wcs2/crts_short.fits 1
 
+echo "Einstien WCS"
+testit wcs2/i0409s10.xpa 1
+
 echo "AST"
 testit wcs2/ast.fits 1
 
