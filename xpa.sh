@@ -1659,8 +1659,10 @@ echo -n "$tt..."
 xpaget ds9 mask color >> ${tt}.out
 xpaget ds9 mask mark >> ${tt}.out
 xpaget ds9 mask transparency >> ${tt}.out
+xpaget ds9 mask system >> ${tt}.out
 xpaset -p ds9 mask open
 xpaset -p ds9 mask color cyan
+xpaset -p ds9 mask system physical
 xpaset -p ds9 mask clear
 xpaset -p ds9 mask close
 sleep $delay

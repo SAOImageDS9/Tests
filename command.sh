@@ -1096,6 +1096,7 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-mask open"
 testit "-mask color cyan"
+testit "-mask system physical"
 testit "-mask clear"
 testit "-mask close"
 
