@@ -1871,9 +1871,13 @@ tt="mosaicimagewfpc2"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt...backward compatibility..."
 xpaset -p ds9 frame new
-xpaset -p ds9 mosaicimage wfpc2 mosaic/hst.fits
+xpaset -p ds9 mosaicimagewfpc2 mosaic/hst.fits
 xpaset -p ds9 frame clear
 cat mosaic/hst.fits | xpaset ds9 mosaicimagewfpc2
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 mosaicimagewfpc2 new mosaic/hst.fits
+xpaset -p ds9 mosaicimagewfpc2 mask mosaic/hst.fits
 xpaset -p ds9 frame delete
 
 testit $tt
