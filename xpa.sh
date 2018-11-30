@@ -973,10 +973,6 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 file new mosaic mosaic/mosaicimage.fits
 xpaset -p ds9 file mask mosaic mosaic/mosaicimage.fits
 xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new mosaic wcs mosaic/mosaicimage.fits
-xpaset -p ds9 file mask mosaic wcs mosaic/mosaicimage.fits
-xpaset -p ds9 frame delete
 echo "PASSED"
 
 echo -n " mosaicimage..."
@@ -992,10 +988,6 @@ xpaset -p ds9 frame delete
 
 xpaset -p ds9 file new mosaicimage mosaic/mosaicimage.fits
 xpaset -p ds9 file mask mosaicimage mosaic/mosaicimage.fits
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new mosaicimage wcs mosaic/mosaicimage.fits
-xpaset -p ds9 file mask mosaicimage wcs mosaic/mosaicimage.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
@@ -1045,6 +1037,7 @@ xpaset -p ds9 file mosaicimagewfpc2 mosaic/hst.fits
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 file new mosaicimagewfpc2 mosaic/hst.fits
+xpaset -p ds9 file mask mosaicimagewfpc2 mosaic/hst.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
@@ -1184,6 +1177,7 @@ xpaset -p ds9 frame new
 cat mosaic/hst.fits | xpaset ds9 fits mosaicimagewfpc2 
 xpaset -p ds9 frame delete
 cat mosaic/hst.fits | xpaset ds9 fits new mosaicimagewfpc2 
+cat mosaic/hst.fits | xpaset ds9 fits mask mosaicimagewfpc2 
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new rgb
