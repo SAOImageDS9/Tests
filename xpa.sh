@@ -588,7 +588,7 @@ xpaset -p ds9 contour log exp 1000
 xpaset -p ds9 contour mode zscale
 xpaset -p ds9 contour scope local
 xpaset -p ds9 contour limits 1 100
-xpaset -p ds9 contour levels {1 10 100 1000}
+xpaset -p ds9 contour levels 1 10 100 1000
 
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour close
