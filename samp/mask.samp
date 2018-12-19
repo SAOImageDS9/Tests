@@ -1,8 +1,14 @@
 get mask color
 get mask mark
+get mask range
 get mask transparency
+get mask system
 set {} mask open
 set {} mask color cyan
+set {} mask mark zero
+set {} mask range 10 100
+set {} mask transparency 25
+set {} mask system physical
 set {} mask clear
 set {} mask close
 

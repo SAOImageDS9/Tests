@@ -588,7 +588,7 @@ xpaset -p ds9 contour log exp 1000
 xpaset -p ds9 contour mode zscale
 xpaset -p ds9 contour scope local
 xpaset -p ds9 contour limits 1 100
-xpaset -p ds9 contour levels {1 10 100 1000}
+xpaset -p ds9 contour levels 1 10 100 1000
 
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour close
@@ -973,10 +973,6 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 file new mosaic mosaic/mosaicimage.fits
 xpaset -p ds9 file mask mosaic mosaic/mosaicimage.fits
 xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new mosaic wcs mosaic/mosaicimage.fits
-xpaset -p ds9 file mask mosaic wcs mosaic/mosaicimage.fits
-xpaset -p ds9 frame delete
 echo "PASSED"
 
 echo -n " mosaicimage..."
@@ -992,10 +988,6 @@ xpaset -p ds9 frame delete
 
 xpaset -p ds9 file new mosaicimage mosaic/mosaicimage.fits
 xpaset -p ds9 file mask mosaicimage mosaic/mosaicimage.fits
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new mosaicimage wcs mosaic/mosaicimage.fits
-xpaset -p ds9 file mask mosaicimage wcs mosaic/mosaicimage.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
@@ -1045,6 +1037,7 @@ xpaset -p ds9 file mosaicimagewfpc2 mosaic/hst.fits
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 file new mosaicimagewfpc2 mosaic/hst.fits
+xpaset -p ds9 file mask mosaicimagewfpc2 mosaic/hst.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
@@ -1184,6 +1177,7 @@ xpaset -p ds9 frame new
 cat mosaic/hst.fits | xpaset ds9 fits mosaicimagewfpc2 
 xpaset -p ds9 frame delete
 cat mosaic/hst.fits | xpaset ds9 fits new mosaicimagewfpc2 
+cat mosaic/hst.fits | xpaset ds9 fits mask mosaicimagewfpc2 
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new rgb
@@ -1658,9 +1652,15 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaget ds9 mask color >> ${tt}.out
 xpaget ds9 mask mark >> ${tt}.out
+xpaget ds9 mask range >> ${tt}.out
 xpaget ds9 mask transparency >> ${tt}.out
+xpaget ds9 mask system >> ${tt}.out
 xpaset -p ds9 mask open
 xpaset -p ds9 mask color cyan
+xpaset -p ds9 mask mark zero
+xpaset -p ds9 mask range 10 100
+xpaset -p ds9 mask transparency 25
+xpaset -p ds9 mask system physical
 xpaset -p ds9 mask clear
 xpaset -p ds9 mask close
 sleep $delay
@@ -1865,9 +1865,13 @@ tt="mosaicimagewfpc2"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt...backward compatibility..."
 xpaset -p ds9 frame new
-xpaset -p ds9 mosaicimage wfpc2 mosaic/hst.fits
+xpaset -p ds9 mosaicimagewfpc2 mosaic/hst.fits
 xpaset -p ds9 frame clear
 cat mosaic/hst.fits | xpaset ds9 mosaicimagewfpc2
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 mosaicimagewfpc2 new mosaic/hst.fits
+xpaset -p ds9 mosaicimagewfpc2 mask mosaic/hst.fits
 xpaset -p ds9 frame delete
 
 testit $tt
