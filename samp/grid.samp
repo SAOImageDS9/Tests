@@ -132,7 +132,7 @@ set {} grid border style 1
 set {} grid numerics yes
 set {} grid numerics font courier
 set {} grid numerics fontsize 12
-set {} grid numerics fontweigth bold
+set {} grid numerics fontweight bold
 set {} grid numerics fontslant roman
 # backward compatibility
 set {} grid numerics fontstyle italic
