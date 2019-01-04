@@ -196,31 +196,31 @@ set {} plot font title size 12
 set {} plot font title weight bold
 set {} plot font title slant roman
 # backward compatibility
-set {} plot font title style roman
+set {} plot font title style normal
 set {} plot font labels font times
 set {} plot font labels size 12
 set {} plot font labels weight bold
 set {} plot font labels slant roman
 # backward compatibility
-set {} plot font labels style roman
+set {} plot font labels style normal
 set {} plot font numbers font times
 set {} plot font numbers size 12
 set {} plot font numbers weight bold
 set {} plot font numbers slant roman
 # backward compatibility
-set {} plot font numbers style roman
+set {} plot font numbers style normal
 set {} plot font legendtitle font times
 set {} plot font legendtitle size 12
 set {} plot font legendtitle weight bold
 set {} plot font legendtitle slant roman
 # backward compatibility
-set {} plot font legendtitle style roman
+set {} plot font legendtitle style normal
 set {} plot font legend font times
 set {} plot font legend size 12
 set {} plot font legend weight bold
 set {} plot font legend slant roman
 # backward compatibility
-set {} plot font legend style roman
+set {} plot font legend style normal
 set {} sleep .5
 set {} plot close
 
