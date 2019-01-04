@@ -1,9 +1,9 @@
 set {} file new data/img.fits
 set {} tile
 set {} mode crosshair
-set {} match frames wcs
-set {} match frames image
-set {} match crosshairs wcs
+set {} match frame wcs
+set {} match frame image
+set {} match crosshair wcs
 set {} match crop wcs
 set {} match slice wcs
 set {} match bin
