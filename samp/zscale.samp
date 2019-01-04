@@ -5,6 +5,6 @@ set {} zscale contrast .25
 set {} zscale sample 600
 set {} zscale line 120
 
-set {} scale
+set {} single
 set {} raise
 
