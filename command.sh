@@ -1558,6 +1558,12 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
+initit "..background"
+testit "-plot background red"
+testit "-sleep $delay"
+testit "-plot close"
+doit
+
 initit "..legend"
 testit "-plot line"
 testit "-plot load plot/xy.dat xy"

@@ -140,6 +140,14 @@ get plot axis y format
 set {} sleep .5
 set {} plot close
 
+# background...
+set {} plot new
+set {} plot load plot/xy.dat xy
+get plot background
+set {} plot background red
+set {} sleep .5
+set {} plot close
+
 # legend...
 set {} plot new
 set {} plot load plot/xy.dat xy

@@ -2243,6 +2243,15 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
+echo -n " background..."
+xpaset -p ds9 plot new
+xpaset -p ds9 plot load plot/xy.dat xy
+xpaget ds9 plot background >> ${tt}.out
+xpaset -p ds9 plot background red
+sleep $delay
+xpaset -p ds9 plot close
+echo "PASSED"
+
 echo -n " legend..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
