@@ -1531,6 +1531,21 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
+initit "..export"
+testit "-plot line"
+testit "-plot load plot/xy.dat xy"
+testit "-plot export foo.gif"
+testit "-plot export gif foo.gif"
+testit "-plot export foo.tiff"
+testit "-plot export tiff foo.tiff"
+testit "-plot export foo.jpeg"
+testit "-plot export jpeg foo.jpeg"
+testit "-plot export foo.png"
+testit "-plot export png foo.png"
+testit "-sleep $delay"
+testit "-plot close"
+doit
+
 initit "..axis"
 testit "-plot line"
 testit "-plot load plot/xy.dat xy"
@@ -1559,6 +1574,8 @@ testit "-plot close"
 doit
 
 initit "..background"
+testit "-plot line"
+testit "-plot load plot/xy.dat xy"
 testit "-plot background red"
 testit "-sleep $delay"
 testit "-plot close"

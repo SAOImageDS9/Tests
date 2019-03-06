@@ -2202,6 +2202,21 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
+echo -n " export..."
+xpaset -p ds9 plot new
+xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot export foo.gif
+xpaset -p ds9 plot export gif foo.gif
+xpaset -p ds9 plot export foo.tiff
+xpaset -p ds9 plot export tiff foo.tiff
+xpaset -p ds9 plot export foo.jpep
+xpaset -p ds9 plot export jpeg foo.jpeg
+xpaset -p ds9 plot export foo.png
+xpaset -p ds9 plot export png foo.png
+sleep $delay
+xpaset -p ds9 plot close
+echo "PASSED"
+
 echo -n " axis..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
