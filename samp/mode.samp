@@ -9,6 +9,7 @@ set {} mode zoom
 set {} mode rotate
 set {} mode catalog
 set {} mode examine
+set {} mode 3d
 set {} mode none
 
 set {} single

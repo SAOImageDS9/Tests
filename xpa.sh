@@ -1735,6 +1735,7 @@ xpaset -p ds9 mode zoom
 xpaset -p ds9 mode rotate
 xpaset -p ds9 mode catalog
 xpaset -p ds9 mode examine
+xpaset -p ds9 mode 3d
 xpaset -p ds9 mode none
 
 testit $tt

@@ -1167,6 +1167,7 @@ testit "-mode zoom"
 testit "-mode rotate"
 testit "-mode catalog"
 testit "-mode examine"
+testit "-mode 3d"
 testit "-mode none"
 
 doit
