@@ -2,6 +2,7 @@ set {} cube open
 set {} cube close
 set {} file new data/3d.fits
 get cube
+get cube wcs
 get cube interval
 # backward compatibility
 get cube axis

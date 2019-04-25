@@ -676,6 +676,7 @@ xpaset -p ds9 cube open
 xpaset -p ds9 cube close
 xpaset -p ds9 fits new data/3d.fits
 xpaget ds9 cube >> ${tt}.out
+xpaget ds9 cube wcs >> /dev/null
 xpaget ds9 cube interval >> ${tt}.out
 # backward compatibility
 xpaget ds9 cube axis >> ${tt}.out
