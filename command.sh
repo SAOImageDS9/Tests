@@ -140,8 +140,6 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new"
 testit "-array array/float_big.arr[dim=256,bitpix=-32,endian=big]"
-testit "-frame delete"
-testit "-frame new"
 testit "-array -mask array/float_big.arr[dim=256,bitpix=-32,endian=big] -nomask"
 testit "-frame delete"
 

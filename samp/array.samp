@@ -1,8 +1,5 @@
 set {} frame new
 set {} array array/float_big.arr[dim=256,bitpix=-32,endian=big]
-set {} frame delete
-
-set {} array new array/float_big.arr[dim=256,bitpix=-32,endian=big]
 set {} array mask array/float_big.arr[dim=256,bitpix=-32,endian=big]
 set {} frame delete
 

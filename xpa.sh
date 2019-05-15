@@ -195,9 +195,6 @@ xpaset -p ds9 frame new
 xpaset -p ds9 array array/float_big.arr[dim=256,bitpix=-32,endian=big]
 cat array/float_big.arr | xpaset ds9 array -[dim=256,bitpix=-32,endian=big]
 xpaget ds9 array little > /dev/null
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 array new array/float_big.arr[dim=256,bitpix=-32,endian=big]
 xpaset -p ds9 array mask array/float_big.arr[dim=256,bitpix=-32,endian=big]
 xpaset -p ds9 frame delete
 
