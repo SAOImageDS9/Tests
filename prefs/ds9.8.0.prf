@@ -1,6 +1,5 @@
 global ds9
 global prefs
-puts "***BANG***"
 set prefs(version) 8.0
 # this is a check for to ensure a match between the
 # current ds9 version matches the prefs version
