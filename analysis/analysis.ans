@@ -164,42 +164,42 @@ hmenu Test Output
 	Test $plot
 	*
 	menu
-	cat xy.dat | $plot
+	cat plot/xy.dat | $plot
 
 	Test $plot(title,x,y,xyey)
 	*
 	menu
-	cat xyey.dat | $plot(Title,X Axis,Y Axis,xyey)
+	cat plot/xyey.dat | $plot(Title,X Axis,Y Axis,xyey)
 
 	Test $plot(title,x,y,xyexey)
 	*
 	menu
-	cat xyexey.dat | $plot(Title,X Axis,Y Axis,xyexey)
+	cat plot/xyexey.dat | $plot(Title,X Axis,Y Axis,xyexey)
 
 	Test $plot(title,x,y,4)
 	*
 	menu
-	cat 4.dat | $plot(Title,X Axis,Y Axis,4)
+	cat plot/4.dat | $plot(Title,X Axis,Y Axis,4)
 
 	Test $plot(title,x,y,5)
 	*
 	menu
-	cat 5.dat | $plot(Title,X Axis,Y Axis,5)
+	cat plot/5.dat | $plot(Title,X Axis,Y Axis,5)
 
 	Test $plot(stdin)
 	*
 	menu
-	cat stdin.xy.dat | $plot(stdin)
+	cat plot/stdin.xy.dat | $plot(stdin)
 
 	Test $plot(stdin) text
 	*
 	menu
-	cat stdin.text.dat | $plot(stdin)
+	cat plot/stdin.text.dat | $plot(stdin)
 
 	Test $plot(stdin) error
 	*
 	menu
-	cat stdin.error.dat | $plot(stdin)
+	cat plot/stdin.error.dat | $plot(stdin)
 
 	Test $data
 	*.fits
