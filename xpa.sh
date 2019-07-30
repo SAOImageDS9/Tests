@@ -2127,19 +2127,45 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " clear..."
+echo -n " add/select/delete graph..."
+xpaset -p ds9 plot new
+xpaset -p ds9 plot add graph line
+sleep $delay
+xpaset -p ds9 plot select graph 1
+xpaget ds9 plot select graph > /dev/null
+xpaset -p ds9 plot delete graph
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " select/delete dataset..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot load plot/xyexey.dat xyexey
 sleep $delay
-xpaset -p ds9 plot clear
+xpaset -p ds9 plot select dataset 1
+xpaget ds9 plot select dataset > /dev/null
+xpaset -p ds9 plot delete dataset
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " layout..."
+xpaset -p ds9 plot new
+xpaset -p ds9 plot add graph line
+xpaset -p ds9 plot add graph bar
+xpaset -p ds9 plot add graph scatter
+sleep $delay
+xpaset -p ds9 plot layout grid
+xpaset -p ds9 plot layout row
+xpaset -p ds9 plot layout column
+xpaset -p ds9 plot layout strip
+xpaset -p ds9 plot layout strip weight 30
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " duplicate..."
 xpaset -p ds9 plot new
 xpaset -p ds9 plot load plot/xy.dat xy
-xpaset -p ds9 plot dup
-xpaset -p ds9 plot duplicate 1
+xpaset -p ds9 plot duplicate
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
