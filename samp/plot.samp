@@ -34,18 +34,43 @@ set {} plot save foo.dat
 set {} sleep .5
 set {} plot close
 
-# clear...
+# add/select/delete graph...
+set {} plot new
+set {} plot add graph line
+set {} sleep .5
+set {} plot select graph 1
+get plot select graph
+set {} plot delete graph
+set {} plot close
+
+# select/delete dataset...
 set {} plot new
 set {} plot load plot/xy.dat xy
+set {} plot load plot/xyexey.dat xyexey
 set {} sleep .5
-set {} plot clear
+set {} plot select dataset 1
+get plot select dataset
+set {} plot delete dataset
+set {} plot close
+
+# layout...
+set {} plot new
+set {} plot add graph line
+set {} plot add graph bar
+set {} plot add graph scatter
+set {} sleep .5
+set {} plot layout row
+set {} plot layout column
+set {} plot layout strip
+set {} plot layout strip weight 30
+set {} plot layout grid
 set {} plot close
 
 # duplicate...
 set {} plot new
 set {} plot load plot/xy.dat xy
 set {} plot dup
-set {} plot duplicate 1
+set {} plot duplicate
 set {} sleep .5
 set {} plot close
 

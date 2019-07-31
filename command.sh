@@ -1459,11 +1459,36 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
-initit "..clear"
+initit "..add/select/delete graph"
+testit "-plot line"
+testit "-plot add graph line"
+testit "-sleep $delay"
+testit "-plot select graph 1"
+testit "-plot delete graph"
+testit "-plot close"
+doit
+
+initit "..add/select/delete dataset"
 testit "-plot line"
 testit "-plot load plot/xy.dat xy"
+testit "-plot load plot/xyexey.dat xyexey"
 testit "-sleep $delay"
-testit "-plot clear"
+testit "-plot select dataset 1"
+testit "-plot delete dataset"
+testit "-plot close"
+doit
+
+initit "..layout"
+testit "-plot line"
+testit "-plot add graph line"
+testit "-plot add graph bar"
+testit "-plot add graph scatter"
+testit "-sleep $delay"
+testit "-plot layout row"
+testit "-plot layout column"
+testit "-plot layout strip"
+testit "-plot layout strip weight 30"
+testit "-plot layout grid"
 testit "-plot close"
 doit
 
@@ -1471,7 +1496,7 @@ initit "..duplicate"
 testit "-plot line"
 testit "-plot load plot/xy.dat xy"
 testit "-plot dup"
-testit "-plot duplicate 1"
+testit "-plot duplicate"
 testit "-sleep $delay"
 testit "-plot close"
 doit

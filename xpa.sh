@@ -2154,11 +2154,11 @@ xpaset -p ds9 plot add graph line
 xpaset -p ds9 plot add graph bar
 xpaset -p ds9 plot add graph scatter
 sleep $delay
-xpaset -p ds9 plot layout grid
 xpaset -p ds9 plot layout row
 xpaset -p ds9 plot layout column
 xpaset -p ds9 plot layout strip
 xpaset -p ds9 plot layout strip weight 30
+xpaset -p ds9 plot layout grid
 xpaset -p ds9 plot close
 echo "PASSED"
 
