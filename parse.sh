@@ -32,7 +32,7 @@ StartDS9 () {
 }
 
 # slow down?
-slow=0
+slow=1
 if [ "$1" = "slow" ]; then
     slow=1
     shift
