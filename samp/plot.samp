@@ -58,11 +58,13 @@ set {} plot new
 set {} plot add graph line
 set {} plot add graph bar
 set {} plot add graph scatter
+get plot layout
+get plot layout strip
 set {} sleep .5
 set {} plot layout row
 set {} plot layout column
 set {} plot layout strip
-set {} plot layout strip weight 30
+set {} plot layout strip scale 30
 set {} plot layout grid
 set {} plot close
 

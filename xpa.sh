@@ -48,7 +48,6 @@ delay=.5
 # must be invoked
 # console
 # iexam
-# movie
 # print
 # source
 # tcl
@@ -1878,7 +1877,7 @@ fi
 
 # movie will fail if moved from corner
 tt="movie"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/savempeg..."
 xpaset -p ds9 width 715
 xpaset -p ds9 height 450
@@ -2153,11 +2152,13 @@ xpaset -p ds9 plot new
 xpaset -p ds9 plot add graph line
 xpaset -p ds9 plot add graph bar
 xpaset -p ds9 plot add graph scatter
+xpaget ds9 plot layout >> /dev/null
+xpaget ds9 plot layout strip scale >> /dev/null
 sleep $delay
 xpaset -p ds9 plot layout row
 xpaset -p ds9 plot layout column
 xpaset -p ds9 plot layout strip
-xpaset -p ds9 plot layout strip weight 30
+xpaset -p ds9 plot layout strip scale 30
 xpaset -p ds9 plot layout grid
 xpaset -p ds9 plot close
 echo "PASSED"

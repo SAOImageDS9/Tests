@@ -25,7 +25,6 @@ echo "*** command.sh ***"
 delay=.5
 
 # must be invoked
-# -movie
 # -private
 # -samp
 
@@ -1266,9 +1265,8 @@ testit "-frame delete"
 doit
 fi
 
-# movie will fail if moved from corner
 tt="movie"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/savempeg"
 testit "-width 715 -height 450"
 testit "-movie slice foo.mpg"
@@ -1487,7 +1485,7 @@ testit "-sleep $delay"
 testit "-plot layout row"
 testit "-plot layout column"
 testit "-plot layout strip"
-testit "-plot layout strip weight 30"
+testit "-plot layout strip scale 30"
 testit "-plot layout grid"
 testit "-plot close"
 doit
@@ -2324,7 +2322,7 @@ doit
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-skyview open"
 testit "-skyview close"
