@@ -570,7 +570,6 @@ testit "-cube close"
 testit "-frame new -fits data/3d.fits"
 testit "-cube 2"
 testit "-cube interval .5"
-# backward compatibility
 testit "-cube axis 2"
 testit "-cube play"
 testit "-cube stop"

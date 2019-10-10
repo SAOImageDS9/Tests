@@ -4,14 +4,12 @@ set {} file new data/3d.fits
 get cube
 get cube wcs
 get cube interval
-# backward compatibility
 get cube axis
 get cube lock
 get cube order
 get cube axes lock
 set {} cube 2
 set {} cube interval .5
-# backward compatibility
 set {} cube axis 2
 set {} cube play
 set {} cube stop
