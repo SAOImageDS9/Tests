@@ -4,7 +4,7 @@ set {} movie foo.mpg
 set {} movie frame foo.mpg
 set {} movie slice foo.mpg
 set {} frame new 3d
-set {} movie 3d foo.mpg number 1 azfrom 0 az to 0 el from 0 el to 0 sl from 1 sl to 1 zoom from 1 zoom to 2 repeat 1
+set {} movie 3d foo.mpg number 1 azfrom 0 az to 0 el from 0 el to 0 slice from 1 slice to 1 zoom from 1 zoom to 2 repeat 1
 set {} frame delete
 
 # backward compatibility

@@ -1271,7 +1271,7 @@ testit "-width 715 -height 450"
 testit "-movie slice foo.mpg"
 testit "-movie frame foo.mpg"
 testit "-frame new 3d"
-testit "-movie 3d foo.mpg number 1 az from 0 az to 0 el from 0 el to 0 sl from 1 sl to 1 zoom from 1 zoom to 2 repeat 1"
+testit "-movie 3d foo.mpg number 1 az from 0 az to 0 el from 0 el to 0 slice from 1 slice to 1 zoom from 1 zoom to 2 repeat 1"
 testit "-frame delete"
 
 # backward compatibility
