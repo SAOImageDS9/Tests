@@ -680,7 +680,7 @@ xpaget ds9 cube order >> ${tt}.out
 xpaget ds9 cube axes lock >> ${tt}.out
 xpaset -p ds9 cube 2
 xpaset -p ds9 cube interval .5
-xpaset -p ds9 cube axis 2
+xpaset -p ds9 cube axis 3
 xpaset -p ds9 cube play
 xpaset -p ds9 cube stop
 xpaset -p ds9 cube match wcs
@@ -1883,7 +1883,7 @@ xpaset -p ds9 movie foo.mpg
 xpaset -p ds9 movie frame foo.mpg
 xpaset -p ds9 movie slice foo.mpg
 xpaset -p ds9 frame new 3d
-xpaset -p ds9 movie 3d foo.mpg number 1 azfrom 0 azto 0 elfrom 0 elto 0 slfrom 1 slto 1 repeat 1
+xpaset -p ds9 movie 3d foo.mpg number 1 az from 0 az to 0 el from 0 el to 0 sl from 1 sl to 1 zoom from 1 zoom to 2 repeat 1
 xpaset -p ds9 frame delete
 
 # backward compatibility

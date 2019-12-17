@@ -10,7 +10,7 @@ get cube order
 get cube axes lock
 set {} cube 2
 set {} cube interval .5
-set {} cube axis 2
+set {} cube axis 3
 set {} cube play
 set {} cube stop
 set {} cube match wcs
