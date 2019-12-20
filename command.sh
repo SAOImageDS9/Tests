@@ -295,6 +295,8 @@ testit "-catalog symbol fontslant italic"
 testit "-catalog symbol fontstyle italic"
 testit "-catalog symbol add"
 testit "-catalog symbol remove"
+testit "-catalog symbol open aux/ds9.sym"
+# backward compatibility
 testit "-catalog symbol load aux/ds9.sym"
 testit "-catalog symbol save foo.sym"
 testit "-catalog name m51"

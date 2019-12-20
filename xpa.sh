@@ -355,6 +355,8 @@ xpaset -p ds9 catalog symbol fontslant italic
 xpaset -p ds9 catalog symbol fontstyle italic
 xpaset -p ds9 catalog symbol add
 xpaset -p ds9 catalog symbol remove
+xpaset -p ds9 catalog symbol open aux/ds9.sym
+# backward compatibility
 xpaset -p ds9 catalog symbol load aux/ds9.sym
 xpaset -p ds9 catalog symbol save foo.sym
 xpaset -p ds9 catalog name m51
