@@ -21,6 +21,15 @@ set {} catalog clear
 set {} catalog close
 
 set {} catalog cds 2mass
+set {} catalog save foo.xml
+set {} catalog open foo.xml
+set {} catalog clear
+set {} catalog close
+# backward compatibility
+set {} catalog load foo.xml
+set {} catalog clear
+set {} catalog close
+
 set {} raise
 set {} catalog plot {$Jmag} {$Hmag} {$e_Jmag} {$e_Hmag}
 set {} catalog symbol condition {$Jmag>15}
@@ -48,7 +57,6 @@ set {} catalog skyformat degrees
 set {} catalog radius 22 arcmin
 # backward compatibility
 set {} catalog size 20 24 arcmin
-set {} catalog save foo.cat
 set {} catalog filter {$Jmag>15}
 set {} catalog filter load aux/ds9.flt
 set {} catalog regions

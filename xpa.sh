@@ -331,6 +331,15 @@ xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
 xpaset -p ds9 catalog cds 2mass
+xpaset -p ds9 catalog save foo.xml
+xpaset -p ds9 catalog open foo.xml
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
+# backward compatibility
+xpaset -p ds9 catalog load foo.xml
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
+
 xpaset -p ds9 raise
 xpaset -p ds9 catalog plot '$Jmag' '$Hmag' '$e_Jmag' '$e_Hmag'
 xpaset -p ds9 catalog symbol condition '$Jmag>15'
@@ -361,7 +370,6 @@ xpaset -p ds9 catalog size 20 24 arcmin
 xpaset -p ds9 catalog retrieve
 xpaset -p ds9 catalog regions
 xpaset -p ds9 regions delete all
-xpaset -p ds9 catalog save foo.cat
 xpaset -p ds9 catalog filter '$Jmag>15'
 xpaset -p ds9 catalog filter load aux/ds9.flt
 xpaset -p ds9 catalog retrieve
