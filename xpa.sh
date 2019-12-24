@@ -332,10 +332,6 @@ xpaset -p ds9 catalog close
 
 xpaset -p ds9 catalog cds 2mass
 xpaset -p ds9 catalog save foo.xml
-xpaset -p ds9 catalog open foo.xml
-xpaset -p ds9 catalog clear
-xpaset -p ds9 catalog close
-# backward compatibility
 xpaset -p ds9 catalog load foo.xml
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
@@ -355,8 +351,6 @@ xpaset -p ds9 catalog symbol fontslant italic
 xpaset -p ds9 catalog symbol fontstyle italic
 xpaset -p ds9 catalog symbol add
 xpaset -p ds9 catalog symbol remove
-xpaset -p ds9 catalog symbol open aux/ds9.sym
-# backward compatibility
 xpaset -p ds9 catalog symbol load aux/ds9.sym
 xpaset -p ds9 catalog symbol save foo.sym
 xpaset -p ds9 catalog name m51
@@ -1666,6 +1660,8 @@ xpaset -p ds9 mask mark zero
 xpaset -p ds9 mask range 10 100
 xpaset -p ds9 mask transparency 25
 xpaset -p ds9 mask system physical
+xpaset -p ds9 mask load data/img.fits
+sleep $delay
 xpaset -p ds9 mask clear
 xpaset -p ds9 mask close
 sleep $delay
@@ -3539,9 +3535,15 @@ xpaset -p ds9 wcs skyformat sexagesimal
 xpaset -p ds9 wcs align no
 xpaset -p ds9 wcs sky fk5
 xpaset -p ds9 wcs skyformat degrees
+xpaset -p ds9 wcs load aux/image.wcs
+xpaset -p ds9 wcs save foo.wcs
+# backward compatibility
 cat aux/image.wcs | xpaset ds9 wcs append
+# backward compatibility
 cat aux/image.wcs | xpaset ds9 wcs replace
+# backward compatibility
 xpaset -p ds9 wcs append aux/image.wcs
+# backward compatibility
 xpaset -p ds9 wcs replace aux/image.wcs
 xpaset -p ds9 wcs reset
 xpaset -p ds9 wcs skyformat sexagesimal

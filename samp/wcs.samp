@@ -12,9 +12,15 @@ set {} wcs skyformat sexagesimal
 set {} wcs align no
 set {} wcs sky fk5
 set {} wcs skyformat degrees
+# backward compatibility
 set file:aux/image.wcs wcs append
+# backward compatibility
 set file:aux/image.wcs wcs replace
+set {} wcs load aux/image.wcs
+set {} wcs save foo.wcs
+# backward compatibility
 set {} wcs append aux/image.wcs
+# backward compatibility
 set {} wcs replace aux/image.wcs
 set {} wcs reset
 set {} wcs skyformat sexagesimal

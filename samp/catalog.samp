@@ -22,10 +22,6 @@ set {} catalog close
 
 set {} catalog cds 2mass
 set {} catalog save foo.xml
-set {} catalog open foo.xml
-set {} catalog clear
-set {} catalog close
-# backward compatibility
 set {} catalog load foo.xml
 set {} catalog clear
 set {} catalog close
@@ -45,8 +41,6 @@ set {} catalog symbol fontslant italic
 set {} catalog symbol fontstyle italic
 set {} catalog symbol add
 set {} catalog symbol remove
-set {} catalog symbol open aux/ds9.sym
-# backward compatibility
 set {} catalog symbol load aux/ds9.sym
 set {} catalog symbol save foo.sym
 set {} catalog name m51
