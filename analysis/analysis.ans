@@ -225,12 +225,12 @@ hmenu Test Dialogs
 	Test $message(message)
 	*
 	menu
-	$message(ok,This is a Message) | echo "hello" | $text
+	$message(This is a Message) | echo "hello" | $text
 
-	Test $message(ok,message)
+	Test $message(okcancel,message)
 	*
 	menu
-	$message(ok,This is a Message) | echo "World" | $text
+	$message(okcancel,This is a Message) | echo "World" | $text
 
 	Test $entry(message)
 	*
