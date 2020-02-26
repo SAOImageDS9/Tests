@@ -1653,12 +1653,14 @@ xpaget ds9 mask color >> ${tt}.out
 xpaget ds9 mask mark >> ${tt}.out
 xpaget ds9 mask range >> ${tt}.out
 xpaget ds9 mask transparency >> ${tt}.out
+xpaget ds9 mask blend >> ${tt}.out
 xpaget ds9 mask system >> ${tt}.out
 xpaset -p ds9 mask open
 xpaset -p ds9 mask color cyan
 xpaset -p ds9 mask mark zero
 xpaset -p ds9 mask range 10 100
 xpaset -p ds9 mask transparency 25
+xpaset -p ds9 mask blend source
 xpaset -p ds9 mask system physical
 xpaset -p ds9 mask load data/img.fits
 sleep $delay
