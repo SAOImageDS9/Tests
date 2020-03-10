@@ -4,6 +4,7 @@ get minmax interval
 set {} minmax scan
 set {} minmax mode scan
 set {} minmax interval 100
+set {} minmax rescan
 
 set {} single
 set {} raise

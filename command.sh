@@ -1152,6 +1152,7 @@ initit "$tt"
 testit "-minmax scan"
 testit "-minmax mode scan"
 testit "-minmax interval 100"
+testit "-minmax rescan"
 
 doit
 fi

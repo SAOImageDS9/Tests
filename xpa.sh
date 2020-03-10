@@ -1719,6 +1719,7 @@ xpaget ds9 minmax interval >> ${tt}.out
 xpaset -p ds9 minmax scan
 xpaset -p ds9 minmax mode scan
 xpaset -p ds9 minmax interval 100
+xpaset -p ds9 minmax rescan
 
 testit $tt
 fi
