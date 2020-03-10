@@ -767,6 +767,41 @@ testit "-frame delete"
 doit
 fi
 
+tt="footprint"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt/fp"
+testit "-footprint cxc"
+
+testit "-footprint save foo.xml"
+
+testit "-footprint name m51"
+testit "-footprint coordinate 202.48 47.21 fk5"
+testit "-footprint system wcs"
+testit "-footprint sky fk5"
+testit "-footprint skyformat degrees"
+testit "-footprint radius 22 arcmin"
+# backward compatibility
+testit "-footprint size 20 24 arcmin"
+testit "-footprint retrieve"
+testit "-footprint regions"
+testit "-regions delete all"
+testit "-footprint filter '\$ObsId<10000'"
+testit "-footprint filter load aux/fp.flt"
+testit "-footprint retrieve"
+testit "-footprint cancel"
+#testit "-footprint print"
+testit "-footprint sort 'ObsId' incr"
+# backward compatibility
+testit "-footprint hide"
+testit "-footprint show yes"
+testit "-footprint panto no"
+
+testit "-footprint clear"
+testit "-footprint close"
+
+doit
+fi
+
 tt="frame"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
