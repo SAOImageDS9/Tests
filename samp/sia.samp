@@ -1,10 +1,7 @@
 set {} sia 2mass
 
 get sia
-set {} sia clear
-set {} sia close
-
-set {} sia 2mass
+set {} sia save foo.xml
 set {} sia name m51
 set {} sia coordinate 202.48 47.21 fk5
 set {} sia system wcs
@@ -17,6 +14,7 @@ set {} sia retrieve
 set {} sia save foo.xml
 set {} sia cancel
 #set {} sia print
+
 set {} sia close
 
 set {} single

@@ -80,6 +80,7 @@ doit "$1" export
 # backward compatibility
 doit "$1" file
 doit "$1" fits
+doit "$1" footprint
 doit "$1" frame
 doit "$1" gif
 doit "$1" grid

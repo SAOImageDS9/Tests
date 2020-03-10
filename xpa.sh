@@ -3136,10 +3136,7 @@ echo -n "$tt..."
 xpaset -p ds9 sia 2mass
 
 xpaget ds9 sia >> ${tt}.out
-xpaset -p ds9 sia clear
-xpaset -p ds9 sia close
-
-xpaset -p ds9 sia 2mass
+xpaset -p ds9 sia save foo.xml
 xpaset -p ds9 sia name m51
 xpaset -p ds9 sia coordinate 202.48 47.21 fk5
 xpaset -p ds9 sia system wcs

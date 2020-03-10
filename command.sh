@@ -773,7 +773,6 @@ initit "$tt/fp"
 testit "-footprint cxc"
 
 testit "-footprint save foo.xml"
-
 testit "-footprint name m51"
 testit "-footprint coordinate 202.48 47.21 fk5"
 testit "-footprint system wcs"
@@ -2325,11 +2324,7 @@ tt="sia"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-sia 2mass"
-
-testit "-sia clear"
-testit "-sia close"
-
-testit "-sia 2mass"
+testit "-sia save foo.xml"
 testit "-sia name m51"
 testit "-sia coordinate 202.48 47.21 fk5"
 testit "-sia system wcs"
