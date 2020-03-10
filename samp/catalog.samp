@@ -44,9 +44,9 @@ set {} catalog symbol remove
 set {} catalog symbol load aux/ds9.sym
 set {} catalog symbol save foo.sym
 set {} catalog name m51
-set {} catalog 202.48 47.21 fk5
-# backward compatibility
 set {} catalog coordinate 202.48 47.21 fk5
+# backward compatibility
+set {} catalog 202.48 47.21 fk5
 set {} catalog system wcs
 set {} catalog sky fk5
 set {} catalog skyformat degrees
@@ -54,7 +54,7 @@ set {} catalog radius 22 arcmin
 # backward compatibility
 set {} catalog size 20 24 arcmin
 set {} catalog filter {$Jmag>15}
-set {} catalog filter load aux/ds9.flt
+set {} catalog filter load aux/cat.flt
 set {} catalog regions
 set {} regions delete all
 set {} catalog retrieve

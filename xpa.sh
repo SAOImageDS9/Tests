@@ -354,9 +354,9 @@ xpaset -p ds9 catalog symbol remove
 xpaset -p ds9 catalog symbol load aux/ds9.sym
 xpaset -p ds9 catalog symbol save foo.sym
 xpaset -p ds9 catalog name m51
-xpaset -p ds9 catalog 202.48 47.21 fk5
-# backward compatibility
 xpaset -p ds9 catalog coordinate 202.48 47.21 fk5
+# backward compatibility
+xpaset -p ds9 catalog 202.48 47.21 fk5
 xpaset -p ds9 catalog system wcs
 xpaset -p ds9 catalog sky fk5
 xpaset -p ds9 catalog skyformat degrees
@@ -367,7 +367,7 @@ xpaset -p ds9 catalog retrieve
 xpaset -p ds9 catalog regions
 xpaset -p ds9 regions delete all
 xpaset -p ds9 catalog filter '$Jmag>15'
-xpaset -p ds9 catalog filter load aux/ds9.flt
+xpaset -p ds9 catalog filter load aux/cat.flt
 xpaset -p ds9 catalog retrieve
 xpaset -p ds9 catalog cancel
 #xpaset -p ds9 catalog print
@@ -1193,6 +1193,45 @@ xpaset -p ds9 frame delete
 
 xpaset -p ds9 rgb close
 xpaset -p ds9 cube close
+testit $tt
+fi
+
+tt="footprint"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt/fp..."
+xpaset -p ds9 footprint cxc
+
+xpaget ds9 footprint >> ${tt}.out
+xpaset -p ds9 footprint save foo.xml
+xpaset -p ds9 footprint clear
+xpaset -p ds9 footprint close
+
+xpaset -p ds9 footprint cxc
+xpaset -p ds9 footprint name m51
+xpaset -p ds9 footprint coordinate 202.48 47.21 fk5
+xpaset -p ds9 footprint system wcs
+xpaset -p ds9 footprint sky fk5
+xpaset -p ds9 footprint skyformat degrees
+xpaset -p ds9 footprint radius 22 arcmin
+# backward compatibility
+xpaset -p ds9 footprint size 20 24 arcmin
+xpaset -p ds9 footprint retrieve
+xpaset -p ds9 footprint regions
+xpaset -p ds9 regions delete all
+xpaset -p ds9 footprint filter '$Obsid<10000'
+xpaset -p ds9 footprint filter load aux/fp.flt
+xpaset -p ds9 footprint retrieve
+xpaset -p ds9 footprint cancel
+#xpaset -p ds9 footprint print
+xpaset -p ds9 footprint sort "Obsid" incr
+# backward compatibility
+xpaset -p ds9 footprint hide
+xpaset -p ds9 footprint show yes
+xpaset -p ds9 footprint panto no
+
+xpaset -p ds9 footprint clear
+xpaset -p ds9 footprint close
+
 testit $tt
 fi
 
