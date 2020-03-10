@@ -1203,10 +1203,7 @@ xpaset -p ds9 footprint cxc
 
 xpaget ds9 footprint >> ${tt}.out
 xpaset -p ds9 footprint save foo.xml
-xpaset -p ds9 footprint clear
-xpaset -p ds9 footprint close
 
-xpaset -p ds9 footprint cxc
 xpaset -p ds9 footprint name m51
 xpaset -p ds9 footprint coordinate 202.48 47.21 fk5
 xpaset -p ds9 footprint system wcs
@@ -1218,12 +1215,12 @@ xpaset -p ds9 footprint size 20 24 arcmin
 xpaset -p ds9 footprint retrieve
 xpaset -p ds9 footprint regions
 xpaset -p ds9 regions delete all
-xpaset -p ds9 footprint filter '$Obsid<10000'
+xpaset -p ds9 footprint filter '$ObsId<10000'
 xpaset -p ds9 footprint filter load aux/fp.flt
 xpaset -p ds9 footprint retrieve
 xpaset -p ds9 footprint cancel
 #xpaset -p ds9 footprint print
-xpaset -p ds9 footprint sort "Obsid" incr
+xpaset -p ds9 footprint sort "ObsId" incr
 # backward compatibility
 xpaset -p ds9 footprint hide
 xpaset -p ds9 footprint show yes
