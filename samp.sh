@@ -57,6 +57,7 @@ doit "$1" about
 doit "$1" align
 doit "$1" analysis
 doit "$1" array
+# backward compatibility prefs
 doit "$1" bg
 doit "$1" backup
 doit "$1" bin
@@ -115,6 +116,7 @@ doit "$1" mosaicimagewfpc2
 #doit "$1" movie
 doit "$1" multiframe
 doit "$1" nameserver
+# backward compatibility prefs
 doit "$1" nan
 doit "$1" nrrd
 doit "$1" nvss
@@ -124,6 +126,8 @@ doit "$1" pan
 doit "$1" pixeltable
 doit "$1" plot
 doit "$1" png
+# backward compatibility prefs
+doit "$1" precision
 doit "$1" prefs
 doit "$1" preserve
 doit "$1" print
@@ -160,6 +164,9 @@ doit "$1" source
 # backward compatibility
 doit "$1" srgbcube
 doit "$1" tcl
+# backward compatibility prefs
+doit "$1" theme
+# backward compatibility prefs
 doit "$1" threads
 doit "$1" tiff
 doit "$1" tile

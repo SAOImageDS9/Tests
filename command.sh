@@ -154,6 +154,7 @@ testit "-asinh"
 doit
 fi
 
+# backward compatibility prefs
 tt="bg"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/background"
@@ -1360,6 +1361,7 @@ testit "-frame reset"
 doit
 fi
 
+# backward compatibility prefs
 tt="nan"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -1905,10 +1907,11 @@ testit "-pow"
 doit
 fi
 
+# backward compatibility prefs
 tt="precision"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-precision 8 10 4 3 5 3"
+testit "-precision 8 7 4 3 8 7 5 3 8"
 
 doit
 fi
@@ -2501,9 +2504,19 @@ testit "-tcl 'puts stderr {Hello Again, World}'"
 doit
 fi
 
+# backward compatibility prefs
+tt="theme"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-theme default"
+
+doit
+fi
+
+# backward compatibility prefs
 tt="threads"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt/tread"
+initit "$tt"
 testit "-threads 12"
 
 doit

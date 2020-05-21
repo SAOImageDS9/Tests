@@ -208,6 +208,7 @@ xpaset -p ds9 rgb close
 testit $tt
 fi
 
+# backward compatibility prefs
 tt="bg"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/background..."
@@ -1974,6 +1975,7 @@ xpaset -p ds9 frame reset
 testit $tt
 fi
 
+# backward compatibility prefs
 tt="nan"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -2640,11 +2642,12 @@ xpaset -p ds9 frame delete
 testit $tt
 fi
 
+# backward compatibility prefs
 tt="precision"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaget ds9 precision >> ${tt}.out
-xpaset -p ds9 precision 8 10 4 3 5 3
+xpaset -p ds9 precision 8 7 4 3 8 7 5 3 8
 
 testit $tt
 fi
@@ -2655,13 +2658,12 @@ echo "$tt..."
 xpaset -p ds9 prefs clear
 xpaset -p ds9 prefs irafalign yes
 
-# backward compatibility
 xpaget ds9 prefs bgcolor >> ${tt}.out
 xpaget ds9 prefs nancolor >> ${tt}.out
 xpaget ds9 prefs threads >> ${tt}.out
 xpaget ds9 prefs precision >> ${tt}.out
 xpaget ds9 prefs irafalign >> ${tt}.out
-# backward compatibility
+
 xpaset -p ds9 prefs bgcolor white
 xpaset -p ds9 prefs nancolor white
 xpaset -p ds9 prefs threads 12
@@ -3290,6 +3292,17 @@ xpaset -p ds9 tcl {puts {Hello Again, World}}
 testit $tt
 fi
 
+# backward compatibility prefs
+tt="theme"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaget ds9 theme >> ${tt}.out
+xpaset -p ds9 theme default
+
+testit $tt
+fi
+
+# backward compatibility prefs
 tt="threads"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
