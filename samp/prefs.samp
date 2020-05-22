@@ -1,15 +1,31 @@
 set {} prefs clear
 
-# backward compatibility
+get prefs has bg
+get prefs has bg color
+get prefs has bgcolor
+get prefs bg
+get prefs bg color
 get prefs bgcolor
+get prefs nan
+get prefs nan color
 get prefs nancolor
-get prefs threads
 get prefs precision
+get prefs theme
+get prefs threads
 get prefs irafalign
+
+set {} prefs bg no
+set {} prefs bg color no
+set {} prefs bgcolor no
+set {} prefs bg white
+set {} prefs bg color white
 set {} prefs bgcolor white
+set {} prefs nan white
+set {} prefs nan color white
 set {} prefs nancolor white
+set {} prefs precision 8 7 4 3 8 7 5 3 8
+set {} prefs theme default
 set {} prefs threads 12
-set {} prefs precision 8 10 4 3 5 3
 set {} prefs irafalign yes
 
 set {} single

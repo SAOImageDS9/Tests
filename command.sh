@@ -1920,13 +1920,26 @@ tt="prefs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 
-testit "-prefs clear"
+# processed at startup
+testit "-prefs yes"
 
-# backward compatibility
+testit "-prefs open"
+testit "-prefs save"
+testit "-prefs clear"
+testit "-prefs close"
+
+testit "-prefs bg no"
+testit "-prefs bg color no"
+testit "-prefs bgcolor no"
+testit "-prefs bg white"
+testit "-prefs bg color white"
 testit "-prefs bgcolor white"
+testit "-prefs nan white"
+testit "-prefs nan color white"
 testit "-prefs nancolor white"
+testit "-precision 8 7 4 3 8 7 5 3 8"
+testit "-prefs theme default"
 testit "-prefs threads 12"
-testit "-precision 8 10 4 3 5 3"
 testit "-prefs irafalign yes"
 
 doit

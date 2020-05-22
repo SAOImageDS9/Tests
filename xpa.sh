@@ -2658,16 +2658,35 @@ echo "$tt..."
 xpaset -p ds9 prefs clear
 xpaset -p ds9 prefs irafalign yes
 
+xpaget ds9 prefs has bg >> ${tt}.out
+xpaget ds9 prefs bg >> ${tt}.out
+xpaget ds9 prefs bg color >> ${tt}.out
 xpaget ds9 prefs bgcolor >> ${tt}.out
+xpaget ds9 prefs nan >> ${tt}.out
+xpaget ds9 prefs nan color >> ${tt}.out
 xpaget ds9 prefs nancolor >> ${tt}.out
-xpaget ds9 prefs threads >> ${tt}.out
 xpaget ds9 prefs precision >> ${tt}.out
+xpaget ds9 prefs theme >> ${tt}.out
+xpaget ds9 prefs threads >> ${tt}.out
 xpaget ds9 prefs irafalign >> ${tt}.out
 
+xpaset -p ds9 prefs open
+xpaset -p ds9 prefs save
+xpaset -p ds9 prefs clear
+xpaset -p ds9 prefs close
+xpaset -p ds9 prefs bg no
+xpaset -p ds9 prefs bg color no
+xpaset -p ds9 prefs bgcolor no
+xpaset -p ds9 prefs bg white
+xpaset -p ds9 prefs bg color white
 xpaset -p ds9 prefs bgcolor white
+xpaset -p ds9 prefs nan white
+xpaset -p ds9 prefs nan color white
 xpaset -p ds9 prefs nancolor white
+xpaset -p ds9 prefs precision 8 7 4 3 8 7 5 3 8
+xpaset -p ds9 prefs theme default
 xpaset -p ds9 prefs threads 12
-xpaset -p ds9 prefs precision 8 10 4 3 5 3
+xpaset -p ds9 prefs irafalign yes
 
 testit $tt
 fi
