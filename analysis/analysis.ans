@@ -6,17 +6,15 @@
 #       analysis command line
 
 param foo
-	var1 entry entry 40 {this is a entry}
+	var1 entry entry {something} {this is a entry}
 	var2 checkbox checkbox 1 {this is a checkbox}
 	var3 menu menu AAA|BBB|CCC {this is a menu}
+	var4 open {open file} {foo} {this is a open file dialog}
+	var5 save {save file} {bar} {this is a save file dialog}
 endparam
 
 param bar
 	@analysis/analysis.par
-endparam
-
-param ltc
-	bins entry "Enter number of [t1:t2:]bins" 0 "('0' for default number of bins)"
 endparam
 
 # Help Main Help
@@ -246,7 +244,7 @@ hmenu Test Params
 	Test $param
 	*
 	menu
-	$param(foo); echo "$var1 $var2 $var3" | $text
+	$param(foo); echo "$var1 $var2 $var3 $var4 $var5" | $text
 
 	Test $param @file
 	*
