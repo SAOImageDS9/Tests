@@ -14,6 +14,18 @@ param foo
 endparam
 
 param bar
+  tab "First Params"
+	var1 entry entry {something} {this is a entry}
+	var2 checkbox checkbox 1 {this is a checkbox}
+	var3 menu menu AAA|BBB|CCC {this is a menu}
+  endtab
+  tab "Second Params"
+	var4 open {open file} {foo} {this is a open file dialog}
+	var5 save {save file} {bar} {this is a save file dialog}
+  endtab
+endparam
+
+param foobar
 	@analysis/analysis.par
 endparam
 
@@ -246,10 +258,15 @@ hmenu Test Params
 	menu
 	$param(foo); echo "$var1 $var2 $var3 $var4 $var5" | $text
 
-	Test $param @file
+	Test $param tab
 	*
 	menu
 	$param(bar); echo "$var1 $var2 $var3" | $text
+
+	Test $param @file
+	*
+	menu
+	$param(foobar); echo "$var1 $var2 $var3" | $text
 endhmenu
 
 hmenu Test Network
