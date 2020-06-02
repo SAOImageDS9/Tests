@@ -1,4 +1,3 @@
-#
 # Analysis command descriptions:
 #       menu label
 #       file templates
@@ -26,6 +25,14 @@ param bar
 endparam
 
 param foobar
+	var1 entry name {$filename} {image filename}
+	var2 entry width {$width} {image width}
+	var3 entry height {$height} {image height}
+	var4 entry depth {$depth} {image depth}
+	var5 entry bitpix {$bitpix} {image bitpix}
+endparam
+
+param barfoo
 	@analysis/analysis.par
 endparam
 
@@ -263,10 +270,15 @@ hmenu Test Params
 	menu
 	$param(bar); echo "$var1 $var2 $var3" | $text
 
+	Test $param substitution
+	*
+	menu
+	$param(foobar); echo "$var1 $var2 $var3 $var4 $var5" | $text
+
 	Test $param @file
 	*
 	menu
-	$param(foobar); echo "$var1 $var2 $var3" | $text
+	$param(barfoo); echo "$var1 $var2 $var3" | $text
 endhmenu
 
 hmenu Test Network
