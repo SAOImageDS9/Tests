@@ -58,7 +58,7 @@ hmenu Test Web
 	Web Test file
 	*
 	web
-	file:/Users/joye/saods9/tests/analysis/hv.html
+	file:/Users/joye/Tests/analysis/hv.html
 endhmenu
 
 hmenu Test Basics
@@ -270,7 +270,7 @@ hmenu Test Params
 	menu
 	$param(bar); echo "$var1 $var2 $var3" | $text
 
-	Test $param substitution
+	Test $param macro
 	*
 	menu
 	$param(foobar); echo "$var1 $var2 $var3 $var4 $var5" | $text
