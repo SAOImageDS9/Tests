@@ -1,34 +1,36 @@
 # Analysis command descriptions:
-#       menu label
-#       file templates
-#	menu/bind
-#       analysis command line
+#   menu label
+#   file templates
+#   menu/bind
+#   analysis command line
 
 param foo
-	var1 entry entry {something} {this is a entry}
-	var2 checkbox checkbox 1 {this is a checkbox}
-	var3 menu menu AAA|BBB|CCC {this is a menu}
-	var4 open {open file} {foo} {this is a open file dialog}
-	var5 save {save file} {bar} {this is a save file dialog}
+	var1 entry {entry} {something} {this is a entry}
+	var2 text {text} {something} {this is a text}
+	var3 checkbox {checkbox} 1 {this is a checkbox}
+	var4 menu {menu} {AAA|BBB|CCC} {this is a menu}
+	var5 open {open file} {foo} {this is a open file dialog}
+	var6 save {save file} {bar} {this is a save file dialog}
 endparam
 
 param bar
-  tab "First Params"
-	var1 entry entry {something} {this is a entry}
-	var2 checkbox checkbox 1 {this is a checkbox}
-	var3 menu menu AAA|BBB|CCC {this is a menu}
+  tab {First Params}
+	var1 entry {entry} {something} {this is a entry}
+	var2 text {text} {something} {this is a text}
+	var3 checkbox {checkbox} 1 {this is a checkbox}
+	var4 menu {menu} {AAA|BBB|CCC} {this is a menu}
   endtab
-  tab "Second Params"
-	var4 open {open file} {foo} {this is a open file dialog}
-	var5 save {save file} {bar} {this is a save file dialog}
+  tab {Second Params}
+	var5 open {open file} {foo} {this is a open file dialog}
+	var6 save {save file} {bar} {this is a save file dialog}
   endtab
 endparam
 
 param foobar
 	var1 entry name {$filename} {image filename}
-	var2 entry width {$width} {image width}
-	var3 entry height {$height} {image height}
-	var4 entry depth {$depth} {image depth}
+	var2 text width {$width} {image width}
+	var3 text height {$height} {image height}
+	var4 text depth {$depth} {image depth}
 	var5 entry bitpix {$bitpix} {image bitpix}
 endparam
 
@@ -263,12 +265,12 @@ hmenu Test Params
 	Test $param
 	*
 	menu
-	$param(foo); echo "$var1 $var2 $var3 $var4 $var5" | $text
+	$param(foo); echo "$var1 $var2 $var3 $var4 $var5 $var6" | $text
 
 	Test $param tab
 	*
 	menu
-	$param(bar); echo "$var1 $var2 $var3" | $text
+	$param(bar); echo "$var1 $var2 $var3 $var4 $var5 $var6" | $text
 
 	Test $param macro
 	*
