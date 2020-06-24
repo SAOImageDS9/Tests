@@ -1,7 +1,3 @@
-#set {} samp no
-set {} samp yes
-#set {} samp disconnect
-set {} samp connect
 set {} samp broadcast
 set {} samp broadcast image
 set {} samp send aladin

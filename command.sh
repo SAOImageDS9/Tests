@@ -2172,9 +2172,7 @@ fi
 tt="samp"
 if [ "$1" = "$tt" ]; then
 initit "$tt"
-testit "-samp no"
 testit "-samp yes"
-testit "-samp disconnect"
 testit "-samp connect"
 testit "-samp broadcast"
 testit "-samp broadcast image"

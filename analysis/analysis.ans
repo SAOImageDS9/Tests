@@ -251,6 +251,16 @@ hmenu Test Dialogs
 	menu
 	$message(okcancel,This is a Message) | echo "World" | $text
 
+	Test $messageok(message)
+	*
+	menu
+	echo "$messageok(This is a Message)" | $text
+
+	Test $messageok(okcancel,message)
+	*
+	menu
+	echo "$messageok(okcancel,This is a Message)" | $text
+
 	Test $entry(message)
 	*
 	menu
