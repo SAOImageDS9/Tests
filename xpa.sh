@@ -1201,6 +1201,8 @@ tt="footprint"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/fp..."
 xpaset -p ds9 footprint cxc
+xpaset -p ds9 footprint hla
+xpaset -p ds9 footprint current cxc
 
 xpaget ds9 footprint >> ${tt}.out
 xpaset -p ds9 footprint save foo.xml

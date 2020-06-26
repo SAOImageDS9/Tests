@@ -1,0 +1,34 @@
+set {} footprint cxc
+set {} footprint hla
+set {} footprint current cxc
+
+get footprint
+set {} footprint save foo.xml
+set {} footprint name m51
+set {} footprint coordinate 202.48 47.21 fk5
+set {} footprint system wcs
+set {} footprint sky fk5
+set {} footprint skyformat degrees
+set {} footprint radius 22 arcmin
+# backward compatibility
+set {} footprint size 20 24 arcmin
+set {} footprint retrieve
+set {} footprint regions
+set {} regions delete all
+
+set {} footprint filter {$ObsId<10000}
+set {} footprint filter load aux/fp.flt
+set {} footprint retrieve
+set {} footprint cancel
+#set {} footprint print
+set {} footprint sort {ObsId} incr
+# backward compatibility
+set {} footprint hide
+set {} footprint show yes
+set {} footprint panto no
+
+set {} footprint clear
+set {} footprint close
+
+set {} single
+set {} raise

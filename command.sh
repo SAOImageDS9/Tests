@@ -772,6 +772,8 @@ tt="footprint"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/fp"
 testit "-footprint cxc"
+testit "-footprint hla"
+testit "-footprint current cxc"
 
 testit "-footprint save foo.xml"
 testit "-footprint name m51"
