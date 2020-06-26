@@ -1,4 +1,6 @@
 set {} sia 2mass
+set {} sia cxc
+set {} sia current 2mass
 
 get sia
 set {} sia save foo.xml
@@ -11,6 +13,7 @@ set {} sia radius 22 arcmin
 # backward compatibility
 set {} sia size 20 24 arcmin
 set {} sia retrieve
+set {} sia crosshair
 set {} sia save foo.xml
 set {} sia cancel
 #set {} sia print

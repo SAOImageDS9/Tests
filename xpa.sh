@@ -3155,6 +3155,8 @@ tt="sia"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 sia 2mass
+xpaset -p ds9 sia cxc
+xpaset -p ds9 sia current 2mass
 
 xpaget ds9 sia >> ${tt}.out
 xpaset -p ds9 sia save foo.xml
@@ -3167,9 +3169,11 @@ xpaset -p ds9 sia radius 22 arcmin
 # backward compatibility
 xpaset -p ds9 sia size 20 24 arcmin
 xpaset -p ds9 sia retrieve
+xpaset -p ds9 sia crosshair
 xpaset -p ds9 sia save foo.xml
 xpaset -p ds9 sia cancel
 #xpaset -p ds9 sia print
+xpaset -p ds9 sia close
 xpaset -p ds9 sia close
 
 testit $tt
