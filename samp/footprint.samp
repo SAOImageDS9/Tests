@@ -13,6 +13,7 @@ set {} footprint radius 22 arcmin
 # backward compatibility
 set {} footprint size 20 24 arcmin
 set {} footprint retrieve
+set {} footprint crosshair
 set {} footprint regions
 set {} regions delete all
 
@@ -27,6 +28,8 @@ set {} footprint hide
 set {} footprint show yes
 set {} footprint panto no
 
+set {} footprint clear
+set {} footprint close
 set {} footprint clear
 set {} footprint close
 

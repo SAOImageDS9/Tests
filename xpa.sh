@@ -1216,6 +1216,7 @@ xpaset -p ds9 footprint radius 22 arcmin
 # backward compatibility
 xpaset -p ds9 footprint size 20 24 arcmin
 xpaset -p ds9 footprint retrieve
+xpaset -p ds9 footprint crosshair
 xpaset -p ds9 footprint regions
 xpaset -p ds9 regions delete all
 xpaset -p ds9 footprint filter '$ObsId<10000'
@@ -1229,6 +1230,8 @@ xpaset -p ds9 footprint hide
 xpaset -p ds9 footprint show yes
 xpaset -p ds9 footprint panto no
 
+xpaset -p ds9 footprint clear
+xpaset -p ds9 footprint close
 xpaset -p ds9 footprint clear
 xpaset -p ds9 footprint close
 

@@ -785,6 +785,7 @@ testit "-footprint radius 22 arcmin"
 # backward compatibility
 testit "-footprint size 20 24 arcmin"
 testit "-footprint retrieve"
+testit "-footprint crosshair"
 testit "-footprint regions"
 testit "-regions delete all"
 testit "-footprint filter '\$ObsId<10000'"
@@ -798,6 +799,8 @@ testit "-footprint hide"
 testit "-footprint show yes"
 testit "-footprint panto no"
 
+testit "-footprint clear"
+testit "-footprint close"
 testit "-footprint clear"
 testit "-footprint close"
 
