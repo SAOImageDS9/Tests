@@ -31,10 +31,3 @@ tt="-cat 2mass -cat sky fk4 -cat iras -header"
 testit "$tt"
 doit
 
-tt="-cat 2mass -cat 2mass sky fk4 -header"
-testit "$tt"
-doit
-
-tt="-cat 2mass -cat 2mass sky fk4 -cat iras -header"
-testit "$tt"
-doit
