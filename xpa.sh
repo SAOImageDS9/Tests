@@ -2121,15 +2121,10 @@ sleep $delay
 xpaset -p ds9 plot close
 
 xpaset -p ds9 plot
-xpaset -p ds9 plot bar
 xpaset -p ds9 plot new
-xpaset -p ds9 plot new bar
 xpaset -p ds9 plot new name foo
-xpaset -p ds9 plot new name foo bar
+xpaset -p ds9 plot current foo
 sleep $delay
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
@@ -2137,12 +2132,8 @@ echo "PASSED"
 
 echo -n " stdin..."
 cat plot/xy.dat | xpaset ds9 plot new {The Title} {X Axis} {Y Axis} xy
-cat plot/xy.dat | xpaset ds9 plot new bar {The Title} {X Axis} {Y Axis} xy
 cat plot/xy.dat | xpaset ds9 plot new name foo {The Title} {X Axis} {Y Axis} xy
-cat plot/xy.dat | xpaset ds9 plot new name foo bar {The Title} {X Axis} {Y Axis} xy
 sleep $delay
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
@@ -2162,7 +2153,7 @@ echo -n " data..."
 xpaset -p ds9 plot new
 cat plot/xy.dat | xpaset ds9 plot data xy
 xpaset -p ds9 plot new name foo
-cat plot/xy.dat | xpaset ds9 plot foo data xy
+cat plot/xy.dat | xpaset ds9 plot data xy
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close

@@ -5,15 +5,10 @@ set {} sleep .5
 set {} plot close
 
 set {} plot
-set {} plot bar
 set {} plot new
-set {} plot new bar
 set {} plot new name foo
-set {} plot new name foo bar
+set {} plot current foo
 set {} sleep .5
-set {} plot close
-set {} plot close
-set {} plot close
 set {} plot close
 set {} plot close
 set {} plot close
@@ -22,7 +17,7 @@ set {} plot close
 set {} plot new
 set file:plot/xy.dat plot data xy
 set {} plot new name foo
-set file:plot/xy.dat plot foo data xy
+set file:plot/xy.dat plot data xy
 set {} sleep .5
 set {} plot close
 set {} plot close
