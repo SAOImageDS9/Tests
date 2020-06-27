@@ -1,8 +1,10 @@
+set {} catalog sao
 set {} catalog cds 2mass
-
 get catalog
-get catalog header
-get catalog 2mass header
+set {} catalog current sao
+
+set {} catalog clear
+set {} catalog close
 set {} catalog clear
 set {} catalog close
 

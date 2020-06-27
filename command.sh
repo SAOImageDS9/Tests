@@ -251,17 +251,20 @@ fi
 tt="catalog"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/cat"
+testit "-catalog sao"
 testit "-catalog cds 2mass"
+testit "-catalog current sao"
 
 testit "-catalog clear"
+testit "-catalog close"
+testit "-catalog clear"
+testit "-catalog close"
+
+testit "-catalog new"
 testit "-catalog close"
 
 # parse error if followed by another command
 #testit "-catalog"
-#testit "-catalog close"
-
-testit "-catalog new"
-testit "-catalog close"
 
 testit "-catalog cds 'I/284'"
 testit "-catalog clear"

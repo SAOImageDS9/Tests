@@ -309,11 +309,13 @@ fi
 tt="catalog"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/cat..."
+xpaset -p ds9 catalog sao
 xpaset -p ds9 catalog cds 2mass
-
 xpaget ds9 catalog >> ${tt}.out
-xpaget ds9 catalog header > /dev/null
-xpaget ds9 catalog 2mass header > /dev/null
+xpaset -p ds9 catalog current sao
+
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
