@@ -1976,6 +1976,32 @@ testit "-psprint resolution 150"
 doit
 fi
 
+tt="prism"
+if [ "$1" = "$tt" ]; then
+initit "$tt"
+# parse error if followed by another command
+#testit "-prism"
+#testit "-prism close"
+testit "-prism open"
+testit "-prism close"
+testit "-prism data/img.fits"
+testit "-prism clear"
+testit "-prism close"
+testit "-prism fits/table.fits[2]"
+testit "-prism extension 1"
+testit "-prism extension STDEVT"
+testit "-prism image"
+testit "-frame delete"
+testit "-prism plot RAWX RAWY scatter new"
+testit "-prism plot RAWX RAWY PHA scatter new"
+testit "-prism plot RAWX RAWY PHA PI scatter new"
+testit "-prism histogram RAWX new"
+testit "-prism histogram RAWX 40 new"
+testit "-prism close"
+
+doit
+fi
+
 tt="private"
 if [ "$1" = "$tt" ]; then
 initit "$tt"

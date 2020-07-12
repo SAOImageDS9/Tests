@@ -131,6 +131,7 @@ doit "$1" precision
 doit "$1" prefs
 doit "$1" preserve
 doit "$1" print
+doit "$1" prism
 doit "$1" raise
 doit "$1" regions
 doit "$1" restore

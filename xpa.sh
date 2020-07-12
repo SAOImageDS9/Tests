@@ -2720,6 +2720,33 @@ xpaset -p ds9 psprint resolution 150
 testit $tt
 fi
 
+tt="prism"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 prism
+xpaget ds9 prism  >> ${tt}.out
+xpaset -p ds9 prism close
+xpaset -p ds9 prism open
+xpaset -p ds9 prism close
+xpaset -p ds9 prism data/img.fits
+xpaset -p ds9 prism clear
+xpaset -p ds9 prism close
+xpaset -p ds9 prism fits/table.fits[2]
+xpaset -p ds9 prism extension 1
+xpaset -p ds9 prism extension STDEVT
+xpaset -p ds9 prism image
+xpaset -p ds9 frame delete
+xpaset -p ds9 prism plot RAWX RAWY scatter new
+xpaset -p ds9 prism plot RAWX RAWY PHA scatter new
+xpaset -p ds9 prism plot RAWX RAWY PHA PI scatter new
+xpaset -p ds9 prism histogram
+xpaset -p ds9 prism histogram RAWX new
+xpaset -p ds9 prism histogram RAWX 40 new
+xpaset -p ds9 prism close
+
+testit $tt
+fi
+
 tt="raise"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
