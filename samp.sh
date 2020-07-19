@@ -51,7 +51,7 @@ fi
 xpaset -p ds9 scale zscale
 xpaset -p ds9 fits data/img.fits
 
-doit "$1" 2mass
+#doit "$1" 2mass
 doit "$1" 3d
 doit "$1" about
 doit "$1" align

@@ -5,8 +5,8 @@ set {} prism data/img.fits
 set {} prism clear
 set {} prism close
 set {} prism fits/table.fits[2]
-set {} prism extension 1
-set {} prism extension STDEVT
+set {} prism ext 1
+set {} prism ext STDEVT
 set {} prism image
 set {} frame delete
 set {} prism plot RAWX RAWY scatter new

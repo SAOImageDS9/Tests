@@ -2732,8 +2732,8 @@ xpaset -p ds9 prism data/img.fits
 xpaset -p ds9 prism clear
 xpaset -p ds9 prism close
 xpaset -p ds9 prism fits/table.fits[2]
-xpaset -p ds9 prism extension 1
-xpaset -p ds9 prism extension STDEVT
+xpaset -p ds9 prism ext 1
+xpaset -p ds9 prism ext STDEVT
 xpaset -p ds9 prism image
 xpaset -p ds9 frame delete
 xpaset -p ds9 prism plot RAWX RAWY scatter new

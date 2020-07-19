@@ -41,7 +41,7 @@ if [ "$1" = "slow" ]; then
 fi
 
 tt="2mass"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 initit "$tt"
 testit "-2mass open"
 testit "-2mass close"
@@ -1988,8 +1988,8 @@ testit "-prism data/img.fits"
 testit "-prism clear"
 testit "-prism close"
 testit "-prism fits/table.fits[2]"
-testit "-prism extension 1"
-testit "-prism extension STDEVT"
+testit "-prism ext 1"
+testit "-prism ext STDEVT"
 testit "-prism image"
 testit "-frame delete"
 testit "-prism plot RAWX RAWY scatter new"
