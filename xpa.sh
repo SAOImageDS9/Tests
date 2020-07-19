@@ -2441,11 +2441,6 @@ echo -n " barmode..."
 xpaset -p ds9 plot new bar
 xpaset -p ds9 plot load plot/xy.dat xy
 xpaset -p ds9 plot load plot/xyey.dat xyey
-xpaget ds9 plot barmode >> ${tt}.out
-xpaset -p ds9 plot barmode normal
-xpaset -p ds9 plot barmode stacked
-xpaset -p ds9 plot barmode aligned
-xpaset -p ds9 plot barmode overlap
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2456,6 +2451,27 @@ xpaset -p ds9 plot load plot/xy.dat xy
 xpaget ds9 plot show >> ${tt}.out
 xpaset -p ds9 plot show no
 xpaset -p ds9 plot show yes
+sleep $delay
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " color..."
+xpaset -p ds9 plot new
+xpaset -p ds9 plot load plot/xy.dat xy
+xpaget ds9 plot color >> ${tt}.out
+xpaset -p ds9 plot color magenta
+xpaset -p ds9 plot color "#2C8"
+sleep $delay
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " width..."
+xpaset -p ds9 plot new
+xpaset -p ds9 plot load plot/xy.dat xy
+xpaget ds9 plot width >> ${tt}.out
+xpaget ds9 plot dash >> ${tt}.out
+xpaset -p ds9 plot width 2
+xpaset -p ds9 plot dash yes
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2491,27 +2507,6 @@ xpaset -p ds9 plot smooth linear
 xpaset -p ds9 plot smooth cubic
 xpaset -p ds9 plot smooth quadratic
 xpaset -p ds9 plot smooth catrom
-sleep $delay
-xpaset -p ds9 plot close
-echo "PASSED"
-
-echo -n " color..."
-xpaset -p ds9 plot new
-xpaset -p ds9 plot load plot/xy.dat xy
-xpaget ds9 plot color >> ${tt}.out
-xpaset -p ds9 plot color magenta
-xpaset -p ds9 plot color "#2C8"
-sleep $delay
-xpaset -p ds9 plot close
-echo "PASSED"
-
-echo -n " width..."
-xpaset -p ds9 plot new
-xpaset -p ds9 plot load plot/xy.dat xy
-xpaget ds9 plot width >> ${tt}.out
-xpaget ds9 plot dash >> ${tt}.out
-xpaset -p ds9 plot width 2
-xpaset -p ds9 plot dash yes
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"

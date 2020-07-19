@@ -286,11 +286,6 @@ set {} plot close
 set {} plot new bar
 set {} plot load plot/xy.dat xy
 set {} plot load plot/xyey.dat xyey
-get plot barmode
-set {} plot barmode normal
-set {} plot barmode stacked
-set {} plot barmode aligned
-set {} plot barmode overlap
 set {} sleep .5
 set {} plot close
 
@@ -300,6 +295,25 @@ set {} plot load plot/xy.dat xy
 get plot show
 set {} plot show no
 set {} plot show yes
+set {} sleep .5
+set {} plot close
+
+# color...
+set {} plot new
+set {} plot load plot/xy.dat xy
+get plot color
+set {} plot color magenta
+set {} plot color "#2C8"
+set {} sleep .5
+set {} plot close
+
+# width...
+set {} plot new
+set {} plot load plot/xy.dat xy
+get plot width
+get plot dash
+set {} plot width 2
+set {} plot dash yes
 set {} sleep .5
 set {} plot close
 
@@ -333,25 +347,6 @@ set {} plot smooth linear
 set {} plot smooth cubic
 set {} plot smooth quadratic
 set {} plot smooth catrom
-set {} sleep .5
-set {} plot close
-
-# color...
-set {} plot new
-set {} plot load plot/xy.dat xy
-get plot color
-set {} plot color magenta
-set {} plot color "#2C8"
-set {} sleep .5
-set {} plot close
-
-# width...
-set {} plot new
-set {} plot load plot/xy.dat xy
-get plot width
-get plot dash
-set {} plot width 2
-set {} plot dash yes
 set {} sleep .5
 set {} plot close
 
