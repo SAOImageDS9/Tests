@@ -9,11 +9,10 @@ set {} prism ext 1
 set {} prism ext STDEVT
 set {} prism image
 set {} frame delete
+set {} prism histogram RAWX 40
 set {} prism plot RAWX RAWY scatter new
 set {} prism plot RAWX RAWY PHA scatter new
 set {} prism plot RAWX RAWY PHA PHI scatter new
-set {} prism histogram RAWX new
-set {} prism histogram RAWX 40 new
 set {} prism close
 
 set {} single

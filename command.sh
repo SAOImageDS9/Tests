@@ -1988,11 +1988,10 @@ testit "-prism ext 1"
 testit "-prism ext STDEVT"
 testit "-prism image"
 testit "-frame delete"
+testit "-prism histogram RAWX 40"
 testit "-prism plot RAWX RAWY scatter new"
 testit "-prism plot RAWX RAWY PHA scatter new"
 testit "-prism plot RAWX RAWY PHA PI scatter new"
-testit "-prism histogram RAWX new"
-testit "-prism histogram RAWX 40 new"
 testit "-prism close"
 
 doit
