@@ -4,7 +4,7 @@ set {} prism close
 set {} prism data/img.fits
 set {} prism clear
 set {} prism close
-set {} prism fits/table.fits[2]
+set {} prism fits/table.fits
 set {} prism ext 1
 set {} prism ext STDEVT
 set {} prism image
