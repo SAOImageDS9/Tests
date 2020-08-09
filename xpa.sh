@@ -43,7 +43,7 @@ testit () {
 echo
 echo "*** xpa.sh ***"
 
-delay=.5
+delay=1
 
 # must be invoked
 # console
@@ -2128,25 +2128,30 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " file..."
-xpaset -p ds9 plot plot/xy.dat
+echo -n " file name dim..."
+xpaset -p ds9 plot line plot/xy.dat xy
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
-xpaset -p ds9 plot plot/xy.dat xy
+echo "PASSED"
+
+echo -n " file name title xaxis yaxis dim..."
+xpaset -p ds9 plot line plot/xy.dat AA BB CC xy
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
-xpaset -p ds9 plot plot/xy.dat AA BB CC xy
-sleep $delay
-xpaset -p ds9 plot close
+echo "PASSED"
 
 echo -n " stdin..."
 cat plot/xy.dat | xpaset ds9 plot {The Title} {X Axis} {Y Axis} xy
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 
 echo -n " stdin with header..."
 cat plot/stdin.2.dat | xpaset ds9 plot stdin
 cat plot/stdin.2.dat | xpaset ds9 plot line stdin
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
@@ -2155,14 +2160,15 @@ echo "PASSED"
 echo -n " data..."
 xpaset -p ds9 plot
 cat plot/xy.dat | xpaset ds9 plot data xy
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " save/load..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot save foo.dat
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2170,6 +2176,7 @@ echo "PASSED"
 echo -n " add/select/delete graph..."
 xpaset -p ds9 plot
 xpaset -p ds9 plot add graph line
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot select graph 1
 xpaget ds9 plot select graph > /dev/null
@@ -2178,9 +2185,9 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " select/delete dataset..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot load plot/xyexey.dat xyexey
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot select dataset 1
 xpaget ds9 plot select dataset > /dev/null
@@ -2195,6 +2202,7 @@ xpaset -p ds9 plot add graph bar
 xpaset -p ds9 plot add graph scatter
 xpaget ds9 plot layout >> /dev/null
 xpaget ds9 plot layout strip scale >> /dev/null
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot layout row
 xpaset -p ds9 plot layout column
@@ -2205,73 +2213,72 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " duplicate..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot duplicate
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " stats..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot stats >> /dev/null
 xpaset -p ds9 plot stats yes
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " list..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot list >> /dev/null
 xpaset -p ds9 plot list yes
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " save/load config..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot save config foo.plt
 xpaset -p ds9 plot load config foo.plt
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " pagesetup..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot pagesetup orient portrait
 xpaset -p ds9 plot pagesetup size letter
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " print..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 #xpaset -p ds9 plot print
 xpaset -p ds9 plot print destination printer
 xpaset -p ds9 plot print command "lp"
 xpaset -p ds9 plot print filename "foo.ps"
 xpaset -p ds9 plot print color rgb
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " mode..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot mode >> ${tt}.out
 xpaset -p ds9 plot mode pointer
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " export..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot export foo.gif
 xpaset -p ds9 plot export gif foo.gif
 xpaset -p ds9 plot export foo.tiff
@@ -2280,13 +2287,13 @@ xpaset -p ds9 plot export foo.jpeg
 xpaset -p ds9 plot export jpeg foo.jpeg
 xpaset -p ds9 plot export foo.png
 xpaset -p ds9 plot export png foo.png
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " axis..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot axis x grid no
 xpaset -p ds9 plot axis x grid yes
 xpaset -p ds9 plot axis x log yes
@@ -2321,31 +2328,31 @@ xpaget ds9 plot axis y auto >> ${tt}.out
 xpaget ds9 plot axis y min >> ${tt}.out
 xpaget ds9 plot axis y max >> ${tt}.out
 xpaget ds9 plot axis y format >> ${tt}.out
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " foreground..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot foreground >> ${tt}.out
 xpaset -p ds9 plot foreground black
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " background..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot background >> ${tt}.out
 xpaset -p ds9 plot background red
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " legend..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot legend >> ${tt}.out
 xpaget ds9 plot legend position >> ${tt}.out
 xpaset -p ds9 plot legend yes
@@ -2353,13 +2360,13 @@ xpaset -p ds9 plot legend position left
 xpaset -p ds9 plot legend position right
 xpaset -p ds9 plot legend position bottom
 xpaset -p ds9 plot legend position top
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " font..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot title {This is a Title}
 xpaset -p ds9 plot title xaxis {X Axis}
 xpaset -p ds9 plot title yaxis {Y Axis}
@@ -2425,13 +2432,13 @@ xpaset -p ds9 plot font legend weight bold
 xpaset -p ds9 plot font legend slant roman
 # backward compatibility
 xpaset -p ds9 plot font legend style normal
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " title..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot title {This is a Title}
 xpaset -p ds9 plot title x {X Axis}
 xpaset -p ds9 plot title y {Y Axis}
@@ -2440,23 +2447,23 @@ xpaget ds9 plot title >> ${tt}.out
 xpaget ds9 plot title x >> ${tt}.out
 xpaget ds9 plot title y >> ${tt}.out
 xpaget ds9 plot title legend >> ${tt}.out
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " show..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot show >> ${tt}.out
 xpaset -p ds9 plot show no
 xpaset -p ds9 plot show yes
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " color..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot line color >> ${tt}.out
 # backward compatibility
 xpaget ds9 plot color >> /dev/null
@@ -2464,13 +2471,13 @@ xpaset -p ds9 plot line color magenta
 # backward compatibility
 xpaset -p ds9 plot color magenta
 xpaset -p ds9 plot line color "#2C8"
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " width..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot line width >> ${tt}.out
 xpaget ds9 plot line dash >> ${tt}.out
 # backward compatibility
@@ -2483,13 +2490,13 @@ xpaset -p ds9 plot line dash yes
 xpaset -p ds9 plot width 2
 # backward compatibility
 xpaset -p ds9 plot dash yes
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " shape..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot line shape symbol >> ${tt}.out
 xpaget ds9 plot line shape fill >> ${tt}.out
 xpaget ds9 plot line shape color >> ${tt}.out
@@ -2513,13 +2520,13 @@ xpaset -p ds9 plot line shape circle
 xpaset -p ds9 plot line shape fill no
 xpaset -p ds9 plot line shape fill yes
 xpaset -p ds9 plot line shape color cyan
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " smooth..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot line smooth >> ${tt}.out
 # backward compatibility
 xpaget ds9 plot smooth >> /dev/null
@@ -2530,13 +2537,13 @@ xpaset -p ds9 plot line smooth linear
 xpaset -p ds9 plot line smooth cubic
 xpaset -p ds9 plot line smooth quadratic
 xpaset -p ds9 plot line smooth catrom
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " error..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xyexey.dat xyexey
+xpaset -p ds9 plot line plot/xyexey.dat xyexey
 xpaget ds9 plot error >> ${tt}.out
 xpaget ds9 plot error cap >> ${tt}.out
 xpaget ds9 plot error color >> ${tt}.out
@@ -2547,23 +2554,23 @@ xpaset -p ds9 plot error cap yes
 xpaset -p ds9 plot error cap no
 xpaset -p ds9 plot error color blue
 xpaset -p ds9 plot error width 2
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " name..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot name >> ${tt}.out
 xpaset -p ds9 plot legend yes
 xpaset -p ds9 plot name {This is a test}
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " select..."
-xpaset -p ds9 plot
-xpaset -p ds9 plot load plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot load plot/xyey.dat xyey
 xpaget ds9 plot select >> ${tt}.out
 xpaset -p ds9 plot select dataset 2
@@ -2571,6 +2578,7 @@ xpaset -p ds9 plot select dataset 2
 xpaset -p ds9 plot select 2
 # backward compatibility
 xpaset -p ds9 plot dataset 1
+xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
