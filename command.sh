@@ -22,7 +22,7 @@ doit () {
 echo
 echo "*** command.sh ***"
 
-delay=1
+delay=.5
 
 # must be invoked
 # -private
@@ -1494,13 +1494,13 @@ fi
 tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "..empty plot"
-testit "-plot new"
+testit "-plot line new"
 testit "-sleep $delay"
 testit "-plot close"
 doit
 
 initit "..current plot"
-testit "-plot new"
+testit "-plot line new"
 testit "-plot current ap"
 testit "-sleep $delay"
 testit "-plot close"
@@ -1521,7 +1521,7 @@ testit "-plot close"
 doit
 
 initit "..save/load"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot save foo.dat"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1529,7 +1529,7 @@ testit "-plot close"
 doit
 
 initit "..add/select/delete graph"
-testit "-plot new"
+testit "-plot line new"
 testit "-plot add graph line"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1539,7 +1539,7 @@ testit "-plot close"
 doit
 
 initit "..add/select/delete dataset"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot load plot/xyexey.dat xyexey"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1549,7 +1549,7 @@ testit "-plot close"
 doit
 
 initit "..layout"
-testit "-plot new"
+testit "-plot line new"
 testit "-plot add graph line"
 testit "-plot add graph bar"
 testit "-plot add graph scatter"
@@ -1564,7 +1564,7 @@ testit "-plot close"
 doit
 
 initit "..duplicate"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot dup"
 testit "-plot duplicate"
 testit "-plot theme no"
@@ -1573,7 +1573,7 @@ testit "-plot close"
 doit
 
 initit "..stats"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot stats yes"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1581,7 +1581,7 @@ testit "-plot close"
 doit
 
 initit "..list"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot list yes"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1589,7 +1589,7 @@ testit "-plot close"
 doit
 
 initit "..save/load config"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot save config foo.plt"
 testit "-plot load config foo.plt"
 testit "-plot theme no"
@@ -1598,7 +1598,7 @@ testit "-plot close"
 doit
 
 initit "..pagesetup"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot pagesetup orient portrait"
 testit "-plot pagesetup pagesize letter"
 testit "-plot theme no"
@@ -1607,7 +1607,7 @@ testit "-plot close"
 doit
 
 initit "..print"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 #testit "-plot print"
 testit "-plot print destination printer"
 testit "-plot print command lp"
@@ -1619,7 +1619,7 @@ testit "-plot close"
 doit
 
 initit "..mode"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot mode pointer"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1627,7 +1627,7 @@ testit "-plot close"
 doit
 
 initit "..export"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot export foo.gif"
 testit "-plot export gif foo.gif"
 testit "-plot export foo.tiff"
@@ -1642,7 +1642,7 @@ testit "-plot close"
 doit
 
 initit "..axis"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot axis x grid no"
 testit "-plot axis x grid yes"
 testit "-plot axis x log yes"
@@ -1669,7 +1669,7 @@ testit "-plot close"
 doit
 
 initit "..foreground"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot foreground black"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1677,7 +1677,7 @@ testit "-plot close"
 doit
 
 initit "..background"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot background red"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1685,7 +1685,7 @@ testit "-plot close"
 doit
 
 initit "..legend"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot legend yes"
 testit "-plot legend position left"
 testit "-plot legend position right"
@@ -1697,7 +1697,7 @@ testit "-plot close"
 doit
 
 initit "..font"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot title 'This is a Title'"
 testit "-plot title xaxis 'X Axis'"
 testit "-plot title yaxis 'Y Axis'"
@@ -1739,7 +1739,7 @@ testit "-plot close"
 doit
 
 initit "..title"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot title 'This is a Title'"
 testit "-plot title x 'X Axis'"
 testit "-plot title y 'Y Axis'"
@@ -1750,7 +1750,7 @@ testit "-plot close"
 doit
 
 initit "..show"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot show no"
 testit "-plot show yes"
 testit "-plot theme no"
@@ -1759,7 +1759,7 @@ testit "-plot close"
 doit
 
 initit "..color"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot line color magenta"
 testit "-plot line color '#2C8'"
 testit "-plot theme no"
@@ -1768,7 +1768,7 @@ testit "-plot close"
 doit
 
 initit "..width"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot line width 2"
 testit "-plot line dash yes"
 testit "-plot theme no"
@@ -1777,7 +1777,7 @@ testit "-plot close"
 doit
 
 initit "..shape"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot line shape circle"
 testit "-plot line shape square"
 testit "-plot line shape diamond"
@@ -1796,7 +1796,7 @@ testit "-plot close"
 doit
 
 initit "..smooth"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot line smooth step"
 testit "-plot line smooth linear"
 testit "-plot line smooth cubic"
@@ -1808,7 +1808,7 @@ testit "-plot close"
 doit
 
 initit "..error"
-testit "-plot plot/xyexey.dat xyexey"
+testit "-plot line plot/xyexey.dat xyexey"
 testit "-plot error no"
 testit "-plot error yes"
 testit "-plot error cap yes"
@@ -1821,7 +1821,7 @@ testit "-plot close"
 doit
 
 initit "..name"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot legend yes"
 testit "-plot name 'This is a test'"
 testit "-plot theme no"
@@ -1830,7 +1830,7 @@ testit "-plot close"
 doit
 
 initit "..select"
-testit "-plot plot/xy.dat xy"
+testit "-plot line plot/xy.dat xy"
 testit "-plot load plot/xyey.dat xyey"
 testit "-plot select dataset 2"
 testit "-plot theme no"

@@ -43,7 +43,7 @@ testit () {
 echo
 echo "*** xpa.sh ***"
 
-delay=1
+delay=.5
 
 # must be invoked
 # console

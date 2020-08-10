@@ -62,10 +62,10 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
 echo -n "stdin 2|3|4|5..."
-cat plot/stdin.2.dat | xpaset ds9 plot stdin
-cat plot/stdin.3.dat | xpaset ds9 plot stdin
-cat plot/stdin.4.dat | xpaset ds9 plot stdin
-cat plot/stdin.5.dat | xpaset ds9 plot stdin
+cat plot/stdin.2.dat | xpaset ds9 plot line stdin
+cat plot/stdin.3.dat | xpaset ds9 plot line stdin
+cat plot/stdin.4.dat | xpaset ds9 plot line stdin
+cat plot/stdin.5.dat | xpaset ds9 plot line stdin
 sleep "$delay"
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
@@ -94,10 +94,10 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n "stdin xy|xyex|xyey|xyexey..."
-cat plot/stdin.xy.dat | xpaset ds9 plot stdin
-cat plot/stdin.xyex.dat | xpaset ds9 plot stdin
-cat plot/stdin.xyey.dat | xpaset ds9 plot stdin
-cat plot/stdin.xyexey.dat | xpaset ds9 plot stdin
+cat plot/stdin.xy.dat | xpaset ds9 plot line stdin
+cat plot/stdin.xyex.dat | xpaset ds9 plot line stdin
+cat plot/stdin.xyey.dat | xpaset ds9 plot line stdin
+cat plot/stdin.xyexey.dat | xpaset ds9 plot line stdin
 sleep "$delay"
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
@@ -126,15 +126,15 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n "stdin text|error..."
-cat plot/stdin.error.dat | xpaset ds9 plot stdin
-cat plot/stdin.text.dat | xpaset ds9 plot stdin
+cat plot/stdin.error.dat | xpaset ds9 plot line stdin
+cat plot/stdin.text.dat | xpaset ds9 plot line stdin
 sleep "$delay"
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n "4|5..."
-cat plot/4.dat | xpaset ds9 plot "{The Title}" "{X Axis}" "{Y Axis}" 4
-cat plot/5.dat | xpaset ds9 plot "{The Title}" "{X Axis}" "{Y Axis}" 5
+cat plot/4.dat | xpaset ds9 plot line "{The Title}" "{X Axis}" "{Y Axis}" 4
+cat plot/5.dat | xpaset ds9 plot line "{The Title}" "{X Axis}" "{Y Axis}" 5
 sleep "$delay"
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
@@ -153,10 +153,10 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n "xy|xyex|xyey|xyexey..."
-cat plot/xy.dat | xpaset ds9 plot "{The Title}" "{X Axis}" "{Y Axis}" xy
-cat plot/xyex.dat | xpaset ds9 plot "{The Title}" "{X Axis}" "{Y Axis}" xyex
-cat plot/xyey.dat | xpaset ds9 plot "{The Title}" "{X Axis}" "{Y Axis}" xyey
-cat plot/xyexey.dat | xpaset ds9 plot "{The Title}" "{X Axis}" "{Y Axis}" xyexey
+cat plot/xy.dat | xpaset ds9 plot line "{The Title}" "{X Axis}" "{Y Axis}" xy
+cat plot/xyex.dat | xpaset ds9 plot line "{The Title}" "{X Axis}" "{Y Axis}" xyex
+cat plot/xyey.dat | xpaset ds9 plot line "{The Title}" "{X Axis}" "{Y Axis}" xyey
+cat plot/xyexey.dat | xpaset ds9 plot line "{The Title}" "{X Axis}" "{Y Axis}" xyexey
 sleep "$delay"
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
