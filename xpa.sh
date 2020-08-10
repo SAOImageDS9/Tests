@@ -2117,12 +2117,12 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo "$tt..."
 
 echo -n " empty plot..."
-xpaset -p ds9 plot
+xpaset -p ds9 plot line
 xpaget ds9 plot >> ${tt}.out
 sleep $delay
 xpaset -p ds9 plot close
 
-xpaset -p ds9 plot
+xpaset -p ds9 plot line
 xpaset -p ds9 plot current ap
 sleep $delay
 xpaset -p ds9 plot close
@@ -2143,22 +2143,20 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " stdin..."
-cat plot/xy.dat | xpaset ds9 plot {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot line {The Title} {X Axis} {Y Axis} xy
 xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 
 echo -n " stdin with header..."
-cat plot/stdin.2.dat | xpaset ds9 plot stdin
 cat plot/stdin.2.dat | xpaset ds9 plot line stdin
 xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
-xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " data..."
-xpaset -p ds9 plot
+xpaset -p ds9 plot line
 cat plot/xy.dat | xpaset ds9 plot data xy
 xpaset -p ds9 plot theme no
 sleep $delay
@@ -2174,7 +2172,7 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " add/select/delete graph..."
-xpaset -p ds9 plot
+xpaset -p ds9 plot line
 xpaset -p ds9 plot add graph line
 xpaset -p ds9 plot theme no
 sleep $delay
@@ -2196,7 +2194,7 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " layout..."
-xpaset -p ds9 plot
+xpaset -p ds9 plot line
 xpaset -p ds9 plot add graph line
 xpaset -p ds9 plot add graph bar
 xpaset -p ds9 plot add graph scatter
