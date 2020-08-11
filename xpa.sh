@@ -2130,15 +2130,19 @@ echo "PASSED"
 
 echo -n " file name dim..."
 xpaset -p ds9 plot line plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat foo xy
 xpaset -p ds9 plot theme no
 sleep $delay
+xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " file name title xaxis yaxis dim..."
-xpaset -p ds9 plot line plot/xy.dat AA BB CC xy
+xpaset -p ds9 plot line plot/xy.dat {The Title} {X Axis} {Y Axis} xy
+xpaset -p ds9 plot line plot/xy.dat foo {The Title} {X Axis} {Y Axis} xy
 xpaset -p ds9 plot theme no
 sleep $delay
+xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 

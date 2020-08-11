@@ -11,12 +11,15 @@ set {} plot close
 
 # file name dim...
 set {} plot line plot/xy.dat xy
+set {} plot line plot/xy.dat foo xy
 set {} plot theme no
 set {} sleep .5
 set {} plot close
+set {} plot close
 
 # file name title xaxis yaxis dim...
-set {} plot line plot/xy.dat AA BB CC xy
+set {} plot line plot/xy.dat "The Title" "X Axis" "Y Axis" xy
+set {} plot line plot/xy.dat foo "The Title" "X Axis" "Y Axis" xy
 set {} plot theme no
 set {} sleep .5
 set {} plot close
@@ -215,7 +218,7 @@ set {} plot close
 
 # font...
 set {} plot line plot/xy.dat xy
-set {} plot title "This is a Title"
+set {} plot title "The Title"
 set {} plot title xaxis "X Axis"
 set {} plot title yaxis "Y Axis"
 set {} plot title legend "This is the Legend"
