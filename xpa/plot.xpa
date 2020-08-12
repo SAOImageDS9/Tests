@@ -48,16 +48,23 @@ X Axis
 Y Axis
 This is the Legend
 yes
+Dataset 1
+linear
 black
 1
 no
 none
-yes
 red
-linear
+yes
+white
+1
+yes
+1
+circle
+black
+yes
 yes
 no
 red
 1
-Dataset 1
 2

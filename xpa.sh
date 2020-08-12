@@ -2130,19 +2130,15 @@ echo "PASSED"
 
 echo -n " file name dim..."
 xpaset -p ds9 plot line plot/xy.dat xy
-xpaset -p ds9 plot line plot/xy.dat foo xy
 xpaset -p ds9 plot theme no
 sleep $delay
-xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " file name title xaxis yaxis dim..."
 xpaset -p ds9 plot line plot/xy.dat {The Title} {X Axis} {Y Axis} xy
-xpaset -p ds9 plot line plot/xy.dat foo {The Title} {X Axis} {Y Axis} xy
 xpaset -p ds9 plot theme no
 sleep $delay
-xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 
@@ -2454,97 +2450,94 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " show..."
+echo -n " dataset..."
 xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot show >> ${tt}.out
+xpaget ds9 plot name >> ${tt}.out
 xpaset -p ds9 plot show no
 xpaset -p ds9 plot show yes
+xpaset -p ds9 plot legend yes
+xpaset -p ds9 plot name {This is a test}
 xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " color..."
-xpaset -p ds9 plot line plot/xy.dat xy
-xpaget ds9 plot line color >> ${tt}.out
-# backward compatibility
-xpaget ds9 plot color >> /dev/null
-xpaset -p ds9 plot line color magenta
-# backward compatibility
-xpaset -p ds9 plot color magenta
-xpaset -p ds9 plot line color "#2C8"
-xpaset -p ds9 plot theme no
-sleep $delay
-xpaset -p ds9 plot close
-echo "PASSED"
-
-echo -n " width..."
-xpaset -p ds9 plot line plot/xy.dat xy
-xpaget ds9 plot line width >> ${tt}.out
-xpaget ds9 plot line dash >> ${tt}.out
-# backward compatibility
-xpaget ds9 plot width >> /dev/null
-# backward compatibility
-xpaget ds9 plot dash >> /dev/null
-xpaset -p ds9 plot line width 2
-xpaset -p ds9 plot line dash yes
-# backward compatibility
-xpaset -p ds9 plot width 2
-# backward compatibility
-xpaset -p ds9 plot dash yes
-xpaset -p ds9 plot theme no
-sleep $delay
-xpaset -p ds9 plot close
-echo "PASSED"
-
-echo -n " shape..."
-xpaset -p ds9 plot line plot/xy.dat xy
-xpaget ds9 plot line shape symbol >> ${tt}.out
-xpaget ds9 plot line shape fill >> ${tt}.out
-xpaget ds9 plot line shape color >> ${tt}.out
-# backward compatibility
-xpaget ds9 plot shape >> /dev/null
-# backward compatibility
-xpaget ds9 plot shape fill >> /dev/null
-# backward compatibility
-xpaget ds9 plot shape color >> /dev/null
-xpaset -p ds9 plot line shape circle
-# backward compatibility
-xpaset -p ds9 plot shape circle
-xpaset -p ds9 plot line shape square
-xpaset -p ds9 plot line shape diamond
-xpaset -p ds9 plot line shape plus
-xpaset -p ds9 plot line shape splus
-xpaset -p ds9 plot line shape scross
-xpaset -p ds9 plot line shape triangle
-xpaset -p ds9 plot line shape arrow
-xpaset -p ds9 plot line shape circle
-xpaset -p ds9 plot line shape fill no
-xpaset -p ds9 plot line shape fill yes
-xpaset -p ds9 plot line shape color cyan
-xpaset -p ds9 plot theme no
-sleep $delay
-xpaset -p ds9 plot close
-echo "PASSED"
-
-echo -n " smooth..."
+echo -n " line dataset..."
 xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot line smooth >> ${tt}.out
-# backward compatibility
-xpaget ds9 plot smooth >> /dev/null
-xpaset -p ds9 plot line smooth step
-# backward compatibility
-xpaset -p ds9 plot smooth step
+xpaget ds9 plot line color >> ${tt}.out
+xpaget ds9 plot line width >> ${tt}.out
+xpaget ds9 plot line dash >> ${tt}.out
+xpaget ds9 plot line shape symbol >> ${tt}.out
+xpaget ds9 plot line shape color >> ${tt}.out
+xpaget ds9 plot line shape fill >> ${tt}.out
+
 xpaset -p ds9 plot line smooth linear
 xpaset -p ds9 plot line smooth cubic
 xpaset -p ds9 plot line smooth quadratic
 xpaset -p ds9 plot line smooth catrom
+xpaset -p ds9 plot line color magenta
+xpaset -p ds9 plot line color "#2C8"
+xpaset -p ds9 plot line width 2
+xpaset -p ds9 plot line dash yes
+xpaset -p ds9 plot line shape symbol none
+xpaset -p ds9 plot line shape symbol square
+xpaset -p ds9 plot line shape symbol diamond
+xpaset -p ds9 plot line shape symbol plus
+xpaset -p ds9 plot line shape symbol splus
+xpaset -p ds9 plot line shape symbol scross
+xpaset -p ds9 plot line shape symbol triangle
+xpaset -p ds9 plot line shape symbol arrow
+xpaset -p ds9 plot line shape symbol circle
+xpaset -p ds9 plot line shape color cyan
+xpaset -p ds9 plot line shape fill yes
+
 xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " error..."
+echo -n " bar dataset..."
+xpaset -p ds9 plot bar plot/xy.dat xy
+xpaget ds9 plot bar border color >> ${tt}.out
+xpaget ds9 plot bar border width >> ${tt}.out
+xpaget ds9 plot bar fill >> ${tt}.out
+xpaget ds9 plot bar width >> ${tt}.out
+
+xpaset -p ds9 plot bar border color magenta
+xpaset -p ds9 plot bar border width 1
+xpaset -p ds9 plot bar fill no
+xpaset -p ds9 plot bar width 1
+
+xpaset -p ds9 plot theme no
+sleep $delay
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " scatter dataset..."
+xpaset -p ds9 plot scatter plot/xy.dat xy
+xpaget ds9 plot scatter symbol >> ${tt}.out
+xpaget ds9 plot scatter color >> ${tt}.out
+xpaget ds9 plot scatter fill >> ${tt}.out
+
+xpaset -p ds9 plot scatter symbol square
+xpaset -p ds9 plot scatter symbol diamond
+xpaset -p ds9 plot scatter symbol plus
+xpaset -p ds9 plot scatter symbol splus
+xpaset -p ds9 plot scatter symbol scross
+xpaset -p ds9 plot scatter symbol triangle
+xpaset -p ds9 plot scatter symbol arrow
+xpaset -p ds9 plot scatter symbol circle
+xpaset -p ds9 plot scatter color cyan
+xpaset -p ds9 plot scatter fill yes
+
+xpaset -p ds9 plot theme no
+sleep $delay
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " error dataset..."
 xpaset -p ds9 plot line plot/xyexey.dat xyexey
 xpaget ds9 plot error >> ${tt}.out
 xpaget ds9 plot error cap >> ${tt}.out
@@ -2556,16 +2549,6 @@ xpaset -p ds9 plot error cap yes
 xpaset -p ds9 plot error cap no
 xpaset -p ds9 plot error color blue
 xpaset -p ds9 plot error width 2
-xpaset -p ds9 plot theme no
-sleep $delay
-xpaset -p ds9 plot close
-echo "PASSED"
-
-echo -n " name..."
-xpaset -p ds9 plot line plot/xy.dat xy
-xpaget ds9 plot name >> ${tt}.out
-xpaset -p ds9 plot legend yes
-xpaset -p ds9 plot name {This is a test}
 xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
