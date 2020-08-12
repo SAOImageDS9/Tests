@@ -1789,7 +1789,8 @@ initit "..bar dataset"
 testit "-plot bar plot/xy.dat xy"
 testit "-plot bar border color magenta"
 testit "-plot bar border width 1"
-testit "-plot bar fill no"
+testit "-plot bar fill yes"
+testit "-plot bar color black"
 testit "-plot bar width 1"
 doit
 

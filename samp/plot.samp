@@ -346,10 +346,12 @@ set {} plot bar plot/xy.dat xy
 get plot bar border color
 get plot bar border width
 get plot bar fill
+get plot bar color
 get plot bar width
 set {} plot bar border color magenta
 set {} plot bar border width 1
-set {} plot bar fill no
+set {} plot bar fill yes
+set {} plot bar color black
 set {} plot bar width 1
 
 # scatter dataset...

@@ -2503,11 +2503,13 @@ xpaset -p ds9 plot bar plot/xy.dat xy
 xpaget ds9 plot bar border color >> ${tt}.out
 xpaget ds9 plot bar border width >> ${tt}.out
 xpaget ds9 plot bar fill >> ${tt}.out
+xpaget ds9 plot bar color >> ${tt}.out
 xpaget ds9 plot bar width >> ${tt}.out
 
 xpaset -p ds9 plot bar border color magenta
 xpaset -p ds9 plot bar border width 1
-xpaset -p ds9 plot bar fill no
+xpaset -p ds9 plot bar fill yes
+xpaset -p ds9 plot bar color black
 xpaset -p ds9 plot bar width 1
 
 xpaset -p ds9 plot theme no
