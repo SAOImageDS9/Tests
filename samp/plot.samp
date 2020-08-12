@@ -11,15 +11,12 @@ set {} plot close
 
 # file name dim...
 set {} plot line plot/xy.dat xy
-set {} plot line plot/xy.dat foo xy
 set {} plot theme no
 set {} sleep .5
-set {} plot close
 set {} plot close
 
 # file name title xaxis yaxis dim...
 set {} plot line plot/xy.dat "The Title" "X Axis" "Y Axis" xy
-set {} plot line plot/xy.dat foo "The Title" "X Axis" "Y Axis" xy
 set {} plot theme no
 set {} sleep .5
 set {} plot close
@@ -301,68 +298,79 @@ set {} plot theme no
 set {} sleep .5
 set {} plot close
 
-# show...
+# dataset...
 set {} plot line plot/xy.dat xy
 get plot show
+get plot name
 set {} plot show no
 set {} plot show yes
+set {} plot legend yes
+set {} plot name "This is a test"
 set {} plot theme no
 set {} sleep .5
 set {} plot close
 
-# color...
+# line dataset...
 set {} plot line plot/xy.dat xy
+get plot line smooth
 get plot line color
-set {} plot color magenta
-set {} plot color "#2C8"
-set {} plot theme no
-set {} sleep .5
-set {} plot close
-
-# width...
-set {} plot line plot/xy.dat xy
 get plot line width
 get plot line dash
-set {} plot width 2
-set {} plot dash yes
-set {} plot theme no
-set {} sleep .5
-set {} plot close
-
-# shape...
-set {} plot line plot/xy.dat xy
 get plot line shape symbol
 get plot line shape fill
 get plot line shape color
-set {} plot line shape circle
-set {} plot line shape square
-set {} plot line shape diamond
-set {} plot line shape plus
-set {} plot line shape splus
-set {} plot line shape scross
-set {} plot line shape triangle
-set {} plot line shape arrow
-set {} plot line shape circle
-set {} plot line shape fill no
-set {} plot line shape fill yes
-set {} plot line shape color cyan
-set {} plot theme no
-set {} sleep .5
-set {} plot close
-
-# smooth...
-set {} plot line plot/xy.dat xy
-get plot line smooth
 set {} plot line smooth step
 set {} plot line smooth linear
 set {} plot line smooth cubic
 set {} plot line smooth quadratic
 set {} plot line smooth catrom
-set {} plot theme no
-set {} sleep .5
-set {} plot close
+set {} plot color magenta
+set {} plot color "#2C8"
+set {} plot width 2
+set {} plot dash yes
+set {} plot line shape symbol none
+set {} plot line shape symbol circle
+set {} plot line shape symbol square
+set {} plot line shape symbol diamond
+set {} plot line shape symbol plus
+set {} plot line shape symbol splus
+set {} plot line shape symbol scross
+set {} plot line shape symbol triangle
+set {} plot line shape symbol arrow
+set {} plot line shape symbol circle
+set {} plot line shape fill yes
+set {} plot line shape color cyan
 
-# error...
+# bar dataset...
+set {} plot bar plot/xy.dat xy
+get plot bar border color
+get plot bar border width
+get plot bar fill
+get plot bar width
+set {} plot bar border color magenta
+set {} plot bar border width 1
+set {} plot bar fill no
+set {} plot bar width 1
+
+# scatter dataset...
+set {} plot scatter plot/xy.dat xy
+get plot scatter symbol
+get plot scatter color
+get plot scatter fill
+set {} plot scatter symbol none
+set {} plot scatter symbol circle
+set {} plot scatter symbol square
+set {} plot scatter symbol diamond
+set {} plot scatter symbol plus
+set {} plot scatter symbol splus
+set {} plot scatter symbol scross
+set {} plot scatter symbol triangle
+set {} plot scatter symbol arrow
+set {} plot scatter symbol circle
+set {} plot scatter color cyan
+set {} plot scatter fill yes
+
+# error dataset...
 set {} plot line plot/xyexey.dat xyexey
 get plot error
 get plot error cap
@@ -374,15 +382,6 @@ set {} plot error cap yes
 set {} plot error cap no
 set {} plot error color blue
 set {} plot error width 2
-set {} plot theme no
-set {} sleep .5
-set {} plot close
-
-# name...
-set {} plot line plot/xy.dat xy
-get plot name
-set {} plot legend yes
-set {} plot name "This is a test"
 set {} plot theme no
 set {} sleep .5
 set {} plot close
