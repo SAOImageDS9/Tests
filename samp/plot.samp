@@ -1,24 +1,33 @@
 # empty plot...
 set {} plot line
+set {} plot line foo
 get plot
 set {} sleep .5
 set {} plot close
-
-set {} plot line
-set {} plot current ap
-set {} sleep .5
 set {} plot close
 
 # file name dim...
 set {} plot line plot/xy.dat xy
+set {} plot line plot/xy.dat foo xy
 set {} plot theme no
 set {} sleep .5
+set {} plot close
 set {} plot close
 
 # file name title xaxis yaxis dim...
 set {} plot line plot/xy.dat "The Title" "X Axis" "Y Axis" xy
+set {} plot line plot/xy.dat foo "The Title" "X Axis" "Y Axis" xy
 set {} plot theme no
 set {} sleep .5
+set {} plot close
+set {} plot close
+
+# current
+set {} plot line
+set {} plot line
+set {} plot current ap
+set {} sleep .5
+set {} plot close
 set {} plot close
 
 # data...

@@ -1499,24 +1499,30 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
-initit "..current plot"
-testit "-plot line new"
-testit "-plot current ap"
-testit "-sleep $delay"
-testit "-plot close"
-doit
-
 initit "..file name dim"
 testit "-plot line plot/xy.dat xy"
+testit "-plot line plot/xy.dat foo xy"
 testit "-plot theme no"
 testit "-sleep $delay"
+testit "-plot close"
 testit "-plot close"
 doit
 
 initit "..file name title xaxis yaxis dim"
 testit "-plot line plot/xy.dat 'The Title' 'X Axis' 'Y Axis' xy"
+testit "-plot line plot/xy.dat foo 'The Title' 'X Axis' 'Y Axis' xy"
 testit "-plot theme no"
 testit "-sleep $delay"
+testit "-plot close"
+testit "-plot close"
+doit
+
+initit "..current plot"
+testit "-plot line new"
+testit "-plot line new"
+testit "-plot current ap"
+testit "-sleep $delay"
+testit "-plot close"
 testit "-plot close"
 doit
 

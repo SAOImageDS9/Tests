@@ -2118,40 +2118,53 @@ echo "$tt..."
 
 echo -n " empty plot..."
 xpaset -p ds9 plot line
+xpaset -p ds9 plot line foo
 xpaget ds9 plot >> ${tt}.out
 sleep $delay
 xpaset -p ds9 plot close
-
-xpaset -p ds9 plot line
-xpaset -p ds9 plot current ap
-sleep $delay
 xpaset -p ds9 plot close
-echo "PASSED"
 
 echo -n " file name dim..."
 xpaset -p ds9 plot line plot/xy.dat xy
+xpaset -p ds9 plot line plot/xy.dat foo xy
 xpaset -p ds9 plot theme no
 sleep $delay
+xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " file name title xaxis yaxis dim..."
 xpaset -p ds9 plot line plot/xy.dat {The Title} {X Axis} {Y Axis} xy
+xpaset -p ds9 plot line plot/xy.dat foo {The Title} {X Axis} {Y Axis} xy
 xpaset -p ds9 plot theme no
 sleep $delay
+xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " stdin..."
 cat plot/xy.dat | xpaset ds9 plot line {The Title} {X Axis} {Y Axis} xy
+cat plot/xy.dat | xpaset ds9 plot line foo {The Title} {X Axis} {Y Axis} xy
 xpaset -p ds9 plot theme no
 sleep $delay
+xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
 echo -n " stdin with header..."
 cat plot/stdin.2.dat | xpaset ds9 plot line stdin
+cat plot/stdin.2.dat | xpaset ds9 plot line foo stdin
 xpaset -p ds9 plot theme no
 sleep $delay
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+echo "PASSED"
+
+echo -n " current..."
+xpaset -p ds9 plot line
+xpaset -p ds9 plot line
+xpaset -p ds9 plot current ap
+sleep $delay
+xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 
