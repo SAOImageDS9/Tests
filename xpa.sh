@@ -2719,7 +2719,7 @@ fi
 tt="regions"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/region..."
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions system physical
 xpaset -p ds9 regions sky fk5
 xpaset -p ds9 regions skyformat degrees
@@ -2757,19 +2757,24 @@ echo "image; line 100 100 200 400" | xpaset ds9 regions
 echo "physical; ruler 200 300 200 400" | xpaset ds9 regions
 echo "image; text 100 100 # text={Hello, World}" | xpaset ds9 regions
 echo "fk4; boxcircle point 13:29:55 47:11:50" | xpaset ds9 regions
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 
 xpaset -p ds9 regions regions/ds9.physical.reg
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions load regions/ds9.physical.reg
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions load 'regions/ds9.fk5*.reg'
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions load all regions/ds9.physical.reg
+xpaset -p ds9 regions delete load regions/ds9.physical.reg
+
 xpaset -p ds9 regions save foo.reg
+xpaset -p ds9 regions save select foo.reg
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions list
+xpaset -p ds9 regions list select
 xpaset -p ds9 regions list close
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 
 xpaset -p ds9 regions epsilon 5
 xpaset -p ds9 regions show yes
@@ -2783,7 +2788,7 @@ xpaset -p ds9 regions move front
 xpaset -p ds9 regions move back
 xpaset -p ds9 regions select all
 xpaset -p ds9 regions select none
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions delete select
 xpaset -p ds9 regions format ds9
 xpaset -p ds9 regions system physical
@@ -2811,7 +2816,7 @@ xpaset -p ds9 regions group foo movefront
 xpaset -p ds9 regions group foo moveback
 xpaset -p ds9 regions group foo property delete no
 
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 
 xpaset -p ds9 regions command {circle 100 100 20}
 xpaset -p ds9 regions select all
@@ -2820,21 +2825,21 @@ xpaset -p ds9 regions cut
 xpaset -p ds9 regions paste
 xpaset -p ds9 regions paste wcs
 xpaset -p ds9 regions undo
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 
 xpaset -p ds9 regions load regions/ds9.physical.reg
 xpaset -p ds9 regions select all
 xpaset -p ds9 regions composite
 xpaset -p ds9 regions dissolve
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 
 xpaset -p ds9 regions command {circle 100 100 20}
 xpaset -p ds9 regions savetemplate foo.tpl
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions template foo.tpl
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 xpaset -p ds9 regions template foo.tpl at 202.46963 47.19556 fk5
-xpaset -p ds9 regions delete all
+xpaset -p ds9 regions delete
 
 testit $tt
 fi
