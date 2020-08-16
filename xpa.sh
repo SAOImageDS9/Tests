@@ -2123,6 +2123,7 @@ xpaget ds9 plot >> ${tt}.out
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
+echo "PASSED"
 
 echo -n " file name dim..."
 xpaset -p ds9 plot line plot/xy.dat xy
@@ -2482,6 +2483,8 @@ xpaget ds9 plot line smooth >> ${tt}.out
 xpaget ds9 plot line color >> ${tt}.out
 xpaget ds9 plot line width >> ${tt}.out
 xpaget ds9 plot line dash >> ${tt}.out
+xpaget ds9 plot line fill >> ${tt}.out
+xpaget ds9 plot line fill color >> ${tt}.out
 xpaget ds9 plot line shape symbol >> ${tt}.out
 xpaget ds9 plot line shape color >> ${tt}.out
 xpaget ds9 plot line shape fill >> ${tt}.out
@@ -2494,6 +2497,8 @@ xpaset -p ds9 plot line color magenta
 xpaset -p ds9 plot line color "#2C8"
 xpaset -p ds9 plot line width 2
 xpaset -p ds9 plot line dash yes
+xpaset -p ds9 plot line fill yes
+xpaset -p ds9 plot line fill color green
 xpaset -p ds9 plot line shape symbol none
 xpaset -p ds9 plot line shape symbol square
 xpaset -p ds9 plot line shape symbol diamond

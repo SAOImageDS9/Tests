@@ -325,6 +325,8 @@ get plot line smooth
 get plot line color
 get plot line width
 get plot line dash
+get plot line fill
+get plot line fill color
 get plot line shape symbol
 get plot line shape fill
 get plot line shape color
@@ -337,6 +339,8 @@ set {} plot color magenta
 set {} plot color "#2C8"
 set {} plot width 2
 set {} plot dash yes
+set {} plot fill yes
+set {} plot fill color green
 set {} plot line shape symbol none
 set {} plot line shape symbol circle
 set {} plot line shape symbol square
@@ -349,6 +353,9 @@ set {} plot line shape symbol arrow
 set {} plot line shape symbol circle
 set {} plot line shape fill yes
 set {} plot line shape color cyan
+set {} plot theme no
+set {} sleep .5
+set {} plot close
 
 # bar dataset...
 set {} plot bar plot/xy.dat xy
@@ -362,6 +369,9 @@ set {} plot bar border width 1
 set {} plot bar fill yes
 set {} plot bar color black
 set {} plot bar width 1
+set {} plot theme no
+set {} sleep .5
+set {} plot close
 
 # scatter dataset...
 set {} plot scatter plot/xy.dat xy
@@ -380,6 +390,9 @@ set {} plot scatter symbol arrow
 set {} plot scatter symbol circle
 set {} plot scatter color cyan
 set {} plot scatter fill yes
+set {} plot theme no
+set {} sleep .5
+set {} plot close
 
 # error dataset...
 set {} plot line plot/xyexey.dat xyexey

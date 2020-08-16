@@ -29,6 +29,7 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
+echo "PASSED"
 
 echo -n "line file xy|xyex|xyey|xyexey..."
 xpaset -p ds9 plot line plot/xy.dat {The Title} {X Axis} {Y Axis} xy
@@ -60,6 +61,7 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
+echo "PASSED"
 
 echo -n "stdin 2|3|4|5..."
 cat plot/stdin.2.dat | xpaset ds9 plot line stdin
