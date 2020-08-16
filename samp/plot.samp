@@ -196,15 +196,9 @@ set {} plot close
 # foreground...
 set {} plot line plot/xy.dat xy
 get plot foreground
-set {} plot foreground back
-set {} plot theme no
-set {} sleep .5
-set {} plot close
-
-# background...
-set {} plot line plot/xy.dat xy
-get plot background
+set {} plot foreground black
 set {} plot background red
+set {} plot grid color blue
 set {} plot theme no
 set {} sleep .5
 set {} plot close

@@ -1675,17 +1675,11 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
-initit "..foreground"
+initit "..foreground/background/grid color"
 testit "-plot line plot/xy.dat xy"
 testit "-plot foreground black"
-testit "-plot theme no"
-testit "-sleep $delay"
-testit "-plot close"
-doit
-
-initit "..background"
-testit "-plot line plot/xy.dat xy"
 testit "-plot background red"
+testit "-plot grid color blue"
 testit "-plot theme no"
 testit "-sleep $delay"
 testit "-plot close"

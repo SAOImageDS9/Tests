@@ -2345,19 +2345,14 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " foreground..."
+echo -n " foreground/background/grid color..."
 xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot foreground >> ${tt}.out
-xpaset -p ds9 plot foreground black
-xpaset -p ds9 plot theme no
-sleep $delay
-xpaset -p ds9 plot close
-echo "PASSED"
-
-echo -n " background..."
-xpaset -p ds9 plot line plot/xy.dat xy
 xpaget ds9 plot background >> ${tt}.out
+xpaget ds9 plot grid color >> ${tt}.out
+xpaset -p ds9 plot foreground black
 xpaset -p ds9 plot background red
+xpaset -p ds9 plot grid color blue
 xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
