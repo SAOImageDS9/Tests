@@ -2150,6 +2150,7 @@ xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
+echo "PASSED"
 
 echo -n " stdin with header..."
 cat plot/stdin.2.dat | xpaset ds9 plot line stdin
