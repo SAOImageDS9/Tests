@@ -1595,11 +1595,13 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
-initit "..save/load config"
+initit "..backup/restore"
 testit "-plot line plot/xy.dat xy"
-testit "-plot save config foo.plt"
-testit "-plot load config foo.plt"
 testit "-plot theme no"
+testit "-plot backup foo.bck"
+testit "-plot restore foo.bck"
+testit "-plot close"
+testit "-plot restore foo.bck"
 testit "-sleep $delay"
 testit "-plot close"
 doit

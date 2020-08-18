@@ -104,11 +104,13 @@ set {} plot theme no
 set {} sleep .5
 set {} plot close
 
-# save/load config...
+# backup/restore...
 set {} plot line plot/xy.dat xy
-set {} plot save config foo.plt
-set {} plot load config foo.plt
 set {} plot theme no
+set {} plot backup foo.bck
+set {} plot restore foo.bck
+set {} plot close
+set {} plot restore foo.bck
 set {} sleep .5
 set {} plot close
 

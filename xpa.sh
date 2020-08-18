@@ -2251,11 +2251,13 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " save/load config..."
+echo -n " backup/restore..."
 xpaset -p ds9 plot line plot/xy.dat xy
-xpaset -p ds9 plot save config foo.plt
-xpaset -p ds9 plot load config foo.plt
 xpaset -p ds9 plot theme no
+xpaset -p ds9 plot backup foo.bck
+xpaset -p ds9 plot restore foo.bck
+xpaset -p ds9 plot close
+xpaset -p ds9 plot restore foo.bck
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
