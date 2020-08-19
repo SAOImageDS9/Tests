@@ -2702,6 +2702,7 @@ xpaset -p ds9 prism ext STDEVT
 xpaset -p ds9 prism image
 xpaset -p ds9 frame delete
 xpaset -p ds9 prism histogram RAWX 40
+xpaset -p ds9 prism histogram RAWX 40 0 100
 xpaset -p ds9 prism plot RAWX RAWY scatter new
 xpaset -p ds9 prism plot RAWX RAWY PHA scatter new
 xpaset -p ds9 prism plot RAWX RAWY PHA PI scatter new
