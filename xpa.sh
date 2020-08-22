@@ -1936,7 +1936,7 @@ xpaset -p ds9 movie foo.mpg
 xpaset -p ds9 movie frame foo.mpg
 xpaset -p ds9 movie slice foo.mpg
 xpaset -p ds9 frame new 3d
-xpaset -p ds9 movie 3d foo.mpg number 1 az from 0 az to 0 el from 0 el to 0 slice from 1 slice to 1 zoom from 1 zoom to 2 repeat 1
+xpaset -p ds9 movie 3d gif 100 foo.gif number 1 az from 0 az to 0 el from 0 el to 0 slice from 1 slice to 1 zoom from 1 zoom to 2 repeat 1
 xpaset -p ds9 frame delete
 
 # backward compatibility
