@@ -1494,7 +1494,7 @@ fi
 tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "..empty plot"
-testit "-plot line new"
+testit "-plot line open"
 testit "-plot theme no"
 testit "-sleep $delay"
 testit "-plot close"
@@ -1519,8 +1519,8 @@ testit "-plot close"
 doit
 
 initit "..current plot"
-testit "-plot line new"
-testit "-plot line new"
+testit "-plot line open"
+testit "-plot line open"
 testit "-plot current ap"
 testit "-sleep $delay"
 testit "-plot close"
@@ -1536,7 +1536,7 @@ testit "-plot close"
 doit
 
 initit "..add/select/delete graph"
-testit "-plot line new"
+testit "-plot line open"
 testit "-plot add graph line"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1556,7 +1556,7 @@ testit "-plot close"
 doit
 
 initit "..layout"
-testit "-plot line new"
+testit "-plot line open"
 testit "-plot add graph line"
 testit "-plot add graph bar"
 testit "-plot add graph scatter"
