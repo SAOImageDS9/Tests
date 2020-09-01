@@ -2161,15 +2161,6 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " current..."
-xpaset -p ds9 plot line
-xpaset -p ds9 plot line
-xpaset -p ds9 plot current ap
-sleep $delay
-xpaset -p ds9 plot close
-xpaset -p ds9 plot close
-echo "PASSED"
-
 echo -n " data..."
 xpaset -p ds9 plot line
 cat plot/xy.dat | xpaset ds9 plot data xy
@@ -2186,24 +2177,19 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " add/select/delete graph..."
+echo -n " add/delete graph..."
 xpaset -p ds9 plot line
 xpaset -p ds9 plot add graph line
 xpaset -p ds9 plot theme no
 sleep $delay
-xpaset -p ds9 plot select graph 1
-xpaget ds9 plot select graph > /dev/null
 xpaset -p ds9 plot delete graph
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " select/delete dataset..."
+echo -n " add/delete dataset..."
 xpaset -p ds9 plot line plot/xy.dat xy
-xpaset -p ds9 plot load plot/xyexey.dat xyexey
 xpaset -p ds9 plot theme no
 sleep $delay
-xpaset -p ds9 plot select dataset 1
-xpaget ds9 plot select dataset > /dev/null
 xpaset -p ds9 plot delete dataset
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2572,17 +2558,19 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
-echo -n " select..."
+echo -n " current..."
+xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot load plot/xyey.dat xyey
-xpaget ds9 plot select >> ${tt}.out
-xpaset -p ds9 plot select dataset 2
-# backward compatibility
-xpaset -p ds9 plot select 2
-# backward compatibility
-xpaset -p ds9 plot dataset 1
+xpaget ds9 plot current >> ${tt}.out
+xpaget ds9 plot current graph >> ${tt}.out
+xpaget ds9 plot current dataset >> ${tt}.out
+xpaset -p ds9 plot current ap2
+xpaset -p ds9 plot current graph 1
+xpaset -p ds9 plot current dataset 1
 xpaset -p ds9 plot theme no
 sleep $delay
+xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 echo "PASSED"
 

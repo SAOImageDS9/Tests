@@ -44,23 +44,19 @@ set {} plot theme no
 set {} sleep .5
 set {} plot close
 
-# add/select/delete graph...
+# add/delete graph...
 set {} plot line
 set {} plot add graph line
 set {} plot theme no
 set {} sleep .5
-set {} plot select graph 1
-get plot select graph
 set {} plot delete graph
 set {} plot close
 
-# select/delete dataset...
+# add/delete dataset...
 set {} plot line plot/xy.dat xy
-set {} plot load plot/xyexey.dat xyexey
 set {} plot theme no
 set {} sleep .5
 set {} plot select dataset 1
-get plot select dataset
 set {} plot delete dataset
 set {} plot close
 
@@ -406,12 +402,16 @@ set {} plot theme no
 set {} sleep .5
 set {} plot close
 
-# select...
+# current...
+set {} plot line plot/xy.dat xy
 set {} plot line plot/xy.dat xy
 set {} plot load plot/xyey.dat xyey
-get plot select
-set {} plot select 2
-set {} plot dataset 1
+get plot current
+get plot current graph
+get plot current dataset
+set {} plot current ap2
+set {} plot current graph 1
+set {} plot current dataset 1
 set {} plot theme no
 set {} sleep .5
 set {} plot close

@@ -1518,15 +1518,6 @@ testit "-plot close"
 testit "-plot close"
 doit
 
-initit "..current plot"
-testit "-plot line open"
-testit "-plot line open"
-testit "-plot current ap"
-testit "-sleep $delay"
-testit "-plot close"
-testit "-plot close"
-doit
-
 initit "..save/load"
 testit "-plot line plot/xy.dat xy"
 testit "-plot save foo.dat"
@@ -1535,22 +1526,19 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
-initit "..add/select/delete graph"
+initit "..add/delete graph"
 testit "-plot line open"
 testit "-plot add graph line"
 testit "-plot theme no"
 testit "-sleep $delay"
-testit "-plot select graph 1"
 testit "-plot delete graph"
 testit "-plot close"
 doit
 
-initit "..add/select/delete dataset"
+initit "..add/delete dataset"
 testit "-plot line plot/xy.dat xy"
-testit "-plot load plot/xyexey.dat xyexey"
 testit "-plot theme no"
 testit "-sleep $delay"
-testit "-plot select dataset 1"
 testit "-plot delete dataset"
 testit "-plot close"
 doit
@@ -1836,12 +1824,16 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
-initit "..select"
+initit "..current"
+testit "-plot line plot/xy.dat xy"
 testit "-plot line plot/xy.dat xy"
 testit "-plot load plot/xyey.dat xyey"
-testit "-plot select dataset 2"
+testit "-plot current ap2"
+testit "-plot current graph 1"
+testit "-plot current dataset 1"
 testit "-plot theme no"
 testit "-sleep $delay"
+testit "-plot close"
 testit "-plot close"
 doit
 
