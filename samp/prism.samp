@@ -7,6 +7,11 @@ set {} prism close
 set {} prism fits/table.fits
 set {} prism ext 1
 set {} prism ext STDEVT
+set {} prism first
+set {} prism next
+set {} prism prev
+set {} prism last
+set {} prism goto 501
 set {} prism image
 set {} frame delete
 set {} prism histogram RAWX 40

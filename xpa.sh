@@ -2687,6 +2687,11 @@ xpaset -p ds9 prism close
 xpaset -p ds9 prism fits/table.fits
 xpaset -p ds9 prism ext 1
 xpaset -p ds9 prism ext STDEVT
+xpaset -p ds9 prism first
+xpaset -p ds9 prism next
+xpaset -p ds9 prism prev
+xpaset -p ds9 prism last
+xpaset -p ds9 prism goto 501
 xpaset -p ds9 prism image
 xpaset -p ds9 frame delete
 xpaset -p ds9 prism histogram RAWX 40
