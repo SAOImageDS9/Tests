@@ -103,10 +103,10 @@ set {} plot close
 # backup/restore...
 set {} plot line plot/xy.dat xy
 set {} plot theme no
-set {} plot backup foo.bck
-set {} plot restore foo.bck
+set {} plot backup foo.plb
+set {} plot restore foo.plb
 set {} plot close
-set {} plot restore foo.bck
+set {} plot restore foo.plb
 set {} sleep .5
 set {} plot close
 

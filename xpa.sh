@@ -220,14 +220,6 @@ xpaset -p ds9 background white
 testit $tt
 fi
 
-tt="backup"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-xpaset -p ds9 backup foo.bck
-
-testit $tt
-fi
-
 tt="bin"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -2240,10 +2232,10 @@ echo "PASSED"
 echo -n " backup/restore..."
 xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot theme no
-xpaset -p ds9 plot backup foo.bck
-xpaset -p ds9 plot restore foo.bck
+xpaset -p ds9 plot backup foo.plb
+xpaset -p ds9 plot restore foo.plb
 xpaset -p ds9 plot close
-xpaset -p ds9 plot restore foo.bck
+xpaset -p ds9 plot restore foo.plb
 sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
@@ -2837,15 +2829,6 @@ xpaset -p ds9 regions template foo.tpl
 xpaset -p ds9 regions delete
 xpaset -p ds9 regions template foo.tpl at 202.46963 47.19556 fk5
 xpaset -p ds9 regions delete
-
-testit $tt
-fi
-
-tt="restore"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-xpaset -p ds9 backup foo.bck
-xpaset -p ds9 restore foo.bck
 
 testit $tt
 fi
@@ -3675,6 +3658,16 @@ xpaset -p ds9 zoom to fit
 xpaset -p ds9 zoom close
 xpaget ds9 zoom > /dev/null
 xpaset -p ds9 frame reset
+
+testit $tt
+fi
+
+# do this last
+tt="backup/restore"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 backup foo.bck
+xpaset -p ds9 restore foo.bck
 
 testit $tt
 fi

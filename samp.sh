@@ -37,8 +37,7 @@ echo "*** samp.sh ***"
 
 # must be invoked
 # iexam
-# movie
-# samp
+
 
 # slow down?
 slow=0
@@ -59,7 +58,6 @@ doit "$1" analysis
 doit "$1" array
 # backward compatibility prefs
 doit "$1" bg
-doit "$1" backup
 doit "$1" bin
 doit "$1" blink
 doit "$1" block
@@ -113,7 +111,7 @@ doit "$1" mosaicimageiraf
 # backward compatibility
 doit "$1" mosaicimagewfpc2
 # movie will fail if moved from corner
-#doit "$1" movie
+doit "$1" movie
 doit "$1" multiframe
 doit "$1" nameserver
 # backward compatibility prefs
@@ -134,7 +132,6 @@ doit "$1" print
 doit "$1" prism
 doit "$1" raise
 doit "$1" regions
-doit "$1" restore
 doit "$1" rgb
 doit "$1" rgbarray
 doit "$1" rgbcube
@@ -152,7 +149,7 @@ doit "$1" single
 # no tests
 #doit "$1" shm
 doit "$1" sia
-#doit "$1" skyview
+doit "$1" skyview
 doit "$1" sleep
 # no tests
 #doit "$1" smosaic
@@ -183,6 +180,9 @@ doit "$1" web
 doit "$1" width
 doit "$1" zscale
 doit "$1" zoom
+
+# do this last
+doit "$1" backup
 doit "$1" exit
 
 rm -rf foo.*

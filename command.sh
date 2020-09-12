@@ -164,14 +164,6 @@ testit "-background white"
 doit
 fi
 
-tt="backup"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt"
-testit "-backup foo.bck"
-
-doit
-fi
-
 tt="bin"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -1586,10 +1578,10 @@ doit
 initit "..backup/restore"
 testit "-plot line plot/xy.dat xy"
 testit "-plot theme no"
-testit "-plot backup foo.bck"
-testit "-plot restore foo.bck"
+testit "-plot backup foo.plb"
+testit "-plot restore foo.plb"
 testit "-plot close"
-testit "-plot restore foo.bck"
+testit "-plot restore foo.plb"
 testit "-sleep $delay"
 testit "-plot close"
 doit
@@ -2070,15 +2062,6 @@ testit "-frame new rgb"
 testit "-red"
 
 testit "-rgb close"
-doit
-fi
-
-tt="restore"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt"
-testit "-backup foo.bck"
-testit "-restore foo.bck"
-
 doit
 fi
 
@@ -2836,6 +2819,16 @@ testit "-zoom out"
 testit "-zoom to fit"
 testit "-zoom close"
 testit "-frame reset"
+
+doit
+fi
+
+# do this last
+tt="backup/restore"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-backup foo.bck"
+testit "-restore foo.bck"
 
 doit
 fi
