@@ -3678,5 +3678,5 @@ echo -n "$tt/quit..."
 xpaset -p ds9 quit
 fi
 
-rm -rf foo.*
+#rm -rf foo.*
 echo "DONE"
