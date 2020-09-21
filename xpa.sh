@@ -2693,6 +2693,12 @@ xpaset -p ds9 prism plot RAWX RAWY PHA scatter new
 xpaset -p ds9 prism plot RAWX RAWY PHA PI scatter new
 xpaset -p ds9 prism close
 
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+
 testit $tt
 fi
 

@@ -1948,6 +1948,12 @@ testit "-prism plot RAWX RAWY PHA scatter new"
 testit "-prism plot RAWX RAWY PHA PI scatter new"
 testit "-prism close"
 
+testit "-plot close"
+testit "-plot close"
+testit "-plot close"
+testit "-plot close"
+testit "-plot close"
+
 doit
 fi
 
