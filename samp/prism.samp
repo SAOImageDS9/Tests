@@ -27,5 +27,12 @@ set {} plot close
 set {} plot close
 set {} plot close
 
+set {} prism import xml data/ds9.xml
+set {} prism plot Jmag Hmag scatter new
+set {} prism histogram Jmag 10
+
+set {} plot close
+set {} plot close
+
 set {} single
 set {} raise

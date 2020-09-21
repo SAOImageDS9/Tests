@@ -2699,6 +2699,14 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
+xpaset -p ds9 prism import xml data/ds9.xml
+xpaset -p ds9 prism plot Jmag Hmag scatter new
+xpaset -p ds9 prism histogram Jmag 10
+xpaset -p ds9 prism close
+
+xpaset -p ds9 plot close
+xpaset -p ds9 plot close
+
 testit $tt
 fi
 

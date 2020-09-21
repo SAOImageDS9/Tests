@@ -1954,6 +1954,14 @@ testit "-plot close"
 testit "-plot close"
 testit "-plot close"
 
+testit "-prism import xml data/ds9.xml"
+testit "-prism plot Jmag Hmag scatter new"
+testit "-prism histogram Jmag 10"
+testit "-prism close"
+
+testit "-plot close"
+testit "-plot close"
+
 doit
 fi
 
