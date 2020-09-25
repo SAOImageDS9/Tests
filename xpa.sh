@@ -34,7 +34,7 @@ testit () {
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    rm -f ${1}.out
+    rm -rf ${1}.out
 
     xpaset -p ds9 single
     xpaset -p ds9 raise
@@ -3692,5 +3692,5 @@ echo -n "$tt/quit..."
 xpaset -p ds9 quit
 fi
 
-#rm -rf foo.*
+rm -rf foo.*
 echo "DONE"
