@@ -300,7 +300,8 @@ fi
 
 tt="catalog"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt/cat..."
+echo "$tt/cat..."
+echo " default..."
 xpaset -p ds9 catalog sao
 xpaset -p ds9 catalog cds 2mass
 xpaget ds9 catalog >> ${tt}.out
@@ -321,16 +322,26 @@ xpaset -p ds9 catalog cds "I/284"
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
+echo " import..."
 xpaset -p ds9 catalog import sb aux/ds9.cat
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
+xpaset -p ds9 frame new
+xpaset -p ds9 fits catfits/acisf00635N004_evt2.fits.gz
+xpaset -p ds9 catalog import fits catfits/cellout.fits
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
+xpaset -p ds9 frame delete
+
+echo " save/load..."
 xpaset -p ds9 catalog cds 2mass
 xpaset -p ds9 catalog save foo.xml
 xpaset -p ds9 catalog load foo.xml
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
+echo " dialog..."
 xpaset -p ds9 raise
 xpaset -p ds9 catalog plot '$Jmag' '$Hmag' '$e_Jmag' '$e_Hmag'
 xpaset -p ds9 catalog symbol condition '$Jmag>15'

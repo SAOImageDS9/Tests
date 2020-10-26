@@ -22,6 +22,13 @@ set {} catalog import sb aux/ds9.cat
 set {} catalog clear
 set {} catalog close
 
+set {} frame new
+set {} fits catfits/acisf00635N004_evt2.fits.gz
+set {} catalog import fits catfits/cellout.fits
+set {} catalog clear
+set {} catalog close
+set {} frame delete
+
 set {} catalog cds 2mass
 set {} catalog save foo.xml
 set {} catalog load foo.xml

@@ -266,6 +266,13 @@ testit "-catalog import sb aux/ds9.cat"
 testit "-catalog clear"
 testit "-catalog close"
 
+testit "-frame new"
+testit "-fits catfits/acisf00635N004_evt2.fits.gz"
+testit "-catalog import fits catfits/cellout.fits"
+testit "-catalog clear"
+testit "-catalog close"
+testit "-frame delete"
+
 testit "-catalog cds 2mass"
 testit "-catalog save foo.xml"
 testit "-catalog load foo.xml"
