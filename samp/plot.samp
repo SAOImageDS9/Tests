@@ -1,3 +1,9 @@
+# gui...
+set {} plot line
+set {} plot gui
+set {} sleep .5
+set {} plot close
+
 # empty plot...
 set {} plot line
 set {} plot line foo

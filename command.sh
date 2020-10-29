@@ -22,7 +22,8 @@ doit () {
 echo
 echo "*** command.sh ***"
 
-delay=.5
+#delay=.5
+delay=0
 
 # must be invoked
 # -private
@@ -1492,6 +1493,12 @@ fi
 
 tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "..empty plot"
+testit "-plot line open"
+testit "-plot gui"
+testit "-plot close"
+doit
+
 initit "..empty plot"
 testit "-plot line open"
 testit "-plot theme no"

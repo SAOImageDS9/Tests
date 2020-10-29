@@ -2119,6 +2119,13 @@ tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo "$tt..."
 
+echo -n " gui..."
+xpaset -p ds9 plot line
+xpaset -p ds9 plot gui
+sleep $delay
+xpaset -p ds9 plot close
+echo "PASSED"
+
 echo -n " empty plot..."
 xpaset -p ds9 plot line
 xpaset -p ds9 plot line foo
