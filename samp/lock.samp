@@ -28,6 +28,7 @@ set {} lock scale yes
 set {} lock scale no
 set {} lock scalelimits yes
 set {} lock scalelimits no
+set {} scale zscale
 set {} lock colorbar yes
 set {} lock colorbar no
 set {} lock block yes
@@ -39,7 +40,6 @@ set {} lock 3d no
 set {} mode none
 set {} frame delete
 set {} wcs align no
-set {} scale zscale
 
 set {} single
 set {} raise

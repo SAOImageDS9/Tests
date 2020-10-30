@@ -41,6 +41,7 @@ set {} scale lock yes
 set {} scale lock no
 set {} scale lock limits yes
 set {} scale lock limits no
+set {} scale zscale
 set {} scale close
 
 set {} single

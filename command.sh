@@ -1090,6 +1090,7 @@ testit "-lock scale yes"
 testit "-lock scale no"
 testit "-lock scalelimits yes"
 testit "-lock scalelimits no"
+testit "-scale zscale"
 testit "-lock colorbar yes"
 testit "-lock colorbar no"
 testit "-lock block yes"
@@ -1101,7 +1102,6 @@ testit "-lock 3d no"
 testit "-mode none"
 testit "-frame delete"
 testit "-wcs align no"
-testit "-scale zscale"
 
 doit
 fi
@@ -1172,8 +1172,8 @@ testit "-match block"
 testit "-match smooth"
 testit "-match 3d"
 testit "-frame delete"
-testit "-mode none"
 testit "-scale zscale"
+testit "-mode none"
 
 doit
 fi
@@ -2118,6 +2118,7 @@ testit "-rgb lock scale yes"
 testit "-rgb lock scale no"
 testit "-rgb lock scalelimits yes"
 testit "-rgb lock scalelimits no"
+testit "-scale zscale"
 testit "-rgb lock colorbar yes"
 testit "-rgb lock colorbar no"
 testit "-rgb lock block yes"
@@ -2314,6 +2315,7 @@ testit "-scale lock yes"
 testit "-scale lock no"
 testit "-scale lock limits yes"
 testit "-scale lock limits no"
+testit "-scale zscale"
 testit "-scale close"
 
 doit

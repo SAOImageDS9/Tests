@@ -31,6 +31,7 @@ set {} rgb lock scale yes
 set {} rgb lock scale no
 set {} rgb lock scalelimits yes
 set {} rgb lock scalelimits no
+set {} scale zscale
 set {} rgb lock colorbar yes
 set {} rgb lock colorbar no
 set {} rgb lock block yes

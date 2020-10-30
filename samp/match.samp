@@ -15,8 +15,8 @@ set {} match block
 set {} match smooth
 set {} match 3d
 set {} frame delete
-set {} mode none
 set {} scale zscale
+set {} mode none
 
 set {} single
 set {} raise

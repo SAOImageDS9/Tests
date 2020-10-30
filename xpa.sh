@@ -1653,8 +1653,10 @@ xpaset -p ds9 lock axes yes
 xpaset -p ds9 lock axes no
 xpaset -p ds9 lock scale yes
 xpaset -p ds9 lock scale no
+# will set to scale user mode
 xpaset -p ds9 lock scalelimits yes
 xpaset -p ds9 lock scalelimits no
+xpaset -p ds9 scale zscale
 xpaset -p ds9 lock colorbar yes
 xpaset -p ds9 lock colorbar no
 xpaset -p ds9 lock smooth yes
@@ -1664,7 +1666,6 @@ xpaset -p ds9 lock 3d no
 xpaset -p ds9 mode none
 xpaset -p ds9 frame delete
 xpaset -p ds9 wcs align no
-xpaset -p ds9 scale zscale
 
 testit $tt
 fi
@@ -1732,14 +1733,15 @@ xpaset -p ds9 match slice wcs
 xpaset -p ds9 match bin
 xpaset -p ds9 match axes
 xpaset -p ds9 match scale
+# will set to scale user mode
 xpaset -p ds9 match scalelimits
 xpaset -p ds9 match colorbar
 xpaset -p ds9 match block
 xpaset -p ds9 match smooth
 xpaset -p ds9 match 3d
 xpaset -p ds9 frame delete
-xpaset -p ds9 mode none
 xpaset -p ds9 scale zscale
+xpaset -p ds9 mode none
 
 testit $tt
 fi
@@ -2899,8 +2901,10 @@ xpaset -p ds9 rgb lock bin yes
 xpaset -p ds9 rgb lock bin no
 xpaset -p ds9 rgb lock scale yes
 xpaset -p ds9 rgb lock scale no
+# will set to scale user mode
 xpaset -p ds9 rgb lock scalelimits yes
 xpaset -p ds9 rgb lock scalelimits no
+xpaset -p ds9 scale zscale
 xpaset -p ds9 rgb lock colorbar yes
 xpaset -p ds9 rgb lock colorbar no
 xpaset -p ds9 rgb lock block yes
@@ -3098,6 +3102,7 @@ xpaset -p ds9 scale mode zscale
 xpaset -p ds9 scale mode zmax
 xpaset -p ds9 scale mode 95
 xpaset -p ds9 scale mode minmax
+# will set to scale user mode
 xpaset -p ds9 scale limits 0 100
 xpaset -p ds9 scale global
 xpaset -p ds9 scale local
@@ -3111,8 +3116,10 @@ xpaset -p ds9 scale match
 xpaset -p ds9 scale match limits
 xpaset -p ds9 scale lock yes
 xpaset -p ds9 scale lock no
+# will set to scale user mode
 xpaset -p ds9 scale lock limits yes
 xpaset -p ds9 scale lock limits no
+xpaset -p ds9 scale zscale
 xpaset -p ds9 scale close
 
 testit $tt
