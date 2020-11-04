@@ -14,11 +14,12 @@ set {} prism last
 set {} prism goto 501
 set {} prism image
 set {} frame delete
+set {} prism mode newplot
 set {} prism histogram RAWX 40
-set {} prism histogram RAWX 40 0 100
-set {} prism plot RAWX RAWY scatter new
-set {} prism plot RAWX RAWY PHA scatter new
-set {} prism plot RAWX RAWY PHA PHI scatter new
+set {} prism histogram RAWX 40 0 4000
+set {} prism plot RAWX RAWY xy
+set {} prism plot RAWX RAWY PHA xyex
+set {} prism plot RAWX RAWY PHA PHI xyexey
 set {} prism close
 
 set {} plot close
@@ -28,7 +29,7 @@ set {} plot close
 set {} plot close
 
 set {} prism import xml data/ds9.xml
-set {} prism plot Jmag Hmag scatter new
+set {} prism plot Jmag Hmag xy
 set {} prism histogram Jmag 10
 
 set {} plot close

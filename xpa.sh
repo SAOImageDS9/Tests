@@ -2706,11 +2706,12 @@ xpaset -p ds9 prism last
 xpaset -p ds9 prism goto 501
 xpaset -p ds9 prism image
 xpaset -p ds9 frame delete
+xpaset -p ds9 prism mode newplot
 xpaset -p ds9 prism histogram RAWX 40
-xpaset -p ds9 prism histogram RAWX 40 0 100
-xpaset -p ds9 prism plot RAWX RAWY scatter new
-xpaset -p ds9 prism plot RAWX RAWY PHA scatter new
-xpaset -p ds9 prism plot RAWX RAWY PHA PI scatter new
+xpaset -p ds9 prism histogram RAWX 40 0 4000
+xpaset -p ds9 prism plot RAWX RAWY xy 
+xpaset -p ds9 prism plot RAWX RAWY PHA xyex
+xpaset -p ds9 prism plot RAWX RAWY PHA PI xyexey
 xpaset -p ds9 prism close
 
 xpaset -p ds9 plot close
@@ -2720,7 +2721,7 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
 xpaset -p ds9 prism import xml data/ds9.xml
-xpaset -p ds9 prism plot Jmag Hmag scatter new
+xpaset -p ds9 prism plot Jmag Hmag xy
 xpaset -p ds9 prism histogram Jmag 10
 xpaset -p ds9 prism close
 
