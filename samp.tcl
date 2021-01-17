@@ -98,7 +98,7 @@ proc SAMPConnect {} {
     }
 
     # wait
-    after $samp(timeout)
+    after $samp(timeout,update)
     SAMPUpdate
     set samp(status) 1
 }
@@ -478,10 +478,10 @@ proc SAMPRcvdEventRegister {varname} {
 
     # wait
     if {$samp(block)} {
-	after $samp(timeout)
+	after $samp(timeout,update)
 	SAMPUpdate
     } else {
-	after $samp(timeout) SAMPUpdate
+	after $samp(timeout,update) SAMPUpdate
     }
 }
 
@@ -509,10 +509,10 @@ proc SAMPRcvdEventUnregister {varname} {
 
     # wait
     if {$samp(block)} {
-	after $samp(timeout)
+	after $samp(timeout,update)
 	SAMPUpdate
     } else {
-	after $samp(timeout) SAMPUpdate
+	after $samp(timeout,update) SAMPUpdate
     }
 }
 
@@ -567,7 +567,7 @@ proc SAMPSendDS9Set {id url cmd} {
     set param1 [list "string $samp(private)"]
     set param2 [list "string $id"]
     set param3 [list "struct sampmap"]
-    set param4 [list "string 5"]
+    set param4 [list "string $samp(timeout,wait)"]
     set params "$param1 $param2 $param3 $param4" 
 
     SAMPSend {samp.hub.callAndWait} $params rr
@@ -600,7 +600,7 @@ proc SAMPSendDS9Get {id cmd} {
     set param1 [list "string $samp(private)"]
     set param2 [list "string $id"]
     set param3 [list "struct sampmap"]
-    set param4 [list "string 5"]
+    set param4 [list "string $samp(timeout,wait)"]
     set params "$param1 $param2 $param3 $param4" 
 
     SAMPSend {samp.hub.callAndWait} $params rr
@@ -633,7 +633,7 @@ proc SAMPSendClientEnvGet {id name} {
     set param1 [list "string $samp(private)"]
     set param2 [list "string $id"]
     set param3 [list "struct sampmap"]
-    set param4 [list "string 5"]
+    set param4 [list "string $samp(timeout,wait)"]
     set params "$param1 $param2 $param3 $param4" 
 
     SAMPSend {samp.hub.callAndWait} $params rr
@@ -813,7 +813,8 @@ proc XMLUnQuote {val} {
 
 set samp(status) 0
 set samp(debug) 0
-set samp(timeout) 1000
+set samp(timeout,update) 1000
+set samp(timeout,wait) 30
 set samp(block) 0
 
 InitTempDir
