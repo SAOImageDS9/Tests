@@ -26,7 +26,6 @@ get regions strip
 get regions shape
 get regions color
 get regions width
-get regions delim
 get regions groups
 
 set {} regions delete
@@ -65,13 +64,12 @@ set {} regions format ds9
 set {} regions system physical
 set {} regions sky fk5
 set {} regions skyformat degrees
-set {} regions delim nl
 set {} regions strip no
 set {} regions shape circle
 set {} regions color green
+set {} regions width 1
 set {} regions edit yes
 set {} regions include
-set {} regions width 1
 set {} regions command "circle 100 100 20"
 
 set {} regions group new
