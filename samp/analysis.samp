@@ -4,7 +4,6 @@ get analysis
 get analysis task
 #get analysis entry {hello world}
 #get analysis message okcancel {hello world}
-get analysis mode
 
 set {} analysis 0
 set {} analysis task 1
