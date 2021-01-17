@@ -50,7 +50,7 @@ fi
 xpaset -p ds9 scale zscale
 xpaset -p ds9 fits data/img.fits
 
-#doit "$1" 2mass
+doit "$1" 2mass
 doit "$1" 3d
 doit "$1" about
 doit "$1" align
@@ -110,7 +110,6 @@ doit "$1" mosaicimagewcs
 doit "$1" mosaicimageiraf
 # backward compatibility
 doit "$1" mosaicimagewfpc2
-# movie will fail if moved from corner
 doit "$1" movie
 doit "$1" multiframe
 doit "$1" nameserver
@@ -140,7 +139,6 @@ doit "$1" rotate
 doit "$1" samp
 # really don't want to do this
 doit "$1" save
-# movie will fail if moved from corner
 doit "$1" saveimage
 doit "$1" scale
 # backward compatibility
