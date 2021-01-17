@@ -28,14 +28,6 @@ set {} sleep .5
 set {} plot close
 set {} plot close
 
-# current
-set {} plot line
-set {} plot line
-set {} plot current ap
-set {} sleep .5
-set {} plot close
-set {} plot close
-
 # data...
 set {} plot line
 set file:plot/xy.dat plot data xy
