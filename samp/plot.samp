@@ -28,6 +28,22 @@ set {} sleep .5
 set {} plot close
 set {} plot close
 
+# stdin...
+set file:plot/xy.dat plot line "The Title" "X Axis" "Y Axis" xy
+set file:plot/xy.dat plot line foo "The Title" "X Axis" "Y Axis" xy
+set {} plot theme no
+set {} sleep .5
+set {} plot close
+set {} plot close
+
+# stdin with header...
+set file:plot/stdin.2.dat plot line stdin
+set file:plot/stdin.2.dat plot line foo stdin
+set {} plot theme no
+set {} sleep .5
+set {} plot close
+set {} plot close
+
 # data...
 set {} plot line
 set file:plot/xy.dat plot data xy
@@ -368,8 +384,7 @@ set {} plot scatter plot/xy.dat xy
 get plot scatter symbol
 get plot scatter color
 get plot scatter fill
-set {} plot scatter symbol none
-set {} plot scatter symbol circle
+
 set {} plot scatter symbol square
 set {} plot scatter symbol diamond
 set {} plot scatter symbol plus
@@ -401,6 +416,7 @@ set {} sleep .5
 set {} plot close
 
 # current...
+#   will fail if not first time thru
 set {} plot line plot/xy.dat xy
 set {} plot line plot/xy.dat xy
 set {} plot load plot/xyey.dat xyey

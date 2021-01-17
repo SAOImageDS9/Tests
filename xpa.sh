@@ -2571,6 +2571,7 @@ xpaset -p ds9 plot close
 echo "PASSED"
 
 echo -n " current..."
+#   will fail if not first time thru
 xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot line plot/xy.dat xy
 xpaset -p ds9 plot load plot/xyey.dat xyey
