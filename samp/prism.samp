@@ -19,7 +19,7 @@ set {} prism histogram RAWX 40
 set {} prism histogram RAWX 40 0 4000
 set {} prism plot RAWX RAWY xy
 set {} prism plot RAWX RAWY PHA xyex
-set {} prism plot RAWX RAWY PHA PHI xyexey
+set {} prism plot RAWX RAWY PHA PI xyexey
 set {} prism close
 
 set {} plot close
