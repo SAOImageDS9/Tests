@@ -38,7 +38,6 @@ echo "*** samp.sh ***"
 # must be invoked
 # iexam
 
-
 # slow down?
 slow=0
 if [ "$1" = "slow" ]; then

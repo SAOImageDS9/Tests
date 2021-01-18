@@ -49,6 +49,7 @@ delay=.5
 # console
 # iexam
 # print
+# samp
 # source
 # tcl
 
@@ -3684,8 +3685,6 @@ echo -n "$tt..."
 xpaget ds9 xpa >> /dev/null
 xpaget ds9 xpa info >> /dev/null
 xpaset -p ds9 xpa info
-xpaset -p ds9 xpa yes
-xpaset -p ds9 xpa connect
 
 testit $tt
 fi

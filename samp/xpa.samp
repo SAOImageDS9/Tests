@@ -1,5 +1,6 @@
 get xpa
 get xpa info
+
 set {} xpa yes
 set {} xpa connect
 set {} xpa local
