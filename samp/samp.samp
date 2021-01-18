@@ -1,0 +1,7 @@
+get samp
+
+#set {} samp no
+#set {} samp disconnect
+
+set {} single
+set {} raise

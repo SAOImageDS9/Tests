@@ -2180,7 +2180,8 @@ fi
 tt="samp"
 if [ "$1" = "$tt" ]; then
 initit "$tt"
-testit "-frame new -fits fits/table.fits"
+testit "-frame new"
+testit "-fits fits/table.fits"
 testit "-samp no"
 testit "-samp connect"
 testit "-samp broadcast"
@@ -2820,9 +2821,9 @@ fi
 tt="xpa"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-xpa local"
 testit "-xpa yes"
 testit "-xpa connect"
+testit "-xpa local"
 testit "-xpa info"
 
 doit
