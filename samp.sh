@@ -136,7 +136,6 @@ doit "$1" rgbarray
 doit "$1" rgbcube
 doit "$1" rgbimage
 doit "$1" rotate
-doit "$1" samp
 # really don't want to do this
 doit "$1" save
 doit "$1" saveimage

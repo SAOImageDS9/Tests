@@ -2180,12 +2180,13 @@ fi
 tt="samp"
 if [ "$1" = "$tt" ]; then
 initit "$tt"
-testit "-samp yes"
+testit "-frame new -fits fits/table.fits"
+testit "-samp no"
 testit "-samp connect"
 testit "-samp broadcast"
-testit "-samp broadcast image"
-testit "-samp send aladin"
-testit "-samp send image aladin"
+testit "-samp broadcast table"
+testit "-samp send topcat"
+testit "-samp send table topcat"
 
 doit
 fi

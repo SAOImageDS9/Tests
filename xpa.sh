@@ -2980,6 +2980,22 @@ xpaset -p ds9 frame reset
 testit $tt
 fi
 
+tt="samp"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "samp..."
+
+xpaset -p ds9 fits new fits/table.fits
+xpaset -p ds9 samp no
+xpaset -p ds9 samp connect
+xpaset -p ds9 samp broadcast
+xpaset -p ds9 samp broadcast table
+xpaset -p ds9 samp send topcat
+xpaset -p ds9 samp send table topcat
+xpaset -p ds9 frame delete
+
+testit $tt
+fi
+
 tt="save"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo "$tt/savefits..."
