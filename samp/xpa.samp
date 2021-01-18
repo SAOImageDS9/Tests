@@ -1,0 +1,9 @@
+get xpa
+get xpa info
+set {} xpa local
+set {} xpa yes
+set {} xpa connect
+set {} xpa info
+
+set {} single
+set {} raise

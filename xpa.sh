@@ -3681,9 +3681,11 @@ fi
 tt="xpa"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
+xpaget ds9 xpa >> /dev/null
 xpaget ds9 xpa info >> /dev/null
-#xpaset -p ds9 xpa disconnect
 xpaset -p ds9 xpa info
+#xpaset -p ds9 xpa no
+#xpaset -p ds9 xpa disconnect
 
 testit $tt
 fi

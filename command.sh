@@ -2187,6 +2187,7 @@ testit "-samp broadcast"
 testit "-samp broadcast table"
 testit "-samp send topcat"
 testit "-samp send table topcat"
+testit "-frame delete"
 
 doit
 fi
@@ -2819,9 +2820,8 @@ fi
 tt="xpa"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-xpa yes"
 testit "-xpa local"
-testit "-xpa noxpans"
+testit "-xpa yes"
 testit "-xpa connect"
 testit "-xpa info"
 
