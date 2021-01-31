@@ -165,7 +165,6 @@ doit "$1" threads
 doit "$1" tiff
 doit "$1" tile
 doit "$1" update
-# no tests
 doit "$1" url
 doit "$1" version
 doit "$1" view

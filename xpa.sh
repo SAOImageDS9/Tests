@@ -3721,7 +3721,7 @@ testit $tt
 fi
 
 # do this last
-tt="backup/restore"
+tt="backup"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 backup foo.bck

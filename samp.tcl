@@ -813,7 +813,9 @@ proc XMLUnQuote {val} {
 
 set samp(status) 0
 set samp(debug) 0
-set samp(timeout,update) 1000
+# only used for register/unregister (in micro secs)
+set samp(timeout,update) 250
+# used for call and wait (in secs)
 set samp(timeout,wait) 30
 set samp(block) 0
 

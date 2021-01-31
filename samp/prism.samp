@@ -1,6 +1,8 @@
 set {} prism
 get prism
 set {} prism close
+set {} prism open
+set {} prism close
 set {} prism data/img.fits
 set {} prism clear
 set {} prism close
@@ -31,6 +33,7 @@ set {} plot close
 set {} prism import xml data/ds9.xml
 set {} prism plot Jmag Hmag xy
 set {} prism histogram Jmag 10
+set {} prism close
 
 set {} plot close
 set {} plot close
