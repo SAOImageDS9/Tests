@@ -300,7 +300,7 @@ testit $tt
 fi
 
 tt="catalog"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo "$tt/cat..."
 echo " default..."
 xpaset -p ds9 catalog sao
@@ -1204,7 +1204,7 @@ testit $tt
 fi
 
 tt="footprint"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt/fp..."
 xpaset -p ds9 footprint cxc
 xpaset -p ds9 footprint hla
@@ -1934,7 +1934,7 @@ fi
 
 # movie will fail if moved from corner
 tt="movie"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt/savempeg..."
 xpaset -p ds9 width 715
 xpaset -p ds9 height 450
@@ -2293,14 +2293,14 @@ echo "PASSED"
 
 echo -n " export..."
 xpaset -p ds9 plot line plot/xy.dat xy
-xpaset -p ds9 plot export foo.gif
-xpaset -p ds9 plot export gif foo.gif
-xpaset -p ds9 plot export foo.tiff
-xpaset -p ds9 plot export tiff foo.tiff
-xpaset -p ds9 plot export foo.jpeg
-xpaset -p ds9 plot export jpeg foo.jpeg
-xpaset -p ds9 plot export foo.png
-xpaset -p ds9 plot export png foo.png
+#xpaset -p ds9 plot export foo.gif
+#xpaset -p ds9 plot export gif foo.gif
+#xpaset -p ds9 plot export foo.tiff
+#xpaset -p ds9 plot export tiff foo.tiff
+#xpaset -p ds9 plot export foo.jpeg
+#xpaset -p ds9 plot export jpeg foo.jpeg
+#xpaset -p ds9 plot export foo.png
+#xpaset -p ds9 plot export png foo.png
 xpaset -p ds9 plot theme no
 sleep $delay
 xpaset -p ds9 plot close
@@ -3067,7 +3067,7 @@ fi
 
 # movie will fail if moved from corner
 tt="saveimage"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 saveimage fits foo.fits
 xpaset -p ds9 saveimage foo.fits
@@ -3180,11 +3180,11 @@ testit $tt
 fi
 
 tt="sia"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
-xpaset -p ds9 sia 2mass
+xpaset -p ds9 sia mast
 xpaset -p ds9 sia cxc
-xpaset -p ds9 sia current 2mass
+xpaset -p ds9 sia current mast
 
 xpaget ds9 sia >> ${tt}.out
 xpaset -p ds9 sia save foo.xml

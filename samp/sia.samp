@@ -1,6 +1,6 @@
-set {} sia 2mass
+set {} sia mast
 set {} sia cxc
-set {} sia current 2mass
+set {} sia current mast
 
 get sia
 set {} sia save foo.xml

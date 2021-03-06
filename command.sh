@@ -2349,9 +2349,9 @@ fi
 tt="sia"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-sia 2mass"
+testit "-sia mast"
 testit "-sia cxc"
-testit "-sia current 2mass"
+testit "-sia current mast"
 testit "-sia save foo.xml"
 testit "-sia name m51"
 testit "-sia coordinate 202.48 47.21 fk5"
