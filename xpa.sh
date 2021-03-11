@@ -65,7 +65,7 @@ xpaset -p ds9 scale zscale
 xpaset -p ds9 fits data/img.fits
 
 tt="2mass"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 2mass open
 xpaset -p ds9 2mass close
@@ -300,7 +300,7 @@ testit $tt
 fi
 
 tt="catalog"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo "$tt/cat..."
 echo " default..."
 xpaset -p ds9 catalog sao
@@ -1204,7 +1204,7 @@ testit $tt
 fi
 
 tt="footprint"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/fp..."
 xpaset -p ds9 footprint cxc
 xpaset -p ds9 footprint hla
@@ -1934,7 +1934,7 @@ fi
 
 # movie will fail if moved from corner
 tt="movie"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/savempeg..."
 xpaset -p ds9 width 715
 xpaset -p ds9 height 450
@@ -3067,7 +3067,7 @@ fi
 
 # movie will fail if moved from corner
 tt="saveimage"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 saveimage fits foo.fits
 xpaset -p ds9 saveimage foo.fits
@@ -3180,7 +3180,7 @@ testit $tt
 fi
 
 tt="sia"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 sia mast
 xpaset -p ds9 sia cxc

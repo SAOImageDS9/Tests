@@ -42,7 +42,7 @@ if [ "$1" = "slow" ]; then
 fi
 
 tt="2mass"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-2mass open"
 testit "-2mass close"
@@ -427,7 +427,7 @@ doit
 fi
 
 tt="console"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-console"
 
@@ -1936,7 +1936,7 @@ doit
 fi
 
 tt="prism"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 # parse error if followed by another command
 #testit "-prism"
