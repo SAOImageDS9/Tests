@@ -3065,7 +3065,6 @@ xpaset -p ds9 cube close
 testit $tt
 fi
 
-# movie will fail if moved from corner
 tt="saveimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."

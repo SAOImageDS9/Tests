@@ -2246,7 +2246,6 @@ testit "-cube close"
 doit
 fi
 
-# saveimage will fail if moved from corner
 tt="saveimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
