@@ -2700,7 +2700,7 @@ xpaset -p ds9 prism clear
 xpaset -p ds9 prism close
 xpaset -p ds9 prism fits/table.fits
 xpaset -p ds9 prism ext 1
-xpaset -p ds9 prism ext STDEVT
+xpaset -p ds9 prism ext REJEVT
 xpaset -p ds9 prism first
 xpaset -p ds9 prism next
 xpaset -p ds9 prism prev
@@ -2709,11 +2709,9 @@ xpaset -p ds9 prism goto 501
 xpaset -p ds9 prism image
 xpaset -p ds9 frame delete
 xpaset -p ds9 prism mode newplot
-xpaset -p ds9 prism histogram RAWX 40
-xpaset -p ds9 prism histogram RAWX 40 0 4000
-xpaset -p ds9 prism plot RAWX RAWY xy 
-xpaset -p ds9 prism plot RAWX RAWY PHA xyex
-xpaset -p ds9 prism plot RAWX RAWY PHA PI xyexey
+xpaset -p ds9 prism histogram PHA 40
+xpaset -p ds9 prism histogram PHA 40 0 4000
+xpaset -p ds9 prism plot X Y xy 
 xpaset -p ds9 prism close
 
 xpaset -p ds9 plot close
