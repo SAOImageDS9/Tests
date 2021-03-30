@@ -1220,6 +1220,8 @@ xpaset -p ds9 footprint current cxc
 
 xpaget ds9 footprint >> ${tt}.out
 xpaset -p ds9 footprint save foo.xml
+xpaset -p ds9 footprint export rdb foo.rdb
+xpaset -p ds9 footprint export tsv foo.tsv
 
 xpaset -p ds9 footprint name m51
 xpaset -p ds9 footprint coordinate 202.48 47.21 fk5
@@ -2706,6 +2708,18 @@ xpaset -p ds9 prism close
 xpaset -p ds9 prism data/img.fits
 xpaset -p ds9 prism clear
 xpaset -p ds9 prism close
+
+xpaset -p ds9 prism fits/table.fits
+xpaset -p ds9 prism export vot foo.vot
+xpaset -p ds9 prism export rdb foo.rdb
+xpaset -p ds9 prism export tsv foo.tsv
+xpaset -p ds9 prism import vot foo.vot
+xpaset -p ds9 prism import rdb foo.rdb
+xpaset -p ds9 prism import tsv foo.tsv
+xpaset -p ds9 prism close
+xpaset -p ds9 prism close
+xpaset -p ds9 prism close
+
 xpaset -p ds9 prism fits/table.fits
 xpaset -p ds9 prism ext 1
 xpaset -p ds9 prism ext REJEVT
@@ -3193,6 +3207,9 @@ xpaset -p ds9 sia current mast
 
 xpaget ds9 sia >> ${tt}.out
 xpaset -p ds9 sia save foo.xml
+xpaset -p ds9 sia export rdb foo.rdb
+xpaset -p ds9 sia export tsv foo.tsv
+
 xpaset -p ds9 sia name m51
 xpaset -p ds9 sia coordinate 202.48 47.21 fk5
 xpaset -p ds9 sia system wcs

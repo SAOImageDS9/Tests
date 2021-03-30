@@ -4,6 +4,9 @@ set {} footprint current cxc
 
 get footprint
 set {} footprint save foo.xml
+set {} footprint export rdb foo.rdb
+set {} footprint export tsv foo.tsv
+
 set {} footprint name m51
 set {} footprint coordinate 202.48 47.21 fk5
 set {} footprint system wcs

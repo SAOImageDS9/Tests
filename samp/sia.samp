@@ -4,6 +4,9 @@ set {} sia current mast
 
 get sia
 set {} sia save foo.xml
+set {} sia export rdb foo.rdb
+set {} sia export tsv foo.tsv
+
 set {} sia name m51
 set {} sia coordinate 202.48 47.21 fk5
 set {} sia system wcs

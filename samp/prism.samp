@@ -6,6 +6,18 @@ set {} prism close
 set {} prism data/img.fits
 set {} prism clear
 set {} prism close
+
+set {} prism data/table.fits
+set {} prism export vot foo.vot
+set {} prism export rdb foo.rdb
+set {} prism export tsv foo.tsv
+set {} prism import vot foo.vot
+set {} prism import rdb foo.rdb
+set {} prism import tsv foo.tsv
+set {} prism close
+set {} prism close
+set {} prism close
+
 set {} prism fits/table.fits
 set {} prism ext 1
 set {} prism ext STDEVT
