@@ -18,7 +18,21 @@ set {} catalog cds {I/284}
 set {} catalog clear
 set {} catalog close
 
-set {} catalog import sb aux/ds9.cat
+set {} catalog cds 2mass
+set {} catalog save foo.xml
+set {} catalog load foo.xml
+set {} catalog clear
+set {} catalog close
+
+set {} catalog cds 2mass
+set {} catalog export rdb foo.rdb
+set {} catalog export tsv foo.tsv
+set {} catalog import rdb foo.rdb
+set {} catalog import tsv foo.tsv
+set {} catalog clear
+set {} catalog close
+set {} catalog clear
+set {} catalog close
 set {} catalog clear
 set {} catalog close
 
@@ -30,12 +44,6 @@ set {} catalog close
 set {} frame delete
 
 set {} catalog cds 2mass
-set {} catalog save foo.xml
-set {} catalog load foo.xml
-set {} catalog clear
-set {} catalog close
-
-set {} raise
 set {} catalog plot {$Jmag} {$Hmag} {$e_Jmag} {$e_Hmag}
 set {} catalog symbol condition {$Jmag>15}
 set {} catalog symbol shape {boxcircle point}

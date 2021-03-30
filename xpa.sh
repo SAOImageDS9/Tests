@@ -323,8 +323,23 @@ xpaset -p ds9 catalog cds "I/284"
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
-echo " import..."
-xpaset -p ds9 catalog import sb aux/ds9.cat
+echo " save/load..."
+xpaset -p ds9 catalog cds 2mass
+xpaset -p ds9 catalog save foo.xml
+xpaset -p ds9 catalog load foo.xml
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
+
+echo " export/import..."
+xpaset -p ds9 catalog cds 2mass
+xpaset -p ds9 catalog export rdb foo.rdb
+xpaset -p ds9 catalog export tsv foo.tsv
+xpaset -p ds9 catalog import rdb foo.rdb
+xpaset -p ds9 catalog import tsv foo.tsv
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
+xpaset -p ds9 catalog clear
+xpaset -p ds9 catalog close
 xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 
@@ -335,15 +350,8 @@ xpaset -p ds9 catalog clear
 xpaset -p ds9 catalog close
 xpaset -p ds9 frame delete
 
-echo " save/load..."
-xpaset -p ds9 catalog cds 2mass
-xpaset -p ds9 catalog save foo.xml
-xpaset -p ds9 catalog load foo.xml
-xpaset -p ds9 catalog clear
-xpaset -p ds9 catalog close
-
 echo " dialog..."
-xpaset -p ds9 raise
+xpaset -p ds9 catalog cds 2mass
 xpaset -p ds9 catalog plot '$Jmag' '$Hmag' '$e_Jmag' '$e_Hmag'
 xpaset -p ds9 catalog symbol condition '$Jmag>15'
 xpaset -p ds9 catalog symbol shape {boxcircle point}
