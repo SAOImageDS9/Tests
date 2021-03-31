@@ -2719,6 +2719,7 @@ xpaset -p ds9 prism import tsv foo.tsv
 xpaset -p ds9 prism close
 xpaset -p ds9 prism close
 xpaset -p ds9 prism close
+xpaset -p ds9 prism close
 
 xpaset -p ds9 prism fits/table.fits
 xpaset -p ds9 prism ext 1
