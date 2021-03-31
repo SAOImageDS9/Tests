@@ -17,7 +17,7 @@ if [ `xpaaccess ds9` = no ]; then
 fi
 
 echo -n "Physical..."
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 region posang/phy.reg
 xpaset -p ds9 align no
 read
@@ -35,7 +35,7 @@ xpaset -p ds9 align yes
 read
 
 echo -n "WCS Celestial..."
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 region posang/img.reg
 xpaset -p ds9 align yes
 read

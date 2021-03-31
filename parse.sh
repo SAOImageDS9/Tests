@@ -54,15 +54,15 @@ ds9 -log fits/table.fits[STDEVT] &
 KillIt
 
 echo ".. [xmin:xmax,ymin:ymax]"
-ds9 -zscale data/img.fits[100:300,100:300] &
+ds9 -zscale fits/img.fits[100:300,100:300] &
 KillIt
 
 echo ".. [xmin:xmax,*]"
-ds9 -zscale data/img.fits[100:300,*] &
+ds9 -zscale fits/img.fits[100:300,*] &
 KillIt
 
 echo ".. [dim@xcen@ycen]"
-ds9 -zscale data/img.fits[256@400@400] &
+ds9 -zscale fits/img.fits[256@400@400] &
 KillIt
 
 echo ".. [bin=rawx,rawy]"

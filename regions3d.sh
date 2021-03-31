@@ -88,7 +88,7 @@ if [ `xpaaccess ds9` = no ]; then
 fi
 
 echo "Loading Data..."
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 if [ "$1" = "ds9" -o  -z "$1" ]; then
 echo

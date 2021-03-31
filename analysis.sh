@@ -21,7 +21,7 @@ done
 
 # load default
 xpaset -p ds9 scale zscale
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 regions file analysis/analysis.reg
 xpaset -p ds9 analysis clear
 xpaset -p ds9 analysis load analysis/analysis.ans

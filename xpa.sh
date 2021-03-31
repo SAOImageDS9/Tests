@@ -62,7 +62,7 @@ fi
 
 rm -f *.out
 xpaset -p ds9 scale zscale
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 tt="2mass"
 if [ "$1" = "$tt" -o -z "$1" ]; then
@@ -556,7 +556,7 @@ xpaset -p ds9 contour save foo.ctr wcs fk5
 # paste
 xpaset -p ds9 contour clear
 xpaset -p ds9 frame new
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 tile
 xpaset -p ds9 contour yes
 xpaset -p ds9 contour copy
@@ -1286,7 +1286,7 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 frame new 3d
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame new
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 tile
 xpaget ds9 frame > /dev/null
 xpaget ds9 frame frameno > /dev/null
@@ -1326,7 +1326,7 @@ xpaset -p ds9 frame clear all
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame delete 1
 xpaset -p ds9 frame delete all
-xpaset -p ds9 fits new data/img.fits
+xpaset -p ds9 fits new fits/img.fits
 
 xpaset -p ds9 rgb close
 xpaset -p ds9 3d close
@@ -1646,7 +1646,7 @@ xpaget ds9 lock colorbar >> ${tt}.out
 xpaget ds9 lock block >> ${tt}.out
 xpaget ds9 lock smooth >> ${tt}.out
 xpaget ds9 lock 3d >> ${tt}.out
-xpaset -p ds9 fits new data/img.fits
+xpaset -p ds9 fits new fits/img.fits
 xpaset -p ds9 tile
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 lock frame wcs
@@ -1721,7 +1721,7 @@ xpaset -p ds9 mask range 10 100
 xpaset -p ds9 mask transparency 25
 xpaset -p ds9 mask blend source
 xpaset -p ds9 mask system physical
-xpaset -p ds9 mask load data/img.fits
+xpaset -p ds9 mask load fits/img.fits
 sleep $delay
 xpaset -p ds9 mask clear
 xpaset -p ds9 mask close
@@ -1733,7 +1733,7 @@ fi
 tt="match"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-xpaset -p ds9 fits new data/img.fits
+xpaset -p ds9 fits new fits/img.fits
 xpaset -p ds9 tile
 xpaset -p ds9 mode crosshair
 xpaset -p ds9 match frame wcs
@@ -2705,7 +2705,7 @@ xpaget ds9 prism  >> ${tt}.out
 xpaset -p ds9 prism close
 xpaset -p ds9 prism open
 xpaset -p ds9 prism close
-xpaset -p ds9 prism data/img.fits
+xpaset -p ds9 prism fits/img.fits
 xpaset -p ds9 prism clear
 xpaset -p ds9 prism close
 
@@ -3410,8 +3410,8 @@ xpaget ds9 tile >> ${tt}.out
 xpaget ds9 tile mode >> ${tt}.out
 xpaget ds9 tile grid mode >> ${tt}.out
 xpaget ds9 tile grid direction >> ${tt}.out
-xpaset -p ds9 fits new data/img.fits
-xpaset -p ds9 fits new data/img.fits
+xpaset -p ds9 fits new fits/img.fits
+xpaset -p ds9 fits new fits/img.fits
 xpaset -p ds9 tile
 xpaset -p ds9 tile yes
 xpaset -p ds9 tile row
@@ -3538,7 +3538,7 @@ xpaset -p ds9 view blue yes
 xpaset -p ds9 frame delete
 sleep $delay
 
-xpaset -p ds9 fits new data/img.fits
+xpaset -p ds9 fits new fits/img.fits
 
 xpaset -p ds9 rgb close
 testit $tt

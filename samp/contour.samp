@@ -29,7 +29,7 @@ set {} contour save foo.ctr wcs fk5
 # paste
 set {} contour clear
 set {} frame new
-set {} fits data/img.fits
+set {} fits fits/img.fits
 set {} tile
 set {} contour yes
 set {} contour copy

@@ -11,7 +11,7 @@ testit () {
 }
 
 doit () {
-    eval ds9 -zscale data/img.fits "$opt" -exit
+    eval ds9 -zscale fits/img.fits "$opt" -exit
     echo "PASSED"
     echo ""
     if [ $slow = "1" ]; then
@@ -461,7 +461,7 @@ testit "-contour save foo.con wcs fk5"
 # paste
 testit "-contour clear"
 testit "-frame new"
-testit "-fits data/img.fits"
+testit "-fits fits/img.fits"
 testit "-tile"
 testit "-contour yes"
 testit "-contour copy"
@@ -828,7 +828,7 @@ testit "-frame new rgb"
 testit "-frame delete"
 testit "-frame new 3d"
 testit "-frame delete"
-testit "-fits data/img.fits"
+testit "-fits fits/img.fits"
 testit "-tile"
 testit "-frame center"
 testit "-frame center 1"
@@ -864,7 +864,7 @@ testit "-frame clear all"
 testit "-frame delete"
 testit "-frame delete 1"
 testit "-frame delete all"
-testit "-frame new -fits data/img.fits"
+testit "-frame new -fits fits/img.fits"
 
 testit "-rgb close"
 testit "-3d close"
@@ -1081,7 +1081,7 @@ fi
 tt="lock"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-fits data/img.fits"
+testit "-fits fits/img.fits"
 testit "-tile"
 testit "-mode crosshair"
 testit "-lock frame wcs"
@@ -1156,7 +1156,7 @@ testit "-mask transparency 25"
 testit "-mask blend source"
 testit "-mask system physical"
 testit "-sleep $delay"
-testit "-mask load data/img.fits"
+testit "-mask load fits/img.fits"
 testit "-mask clear"
 testit "-mask close"
 
@@ -1166,7 +1166,7 @@ fi
 tt="match"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-fits data/img.fits"
+testit "-fits fits/img.fits"
 testit "-tile"
 testit "-mode crosshair"
 testit "-match frame wcs"
@@ -1953,7 +1953,7 @@ initit "$tt"
 #testit "-prism"
 testit "-prism open"
 testit "-prism close"
-testit "-prism data/img.fits"
+testit "-prism fits/img.fits"
 testit "-prism clear"
 testit "-prism close"
 
@@ -2589,8 +2589,8 @@ fi
 tt="tile"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
-testit "-frame new -fits data/img.fits"
-testit "-frame new -fits data/img.fits"
+testit "-frame new -fits fits/img.fits"
+testit "-frame new -fits fits/img.fits"
 testit "-tile"
 testit "-tile yes"
 testit "-tile row"
@@ -2712,7 +2712,7 @@ testit "-view blue yes"
 testit "-frame delete"
 testit "-sleep $delay"
 
-testit "-frame new -fits data/img.fits"
+testit "-frame new -fits fits/img.fits"
 
 testit "-rgb close"
 doit

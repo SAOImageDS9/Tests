@@ -36,7 +36,7 @@ xpaset -p ds9 grid
 if [ "$1" = "single" -o  -z "$1" ]; then
 echo "Testing Single"
 
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 regions load regions/ds9.fk5.hms.reg
 
 doit "..RGB Level 3" rgb 3 b

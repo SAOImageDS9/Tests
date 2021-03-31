@@ -47,7 +47,7 @@ fi
 
 # load default image
 xpaset -p ds9 scale zscale
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit "$1" 2mass
 doit "$1" 3d

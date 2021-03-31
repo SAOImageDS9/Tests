@@ -7,7 +7,7 @@ ds9 -zscale -mosaicimage iraf mosaic/mosaicimage.fits -mosaicimage wcs mosaic/mo
 
 ds9 -zscale -mosaic wcs mosaic/mosaicimage.fits[1] mosaic/mosaicimage.fits[2] mosaic/mosaicimage.fits[3] -rgb -red mosaic/mosaicimage.fits[1] -green mosaic/mosaicimage.fits[2] -blue mosaic/mosaicimage.fits[3] -single
 
-ds9 -zscale -mosaic wcs data/m51hst.fits data/img.fits -fits -rgb -red data/m51hst.fits -green data/img.fits -single
+ds9 -zscale -mosaic wcs data/m51hst.fits fits/img.fits -fits -rgb -red data/m51hst.fits -green fits/img.fits -single
 
 ds9 -zscale data/ch4.nonan.fits data/mips24.nonan.fits -frame new -mosaic wcs data/ch4.nonan.fits data/mips24.nonan.fits -frame new rgb -fits -red data/ch4.nonan.fits -green data/mips24.nonan.fits -frame 1 -pan to 17:42:56.836 -28:31:53.10 fk5 -match frame wcs -single
 

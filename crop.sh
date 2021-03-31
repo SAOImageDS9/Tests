@@ -42,23 +42,23 @@ echo
 echo "*** crop.sh ***"
 
 echo "..fits[xmin:xmax,ymin:ymax]"
-ds9 -zscale data/img.fits[100:300,100:300] &
+ds9 -zscale fits/img.fits[100:300,100:300] &
 KillIt
 
 echo "..fits[*,ymin:ymax]"
-ds9 -zscale data/img.fits[*,100:300] &
+ds9 -zscale fits/img.fits[*,100:300] &
 KillIt
 
 echo "..fits[xmin:xmax,*]"
-ds9 -zscale data/img.fits[100:300,*] &
+ds9 -zscale fits/img.fits[100:300,*] &
 KillIt
 
 echo "..fits[xdim@xcen,ydim@ycen]"
-ds9 -zscale data/img.fits[256@400,256@400] &
+ds9 -zscale fits/img.fits[256@400,256@400] &
 KillIt
 
 echo "..fits[dim@xcen@ycen]"
-ds9 -zscale data/img.fits[256@400@400] &
+ds9 -zscale fits/img.fits[256@400@400] &
 KillIt
 
 echo "..fits[xmin:xmax,ymin:ymax,zmin:zmax]"

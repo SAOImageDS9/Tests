@@ -81,7 +81,7 @@ if [ "$1" = "command" -o  -z "$1" ]; then
 echo "Command Line Shm Tests"
 
 # basics
-DoCmd "..fits" data/img.fits fits foo linear zscale
+DoCmd "..fits" fits/img.fits fits foo linear zscale
 DoSCmd "..sfits" sfits/float.hdr sfits/float.arr sfits foo linear zscale
 DoCmd "..table" fits/table.fits "" foo log minmax
 DoCmd "..table filter" fits/table.fits "" 'foo[bin=rawx,rawy]' log minmax
@@ -139,7 +139,7 @@ do
 done
 
 # basics
-DoXPA "..fits" data/img.fits fits foo linear zscale 
+DoXPA "..fits" fits/img.fits fits foo linear zscale 
 DoSXPA "..split fits" sfits/float.hdr sfits/float.arr sfits foo linear zscale
 DoXPA "..table" fits/table.fits "" foo log minmax
 DoXPA "..table filter" fits/table.fits "" 'foo[bin=rawx,rawy]' log minmax

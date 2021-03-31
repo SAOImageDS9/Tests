@@ -79,7 +79,7 @@ set {} view blue yes
 set {} frame delete
 set {} sleep .5
 
-set {} file new data/img.fits
+set {} file new fits/img.fits
 set {} rgb close
 
 set {} rgb close

@@ -71,7 +71,7 @@ if [ "$1" = "ds9" -o  -z "$1" ]; then
 echo
 echo "Testing DS9 Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit ds9 image fk5 degrees regions/ds9.image.reg
 testit ds9 physical fk5 degrees regions/ds9.physical.reg
@@ -91,7 +91,7 @@ if [ "$1" = "color" -o  -z "$1" ]; then
 echo
 echo "Testing DS9 Color..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit ds9 wcs fk5 sexagesimal regions/ds9.color.reg
 fi
@@ -100,7 +100,7 @@ if [ "$1" = "comment" -o  -z "$1" ]; then
 echo
 echo "Testing DS9 Format Comments..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 xpaset -p ds9 regions format ds9
 xpaset -p ds9 regions file regions/ds9.comment.reg
@@ -112,7 +112,7 @@ if [ "$1" = "strip" -o  -z "$1" ]; then
 echo
 echo "Testing DS9 strip Regions Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 regions strip yes
 
 testit2 ds9 image fk5 degrees regions/ds9.image.reg regions/ds9.image.strip.reg
@@ -135,7 +135,7 @@ if [ "$1" = "composite" -o  -z "$1" ]; then
 echo
 echo "Testing DS9 Composite Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit ds9 wcs fk5 degrees regions/ds9.composite.reg
 fi
@@ -165,7 +165,7 @@ if [ "$1" = "linear" -o  -z "$1" ]; then
 echo
 echo "Testing DS9 Linear Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 scale minmax
 xpaset -p ds9 frame clear
 xpaset -p ds9 mosaicimage mosaic/ds9_8amp_2x2.fits
@@ -183,7 +183,7 @@ if [ "$1" = "xml" -o  -z "$1" ]; then
 echo
 echo "Testing XML Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit xml image fk5 degrees regions/xml.image.reg
 testit xml physical fk5 degrees regions/xml.physical.reg
@@ -224,7 +224,7 @@ if [ "$1" = "ciao" -o  -z "$1" ]; then
 echo
 echo "Testing CIAO Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit ciao physical fk5 degrees regions/ciao.physical.reg
 testit ciao wcs fk5 sexagesimal regions/ciao.fk5.reg
@@ -234,7 +234,7 @@ if [ "$1" = "saotng" -o  -z "$1" ]; then
 echo
 echo "Testing SAOtng Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit saotng image fk5 degrees regions/saotng.image.reg
 testit saotng wcs fk4 degrees regions/saotng.fk4.reg
@@ -253,7 +253,7 @@ if [ "$1" = "pros" -o  -z "$1" ]; then
 echo
 echo "Testing IRAF Pros Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit pros image fk5 degrees regions/pros.image.reg
 testit pros physical fk5 degrees regions/pros.physical.reg
@@ -271,7 +271,7 @@ if [ "$1" = "saoimage" -o  -z "$1" ]; then
 echo
 echo "Testing SAOimage Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit saoimage image fk5 degrees regions/saoimage.reg
 fi
@@ -280,7 +280,7 @@ if [ "$1" = "xy" -o  -z "$1" ]; then
 echo
 echo "Testing X Y Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 testit xy image fk5 degrees regions/xy.image.reg
 testit xy physical fk5 degrees regions/xy.physical.reg
@@ -300,7 +300,7 @@ if [ "$1" = "fits" -o  -z "$1" ]; then
 echo
 echo "Testing FITS Regions Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 testit2 ds9 physical fk5 degrees regions/ds9.reg.fits regions/ds9.fits.reg
 
 xpaset -p ds9 frame clear

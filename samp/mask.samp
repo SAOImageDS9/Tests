@@ -11,7 +11,7 @@ set {} mask range 10 100
 set {} mask transparency 25
 set {} mask blend source
 set {} mask system physical
-set {} mask load data/img.fits
+set {} mask load fits/img.fits
 sleep 1
 set {} mask clear
 set {} mask close

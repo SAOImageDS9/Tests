@@ -3,7 +3,7 @@ get prism
 set {} prism close
 set {} prism open
 set {} prism close
-set {} prism data/img.fits
+set {} prism fits/img.fits
 set {} prism clear
 set {} prism close
 

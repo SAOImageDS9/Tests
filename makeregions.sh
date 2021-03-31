@@ -36,7 +36,7 @@ if [ "$1" = "ds9" -o -z "$1" ]; then
 echo
 echo "DS9 Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 physical fk5 degrees regions/ds9.physical.reg 
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 degrees regions/ds9.fk4.reg
@@ -59,7 +59,7 @@ if [ "$1" = "strip" -o -z "$1" ]; then
 echo
 echo "DS9 strip Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 xpaset -p ds9 regions strip yes
 
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 image fk5 degrees regions/ds9.image.strip.reg 
@@ -118,7 +118,7 @@ if [ "$1" = "xml" -o -z "$1" ]; then
 echo
 echo "XML Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg xml image fk5 degrees regions/xml.image.reg 
 doit ds9 image fk5 degrees regions/ds9.image.reg xml physical fk5 degrees regions/xml.physical.reg 
@@ -159,7 +159,7 @@ if [ "$1" = "ciao" -o -z "$1" ]; then
 echo
 echo "CIAO Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg ciao physical fk5 degrees regions/ciao.physical.reg 
 doit ds9 image fk5 degrees regions/ds9.image.reg ciao wcs fk5 sexagesimal regions/ciao.fk5.reg 
@@ -169,7 +169,7 @@ if [ "$1" = "saotng" -o -z "$1" ]; then
 echo
 echo "SAOtng Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg saotng image fk5 degrees regions/saotng.image.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk4 degrees regions/saotng.fk4.reg
@@ -188,7 +188,7 @@ if [ "$1" = "pros" -o -z "$1" ]; then
 echo
 echo "IRAF Pros Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg pros image fk5 degrees regions/pros.image.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg pros physical fk5 degrees regions/pros.physical.reg
@@ -206,7 +206,7 @@ if [ "$1" = "saoimage" -o -z "$1" ]; then
 echo
 echo "SAOImage Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg saoimage image fk5 degrees regions/saoimage.reg
 fi
@@ -215,7 +215,7 @@ if [ "$1" = "xy" -o -z "$1" ]; then
 echo
 echo "X Y Format..."
 xpaset -p ds9 frame clear
-xpaset -p ds9 fits data/img.fits
+xpaset -p ds9 fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg xy image fk5 degrees regions/xy.image.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg xy physical fk5 degrees regions/xy.physical.reg

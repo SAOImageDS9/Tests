@@ -8,7 +8,7 @@ get lock scale
 get lock scalelimits
 get lock colorbar
 get lock smooth
-set {} file new data/img.fits
+set {} file new fits/img.fits
 set {} tile
 set {} mode crosshair
 set {} lock frame wcs
