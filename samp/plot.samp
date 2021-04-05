@@ -78,6 +78,7 @@ set {} plot close
 set {} plot line
 set {} plot add graph line
 set {} plot add graph bar
+# backward compatibility
 set {} plot add graph scatter
 get plot layout
 get plot layout strip scale
@@ -379,6 +380,7 @@ set {} plot theme no
 set {} sleep .5
 set {} plot close
 
+# backward compatibility
 # scatter dataset...
 set {} plot scatter plot/xy.dat xy
 get plot scatter symbol

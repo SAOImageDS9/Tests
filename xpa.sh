@@ -2221,6 +2221,7 @@ echo -n " layout..."
 xpaset -p ds9 plot line
 xpaset -p ds9 plot add graph line
 xpaset -p ds9 plot add graph bar
+# backward compatibility
 xpaset -p ds9 plot add graph scatter
 xpaget ds9 plot layout >> /dev/null
 xpaget ds9 plot layout strip scale >> /dev/null
@@ -2542,6 +2543,7 @@ sleep $delay
 xpaset -p ds9 plot close
 echo "PASSED"
 
+# backward compatibility
 echo -n " scatter dataset..."
 xpaset -p ds9 plot scatter plot/xy.dat xy
 xpaget ds9 plot scatter symbol >> ${tt}.out

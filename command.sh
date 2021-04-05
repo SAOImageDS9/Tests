@@ -1564,6 +1564,7 @@ initit "..layout"
 testit "-plot line open"
 testit "-plot add graph line"
 testit "-plot add graph bar"
+# backward compatibility
 testit "-plot add graph scatter"
 testit "-plot theme no"
 testit "-sleep $delay"
@@ -1810,7 +1811,8 @@ testit "-sleep $delay"
 testit "-plot close"
 doit
 
-initit "..line dataset"
+# backward compatibility
+initit "..scatter dataset"
 testit "-plot scatter plot/xy.dat xy"
 testit "-plot scatter symbol circle"
 testit "-plot scatter symbol square"

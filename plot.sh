@@ -52,6 +52,7 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
+# backward compatibility
 xpaset -p ds9 plot scatter plot/xy.dat {The Title} {X Axis} {Y Axis} xy
 xpaset -p ds9 plot scatter plot/xyex.dat {The Title} {X Axis} {Y Axis} xyex
 xpaset -p ds9 plot scatter plot/xyey.dat {The Title} {X Axis} {Y Axis} xyey
@@ -84,6 +85,7 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
+# backward compatibility
 cat plot/stdin.2.dat | xpaset ds9 plot scatter stdin
 cat plot/stdin.3.dat | xpaset ds9 plot scatter stdin
 cat plot/stdin.4.dat | xpaset ds9 plot scatter stdin
@@ -116,6 +118,7 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
+# backward compatibility
 cat plot/stdin.xy.dat | xpaset ds9 plot scatter stdin
 cat plot/stdin.xyex.dat | xpaset ds9 plot scatter stdin
 cat plot/stdin.xyey.dat | xpaset ds9 plot scatter stdin
@@ -147,6 +150,7 @@ sleep "$delay"
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
+# backward compatibility
 cat plot/4.dat | xpaset ds9 plot scatter {The Title} {X Axis} {Y Axis} 4
 cat plot/5.dat | xpaset ds9 plot scatter {The Title} {X Axis} {Y Axis} 5
 sleep "$delay"
@@ -175,6 +179,7 @@ xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 xpaset -p ds9 plot close
 
+# backward compatibility
 cat plot/xy.dat | xpaset ds9 plot scatter {The Title} {X Axis} {Y Axis} xy
 cat plot/xyex.dat | xpaset ds9 plot scatter {The Title} {X Axis} {Y Axis} xyex
 cat plot/xyey.dat | xpaset ds9 plot scatter {The Title} {X Axis} {Y Axis} xyey
