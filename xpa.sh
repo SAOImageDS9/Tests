@@ -2027,7 +2027,7 @@ testit $tt
 fi
 
 tt="nvss"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 nvss open
 xpaset -p ds9 nvss close
@@ -3585,7 +3585,7 @@ testit $tt
 fi
 
 tt="vlss"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 vlss open
 xpaset -p ds9 vlss close
