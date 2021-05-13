@@ -53,6 +53,10 @@ delay=.5
 # source
 # tcl
 
+#2mass
+#nvss
+#vlss
+
 # slow down?
 slow=0
 if [ "$1" = "slow" ]; then
@@ -65,7 +69,7 @@ xpaset -p ds9 scale zscale
 xpaset -p ds9 fits fits/img.fits
 
 tt="2mass"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 2mass open
 xpaset -p ds9 2mass close
