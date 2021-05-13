@@ -54,7 +54,11 @@ delay=.5
 # tcl
 
 #2mass
+#dsseso
+#dssstsci
 #nvss
+#skyview
+#vla
 #vlss
 
 # slow down?
@@ -777,7 +781,7 @@ testit $tt
 fi
 
 tt="dsseso"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 dsseso open
 xpaset -p ds9 dsseso close
@@ -815,7 +819,7 @@ testit $tt
 fi
 
 tt="dssstsci"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 dssstsci open
 xpaset -p ds9 dssstsci close
@@ -3237,7 +3241,7 @@ testit $tt
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 skyview open
 xpaset -p ds9 skyview close
@@ -3551,7 +3555,7 @@ testit $tt
 fi
 
 tt="vla"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 vla open
 xpaset -p ds9 vla close

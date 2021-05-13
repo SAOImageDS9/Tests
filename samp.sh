@@ -38,6 +38,14 @@ echo "*** samp.sh ***"
 # must be invoked
 # iexam
 
+#2mass
+#dsseso
+#dssstsci
+#nvss
+#skyview
+#vla
+#vlss
+
 # slow down?
 slow=0
 if [ "$1" = "slow" ]; then
@@ -49,7 +57,7 @@ fi
 xpaset -p ds9 scale zscale
 xpaset -p ds9 fits fits/img.fits
 
-doit "$1" 2mass
+#doit "$1" 2mass
 doit "$1" 3d
 doit "$1" about
 doit "$1" align
@@ -72,8 +80,8 @@ doit "$1" cube
 doit "$1" cursor
 doit "$1" data
 doit "$1" dsssao
-doit "$1" dsseso
-doit "$1" dssstsci
+#doit "$1" dsseso
+#doit "$1" dssstsci
 doit "$1" export
 # backward compatibility
 doit "$1" file
@@ -115,7 +123,7 @@ doit "$1" nameserver
 # backward compatibility prefs
 doit "$1" nan
 doit "$1" nrrd
-doit "$1" nvss
+#doit "$1" nvss
 doit "$1" orient
 doit "$1" pagesetup
 doit "$1" pan
@@ -145,7 +153,7 @@ doit "$1" single
 # no tests
 #doit "$1" shm
 doit "$1" sia
-doit "$1" skyview
+#doit "$1" skyview
 doit "$1" sleep
 # no tests
 #doit "$1" smosaic
@@ -168,7 +176,8 @@ doit "$1" update
 doit "$1" url
 doit "$1" version
 doit "$1" view
-doit "$1" vla
+#doit "$1" vla
+#doit "$1" vlss
 doit "$1" vo
 doit "$1" wcs
 doit "$1" web
