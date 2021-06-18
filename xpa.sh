@@ -2027,6 +2027,8 @@ xpaset -p ds9 notes open
 xpaset -p ds9 notes {Hello World}
 xpaset -p ds9 notes append {Last Line}
 xpaset -p ds9 notes insert {First Line}
+xpaset -p ds9 notes save foo.txt
+xpaset -p ds9 notes load foo.txt
 sleep 1
 xpaset -p ds9 notes clear
 sleep 1
