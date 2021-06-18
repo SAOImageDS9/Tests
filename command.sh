@@ -1398,6 +1398,24 @@ testit "-nan white"
 doit
 fi
 
+tt="notes"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+#testit "-notes"
+testit "-notes open"
+testit "-notes close"
+testit "-notes open"
+testit "-notes 'Hello World'"
+testit "-notes append 'Last Line'"
+testit "-notes insert 'First Line'"
+testit "-sleep 1"
+testit "-notes clear"
+testit "-sleep 1"
+testit "-notes close"
+
+doit
+fi
+
 tt="nrrd"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"

@@ -2017,6 +2017,24 @@ xpaset -p ds9 nan white
 testit $tt
 fi
 
+tt="notes"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaget ds9 notes > /dev/null
+xpaset -p ds9 notes 
+xpaset -p ds9 notes close
+xpaset -p ds9 notes open
+xpaset -p ds9 notes {Hello World}
+xpaset -p ds9 notes append {Last Line}
+xpaset -p ds9 notes insert {First Line}
+sleep 1
+xpaset -p ds9 notes clear
+sleep 1
+xpaset -p ds9 notes close
+
+testit $tt
+fi
+
 tt="nrrd"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."

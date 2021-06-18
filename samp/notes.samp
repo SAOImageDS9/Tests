@@ -1,0 +1,14 @@
+get notes
+set {} notes
+set {} notes close
+set {} notes open
+set {} notes "Hello World"
+set {} notes append "Last Line"
+set {} notes insert "First Line"
+sleep 1
+set {} notes clear
+sleep 1
+set {} notes close
+
+set {} single
+set {} raise

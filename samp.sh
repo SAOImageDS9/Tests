@@ -122,6 +122,7 @@ doit "$1" multiframe
 doit "$1" nameserver
 # backward compatibility prefs
 doit "$1" nan
+doit "$1" notes
 doit "$1" nrrd
 #doit "$1" nvss
 doit "$1" orient
