@@ -56,10 +56,8 @@ delay=.5
 #2mass
 #dsseso
 #dssstsci
-#footprint
 #nvss
 #skyview
-#vla
 #vlss
 
 # slow down?
@@ -1221,7 +1219,7 @@ testit $tt
 fi
 
 tt="footprint"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/fp..."
 xpaset -p ds9 footprint cxc
 xpaset -p ds9 footprint hla
@@ -3576,7 +3574,7 @@ testit $tt
 fi
 
 tt="vla"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 vla open
 xpaset -p ds9 vla close
