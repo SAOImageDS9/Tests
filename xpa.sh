@@ -3487,6 +3487,7 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 frame delete
 xpaget ds9 view layout >> ${tt}.out
+xpaget ds9 view multi >> ${tt}.out
 xpaget ds9 view keyvalue >> ${tt}.out
 xpaget ds9 view info >> ${tt}.out
 xpaget ds9 view panner >> ${tt}.out
@@ -3512,6 +3513,8 @@ xpaset -p ds9 view layout vertical
 sleep $delay
 xpaset -p ds9 view layout horizontal
 sleep $delay
+xpaset -p ds9 view layout multi no
+xpaset -p ds9 view layout multi yes
 
 xpaset -p ds9 view keyvalue BITPIX
 

@@ -2688,6 +2688,9 @@ testit "-sleep $delay"
 testit "-view layout horizontal"
 testit "-sleep $delay"
 
+testit "-view multi no"
+testit "-view multi yes"
+
 testit "-view keyvalue BITPIX"
 testit "-view info no"
 testit "-view info yes"

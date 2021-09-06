@@ -1,5 +1,6 @@
 set {} frame delete
 get view layout
+get view multi
 get view keyvalue
 get view info
 get view panner
@@ -25,6 +26,9 @@ set {} view layout vertical
 set {} sleep .5
 set {} view layout horizontal
 set {} sleep .5
+
+set {} view multi no
+set {} view multi yes
 
 set {} view keyvalue BITPIX
 set {} view info no
