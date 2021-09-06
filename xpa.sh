@@ -3485,7 +3485,6 @@ fi
 tt="view"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-xpaset -p ds9 frame delete
 xpaget ds9 view layout >> ${tt}.out
 xpaget ds9 view multi >> ${tt}.out
 xpaget ds9 view keyvalue >> ${tt}.out
@@ -3509,12 +3508,23 @@ xpaget ds9 view physical >> ${tt}.out
 xpaget ds9 view image >> ${tt}.out
 xpaget ds9 view frame >> ${tt}.out
 
+xpaset -p ds9 tile
+xpaset -p ds9 frame new
+xpaset -p ds9 file fits/img.fits
+xpaset -p ds9 view multi no
+sleep $delay
+xpaset -p ds9 view multi yes
+sleep $delay
+xpaset -p ds9 colorbar orientation vertical
+sleep $delay
+xpaset -p ds9 colorbar orientation horizontal
+xpaset -p ds9 frame delete
+xpaset -p ds9 single
+
 xpaset -p ds9 view layout vertical
 sleep $delay
 xpaset -p ds9 view layout horizontal
 sleep $delay
-xpaset -p ds9 view layout multi no
-xpaset -p ds9 view layout multi yes
 
 xpaset -p ds9 view keyvalue BITPIX
 
@@ -3569,8 +3579,6 @@ xpaset -p ds9 view blue no
 xpaset -p ds9 view blue yes
 xpaset -p ds9 frame delete
 sleep $delay
-
-xpaset -p ds9 fits new fits/img.fits
 
 xpaset -p ds9 rgb close
 testit $tt

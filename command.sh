@@ -2682,14 +2682,23 @@ fi
 tt="view"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
+testit "-tile"
+testit "-frame new"
+testit "-file fits/img.fits"
+testit "-view multi no"
+testit "-sleep $delay"
+testit "-view multi yes"
+testit "-sleep $delay"
+testit "-colorbar orientation vertical"
+testit "-sleep $delay"
+testit "-colorbar orientation horizontal"
 testit "-frame delete"
+testit "-single"
+
 testit "-view layout vertical"
 testit "-sleep $delay"
 testit "-view layout horizontal"
 testit "-sleep $delay"
-
-testit "-view multi no"
-testit "-view multi yes"
 
 testit "-view keyvalue BITPIX"
 testit "-view info no"
@@ -2743,8 +2752,6 @@ testit "-view blue no"
 testit "-view blue yes"
 testit "-frame delete"
 testit "-sleep $delay"
-
-testit "-frame new -fits fits/img.fits"
 
 testit "-rgb close"
 doit

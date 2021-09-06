@@ -1,4 +1,3 @@
-set {} frame delete
 get view layout
 get view multi
 get view keyvalue
@@ -22,13 +21,23 @@ get view physical
 get view image
 get view frame
 
+set {} tile
+set {} frame new
+set {} file fits/img.fits
+set {} view multi no
+set {} sleep .5
+set {} view multi yes
+set {} sleep .5
+set {} colorbar orientation vertical
+set {} sleep .5
+set {} colorbar orientation horizontal
+set {} frame delete
+set {} single
+
 set {} view layout vertical
 set {} sleep .5
 set {} view layout horizontal
 set {} sleep .5
-
-set {} view multi no
-set {} view multi yes
 
 set {} view keyvalue BITPIX
 set {} view info no
@@ -82,9 +91,6 @@ set {} view blue no
 set {} view blue yes
 set {} frame delete
 set {} sleep .5
-
-set {} file new fits/img.fits
-set {} rgb close
 
 set {} rgb close
 set {} single
