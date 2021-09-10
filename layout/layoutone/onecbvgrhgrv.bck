@@ -68,7 +68,7 @@ colorbarrgb colorbar rgb 0.5 0.5 0.5 1 1 1 0
 colorbarrgb tag "{}"
 CreateNameNumberFrame Frame1 base
 global loadParam
-array set loadParam [list load,layer {} file,name ./onecrvgrhgrv.bck.dir/Frame1/img.fits file,mode {} load,type mmapincr file,type fits]
+array set loadParam [list load,layer {} file,name ./onecbvgrhgrv.bck.dir/Frame1/img.fits file,mode {} load,type mmapincr file,type fits]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
