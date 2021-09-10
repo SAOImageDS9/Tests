@@ -2,7 +2,7 @@ org='~/Downloads/ds9.darwinbigsurarm64.8.3b1/ds9'
 
 echo "Starting..."
 
-tt="one"
+tt="none"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -12,7 +12,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbh"
+tt="nonecbh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -22,7 +22,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbv"
+tt="nonecbv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -32,7 +32,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onegrh"
+tt="nonegrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -42,7 +42,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onegrv"
+tt="nonegrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -52,7 +52,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onegrhgrv"
+tt="nonegrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -62,7 +62,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbhgrh"
+tt="nonecbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -72,7 +72,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbhgrv"
+tt="nonecbhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -82,7 +82,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbhgrhgrv"
+tt="nonecbhgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -92,7 +92,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbvgrh"
+tt="nonecbvgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -102,7 +102,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbvgrv"
+tt="nonecbvgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
@@ -112,7 +112,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbvgrhgrv"
+tt="nonecbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/layoutnone/$tt.bck&"
