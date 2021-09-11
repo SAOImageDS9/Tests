@@ -5,7 +5,7 @@ echo "Starting..."
 tt="multi"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no&
 read
 xpaset -p bar exit
 fi
@@ -13,7 +13,7 @@ fi
 tt="multicbh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits&
 read
 xpaset -p bar exit
 fi
@@ -21,7 +21,7 @@ fi
 tt="multicbv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical&
 read
 xpaset -p bar exit
 fi
@@ -29,7 +29,7 @@ fi
 tt="multigrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes&
 read
 xpaset -p bar exit
 fi
@@ -37,7 +37,7 @@ fi
 tt="multigrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph vertical yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph vertical yes&
 read
 xpaset -p bar exit
 fi
@@ -45,7 +45,7 @@ fi
 tt="multigrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p bar exit
 fi
@@ -53,7 +53,7 @@ fi
 tt="multicbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes&
 read
 xpaset -p bar exit
 fi
@@ -61,7 +61,7 @@ fi
 tt="multicbhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph vertical yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph vertical yes&
 read
 xpaset -p bar exit
 fi
@@ -69,7 +69,7 @@ fi
 tt="multicbhgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes -view graph vertical yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p bar exit
 fi
@@ -77,7 +77,7 @@ fi
 tt="multicbvgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes&
 read
 xpaset -p bar exit
 fi
@@ -85,7 +85,7 @@ fi
 tt="multicbvgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical  -view graph vertical yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical  -view graph vertical yes&
 read
 xpaset -p bar exit
 fi
@@ -93,7 +93,7 @@ fi
 tt="multicbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-ds9 -title bar -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes -view graph vertical yes&
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p bar exit
 fi

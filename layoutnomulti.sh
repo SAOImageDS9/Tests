@@ -6,7 +6,7 @@ tt="nomulti"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -16,7 +16,7 @@ tt="nomulticbh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -26,7 +26,7 @@ tt="nomulticbv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -36,7 +36,7 @@ tt="nomultigrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -46,7 +46,7 @@ tt="nomultigrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph vertical yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph vertical yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -56,7 +56,7 @@ tt="nomultigrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -66,7 +66,7 @@ tt="nomulticbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -76,7 +76,7 @@ tt="nomulticbhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph vertical yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph vertical yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -86,7 +86,7 @@ tt="nomulticbhgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes -view graph vertical yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -96,7 +96,7 @@ tt="nomulticbvgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -106,7 +106,7 @@ tt="nomulticbvgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical  -view graph vertical yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical  -view graph vertical yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
@@ -116,7 +116,7 @@ tt="nomulticbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/nomulti/$tt.bck&"
-ds9 -title bar -view multi no -tile fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes -view graph vertical yes&
+ds9 -title bar -view multi no fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit
