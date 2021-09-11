@@ -2,7 +2,7 @@ org='~/Downloads/ds9.darwinbigsurarm64.8.3b1/ds9'
 
 echo "Starting..."
 
-tt="multi"
+tt="none"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no&
@@ -10,7 +10,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbh"
+tt="cbh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits&
@@ -18,7 +18,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbv"
+tt="cbv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical&
@@ -26,7 +26,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multigrh"
+tt="grh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes&
@@ -34,7 +34,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multigrv"
+tt="grv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph vertical yes&
@@ -42,7 +42,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multigrhgrv"
+tt="grhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
@@ -50,7 +50,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbhgrh"
+tt="cbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes&
@@ -58,7 +58,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbhgrv"
+tt="cbhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph vertical yes&
@@ -66,7 +66,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbhgrhgrv"
+tt="cbhgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view graph horizontal yes -view graph vertical yes&
@@ -74,7 +74,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbvgrh"
+tt="cbvgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes&
@@ -82,7 +82,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbvgrv"
+tt="cbvgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical  -view graph vertical yes&
@@ -90,7 +90,7 @@ read
 xpaset -p bar exit
 fi
 
-tt="multicbvgrhgrv"
+tt="cbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes -view graph vertical yes&
