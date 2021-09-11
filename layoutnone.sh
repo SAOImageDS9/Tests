@@ -12,7 +12,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbh"
+tt="cbh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -22,7 +22,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbv"
+tt="cbv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -32,7 +32,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonegrh"
+tt="grh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -42,7 +42,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonegrv"
+tt="grv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -52,7 +52,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonegrhgrv"
+tt="grhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -62,7 +62,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbhgrh"
+tt="cbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -72,7 +72,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbhgrv"
+tt="cbhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -82,7 +82,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbhgrhgrv"
+tt="cbhgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -92,7 +92,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbvgrh"
+tt="cbvgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -102,7 +102,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbvgrv"
+tt="cbvgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
@@ -112,7 +112,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="nonecbvgrhgrv"
+tt="cbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
