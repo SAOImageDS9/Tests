@@ -32,36 +32,6 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="grh"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-eval "$org -title foo -restore layout/none/$tt.bck&"
-ds9 -title bar -frame delete -view colorbar no -view graph horizontal yes&
-read
-xpaset -p foo exit
-xpaset -p bar exit
-fi
-
-tt="grv"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-eval "$org -title foo -restore layout/none/$tt.bck&"
-ds9 -title bar -frame delete -view colorbar no -view graph vertical yes&
-read
-xpaset -p foo exit
-xpaset -p bar exit
-fi
-
-tt="grhgrv"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-eval "$org -title foo -restore layout/none/$tt.bck&"
-ds9 -title bar -frame delete -view colorbar no -view graph horizontal yes -view graph vertical yes&
-read
-xpaset -p foo exit
-xpaset -p bar exit
-fi
-
 tt="cbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -117,6 +87,36 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/none/$tt.bck&"
 ds9 -title bar -frame delete -colorbar vertical -view graph horizontal yes -view graph vertical yes&
+read
+xpaset -p foo exit
+xpaset -p bar exit
+fi
+
+tt="grh"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+eval "$org -title foo -restore layout/none/$tt.bck&"
+ds9 -title bar -frame delete -view colorbar no -view graph horizontal yes&
+read
+xpaset -p foo exit
+xpaset -p bar exit
+fi
+
+tt="grv"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+eval "$org -title foo -restore layout/none/$tt.bck&"
+ds9 -title bar -frame delete -view colorbar no -view graph vertical yes&
+read
+xpaset -p foo exit
+xpaset -p bar exit
+fi
+
+tt="grhgrv"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+eval "$org -title foo -restore layout/none/$tt.bck&"
+ds9 -title bar -frame delete -view colorbar no -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p foo exit
 xpaset -p bar exit

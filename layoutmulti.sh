@@ -26,30 +26,6 @@ read
 xpaset -p bar exit
 fi
 
-tt="grh"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes&
-read
-xpaset -p bar exit
-fi
-
-tt="grv"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph vertical yes&
-read
-xpaset -p bar exit
-fi
-
-tt="grhgrv"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
-read
-xpaset -p bar exit
-fi
-
 tt="cbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -94,6 +70,30 @@ tt="cbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -colorbar vertical -view graph horizontal yes -view graph vertical yes&
+read
+xpaset -p bar exit
+fi
+
+tt="grh"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes&
+read
+xpaset -p bar exit
+fi
+
+tt="grv"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph vertical yes&
+read
+xpaset -p bar exit
+fi
+
+tt="grhgrv"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+ds9 -title bar fits/img.fits fits/img.fits fits/img.fits fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
 read
 xpaset -p bar exit
 fi
