@@ -68,7 +68,7 @@ colorbarrgb colorbar rgb 0.5 0.5 0.5 1 1 1 0
 colorbarrgb tag "{}"
 CreateNameNumberFrame Frame1 base
 global loadParam
-array set loadParam [list file,mode {} file,name ./nomultigrh.bck.dir/Frame1/img.fits load,layer {} file,type fits load,type mmapincr]
+array set loadParam [list file,mode {} file,name ./grhgrv.bck.dir/Frame1/img.fits load,layer {} file,type fits load,type mmapincr]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -112,11 +112,11 @@ Frame1 wcs wcs fk5 sexagesimal
 update
 Frame1 pan preserve 0
 Frame1 pan to physical 801 801
-Frame1 zoom to 1 1
+Frame1 zoom to 1.2 1.2
 Frame1 rotate to 0
 Frame1 orient none
 Frame1 wcs align 0
-Frame1 zoom to 1 1
+Frame1 zoom to 1.2 1.2
 Frame1 3d view 0 0
 Frame1 3d scale 1
 Frame1 3d method mip
@@ -134,7 +134,7 @@ Frame1 mask mark nonzero
 Frame1 mask range 0 0
 CreateNameNumberFrame Frame2 base
 global loadParam
-array set loadParam [list load,layer {} file,name ./nomultigrh.bck.dir/Frame2/img.fits file,mode {} load,type mmapincr file,type fits]
+array set loadParam [list load,layer {} file,name ./grhgrv.bck.dir/Frame2/img.fits file,mode {} load,type mmapincr file,type fits]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -178,11 +178,11 @@ Frame2 wcs wcs fk5 sexagesimal
 update
 Frame2 pan preserve 0
 Frame2 pan to physical 801 801
-Frame2 zoom to 1 1
+Frame2 zoom to 1.2 1.2
 Frame2 rotate to 0
 Frame2 orient none
 Frame2 wcs align 0
-Frame2 zoom to 1 1
+Frame2 zoom to 1.2 1.2
 Frame2 3d view 0 0
 Frame2 3d scale 1
 Frame2 3d method mip
@@ -200,7 +200,7 @@ Frame2 mask mark nonzero
 Frame2 mask range 0 0
 CreateNameNumberFrame Frame3 base
 global loadParam
-array set loadParam [list load,layer {} file,name ./nomultigrh.bck.dir/Frame3/img.fits file,mode {} load,type mmapincr file,type fits]
+array set loadParam [list load,layer {} file,name ./grhgrv.bck.dir/Frame3/img.fits file,mode {} load,type mmapincr file,type fits]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -244,11 +244,11 @@ Frame3 wcs wcs fk5 sexagesimal
 update
 Frame3 pan preserve 0
 Frame3 pan to physical 801 801
-Frame3 zoom to 1 1
+Frame3 zoom to 1.2 1.2
 Frame3 rotate to 0
 Frame3 orient none
 Frame3 wcs align 0
-Frame3 zoom to 1 1
+Frame3 zoom to 1.2 1.2
 Frame3 3d view 0 0
 Frame3 3d scale 1
 Frame3 3d method mip
@@ -266,7 +266,7 @@ Frame3 mask mark nonzero
 Frame3 mask range 0 0
 CreateNameNumberFrame Frame4 base
 global loadParam
-array set loadParam [list load,layer {} file,name ./nomultigrh.bck.dir/Frame4/img.fits file,mode {} load,type mmapincr file,type fits]
+array set loadParam [list load,layer {} file,name ./grhgrv.bck.dir/Frame4/img.fits file,mode {} load,type mmapincr file,type fits]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -310,11 +310,11 @@ Frame4 wcs wcs fk5 sexagesimal
 update
 Frame4 pan preserve 0
 Frame4 pan to physical 801 801
-Frame4 zoom to 1 1
+Frame4 zoom to 1.2 1.2
 Frame4 rotate to 0
 Frame4 orient none
 Frame4 wcs align 0
-Frame4 zoom to 1 1
+Frame4 zoom to 1.2 1.2
 Frame4 3d view 0 0
 Frame4 3d scale 1
 Frame4 3d method mip
@@ -333,15 +333,15 @@ Frame4 mask range 0 0
 global pds9
 array set pds9 { dialog motif text,font courier samp 1 prec,linear 8 iraf 1 prec,len,arcsec 3 font,weight normal automarker 1 language locale text,font,weight normal dialog,all 0 nan white prec,angle 8 font,slant roman confirm 1 prec,deg 7 backup 1 language,dir {} font helvetica language,name English bg white prec,len,deg 7 xpa 1 bg,use 0 prec,dms 3 theme default prec,len,arcmin 5 prec,len,linear 8 dialog,center 0 prec,hms 4 font,size 9 text,font,slant roman text,font,size 9 }
 global current
-array set current { colorbar colorbar orient none zoom {1 1} mode none ext {} display tile cursor {} align 0 rotate 0 rgb red frame Frame4 }
+array set current { colorbar colorbar orient none zoom {1.2 1.2} mode none ext {} display tile cursor {} align 0 rotate 0 rgb red frame Frame4 }
 global pcurrent
 array set pcurrent { orient none zoom {1 1} mode none display single align 0 rotate 0 }
 global view
-array set view { info,wcss 0 info,wcsc 0 info,wcst 0 info,wcsd 0 graph,horz 1 info,wcsu 0 info,wcse 0 info,bunit 0 info,lowhigh 0 magnifier 1 info,frame 1 info,image 1 info,wcsv 0 info,wcsf 0 info,wcsw 0 info,wcsg 0 info 1 colorbar 0 info,physical 1 info,wcsx 0 info,wcsh 0 info,wcs 1 info,keyword 0 info,wcsy 0 info,wcsi 0 info,keyvalue {} info,wcsz 0 info,wcsj 0 buttons 1 info,object 1 info,wcsk 0 info,amplifier 0 info,wcsl 0 info,filename 1 info,detector 0 info,wcsm 0 info,minmax 0 info,wcsn 0 info,wcso 0 panner 1 info,wcsp 0 info,wcsq 0 info,wcsa 0 layout horizontal info,wcsr 0 info,wcsb 0 graph,vert 0 }
+array set view { info,wcss 0 info,wcsc 0 info,wcst 0 info,wcsd 0 graph,horz 1 info,wcsu 0 info,wcse 0 info,bunit 0 info,lowhigh 0 magnifier 1 info,frame 1 info,image 1 info,wcsv 0 info,wcsf 0 info,wcsw 0 info,wcsg 0 info 1 colorbar 0 info,physical 1 info,wcsx 0 info,wcsh 0 info,wcs 1 info,keyword 0 info,wcsy 0 info,wcsi 0 info,keyvalue {} info,wcsz 0 info,wcsj 0 buttons 1 info,object 1 info,wcsk 0 info,amplifier 0 info,wcsl 0 info,filename 1 info,detector 0 info,wcsm 0 info,minmax 0 info,wcsn 0 info,wcso 0 panner 1 info,wcsp 0 info,wcsq 0 info,wcsa 0 layout horizontal info,wcsr 0 info,wcsb 0 graph,vert 1 }
 global pview
 array set pview { info,wcss 0 info,wcsc 0 info,wcst 0 info,wcsd 0 graph,horz 0 info,wcsu 0 info,wcse 0 info,bunit 0 info,lowhigh 0 magnifier 1 info,wcsf 0 info,wcsv 0 info,frame 1 info,image 1 colorbar 1 info 1 info,wcsg 0 info,wcsw 0 info,keyword 0 info,wcs 1 info,wcsh 0 info,wcsx 0 info,physical 1 info,keyvalue {} info,wcsi 0 info,wcsy 0 info,object 1 buttons 1 info,wcsj 0 info,wcsz 0 info,wcsk 0 info,filename 1 info,wcsl 0 info,amplifier 0 info,minmax 0 info,wcsm 0 info,detector 0 info,wcsn 0 panner 1 info,wcso 0 info,wcsp 0 layout horizontal info,wcsa 0 info,wcsq 0 graph,vert 0 info,wcsb 0 info,wcsr 0 }
 global canvas
-array set canvas { gap 4 width 688 gap,bottom 14 height 373 }
+array set canvas { gap 4 width 533 gap,bottom 14 height 349 }
 global phttp
 array set phttp { auth,passwd {} proxy,host {} auth,user {} auth 0 proxy 0 proxy,port {} }
 global pbuttons

@@ -48,7 +48,7 @@ colorbar configure -size 20
 colorbar configure -ticks 11
 colorbar configure -numerics 1
 colorbar configure -space 0
-colorbar configure -orientation 1
+colorbar configure -orientation 0
 colorbar configure -font helvetica
 colorbar configure -fontsize 9
 colorbar configure -fontweight normal
@@ -59,7 +59,7 @@ colorbarrgb configure -size 20
 colorbarrgb configure -ticks 11
 colorbarrgb configure -numerics 1
 colorbarrgb configure -space 0
-colorbarrgb configure -orientation 1
+colorbarrgb configure -orientation 0
 colorbarrgb configure -font helvetica
 colorbarrgb configure -fontsize 9
 colorbarrgb configure -fontweight normal
@@ -68,7 +68,7 @@ colorbarrgb colorbar rgb 0.5 0.5 0.5 1 1 1 0
 colorbarrgb tag "{}"
 CreateNameNumberFrame Frame1 base
 global loadParam
-array set loadParam [list file,mode {} file,name ./nomultigrhgrv.bck.dir/Frame1/img.fits load,layer {} file,type fits load,type mmapincr]
+array set loadParam [list file,mode {} file,name ./cbhgrv.bck.dir/Frame1/img.fits load,layer {} file,type fits load,type mmapincr]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -134,7 +134,7 @@ Frame1 mask mark nonzero
 Frame1 mask range 0 0
 CreateNameNumberFrame Frame2 base
 global loadParam
-array set loadParam [list load,layer {} file,name ./nomultigrhgrv.bck.dir/Frame2/img.fits file,mode {} load,type mmapincr file,type fits]
+array set loadParam [list load,layer {} file,name ./cbhgrv.bck.dir/Frame2/img.fits file,mode {} load,type mmapincr file,type fits]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -200,7 +200,7 @@ Frame2 mask mark nonzero
 Frame2 mask range 0 0
 CreateNameNumberFrame Frame3 base
 global loadParam
-array set loadParam [list load,layer {} file,name ./nomultigrhgrv.bck.dir/Frame3/img.fits file,mode {} load,type mmapincr file,type fits]
+array set loadParam [list load,layer {} file,name ./cbhgrv.bck.dir/Frame3/img.fits file,mode {} load,type mmapincr file,type fits]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -266,7 +266,7 @@ Frame3 mask mark nonzero
 Frame3 mask range 0 0
 CreateNameNumberFrame Frame4 base
 global loadParam
-array set loadParam [list load,layer {} file,name ./nomultigrhgrv.bck.dir/Frame4/img.fits file,mode {} load,type mmapincr file,type fits]
+array set loadParam [list load,layer {} file,name ./cbhgrv.bck.dir/Frame4/img.fits file,mode {} load,type mmapincr file,type fits]
 if [BackupFindFile loadParam] {
   ProcessLoad
 }
@@ -337,11 +337,11 @@ array set current { colorbar colorbar orient none zoom {1.2 1.2} mode none ext {
 global pcurrent
 array set pcurrent { orient none zoom {1 1} mode none display single align 0 rotate 0 }
 global view
-array set view { info,wcss 0 info,wcsc 0 info,wcst 0 info,wcsd 0 graph,horz 1 info,wcsu 0 info,wcse 0 info,bunit 0 info,lowhigh 0 magnifier 1 info,frame 1 info,image 1 info,wcsv 0 info,wcsf 0 info,wcsw 0 info,wcsg 0 info 1 colorbar 0 info,physical 1 info,wcsx 0 info,wcsh 0 info,wcs 1 info,keyword 0 info,wcsy 0 info,wcsi 0 info,keyvalue {} info,wcsz 0 info,wcsj 0 buttons 1 info,object 1 info,wcsk 0 info,amplifier 0 info,wcsl 0 info,filename 1 info,detector 0 info,wcsm 0 info,minmax 0 info,wcsn 0 info,wcso 0 panner 1 info,wcsp 0 info,wcsq 0 info,wcsa 0 layout horizontal info,wcsr 0 info,wcsb 0 graph,vert 1 }
+array set view { info,wcss 0 info,wcsc 0 info,wcst 0 info,wcsd 0 graph,horz 0 info,wcsu 0 info,wcse 0 info,bunit 0 info,lowhigh 0 magnifier 1 info,frame 1 info,image 1 info,wcsv 0 info,wcsf 0 info,wcsw 0 info,wcsg 0 info 1 colorbar 1 info,physical 1 info,wcsx 0 info,wcsh 0 info,wcs 1 info,keyword 0 info,wcsy 0 info,wcsi 0 info,keyvalue {} info,wcsz 0 info,wcsj 0 buttons 1 info,object 1 info,wcsk 0 info,amplifier 0 info,wcsl 0 info,filename 1 info,detector 0 info,wcsm 0 info,minmax 0 info,wcsn 0 info,wcso 0 panner 1 info,wcsp 0 info,wcsq 0 info,wcsa 0 layout horizontal info,wcsr 0 info,wcsb 0 graph,vert 1 }
 global pview
 array set pview { info,wcss 0 info,wcsc 0 info,wcst 0 info,wcsd 0 graph,horz 0 info,wcsu 0 info,wcse 0 info,bunit 0 info,lowhigh 0 magnifier 1 info,wcsf 0 info,wcsv 0 info,frame 1 info,image 1 colorbar 1 info 1 info,wcsg 0 info,wcsw 0 info,keyword 0 info,wcs 1 info,wcsh 0 info,wcsx 0 info,physical 1 info,keyvalue {} info,wcsi 0 info,wcsy 0 info,object 1 buttons 1 info,wcsj 0 info,wcsz 0 info,wcsk 0 info,filename 1 info,wcsl 0 info,amplifier 0 info,minmax 0 info,wcsm 0 info,detector 0 info,wcsn 0 panner 1 info,wcso 0 info,wcsp 0 layout horizontal info,wcsa 0 info,wcsq 0 graph,vert 0 info,wcsb 0 info,wcsr 0 }
 global canvas
-array set canvas { gap 4 width 533 gap,bottom 14 height 349 }
+array set canvas { gap 4 width 584 gap,bottom 14 height 479 }
 global phttp
 array set phttp { auth,passwd {} proxy,host {} auth,user {} auth 0 proxy 0 proxy,port {} }
 global pbuttons
@@ -351,7 +351,7 @@ array set ppanner { compass 1 }
 global pmagnifier
 array set pmagnifier { region 1 zoom 4 cursor 1 color white }
 global colorbar
-array set colorbar { invert 0 lock 0 size 20 font,weight normal space 0 tag red font,slant roman map grey numerics 1 font helvetica orientation vertical ticks 11 font,size 9 }
+array set colorbar { invert 0 lock 0 size 20 font,weight normal space 0 tag red font,slant roman map grey numerics 1 font helvetica orientation horizontal ticks 11 font,size 9 }
 global saveimage
 array set saveimage { tiff,compress none error {An error has occurred while creating the image. Please be sure that the ds9 window is in the upper left corner of the default screen and the entire window is visible.} jpeg,quality 75 }
 global debug
