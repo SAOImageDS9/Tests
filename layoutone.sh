@@ -2,7 +2,7 @@ org='~/Downloads/ds9.darwinbigsurarm64.8.3b1/ds9'
 
 echo "Starting..."
 
-tt="one"
+tt="none"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -12,7 +12,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbh"
+tt="cbh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -22,7 +22,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbv"
+tt="cbv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -32,7 +32,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onegrh"
+tt="grh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -42,7 +42,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onegrv"
+tt="grv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -52,7 +52,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onegrhgrv"
+tt="grhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -62,7 +62,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbhgrh"
+tt="cbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -72,7 +72,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbhgrv"
+tt="cbhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -82,7 +82,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbhgrhgrv"
+tt="cbhgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -92,7 +92,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbvgrh"
+tt="cbvgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -102,7 +102,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbvgrv"
+tt="cbvgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
@@ -112,7 +112,7 @@ xpaset -p foo exit
 xpaset -p bar exit
 fi
 
-tt="onecbvgrhgrv"
+tt="cbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
