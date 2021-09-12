@@ -4,7 +4,7 @@ echo "Starting..."
 
 tt="none"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -view colorbar no&
 read
@@ -14,7 +14,7 @@ fi
 
 tt="cbh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits&
 read
@@ -24,7 +24,7 @@ fi
 
 tt="cbv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -colorbar vertical&
 read
@@ -34,7 +34,7 @@ fi
 
 tt="cbhgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -view graph horizontal yes&
 read
@@ -44,7 +44,7 @@ fi
 
 tt="cbhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -view graph vertical yes&
 read
@@ -54,7 +54,7 @@ fi
 
 tt="cbhgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -view graph horizontal yes -view graph vertical yes&
 read
@@ -64,7 +64,7 @@ fi
 
 tt="cbvgrh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -colorbar vertical -view graph horizontal yes&
 read
@@ -74,7 +74,7 @@ fi
 
 tt="cbvgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -colorbar vertical  -view graph vertical yes&
 read
@@ -84,7 +84,7 @@ fi
 
 tt="cbvgrhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -colorbar vertical -view graph horizontal yes -view graph vertical yes&
 read
@@ -94,7 +94,7 @@ fi
 
 tt="grh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -view colorbar no -view graph horizontal yes&
 read
@@ -104,7 +104,7 @@ fi
 
 tt="grv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -view colorbar no -view graph vertical yes&
 read
@@ -114,7 +114,7 @@ fi
 
 tt="grhgrv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
+echo "$tt..."
 eval "$org -title foo -restore layout/one/$tt.bck&"
 ds9 -title bar fits/img.fits -view colorbar no -view graph horizontal yes -view graph vertical yes&
 read
