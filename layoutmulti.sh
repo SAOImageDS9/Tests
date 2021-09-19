@@ -254,5 +254,3 @@ echo "...done"
 xpaset -p bar exit
 fi
 
-echo "Done"
-
