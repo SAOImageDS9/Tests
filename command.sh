@@ -1003,6 +1003,22 @@ testit "-grid close"
 doit
 fi
 
+tt="graph"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-graph grid yes"
+testit "-graph log no"
+testit "-graph method average"
+testit "-graph font helvetica"
+testit "-graph fontsize 9"
+testit "-graph fontweight normal"
+testit "-graph fontslant roman"
+testit "-graph size 150"
+testit "-graph thickness 1"
+
+doit
+fi
+
 tt="header"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"

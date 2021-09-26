@@ -1,0 +1,28 @@
+get graph grid
+get graph log
+get graph method
+get graph font
+get graph fontsize
+get graph fontweight
+get graph fontslant
+get graph size
+get graph thickness
+
+set {} graph open
+set {} graph close
+set {} graph grid yes
+set {} graph log no
+set {} graph method average
+set {} graph font helvetica
+set {} graph fontsize 9
+set {} graph fontweight normal
+set {} graph fontslant roman
+set {} graph size 150
+set {} graph thickness 1
+
+set {} single
+set {} raise
+
+
+
+
