@@ -1359,6 +1359,34 @@ xpaset -p ds9 cube close
 testit $tt
 fi
 
+tt="graph"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaget ds9 graph grid >> ${tt}.out
+xpaget ds9 graph log >> ${tt}.out
+xpaget ds9 graph method >> ${tt}.out
+xpaget ds9 graph font >> ${tt}.out
+xpaget ds9 graph fontsize >> ${tt}.out
+xpaget ds9 graph fontweight >> ${tt}.out
+xpaget ds9 graph fontslant >> ${tt}.out
+xpaget ds9 graph size >> ${tt}.out
+xpaget ds9 graph thickness >> ${tt}.out
+
+xpaset -p ds9 graph open
+xpaset -p ds9 graph close
+xpaset -p ds9 graph grid yes
+xpaset -p ds9 graph log no
+xpaset -p ds9 graph method average
+xpaset -p ds9 graph font helvetica
+xpaset -p ds9 graph fontsize 9
+xpaset -p ds9 graph fontweight normal
+xpaset -p ds9 graph fontslant roman
+xpaset -p ds9 graph size 150
+xpaset -p ds9 graph thickness 1
+
+testit $tt
+fi
+
 tt="grid"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -1541,34 +1569,6 @@ xpaset -p ds9 grid reset
 
 xpaset -p ds9 grid no
 xpaset -p ds9 grid close
-
-testit $tt
-fi
-
-tt="graph"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-xpaget ds9 graph grid >> ${tt}.out
-xpaget ds9 graph log >> ${tt}.out
-xpaget ds9 graph method >> ${tt}.out
-xpaget ds9 graph font >> ${tt}.out
-xpaget ds9 graph fontsize >> ${tt}.out
-xpaget ds9 graph fontweight >> ${tt}.out
-xpaget ds9 graph fontslant >> ${tt}.out
-xpaget ds9 graph size >> ${tt}.out
-xpaget ds9 graph thickness >> ${tt}.out
-
-xpaset -p ds9 graph open
-xpaset -p ds9 graph close
-xpaset -p ds9 graph grid yes
-xpaset -p ds9 graph log no
-xpaset -p ds9 graph method average
-xpaset -p ds9 graph font helvetica
-xpaset -p ds9 graph fontsize 9
-xpaset -p ds9 graph fontweight normal
-xpaset -p ds9 graph fontslant roman
-xpaset -p ds9 graph size 150
-xpaset -p ds9 graph thickness 1
 
 testit $tt
 fi

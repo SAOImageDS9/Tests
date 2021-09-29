@@ -89,6 +89,7 @@ doit "$1" fits
 doit "$1" footprint
 doit "$1" frame
 doit "$1" gif
+doit "$1" graph
 doit "$1" grid
 doit "$1" header
 doit "$1" height
