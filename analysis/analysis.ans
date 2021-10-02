@@ -304,6 +304,23 @@ hmenu Test Network
 	$url(http://ds9.si.edu/download/data/img.fits) | $image(new)
 endhmenu
 
+buttonbar
+	Hello
+	*
+	button
+	echo "Hello" | $text
+
+	World
+	*
+	button
+	echo "World" | $text
+
+	Hello World
+	*
+	button
+	echo "Hello World" | $text
+endbuttonbar
+
 $x $y $z $value
 *.fits
 bind x
