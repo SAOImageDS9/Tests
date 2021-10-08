@@ -28,3 +28,8 @@ wcs2.sh
 vo.sh mime
 backup.sh
 analysis.sh
+
+layoutnone.sh
+layoutone.sh
+layoutmulti.sh
+layoutnomulti.sh

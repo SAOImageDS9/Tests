@@ -56,6 +56,7 @@ delay=.5
 #2mass
 #dsseso
 #dssstsci
+#footprint
 #nvss
 #skyview
 #vlss
@@ -1219,7 +1220,7 @@ testit $tt
 fi
 
 tt="footprint"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt/fp..."
 xpaset -p ds9 footprint cxc
 xpaset -p ds9 footprint hla

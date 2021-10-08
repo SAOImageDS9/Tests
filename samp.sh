@@ -41,6 +41,7 @@ echo "*** samp.sh ***"
 #2mass
 #dsseso
 #dssstsci
+#footprint
 #nvss
 #skyview
 #vla
@@ -86,7 +87,7 @@ doit "$1" export
 # backward compatibility
 doit "$1" file
 doit "$1" fits
-doit "$1" footprint
+#doit "$1" footprint
 doit "$1" frame
 doit "$1" gif
 doit "$1" graph
