@@ -4,6 +4,8 @@ get analysis
 get analysis task
 #get analysis entry {hello world}
 #get analysis message okcancel {hello world}
+#get analysis filedialog open
+#get analysis filedialog save
 
 set {} analysis 0
 set {} analysis task 1

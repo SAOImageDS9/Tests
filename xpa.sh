@@ -179,6 +179,8 @@ xpaget ds9 analysis > /dev/null
 xpaget ds9 analysis task > /dev/null
 #xpaget ds9 analysis entry {hello world}
 #xpaget ds9 analysis message okcancel {hello world}
+#xpaget -p ds9 analysis filedialog open
+#xpaget -p ds9 analysis filedialog save
 
 xpaset -p ds9 analysis 0
 xpaset -p ds9 analysis task 1
