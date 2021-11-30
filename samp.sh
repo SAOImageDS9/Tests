@@ -179,7 +179,7 @@ doit "$1" update
 doit "$1" url
 doit "$1" version
 doit "$1" view
-doit "$1" vla
+#doit "$1" vla
 #doit "$1" vlss
 doit "$1" vo
 doit "$1" wcs

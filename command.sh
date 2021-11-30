@@ -35,6 +35,7 @@ delay=0
 #footprint
 #nvss
 #skyview
+#vla
 #vlss
 
 # not tested
@@ -2775,7 +2776,7 @@ doit
 fi
 
 tt="vla"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 initit "$tt"
 testit "-vla open"
 testit "-vla close"
