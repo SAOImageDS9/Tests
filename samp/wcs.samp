@@ -18,6 +18,7 @@ set file:aux/image.wcs wcs append
 set file:aux/image.wcs wcs replace
 set {} wcs load aux/image.wcs
 set {} wcs save foo.wcs
+set {} wcs save 1 foo.wcs
 # backward compatibility
 set {} wcs append aux/image.wcs
 # backward compatibility

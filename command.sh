@@ -2869,6 +2869,7 @@ testit "-wcs sky fk5"
 testit "-wcs skyformat degrees"
 testit "-wcs load aux/image.wcs"
 testit "-wcs save foo.wcs"
+testit "-wcs save 1 foo.wcs"
 # backward compatibility
 testit "-wcs append aux/image.wcs"
 # backward compatibility
