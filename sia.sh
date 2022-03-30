@@ -23,14 +23,14 @@ tt="-sia cxc -sia sky fk4 -header"
 testit "$tt"
 doit
 
-tt="-sia cxc -sia 2mass -header"
+tt="-sia cxc -sia mast -header"
 testit "$tt"
 doit
 
-tt="-sia cxc -sia sky fk4 -sia 2mass -header"
+tt="-sia cxc -sia sky fk4 -sia mast -header"
 testit "$tt"
 doit
 
-tt="-sia cxc -sia current cxc -sia sky fk4 -sia 2mass -header"
+tt="-sia cxc -sia current cxc -sia sky fk4 -sia mast -header"
 testit "$tt"
 doit
