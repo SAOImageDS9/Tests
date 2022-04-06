@@ -28,19 +28,19 @@ xpaset -p ds9 analysis load analysis/analysis.ans
 
 # Main
 if [ "$1" = "help" -o  -z "$1" ]; then
-echo "$j Help"
+echo "Help"
 xpaset -p ds9 analysis 0
 fi
 
 # Web
 if [ "$1" = "web" -o  -z "$1" ]; then
-echo "$j Web"
+echo "Web"
 xpaset -p ds9 analysis 1
 
-echo "..$j web url"
+echo "..web url"
 xpaset -p ds9 analysis 2
 
-echo "..$j web file"
+echo "..web file"
 xpaset -p ds9 analysis 3
 fi
 
@@ -49,146 +49,158 @@ if [ "$1" = "basics" -o  -z "$1" ]; then
 echo "Basic"
 xpaset -p ds9 analysis 4
 
-echo "..$j escape macro"
+echo "..escape macro"
 xpaset -p ds9 analysis 5
 
-echo "..$j non macro"
+echo "..non macro"
 xpaset -p ds9 analysis 6
 
-echo "..$j \$xpa"
+echo "..\$xpa"
 xpaset -p ds9 analysis 7
 
-echo "..$j \$xpa_method"
+echo "..\$xpa_method"
 xpaset -p ds9 analysis 8
 
-echo "..$j \$vo_method"
+echo "..\$vo_method"
 xpaset -p ds9 analysis 9
 
-echo "..$j \$filename"
+echo "..\$filename"
 xpaset -p ds9 analysis 10
 
-echo "..$j \$filename(root)"
+echo "..\$filename(root)"
 xpaset -p ds9 analysis 11
 
-echo "..$j \$filename(full)"
+echo "..\$filename(full)"
 xpaset -p ds9 analysis 12
 
-echo "..$j \$filedialog(open)"
+echo "..\$filedialog(open)"
 xpaset -p ds9 analysis 13
 
-echo "..$j \$filename(save)"
+echo "..\$filename(save)"
 xpaset -p ds9 analysis 14
 
-echo "..$j \$width $height $depth $bitpix"
+echo "..\$width \$height \$depth \$bitpix"
 xpaset -p ds9 analysis 15
 
-echo "..$j \$pan"
+echo "..\$pan"
 xpaset -p ds9 analysis 16
 
-echo "..$j \$env"
+echo "..\$env \$dir"
 xpaset -p ds9 analysis 17
 fi
 
 # Regions
 if [ "$1" = "regions" -o  -z "$1" ]; then
-echo "$j Regions"
+echo "Regions"
 xpaset -p ds9 analysis 18
 
-echo "..$j \$regions"
+echo "..\$regions"
 xpaset -p ds9 analysis 19
 
-echo "..$j \$regions wcs"
+echo "..\$regions wcs"
 xpaset -p ds9 analysis 20
 
-echo "..$j \$jnclude_regions_pixels"
+echo "..\$jnclude_regions_pixels"
 xpaset -p ds9 analysis 21
 
-echo "..$j \$filename $regions"
+echo "..\$filename $regions"
 xpaset -p ds9 analysis 22
 
-echo "..$j \$regions()"
+echo "..\$regions()"
 xpaset -p ds9 analysis 23
 fi
 
 # Output
 if [ "$1" = "output" -o  -z "$1" ]; then
-echo "$j Output"
+echo "Output"
 xpaset -p ds9 analysis 24
 
-echo "..$j \$null"
+echo "..\$null"
 xpaset -p ds9 analysis 25
 
-echo "..$j \$text"
+echo "..\$text"
 xpaset -p ds9 analysis 26
 
-echo "..$j \$plot"
+echo "..\$plot"
 xpaset -p ds9 analysis 27
 
-echo "..$j \$plot(title,x,y,xyey)"
+echo "..\$plot(title,x,y,xyey)"
 xpaset -p ds9 analysis 28
 
-echo "..$j \$plot(title,x,y,xyexey)"
+echo "..\$plot(title,x,y,xyexey)"
 xpaset -p ds9 analysis 29
 
-echo "..$j \$plot(title,x,y,4)"
+echo "..\$plot(title,x,y,4)"
 xpaset -p ds9 analysis 30
 
-echo "..$j \$plot(title,x,y,5)"
+echo "..\$plot(title,x,y,5)"
 xpaset -p ds9 analysis 31
 
-echo "..$j \$plot(stdin)"
+echo "..\$plot(stdin)"
 xpaset -p ds9 analysis 32
 
-echo "..$j \$plot(stdin) text"
+echo "..\$plot(stdin) text"
 xpaset -p ds9 analysis 33
 
-echo "..$j \$plot(stdin) error"
+echo "..\$plot(stdin) error"
 xpaset -p ds9 analysis 34
 
-echo "..$j \$data"
+echo "..\$data"
 xpaset -p ds9 analysis 35
 
-echo "..$j \$jmage"
+echo "..\$jmage"
 xpaset -p ds9 analysis 36
 
-echo "..$j \$jmage(3d)"
+echo "..\$jmage(3d)"
 xpaset -p ds9 analysis 37
 fi
 
 # Dialogs
 if [ "$1" = "dialogs" -o  -z "$1" ]; then
-echo "$j Dialog"
+echo "Dialog"
 xpaset -p ds9 analysis 38
 
-echo "..$j \$message(message)"
+echo "..\$message(message)"
 xpaset -p ds9 analysis 39
 
-echo "..$j \$message(ok,message)"
+echo "..\$message(okcancel,message)"
 xpaset -p ds9 analysis 40
 
-echo "..$j \$entry(message)"
+echo "..\$messageok(message)"
 xpaset -p ds9 analysis 41
+
+echo "..\$messageok(okcancel,message)"
+xpaset -p ds9 analysis 42
+
+echo "..\$entry(message)"
+xpaset -p ds9 analysis 43
 fi
 
 # Params
 if [ "$1" = "params" -o  -z "$1" ]; then
-echo "$j Param"
-xpaset -p ds9 analysis 42
-
-echo "..$j \$param"
-xpaset -p ds9 analysis 43
-
-echo "..$j \$param @file"
+echo "Param"
 xpaset -p ds9 analysis 44
+
+echo "..\$param"
+xpaset -p ds9 analysis 45
+
+echo "..\$param tab"
+xpaset -p ds9 analysis 46
+
+echo "..\$param macro"
+xpaset -p ds9 analysis 47
+
+echo "..\$param @file"
+xpaset -p ds9 analysis 48
 fi
 
 # Network
 if [ "$1" = "network" -o  -z "$1" ]; then
-echo "$j Network"
-xpaset -p ds9 analysis 45
+echo "Network"
+xpaset -p ds9 analysis 49
 
-echo "..$j \$url(http://)"
-xpaset -p ds9 analysis 46
+echo "..\$url(http://)"
+xpaset -p ds9 analysis 50
 fi
 
 echo "PASSED"

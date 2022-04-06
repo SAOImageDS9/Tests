@@ -132,10 +132,10 @@ hmenu Test Basics
 	menu
 	echo "$pan(fk5,degrees)" | $text
 
-	Test $env
+	Test $env $dir
 	*
 	menu
-	echo $env(PATH) | $text
+	echo "$env(HOME) $dir" | $text
 endhmenu
 
 hmenu Test Regions
