@@ -4,13 +4,16 @@
 #   menu/bind
 #   analysis command line
 
+hmenu Test Analysis
+
 param foo
 	var1 entry {entry} {something} {this is a entry}
 	var2 text {text} {something} {this is a text}
 	var3 checkbox {checkbox} 1 {this is a checkbox}
 	var4 menu {menu} {AAA|BBB|CCC} {this is a menu}
-	var5 open {open file} {foo} {this is a open file dialog}
-	var6 save {save file} {bar} {this is a save file dialog}
+	var5 combobox {combobox} {XXX|YYY|ZZZ} {this is a combobox}
+	var6 open {open file} {foo} {this is a open file dialog}
+	var7 save {save file} {bar} {this is a save file dialog}
 endparam
 
 param bar
@@ -19,10 +22,11 @@ param bar
 	var2 text {text} {something} {this is a text}
 	var3 checkbox {checkbox} 1 {this is a checkbox}
 	var4 menu {menu} {AAA|BBB|CCC} {this is a menu}
+	var5 combobox {combobox} {XXX|YYY|ZZZ} {this is a combobox}
   endtab
   tab {Second Params}
-	var5 open {open file} {foo} {this is a open file dialog}
-	var6 save {save file} {bar} {this is a save file dialog}
+	var6 open {open file} {foo} {this is a open file dialog}
+	var7 save {save file} {bar} {this is a save file dialog}
   endtab
 endparam
 
@@ -275,12 +279,12 @@ hmenu Test Params
 	Test $param
 	*
 	menu
-	$param(foo); echo "$var1 $var2 $var3 $var4 $var5 $var6" | $text
+	$param(foo); echo "$var1 $var2 $var3 $var4 $var5 $var6 $var7" | $text
 
 	Test $param tab
 	*
 	menu
-	$param(bar); echo "$var1 $var2 $var3 $var4 $var5 $var6" | $text
+	$param(bar); echo "$var1 $var2 $var3 $var4 $var5 $var6 $var7" | $text
 
 	Test $param macro
 	*
@@ -336,3 +340,4 @@ $x(wcs,fk5,hms) $y(wcs,fk5,hms) $z(wcs) $value
 bind z
 echo "$x(wcs,fk5,hms) $y(wcs,fk5,hms) $z(wcs) $value" | $text
 
+endhmenu
