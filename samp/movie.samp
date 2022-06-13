@@ -1,8 +1,9 @@
 set {} width 715
 set {} height 450
-set {} movie foo.mpg
-set {} movie frame foo.mpg
-set {} movie slice foo.mpg
+set {} movie foo.gif
+set {} movie frame foo.gif
+set {} movie slice foo.gif
+set {} movie frame 100 fade foo.gif
 set {} frame new 3d
 set {} movie 3d gif 100 foo.gif number 1 azfrom 0 az to 0 el from 0 el to 0 slice from 1 slice to 1 zoom from 1 zoom to 2 repeat 1
 set {} frame delete

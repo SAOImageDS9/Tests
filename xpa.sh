@@ -2004,9 +2004,10 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/savempeg..."
 xpaset -p ds9 width 715
 xpaset -p ds9 height 450
-xpaset -p ds9 movie foo.mpg
-xpaset -p ds9 movie frame foo.mpg
-xpaset -p ds9 movie slice foo.mpg
+xpaset -p ds9 movie foo.gif
+xpaset -p ds9 movie frame foo.gif
+xpaset -p ds9 movie slice foo.gif
+xpaset -p ds9 movie frame 100 fade foo.gif
 xpaset -p ds9 frame new 3d
 xpaset -p ds9 movie 3d gif 100 foo.gif number 1 az from 0 az to 0 el from 0 el to 0 slice from 1 slice to 1 zoom from 1 zoom to 2 repeat 1
 xpaset -p ds9 frame delete
