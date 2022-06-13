@@ -897,6 +897,23 @@ xpaset -p ds9 rgb close
 testit $tt
 fi
 
+tt="fade"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaget ds9 fade >> ${tt}.out
+xpaget ds9 fade interval >> ${tt}.out
+xpaset -p ds9 frame new
+xpaset -p ds9 fade
+xpaset -p ds9 fade yes
+xpaset -p ds9 fade interval 2
+xpaset -p ds9 single
+xpaset -p ds9 frame first
+xpaset -p ds9 frame next
+xpaset -p ds9 frame delete
+
+testit $tt
+fi
+
 # backward compatibility
 tt="file"
 if [ "$1" = "$tt" -o -z "$1" ]; then

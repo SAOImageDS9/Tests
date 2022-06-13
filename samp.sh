@@ -84,6 +84,7 @@ doit "$1" dsssao
 #doit "$1" dsseso
 #doit "$1" dssstsci
 doit "$1" export
+doit "$1" fade
 # backward compatibility
 doit "$1" file
 doit "$1" fits

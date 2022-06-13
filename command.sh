@@ -754,6 +754,20 @@ testit "-cube close"
 doit
 fi
 
+tt="fade"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new"
+testit "-fade"
+testit "-fade yes"
+testit "-fade interval 2"
+testit "-single"
+testit "-frame first"
+testit "-frame next"
+
+doit
+fi
+
 tt="fifo"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"

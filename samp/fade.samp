@@ -1,0 +1,13 @@
+get fade
+get fade interval
+set {} frame new
+set {} fade
+set {} fade yes
+set {} fade interval 2
+set {} single
+set {} frame first
+set {} frame next
+set {} frame delete
+
+set {} single
+set {} raise
