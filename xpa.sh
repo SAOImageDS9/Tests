@@ -391,7 +391,7 @@ xpaset -p ds9 catalog radius 22 arcmin
 xpaset -p ds9 catalog size 20 24 arcmin
 xpaset -p ds9 catalog retrieve
 xpaset -p ds9 catalog regions
-xpaset -p ds9 regions delete all
+xpaset -p ds9 region delete all
 xpaset -p ds9 catalog filter '$Jmag>15'
 xpaset -p ds9 catalog filter load aux/cat.flt
 xpaset -p ds9 catalog retrieve
@@ -599,7 +599,7 @@ xpaset -p ds9 contour savelevels foo.lev
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour yes
 xpaset -p ds9 contour convert
-xpaset -p ds9 regions delete all
+xpaset -p ds9 region delete all
 
 xpaset -p ds9 contour clear
 xpaset -p ds9 contour yes
@@ -1262,7 +1262,7 @@ xpaset -p ds9 footprint size 20 24 arcmin
 xpaset -p ds9 footprint retrieve
 xpaset -p ds9 footprint crosshair
 xpaset -p ds9 footprint regions
-xpaset -p ds9 regions delete all
+xpaset -p ds9 region delete all
 xpaset -p ds9 footprint filter '$ObsId<10000'
 xpaset -p ds9 footprint filter load aux/fp.flt
 xpaset -p ds9 footprint retrieve
@@ -2842,130 +2842,132 @@ xpaset -p ds9 raise
 testit $tt
 fi
 
-tt="regions"
+tt="region"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/region..."
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions system physical
-xpaset -p ds9 regions sky fk5
-xpaset -p ds9 regions skyformat degrees
-echo "physical;circle(957,1027,40) # tag=foo" | xpaset ds9 regions
+xpaset -p ds9 region delete
+xpaset -p ds9 region system physical
+xpaset -p ds9 region sky fk5
+xpaset -p ds9 region skyformat degrees
+echo "physical;circle(957,1027,40) # tag=foo" | xpaset ds9 region
 
-xpaget ds9 regions >> ${tt}.out
-xpaget ds9 regions epsilon >> ${tt}.out
-xpaget ds9 regions show >> ${tt}.out
-xpaget ds9 regions showtext >> ${tt}.out
-xpaget ds9 regions centroid auto >> ${tt}.out
-xpaget ds9 regions centroid radius >> ${tt}.out
-xpaget ds9 regions centroid iteration >> ${tt}.out
-xpaget ds9 regions -format pros -system wcs -sky fk5 -skyformat sexagesimal -prop edit 1 -group foo -strip yes >> ${tt}.out
-xpaget ds9 regions include >> ${tt}.out
-xpaget ds9 regions exclude >> ${tt}.out
-xpaget ds9 regions source >> ${tt}.out
-xpaget ds9 regions background >> ${tt}.out
-xpaget ds9 regions selected >> ${tt}.out
+xpaget ds9 region >> ${tt}.out
+xpaget ds9 region epsilon >> ${tt}.out
+xpaget ds9 region show >> ${tt}.out
+xpaget ds9 region showtext >> ${tt}.out
+xpaget ds9 region centroid auto >> ${tt}.out
+xpaget ds9 region centroid radius >> ${tt}.out
+xpaget ds9 region centroid iteration >> ${tt}.out
+xpaget ds9 region -format pros -system wcs -sky fk5 -skyformat sexagesimal -prop edit 1 -group foo -strip yes >> ${tt}.out
+xpaget ds9 region include >> ${tt}.out
+xpaget ds9 region exclude >> ${tt}.out
+xpaget ds9 region source >> ${tt}.out
+xpaget ds9 region background >> ${tt}.out
+xpaget ds9 region selected >> ${tt}.out
 
-xpaget ds9 regions format >> ${tt}.out
-xpaget ds9 regions system >> ${tt}.out
-xpaget ds9 regions sky >> ${tt}.out
-xpaget ds9 regions skyformat >> ${tt}.out
-xpaget ds9 regions strip >> ${tt}.out
-xpaget ds9 regions shape >> ${tt}.out
-xpaget ds9 regions color >> ${tt}.out
-xpaget ds9 regions width >> ${tt}.out
-xpaget ds9 regions groups >> ${tt}.out
+xpaget ds9 region format >> ${tt}.out
+xpaget ds9 region system >> ${tt}.out
+xpaget ds9 region sky >> ${tt}.out
+xpaget ds9 region skyformat >> ${tt}.out
+xpaget ds9 region strip >> ${tt}.out
+xpaget ds9 region shape >> ${tt}.out
+xpaget ds9 region color >> ${tt}.out
+xpaget ds9 region width >> ${tt}.out
+xpaget ds9 region groups >> ${tt}.out
 
-echo "image; circle 100 100 20" | xpaset ds9 regions
-echo "fk5; circle 13:29:55 47:11:50 .5'" | xpaset ds9 regions
-echo "physical; ellipse 100 100 20 40" | xpaset ds9 regions
-echo "box 100 100 20 40 25" | xpaset ds9 regions
-echo "image; line 100 100 200 400" | xpaset ds9 regions
-echo "physical; ruler 200 300 200 400" | xpaset ds9 regions
-echo "image; text 100 100 # text={Hello, World}" | xpaset ds9 regions
-echo "fk4; boxcircle point 13:29:55 47:11:50" | xpaset ds9 regions
-xpaset -p ds9 regions delete
+echo "image; circle 100 100 20" | xpaset ds9 region
+echo "fk5; circle 13:29:55 47:11:50 .5'" | xpaset ds9 region
+echo "physical; ellipse 100 100 20 40" | xpaset ds9 region
+echo "box 100 100 20 40 25" | xpaset ds9 region
+echo "image; line 100 100 200 400" | xpaset ds9 region
+echo "physical; ruler 200 300 200 400" | xpaset ds9 region
+echo "image; text 100 100 # text={Hello, World}" | xpaset ds9 region
+echo "fk4; boxcircle point 13:29:55 47:11:50" | xpaset ds9 region
+xpaset -p ds9 region delete
 
-xpaset -p ds9 regions regions/ds9.physical.reg
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions load regions/ds9.physical.reg
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions load 'regions/ds9.fk5*.reg'
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions load all regions/ds9.physical.reg
-xpaset -p ds9 regions delete load regions/ds9.physical.reg
+xpaset -p ds9 region regions/ds9.physical.reg
+xpaset -p ds9 region delete
+xpaset -p ds9 region load regions/ds9.physical.reg
+xpaset -p ds9 region delete
+xpaset -p ds9 region load 'regions/ds9.fk5*.reg'
+xpaset -p ds9 region delete
+xpaset -p ds9 region load all regions/ds9.physical.reg
+xpaset -p ds9 region delete load regions/ds9.physical.reg
 
-xpaset -p ds9 regions save foo.reg
-xpaset -p ds9 regions save select foo.reg
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions list
-xpaset -p ds9 regions list select
-xpaset -p ds9 regions list close
-xpaset -p ds9 regions delete
+xpaset -p ds9 region save foo.reg
+xpaset -p ds9 region save select foo.reg
+xpaset -p ds9 region delete
+xpaset -p ds9 region list
+xpaset -p ds9 region list select
+xpaset -p ds9 region list close
+xpaset -p ds9 region delete
 
-xpaset -p ds9 regions epsilon 5
-xpaset -p ds9 regions show yes
-xpaset -p ds9 regions showtext yes
-xpaset -p ds9 regions centroid
-xpaset -p ds9 regions centroid auto no
-xpaset -p ds9 regions centroid radius 10
-xpaset -p ds9 regions centroid iteration 30
-#xpaset -p ds9 regions getinfo
-xpaset -p ds9 regions move front
-xpaset -p ds9 regions move back
-xpaset -p ds9 regions select all
-xpaset -p ds9 regions select none
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions delete select
-xpaset -p ds9 regions format ds9
-xpaset -p ds9 regions system physical
-xpaset -p ds9 regions sky fk5
-xpaset -p ds9 regions skyformat degrees
-xpaset -p ds9 regions strip no
-xpaset -p ds9 regions shape circle
-xpaset -p ds9 regions color green
-xpaset -p ds9 regions width 1
-xpaset -p ds9 regions edit yes
-xpaset -p ds9 regions include
-xpaset -p ds9 regions command {circle 100 100 20}
+xpaset -p ds9 region epsilon 5
+xpaset -p ds9 region show yes
+xpaset -p ds9 region showtext yes
+xpaset -p ds9 region centroid
+xpaset -p ds9 region centroid auto no
+xpaset -p ds9 region centroid radius 10
+xpaset -p ds9 region centroid iteration 30
+#xpaset -p ds9 region info
+xpaset -p ds9 region move front
+xpaset -p ds9 region move back
+xpaset -p ds9 region select all
+xpaset -p ds9 region select none
+xpaset -p ds9 region select first
+xpaset -p ds9 region select last
+xpaset -p ds9 region delete
+xpaset -p ds9 region delete select
+xpaset -p ds9 region format ds9
+xpaset -p ds9 region system physical
+xpaset -p ds9 region sky fk5
+xpaset -p ds9 region skyformat degrees
+xpaset -p ds9 region strip no
+xpaset -p ds9 region shape circle
+xpaset -p ds9 region color green
+xpaset -p ds9 region width 1
+xpaset -p ds9 region edit yes
+xpaset -p ds9 region include
+xpaset -p ds9 region command {circle 100 100 20}
 
-xpaset -p ds9 regions group new
-xpaset -p ds9 regions group foo new
-xpaset -p ds9 regions group foo update
-xpaset -p ds9 regions group foo select
-xpaset -p ds9 regions group foo color red
-xpaset -p ds9 regions group foo copy
-xpaset -p ds9 regions group foo delete
-xpaset -p ds9 regions group foo cut
-xpaset -p ds9 regions group foo font {time 14 bold}
-xpaset -p ds9 regions group foo move 100 100
-xpaset -p ds9 regions group foo movefront
-xpaset -p ds9 regions group foo moveback
-xpaset -p ds9 regions group foo property delete no
+xpaset -p ds9 region group new
+xpaset -p ds9 region group foo new
+xpaset -p ds9 region group foo update
+xpaset -p ds9 region group foo select
+xpaset -p ds9 region group foo color red
+xpaset -p ds9 region group foo copy
+xpaset -p ds9 region group foo delete
+xpaset -p ds9 region group foo cut
+xpaset -p ds9 region group foo font {time 14 bold}
+xpaset -p ds9 region group foo move 100 100
+xpaset -p ds9 region group foo movefront
+xpaset -p ds9 region group foo moveback
+xpaset -p ds9 region group foo property delete no
 
-xpaset -p ds9 regions delete
+xpaset -p ds9 region delete
 
-xpaset -p ds9 regions command {circle 100 100 20}
-xpaset -p ds9 regions select all
-xpaset -p ds9 regions copy
-xpaset -p ds9 regions cut
-xpaset -p ds9 regions paste
-xpaset -p ds9 regions paste wcs
-xpaset -p ds9 regions undo
-xpaset -p ds9 regions delete
+xpaset -p ds9 region command {circle 100 100 20}
+xpaset -p ds9 region select all
+xpaset -p ds9 region copy
+xpaset -p ds9 region cut
+xpaset -p ds9 region paste
+xpaset -p ds9 region paste wcs
+xpaset -p ds9 region undo
+xpaset -p ds9 region delete
 
-xpaset -p ds9 regions load regions/ds9.physical.reg
-xpaset -p ds9 regions select all
-xpaset -p ds9 regions composite
-xpaset -p ds9 regions dissolve
-xpaset -p ds9 regions delete
+xpaset -p ds9 region load regions/ds9.physical.reg
+xpaset -p ds9 region select all
+xpaset -p ds9 region composite
+xpaset -p ds9 region dissolve
+xpaset -p ds9 region delete
 
-xpaset -p ds9 regions command {circle 100 100 20}
-xpaset -p ds9 regions savetemplate foo.tpl
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions template foo.tpl
-xpaset -p ds9 regions delete
-xpaset -p ds9 regions template foo.tpl at 202.46963 47.19556 fk5
-xpaset -p ds9 regions delete
+xpaset -p ds9 region command {circle 100 100 20}
+xpaset -p ds9 region savetemplate foo.tpl
+xpaset -p ds9 region delete
+xpaset -p ds9 region template foo.tpl
+xpaset -p ds9 region delete
+xpaset -p ds9 region template foo.tpl at 202.46963 47.19556 fk5
+xpaset -p ds9 region delete
 
 testit $tt
 fi

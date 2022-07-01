@@ -1,115 +1,117 @@
-set {} regions delete
-set {} regions system physical
-set {} regions sky fk5
-set {} regions skyformat degrees
-set file:regions/samp.reg regions
+set {} region delete
+set {} region system physical
+set {} region sky fk5
+set {} region skyformat degrees
+set file:regions/samp.reg region
 
-get regions
-get regions epsilon
-get regions show
-get regions showtext
-get regions centroid auto
-get regions centroid radius
-get regions centroid iteration
-get regions -format pros -system wcs -sky fk5 -skyformat sexagesimal -delim nl -prop edit 1 -group foo -strip yes
-get regions include
-get regions exclude
-get regions source
-get regions background
-get regions selected
+get region
+get region epsilon
+get region show
+get region showtext
+get region centroid auto
+get region centroid radius
+get region centroid iteration
+get region -format pros -system wcs -sky fk5 -skyformat sexagesimal -delim nl -prop edit 1 -group foo -strip yes
+get region include
+get region exclude
+get region source
+get region background
+get region selected
 
-get regions format
-get regions system
-get regions sky
-get regions skyformat
-get regions strip
-get regions shape
-get regions color
-get regions width
-get regions groups
+get region format
+get region system
+get region sky
+get region skyformat
+get region strip
+get region shape
+get region color
+get region width
+get region groups
 
-set {} regions delete
+set {} region delete
 
-set {} regions regions/ds9.physical.reg
-set {} regions delete
-set {} regions load regions/ds9.physical.reg
-set {} regions delete
-set {} regions load regions/ds9.fk5*.reg
-set {} regions delete
-set {} regions load all regions/ds9.physical.reg
-set {} regions delete load regions/ds9.physical.reg
+set {} region regions/ds9.physical.reg
+set {} region delete
+set {} region load regions/ds9.physical.reg
+set {} region delete
+set {} region load regions/ds9.fk5*.reg
+set {} region delete
+set {} region load all regions/ds9.physical.reg
+set {} region delete load regions/ds9.physical.reg
 
-set {} regions save foo.reg
-set {} regions save select foo.reg
-set {} regions list
-set {} regions list select
-set {} regions list close
-set {} regions delete
+set {} region save foo.reg
+set {} region save select foo.reg
+set {} region list
+set {} region list select
+set {} region list close
+set {} region delete
 
-set {} regions epsilon 5
-set {} regions show yes
-set {} regions showtext yes
-set {} regions centroid
-set {} regions centroid auto no
-set {} regions centroid radius 10
-set {} regions centroid iteration 30
-#set {} regions getinfo
-set {} regions move front
-set {} regions move back
-set {} regions select all
-set {} regions select none
-set {} regions delete
-set {} regions delete select
-set {} regions format ds9
-set {} regions system physical
-set {} regions sky fk5
-set {} regions skyformat degrees
-set {} regions strip no
-set {} regions shape circle
-set {} regions color green
-set {} regions width 1
-set {} regions edit yes
-set {} regions include
-set {} regions command "circle 100 100 20"
+set {} region epsilon 5
+set {} region show yes
+set {} region showtext yes
+set {} region centroid
+set {} region centroid auto no
+set {} region centroid radius 10
+set {} region centroid iteration 30
+#set {} region info
+set {} region move front
+set {} region move back
+set {} region select all
+set {} region select none
+set {} region select first
+set {} region select last
+set {} region delete
+set {} region delete select
+set {} region format ds9
+set {} region system physical
+set {} region sky fk5
+set {} region skyformat degrees
+set {} region strip no
+set {} region shape circle
+set {} region color green
+set {} region width 1
+set {} region edit yes
+set {} region include
+set {} region command "circle 100 100 20"
 
-set {} regions group new
-set {} regions group foo new
-set {} regions group foo update
-set {} regions group foo select
-set {} regions group foo color red
-set {} regions group foo copy
-set {} regions group foo delete
-set {} regions group foo cut
-set {} regions group foo font 'time 14 bold'
-set {} regions group foo move 100 100
-set {} regions group foo movefront
-set {} regions group foo moveback
-set {} regions group foo property delete no
+set {} region group new
+set {} region group foo new
+set {} region group foo update
+set {} region group foo select
+set {} region group foo color red
+set {} region group foo copy
+set {} region group foo delete
+set {} region group foo cut
+set {} region group foo font 'time 14 bold'
+set {} region group foo move 100 100
+set {} region group foo movefront
+set {} region group foo moveback
+set {} region group foo property delete no
 
-set {} regions delete
+set {} region delete
 
-set {} regions command "circle 100 100 20"
-set {} regions select all
-set {} regions copy
-set {} regions cut
-set {} regions paste
-set {} regions paste wcs
-set {} regions undo
-set {} regions delete
+set {} region command "circle 100 100 20"
+set {} region select all
+set {} region copy
+set {} region cut
+set {} region paste
+set {} region paste wcs
+set {} region undo
+set {} region delete
 
-set {} regions load regions/ds9.physical.reg
-set {} regions select all
-set {} regions composite
-set {} regions dissolve
-set {} regions delete
+set {} region load regions/ds9.physical.reg
+set {} region select all
+set {} region composite
+set {} region dissolve
+set {} region delete
 
-set {} regions command "circle 100 100 20"
-set {} regions savetemplate foo.tpl
-set {} regions delete
-set {} regions template foo.tpl
-set {} regions delete
-set {} regions template foo.tpl at 202.46963 47.19556 fk5
-set {} regions delete
+set {} region command "circle 100 100 20"
+set {} region savetemplate foo.tpl
+set {} region delete
+set {} region template foo.tpl
+set {} region delete
+set {} region template foo.tpl at 202.46963 47.19556 fk5
+set {} region delete
 
 set {} single
 set {} raise
