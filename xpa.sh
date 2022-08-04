@@ -3548,6 +3548,7 @@ xpaget ds9 view info >> ${tt}.out
 xpaget ds9 view panner >> ${tt}.out
 xpaget ds9 view magnifier >> ${tt}.out
 xpaget ds9 view buttons >> ${tt}.out
+xpaget ds9 view icons >> ${tt}.out
 xpaget ds9 view colorbar >> ${tt}.out
 xpaget ds9 view graph horizontal >> ${tt}.out
 xpaget ds9 view graph vertical >> ${tt}.out
@@ -3594,6 +3595,8 @@ xpaset -p ds9 view magnifier no
 xpaset -p ds9 view magnifier yes
 xpaset -p ds9 view buttons no
 xpaset -p ds9 view buttons yes
+xpaset -p ds9 view icons no
+xpaset -p ds9 view icons yes
 xpaset -p ds9 view colorbar no
 xpaset -p ds9 view colorbar yes
 xpaset -p ds9 view graph horizontal yes

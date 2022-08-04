@@ -5,6 +5,7 @@ get view info
 get view panner
 get view magnifier
 get view buttons
+get view icons
 get view colorbar
 get view graph horizontal
 get view graph vertical
@@ -50,6 +51,8 @@ set {} view magnifier no
 set {} view magnifier yes
 set {} view buttons no
 set {} view buttons yes
+set {} view icons no
+set {} view icons yes
 set {} view colorbar no
 set {} view colorbar yes
 set {} view graph horizontal yes
