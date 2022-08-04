@@ -53,7 +53,8 @@ set {} region centroid
 set {} region centroid auto no
 set {} region centroid radius 10
 set {} region centroid iteration 30
-#set {} region info
+set {} region open
+set {} region close
 set {} region move front
 set {} region move back
 set {} region select all

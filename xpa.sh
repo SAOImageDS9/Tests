@@ -2909,7 +2909,8 @@ xpaset -p ds9 region centroid
 xpaset -p ds9 region centroid auto no
 xpaset -p ds9 region centroid radius 10
 xpaset -p ds9 region centroid iteration 30
-#xpaset -p ds9 region info
+xpaset -p ds9 region open
+xpaset -p ds9 region close
 xpaset -p ds9 region move front
 xpaset -p ds9 region move back
 xpaset -p ds9 region select all
@@ -2962,6 +2963,9 @@ xpaset -p ds9 region dissolve
 xpaset -p ds9 region delete
 
 xpaset -p ds9 region command {circle 100 100 20}
+xpaset -p ds9 region analysis stats
+xpaset -p ds9 region analysis stats close
+#xpaset -p ds9 region analysis histogram save
 xpaset -p ds9 region savetemplate foo.tpl
 xpaset -p ds9 region delete
 xpaset -p ds9 region template foo.tpl
@@ -3574,6 +3578,8 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 single
 
 xpaset -p ds9 view layout vertical
+sleep $delay
+xpaset -p ds9 view layout advanced
 sleep $delay
 xpaset -p ds9 view layout horizontal
 sleep $delay

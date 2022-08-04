@@ -30,6 +30,8 @@ set {} view multi yes
 set {} sleep .5
 set {} colorbar orientation vertical
 set {} sleep .5
+set {} colorbar orientation advanced
+set {} sleep .5
 set {} colorbar orientation horizontal
 set {} frame delete
 set {} single
