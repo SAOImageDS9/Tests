@@ -2737,6 +2737,8 @@ testit "-single"
 
 testit "-view layout vertical"
 testit "-sleep $delay"
+testit "-view layout basic"
+testit "-sleep $delay"
 testit "-view layout advanced"
 testit "-sleep $delay"
 testit "-view layout horizontal"

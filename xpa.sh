@@ -3580,6 +3580,8 @@ xpaset -p ds9 single
 
 xpaset -p ds9 view layout vertical
 sleep $delay
+xpaset -p ds9 view layout basic
+sleep $delay
 xpaset -p ds9 view layout advanced
 sleep $delay
 xpaset -p ds9 view layout horizontal
