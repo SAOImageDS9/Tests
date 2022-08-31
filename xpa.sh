@@ -61,6 +61,7 @@ delay=.5
 #skyview
 #vla
 #vlss
+#vo
 
 # slow down?
 slow=0
@@ -3722,7 +3723,7 @@ testit $tt
 fi
 
 tt="vo"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaget ds9 vo method >> ${tt}.out
 xpaget ds9 vo server >> ${tt}.out

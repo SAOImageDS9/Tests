@@ -37,6 +37,7 @@ delay=0
 #skyview
 #vla
 #vlss
+#vo
 
 # not tested
 # -geometry
@@ -2867,7 +2868,7 @@ doit
 fi
 
 tt="vo"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 initit "$tt"
 testit "-vo open"
 testit "-vo method mime"
