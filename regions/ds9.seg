@@ -1,0 +1,11 @@
+# Illustrate file format: DS9 version 1.0
+global color = cyan fill = no width = 1 dash = no
+global font = helvetica fontsize = 12 fontweight = normal fontslant = roman
+circle 100.0 100.0 40.0  # color = red fill = yes
+ellipse 100.0 200.0 40.0 20.0 
+box 200.0 100.0 40.0 20.0 
+polygon 200.0 200.0 200.0 250.0 250.0 250.0 250.0 200.0 
+line 300.0 200.0 300.0 250.0 # dash = yes line = 0 1
+text 117.0 339.0 "BANG!" # color = yellow font = times fontsize = 48 angle = 45.0
+text 507.0 249.0 "Episode IV\nA NEW HOPE\n\nIt is a period of civil war. Rebel \nspaceships, striking from a \nhidden base, have won their \nfirst victory against the evil \nGalactic Empire. \n\nDuring the battle, Rebel \nspies managed to steal secret \nplans to the Empire’s \nultimate weapon, the DEATH \nSTAR, an armored space \nstation with enough power to \ndestroy an entire planet.\n\nPursued by the Empire’s \nsinister agents, Princess \nLeia races home aboard her \nstarship, custodian of the \nstolen plans that can save \nher people and restore \nfreedom to the galaxy…." # color = yellow justify = center
+image 100 100 regions/chandra.png

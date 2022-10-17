@@ -1672,6 +1672,75 @@ sleep $delay
 testit $tt
 fi
 
+tt="illustrate"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaget ds9 illustrate >> /dev/null
+xpaget ds9 illustrate show >> ${tt}.out
+xpaget ds9 illustrate shape >> ${tt}.out
+xpaget ds9 illustrate color >> ${tt}.out
+xpaget ds9 illustrate fill >> ${tt}.out
+xpaget ds9 illustrate width >> ${tt}.out
+xpaget ds9 illustrate dash >> ${tt}.out
+
+echo "circle 100 100 40 # color = red fill = yes" | xpaset ds9 illustrate
+echo "ellipse 100 200 40 20" | xpaset ds9 illustrate
+echo "box 200 100 40 20" | xpaset ds9 illustrate
+echo "polygon 200 200 200 250 250 250 250 200" | xpaset ds9 illustrate
+echo "line 300 200 300 250 # dash = yes line = 0 1" | xpaset ds9 illustrate
+echo "text 117.0 339.0 "BANG!" # color = yellow font = times fontsize = 48 angle = 45.0" | xpaset ds9 illustrate
+echo "image 100 100 regions/chandra.png" | xpaset ds9 illustrate
+
+xpaset -p ds9 illustrate delete
+xpaset -p ds9 illustrate regions/ds9.seg
+xpaset -p ds9 illustrate delete
+xpaset -p ds9 illustrate load regions/ds9.seg
+xpaset -p ds9 illustrate save foo.seg
+xpaset -p ds9 illustrate select all
+xpaset -p ds9 illustrate save select foo.seg
+xpaset -p ds9 illustrate list
+xpaset -p ds9 illustrate list select
+xpaset -p ds9 illustrate list close
+xpaset -p ds9 illustrate show yes
+xpaset -p ds9 illustrate select none
+xpaset -p ds9 illustrate select invert
+xpaset -p ds9 illustrate select front
+xpaset -p ds9 illustrate select back
+xpaset -p ds9 illustrate move front
+xpaset -p ds9 illustrate move back
+xpaset -p ds9 illustrate delete select
+xpaset -p ds9 illustrate delete
+xpaset -p ds9 illustrate color red
+xpaset -p ds9 illustrate width 3
+xpaset -p ds9 illustrate dash no
+
+xpaset -p ds9 illustrate delete
+
+xpaset -p ds9 illustrate command {circle 100 100 20}
+xpaset -p ds9 illustrate select all
+xpaset -p ds9 illustrate copy
+xpaset -p ds9 illustrate cut
+xpaset -p ds9 illustrate paste
+xpaset -p ds9 illustrate undo
+xpaset -p ds9 illustrate delete
+
+xpaset -p ds9 illustrate load regions/ds9.seg
+xpaset -p ds9 illustrate select all
+xpaset -p ds9 illustrate open
+xpaset -p ds9 illustrate close
+xpaset -p ds9 illustrate delete
+
+testit $tt
+fi
+
+tt="foo"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt/jpg..."
+
+
+testit $tt
+fi
+
 tt="jpeg"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/jpg..."
@@ -2910,8 +2979,6 @@ xpaset -p ds9 region centroid
 xpaset -p ds9 region centroid auto no
 xpaset -p ds9 region centroid radius 10
 xpaset -p ds9 region centroid iteration 30
-xpaset -p ds9 region open
-xpaset -p ds9 region close
 xpaset -p ds9 region move front
 xpaset -p ds9 region move back
 xpaset -p ds9 region select all
@@ -2930,7 +2997,6 @@ xpaset -p ds9 region color green
 xpaset -p ds9 region width 1
 xpaset -p ds9 region edit yes
 xpaset -p ds9 region include
-xpaset -p ds9 region command {circle 100 100 20}
 
 xpaset -p ds9 region group new
 xpaset -p ds9 region group foo new
@@ -2963,7 +3029,6 @@ xpaset -p ds9 region composite
 xpaset -p ds9 region dissolve
 xpaset -p ds9 region delete
 
-xpaset -p ds9 region command {circle 100 100 20}
 xpaset -p ds9 region analysis stats
 xpaset -p ds9 region analysis stats close
 #xpaset -p ds9 region analysis histogram save
@@ -2972,6 +3037,12 @@ xpaset -p ds9 region delete
 xpaset -p ds9 region template foo.tpl
 xpaset -p ds9 region delete
 xpaset -p ds9 region template foo.tpl at 202.46963 47.19556 fk5
+xpaset -p ds9 region delete
+
+xpaset -p ds9 region load regions/ds9.physical.reg
+xpaset -p ds9 region select all
+xpaset -p ds9 region open
+xpaset -p ds9 region close
 xpaset -p ds9 region delete
 
 testit $tt
