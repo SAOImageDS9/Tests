@@ -3029,6 +3029,7 @@ xpaset -p ds9 region composite
 xpaset -p ds9 region dissolve
 xpaset -p ds9 region delete
 
+xpaset -p ds9 region command {circle 100 100 20}
 xpaset -p ds9 region analysis stats
 xpaset -p ds9 region analysis stats close
 #xpaset -p ds9 region analysis histogram save
