@@ -2947,6 +2947,11 @@ xpaget ds9 region fill >> ${tt}.out
 xpaget ds9 region width >> ${tt}.out
 xpaget ds9 region dash >> ${tt}.out
 
+xpaget ds9 region font >> ${tt}.out
+xpaget ds9 region fontsize >> ${tt}.out
+xpaget ds9 region fontweight >> ${tt}.out
+xpaget ds9 region fontslant >> ${tt}.out
+
 xpaget ds9 region groups >> ${tt}.out
 
 echo "image; circle 100 100 20" | xpaset ds9 region
@@ -3002,6 +3007,11 @@ xpaset -p ds9 region color green
 xpaset -p ds9 region fill no
 xpaset -p ds9 region width 1
 xpaset -p ds9 region dash no
+
+xpaset -p ds9 region font times
+xpaset -p ds9 region fontsize 24
+xpaset -p ds9 region fontweight bold
+xpaset -p ds9 region fontslant italic
 
 xpaset -p ds9 region edit yes
 xpaset -p ds9 region include

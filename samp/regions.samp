@@ -30,6 +30,11 @@ get region fill
 get region width
 get region dash
 
+get region font
+get region fontsize
+get region fontweight
+get region fontslant
+
 get region groups
 
 set {} region delete
@@ -76,6 +81,11 @@ set {} region color green
 set {} region fill no
 set {} region width 1
 set {} region dash no
+
+set {} region font times
+set {} region fontsize 24
+set {} region fontweight bold
+set {} region fontslant italic
 
 set {} region edit yes
 set {} region include

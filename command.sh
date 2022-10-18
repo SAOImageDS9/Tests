@@ -2176,6 +2176,11 @@ testit "-region fill no"
 testit "-region width 1"
 testit "-region dash no"
 
+testit "-region font times"
+testit "-region fontsize 24"
+testit "-region fontweight bold"
+testit "-region fontslant italic"
+
 testit "-region edit yes"
 testit "-region include"
 
