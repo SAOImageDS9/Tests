@@ -57,8 +57,8 @@ set {} region move front
 set {} region move back
 set {} region select all
 set {} region select none
-set {} region select first
-set {} region select last
+set {} region select front
+set {} region select back
 set {} region delete
 set {} region delete select
 set {} region format ds9

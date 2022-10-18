@@ -2983,8 +2983,8 @@ xpaset -p ds9 region move front
 xpaset -p ds9 region move back
 xpaset -p ds9 region select all
 xpaset -p ds9 region select none
-xpaset -p ds9 region select first
-xpaset -p ds9 region select last
+xpaset -p ds9 region select front
+xpaset -p ds9 region select back
 xpaset -p ds9 region delete
 xpaset -p ds9 region delete select
 xpaset -p ds9 region format ds9
