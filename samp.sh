@@ -97,6 +97,7 @@ doit "$1" header
 doit "$1" height
 doit "$1" iconify
 doit "$1" iis
+doit "$1" illustrate
 # interactive
 #doit "$1" iexam
 doit "$1" jpeg

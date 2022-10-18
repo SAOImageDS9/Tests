@@ -53,8 +53,6 @@ set {} region centroid
 set {} region centroid auto no
 set {} region centroid radius 10
 set {} region centroid iteration 30
-set {} region open
-set {} region close
 set {} region move front
 set {} region move back
 set {} region select all
@@ -73,7 +71,6 @@ set {} region color green
 set {} region width 1
 set {} region edit yes
 set {} region include
-set {} region command "circle 100 100 20"
 
 set {} region group new
 set {} region group foo new
@@ -107,11 +104,21 @@ set {} region dissolve
 set {} region delete
 
 set {} region command "circle 100 100 20"
+set {} region analysis stats
+set {} region analysis stats close
+#set {} region analysis histogram save
 set {} region savetemplate foo.tpl
 set {} region delete
 set {} region template foo.tpl
 set {} region delete
 set {} region template foo.tpl at 202.46963 47.19556 fk5
+set {} region delete
+
+set {} region load regions/ds9.physical.reg
+set {} region select all
+set {} region open
+sleep 4
+set {} region close
 set {} region delete
 
 set {} single

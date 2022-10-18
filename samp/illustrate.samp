@@ -1,0 +1,51 @@
+get illustrate
+get illustrate show
+get illustrate shape
+get illustrate color
+get illustrate fill
+get illustrate width
+get illustrate dash
+
+set {} illustrate delete
+set {} illustrate delete
+set {} illustrate regions/ds9.seg
+set {} illustrate delete
+set {} illustrate load regions/ds9.seg
+set {} illustrate save foo.seg
+set {} illustrate select all
+set {} illustrate save select foo.seg
+set {} illustrate list
+set {} illustrate list select
+set {} illustrate list close
+set {} illustrate show yes
+set {} illustrate select none
+set {} illustrate select invert
+set {} illustrate select front
+set {} illustrate select back
+set {} illustrate move front
+set {} illustrate move back
+set {} illustrate delete select
+set {} illustrate delete
+set {} illustrate color red
+set {} illustrate width 3
+set {} illustrate dash no
+
+set {} illustrate delete
+
+set {} illustrate command "circle 100 100 20"
+set {} illustrate select all
+set {} illustrate copy
+set {} illustrate cut
+set {} illustrate paste
+set {} illustrate undo
+set {} illustrate delete
+
+set {} illustrate load regions/ds9.seg
+set {} illustrate select all
+set {} illustrate open
+sleep 3
+set {} illustrate close
+set {} illustrate delete
+
+set {} single
+set {} raise
