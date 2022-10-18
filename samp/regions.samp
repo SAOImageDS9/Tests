@@ -23,9 +23,13 @@ get region system
 get region sky
 get region skyformat
 get region strip
+
 get region shape
 get region color
+get region fill
 get region width
+get region dash
+
 get region groups
 
 set {} region delete
@@ -66,9 +70,13 @@ set {} region system physical
 set {} region sky fk5
 set {} region skyformat degrees
 set {} region strip no
+
 set {} region shape circle
 set {} region color green
+set {} region fill no
 set {} region width 1
+set {} region dash no
+
 set {} region edit yes
 set {} region include
 

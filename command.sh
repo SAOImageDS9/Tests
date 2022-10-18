@@ -7,7 +7,7 @@ initit () {
 
 testit () {
     echo "$1"
-    opt="$opt $1 -sleep .1"
+    opt="$opt $1 -sleep 0"
 }
 
 doit () {
@@ -2169,9 +2169,13 @@ testit "-region sky fk5"
 testit "-region skyformat degrees"
 testit "-region delim nl"
 testit "-region strip no"
+
 testit "-region shape circle"
 testit "-region color green"
+testit "-region fill no"
 testit "-region width 1"
+testit "-region dash no"
+
 testit "-region edit yes"
 testit "-region include"
 
