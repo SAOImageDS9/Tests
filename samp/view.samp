@@ -31,15 +31,15 @@ set {} view multi yes
 set {} sleep .5
 set {} colorbar orientation vertical
 set {} sleep .5
-set {} colorbar orientation basic
-set {} sleep .5
-set {} colorbar orientation advanced
-set {} sleep .5
 set {} colorbar orientation horizontal
 set {} frame delete
 set {} single
 
 set {} view layout vertical
+set {} sleep .5
+set {} view layout basic
+set {} sleep .5
+set {} view layout advanced
 set {} sleep .5
 set {} view layout horizontal
 set {} sleep .5
