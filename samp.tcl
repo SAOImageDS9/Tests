@@ -25,7 +25,7 @@ proc SAMPConnect {} {
     # can we find a hub?
     if {![SAMPParseHub]} {
  	if {$samp(debug)} {
-	    puts "SAMP: unable to locate HUB"
+	    puts "SAMP-Test: unable to locate HUB"
 	}
 	return
     }
@@ -145,7 +145,7 @@ proc SAMPUpdate {} {
     global samp
     
     if {$samp(debug)} {
-	puts "SAMPUpdate"
+	puts "SAMP-Test: SAMPUpdate"
     }
 
     # get
@@ -200,9 +200,9 @@ proc SAMPUpdate {} {
     }
 
     if {$samp(debug)} {
-	puts "SAMPUpdate: ds9.get apps: $samp(apps,get)"
-	puts "SAMPUpdate: ds9.set apps: $samp(apps,set)"
-	puts "SAMPUpdate: client.env.get apps: $samp(apps,env)"
+	puts "SAMP-Test: SAMPUpdate ds9.get apps: $samp(apps,get)"
+	puts "SAMP-Test: SAMPUpdate ds9.set apps: $samp(apps,set)"
+	puts "SAMP-Test: SAMPUpdate client.env.get apps: $samp(apps,env)"
     }
 }
 
@@ -212,18 +212,18 @@ proc SAMPSend {method params resultVar} {
     global samp
 
     if {$samp(debug)} {
-	puts "SAMPSend: $method $params"
+	puts "SAMP-Test: SAMPSend $method $params"
     }
 
     if {[catch {set result [xmlrpc::call $samp(url) $samp(method) $method $params]}]} {
 	if {$samp(debug)} {
-	    puts "SAMPSend Error: $result"
+	    puts "SAMP-Test: SAMPSend Error: $result"
 	}
 	return 0
     }
 
     if {$samp(debug)} {
-	puts "SAMPSend Result: $result"
+	puts "SAMP-Test: SAMPSend Result: $result"
     }
     
     set status {}
@@ -251,7 +251,7 @@ proc SAMPReply {msgid status {result {}} {error {}}} {
     global sampmap2
 
     if {$samp(debug)} {
-	puts "SAMPReply:$msgid:$status:$result:$error:"
+	puts "SAMP-Test: SAMPReply $msgid"
     }
 
     catch {unset sampmap}
@@ -289,7 +289,7 @@ proc SAMPReply {msgid status {result {}} {error {}}} {
 proc samp.client.receiveNotification {args} {
     global samp
     if {$samp(debug)} {
-	puts "SAMPReceivedNotification: $args"
+	puts "SAMP-Test: samp.client.receiveNotification $args"
     }
     set secret [lindex $args 0]
     set id [lindex $args 1]
@@ -308,7 +308,7 @@ proc samp.client.receiveNotification {args} {
 	samp.hub.disconnect {SAMPRcvdDisconnect args}
 	default {
 	    if {$samp(debug)} {
-		puts "SAMP samp.client.receiveNotification: bad method $method"
+		puts "SAMP-Test: samp.client.receiveNotification bad method $method"
 	    }
 	}
     }
@@ -319,7 +319,7 @@ proc samp.client.receiveNotification {args} {
 proc samp.client.receiveCall {args} {
     global samp
     if {$samp(debug)} {
-	puts "SAMPReceivedCall: $args"
+	puts "SAMP-Test: samp.client.receiveCall $args"
     }
 
     set secret [lindex $args 0]
@@ -338,7 +338,7 @@ proc samp.client.receiveCall {args} {
 	default {
 	    SAMPReply $msgid ERROR "Unknown subscription: $method"
 	    if {$samp(debug)} {
-		puts "SAMP samp.client.receiveCall: bad method $method"
+		puts "SAMP-Test: samp.client.receiveCall bad method $method"
 	    }
 	}
     }
@@ -349,7 +349,7 @@ proc samp.client.receiveCall {args} {
 proc samp.client.receiveResponse {args} {
     global samp
     if {$samp(debug)} {
-	puts "SAMPReceivedResponse: $args"
+	puts "SAMP-Test: samp.client.receiveResponse $args"
     }
 
     set msgtag [lindex $args 0]
@@ -409,7 +409,7 @@ proc SAMPParseHub {} {
     }
 
     if {$samp(debug)} {
-	puts "SAMPParseHub: $samp(secret) $samp(url) $samp(method)"
+	puts "SAMP-Test: SAMPParseHub $samp(secret) $samp(url) $samp(method)"
     }
     return 1
 }
@@ -418,7 +418,7 @@ proc SAMPGetAppName {id} {
     global samp
 
     if {$samp(debug)} {
-	puts "SAMPGetAppName: $id"
+	puts "SAMP-Test: SAMPGetAppName $id"
     }
 
     set param1 [list "string $samp(private)"]
@@ -448,7 +448,7 @@ proc SAMPRcvdEventShutdown {varname} {
 
     global samp
     if {$samp(debug)} {
-	puts "SAMPRcvdEventShutdown: $args"
+	puts "SAMP-Test: SAMPRcvdEventShutdown $args"
     }
 
     SAMPShutdown
@@ -460,7 +460,7 @@ proc SAMPRcvdEventRegister {varname} {
     global samp
 
     if {$samp(debug)} {
-	puts "SAMPRcvdEventRegister: $args"
+	puts "SAMP-Test: SAMPRcvdEventRegister $args"
     }
 
     foreach arg $args {
@@ -491,7 +491,7 @@ proc SAMPRcvdEventUnregister {varname} {
     global samp
 
     if {$samp(debug)} {
-	puts "SAMPRcvdEventUnregister: $args"
+	puts "SAMP-Test: SAMPRcvdEventUnregister $args"
     }
 
     foreach arg $args {
@@ -521,7 +521,7 @@ proc SAMPRcvdDisconnect {varname} {
 
     global samp
     if {$samp(debug)} {
-	puts "SAMPRcvdDisconnect: $args"
+	puts "SAMP-Test: SAMPRcvdDisconnect $args"
     }
 
     set msg {}
@@ -545,7 +545,7 @@ proc SAMPSendDS9Set {id url cmd} {
     global sampmap2
 
     if {$samp(debug)} {
-	puts "SAMPSendDS9Set :$id:$cmd:"
+	puts "SAMP-Test: SAMPSendDS9Set $id $cmd"
     }
 
     # connected?
@@ -579,7 +579,7 @@ proc SAMPSendDS9Get {id cmd} {
     global sampmap2
 
     if {$samp(debug)} {
-	puts "SAMPSendDS9Get"
+	puts "SAMP-Test: SAMPSendDS9Get"
     }
 
     # connected?
@@ -612,7 +612,7 @@ proc SAMPSendClientEnvGet {id name} {
     global sampmap2
 
     if {$samp(debug)} {
-	puts "SAMPSendClientEnvGet: $id $name"
+	puts "SAMP-Test: SAMPSendClientEnvGet $id $name"
     }
 
     # connected?
@@ -844,7 +844,3 @@ if {$samp(block)} {
 } else {
     ::mainloop::mainloop
 }
-
-
-
-
