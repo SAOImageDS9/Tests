@@ -98,7 +98,7 @@ set {} region group foo color red
 set {} region group foo copy
 set {} region group foo delete
 set {} region group foo cut
-set {} region group foo font 'time 14 bold'
+set {} region group foo font "times 14 bold"
 set {} region group foo move 100 100
 set {} region group foo movefront
 set {} region group foo moveback

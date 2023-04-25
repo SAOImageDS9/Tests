@@ -3024,7 +3024,7 @@ xpaset -p ds9 region group foo color red
 xpaset -p ds9 region group foo copy
 xpaset -p ds9 region group foo delete
 xpaset -p ds9 region group foo cut
-xpaset -p ds9 region group foo font {time 14 bold}
+xpaset -p ds9 region group foo font {times 14 bold}
 xpaset -p ds9 region group foo move 100 100
 xpaset -p ds9 region group foo movefront
 xpaset -p ds9 region group foo moveback
