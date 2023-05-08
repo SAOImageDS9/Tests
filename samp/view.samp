@@ -21,6 +21,9 @@ get view amplifier
 get view physical
 get view image
 get view frame
+get view red
+get view green
+get view blue
 
 set {} tile
 set {} frame new

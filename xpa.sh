@@ -3655,6 +3655,9 @@ xpaget ds9 view amplifier >> ${tt}.out
 xpaget ds9 view physical >> ${tt}.out
 xpaget ds9 view image >> ${tt}.out
 xpaget ds9 view frame >> ${tt}.out
+xpaget ds9 view red >> ${tt}.out
+xpaget ds9 view green >> ${tt}.out
+xpaget ds9 view blue >> ${tt}.out
 
 xpaset -p ds9 tile
 xpaset -p ds9 frame new
