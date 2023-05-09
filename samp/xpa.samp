@@ -1,9 +1,8 @@
-get xpa
+get xpa connect
 get xpa info
 
-set {} xpa yes
+set {} xpa disconnect
 set {} xpa connect
-set {} xpa local
 set {} xpa info
 
 set {} single

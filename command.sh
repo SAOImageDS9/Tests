@@ -2993,8 +2993,9 @@ tt="xpa"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-xpa yes"
+testit "-xpa inet"
+#testit "-xpa noxpans"
 testit "-xpa connect"
-testit "-xpa local"
 testit "-xpa info"
 
 doit
