@@ -23,6 +23,7 @@ get fits depth
 get fits bitpix
 get fits type
 get fits size wcs fk5 arcsec
+get fits count
 get fits header
 get fits header 1
 get fits header keyword BITPIX

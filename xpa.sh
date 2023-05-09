@@ -1171,6 +1171,7 @@ xpaget ds9 fits bitpix >> ${tt}.out
 # backward compatibility
 xpaget ds9 fits type >> ${tt}.out
 xpaget ds9 fits size wcs fk5 arcsec >> ${tt}.out
+xpaget ds9 fits count >> ${tt}.out
 xpaget ds9 fits header >> /dev/null
 xpaget ds9 fits header 1 >> /dev/null
 xpaget ds9 fits header keyword BITPIX >> ${tt}.out
