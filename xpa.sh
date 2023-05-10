@@ -876,7 +876,7 @@ tt="export"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 export array foo.arr little 
-xpaset -p ds9 export foo.arr little 
+xpaset -p ds9 export foo.arr
 xpaset -p ds9 export nrrd foo.nrrd big
 xpaset -p ds9 export foo.nrrd
 xpaset -p ds9 export gif foo.gif
@@ -891,7 +891,7 @@ xpaset -p ds9 export foo.png
 xpaset -p ds9 frame new rgb
 xpaset -p ds9 rgbcube rgbcube/float.fits
 xpaset -p ds9 export rgbarray foo.rgb little
-xpaset -p ds9 export foo.rgb little
+xpaset -p ds9 export foo.rgb
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 rgb close

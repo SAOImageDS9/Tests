@@ -1,5 +1,5 @@
 set {} export array foo.arr little 
-set {} export foo.arr little 
+set {} export foo.arr
 set {} export nrrd foo.nrrd big
 set {} export foo.nrrd
 set {} export gif foo.gif
@@ -14,7 +14,7 @@ set {} export foo.png
 set {} frame new rgb
 set {} rgbcube rgbcube/float.fits
 set {} export rgbarray foo.rgb little
-set {} export foo.rgb little
+set {} export foo.rgb
 set {} frame delete
 
 set {} rgb close
