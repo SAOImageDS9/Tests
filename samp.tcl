@@ -19,6 +19,12 @@ proc SAMPConnect {} {
     set samp(apps,set) {}
     set samp(apps,evn) {}
 
+#BAD    set samp(proc) samp.hub.notify
+#BAD    set samp(proc) samp.hub.notifyAll
+    set samp(proc) samp.hub.call
+#   set samp(proc) samp.hub.callAll
+#    set samp(proc) samp.hub.callAndWait
+
     # delete any old tmp files
     SAMPDelTmpFiles
 
@@ -565,12 +571,27 @@ proc SAMPSendDS9Set {id url cmd} {
     set sampmap2(cmd) "string \"[XMLQuote $cmd]\""
 
     set param1 [list "string $samp(private)"]
-    set param2 [list "string $id"]
-    set param3 [list "struct sampmap"]
-    set param4 [list "string $samp(timeout,wait)"]
-    set params "$param1 $param2 $param3 $param4" 
-
-    SAMPSend {samp.hub.callAndWait} $params rr
+    switch $samp(proc) {
+	samp.hub.call {
+	    set param2 [list "string $id"]
+	    set param3 [list "string foo"]
+	    set param4 [list "struct sampmap"]
+	    set params "$param1 $param2 $param3 $param4" 
+	}
+	samp.hub.callAll {
+	    set param2 [list "string foo"]
+	    set param3 [list "struct sampmap"]
+	    set params "$param1 $param2 $param3" 
+	}
+	samp.hub.callAndWait {
+	    set param2 [list "string $id"]
+	    set param3 [list "struct sampmap"]
+	    set param4 [list "string $samp(timeout,wait)"]
+	    set params "$param1 $param2 $param3 $param4" 
+	}
+    }
+    
+    SAMPSend $samp(proc) $params rr
 }
 
 proc SAMPSendDS9Get {id cmd} {
@@ -598,12 +619,27 @@ proc SAMPSendDS9Get {id cmd} {
     set sampmap2(cmd) "string \"[XMLQuote $cmd]\""
 
     set param1 [list "string $samp(private)"]
-    set param2 [list "string $id"]
-    set param3 [list "struct sampmap"]
-    set param4 [list "string $samp(timeout,wait)"]
-    set params "$param1 $param2 $param3 $param4" 
+    switch $samp(proc) {
+	samp.hub.call {
+	    set param2 [list "string $id"]
+	    set param3 [list "string foo"]
+	    set param4 [list "struct sampmap"]
+	    set params "$param1 $param2 $param3 $param4" 
+	}
+	samp.hub.callAll {
+	    set param2 [list "string foo"]
+	    set param3 [list "struct sampmap"]
+	    set params "$param1 $param2 $param3" 
+	}
+	samp.hub.callAndWait {
+	    set param2 [list "string $id"]
+	    set param3 [list "struct sampmap"]
+	    set param4 [list "string $samp(timeout,wait)"]
+	    set params "$param1 $param2 $param3 $param4" 
+	}
+    }
 
-    SAMPSend {samp.hub.callAndWait} $params rr
+    SAMPSend $samp(proc) $params rr
 }
 
 proc SAMPSendClientEnvGet {id name} {
@@ -631,12 +667,27 @@ proc SAMPSendClientEnvGet {id name} {
     set sampmap2(name) "string \"[XMLQuote $name]\""
 
     set param1 [list "string $samp(private)"]
-    set param2 [list "string $id"]
-    set param3 [list "struct sampmap"]
-    set param4 [list "string $samp(timeout,wait)"]
-    set params "$param1 $param2 $param3 $param4" 
+    switch $samp(proc) {
+	samp.hub.call {
+	    set param2 [list "string $id"]
+	    set param3 [list "string foo"]
+	    set param4 [list "struct sampmap"]
+	    set params "$param1 $param2 $param3 $param4" 
+	}
+	samp.hub.callAll {
+	    set param2 [list "string foo"]
+	    set param3 [list "struct sampmap"]
+	    set params "$param1 $param2 $param3" 
+	}
+	samp.hub.callAndWait {
+	    set param2 [list "string $id"]
+	    set param3 [list "struct sampmap"]
+	    set param4 [list "string $samp(timeout,wait)"]
+	    set params "$param1 $param2 $param3 $param4" 
+	}
+    }
 
-    SAMPSend {samp.hub.callAndWait} $params rr
+    SAMPSend $samp(proc) $params rr
 }
 
 proc SAMPDelTmpFiles {} {
