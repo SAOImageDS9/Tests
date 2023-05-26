@@ -19,11 +19,9 @@ proc SAMPConnect {} {
     set samp(apps,set) {}
     set samp(apps,evn) {}
 
-#BAD    set samp(proc) samp.hub.notify
-#BAD    set samp(proc) samp.hub.notifyAll
-    set samp(proc) samp.hub.call
+#    set samp(proc) samp.hub.call
 #   set samp(proc) samp.hub.callAll
-#    set samp(proc) samp.hub.callAndWait
+    set samp(proc) samp.hub.callAndWait
 
     # delete any old tmp files
     SAMPDelTmpFiles
@@ -257,7 +255,7 @@ proc SAMPReply {msgid status {result {}} {error {}}} {
     global sampmap2
 
     if {$samp(debug)} {
-	puts "SAMP-Test: SAMPReply $msgid"
+	puts "SAMP-Test: SAMPReply $msgid $status"
     }
 
     catch {unset sampmap}
@@ -358,9 +356,26 @@ proc samp.client.receiveResponse {args} {
 	puts "SAMP-Test: samp.client.receiveResponse $args"
     }
 
-    set msgtag [lindex $args 0]
-    set value [lindex $args 1]
-    set map [lindex $args 2]
+    set secret [lindex $args 0]
+    set id [lindex $args 1]
+    set msgtag [lindex $args 2]
+    set map [lindex $args 3]
+
+    set status {}
+    set value {}
+    set error {}
+    foreach arg $map {
+	foreach {key val} $arg {
+	    switch -- $key {
+		samp.result {set value [lindex [lindex $val 0] 1]}
+		samp.status {set status $val}
+		samp.error  {set error [lindex [lindex $val 0] 1]}
+	    }
+	}
+    }
+    if {$status != {}} {
+	puts -nonewline "$status $value $error"
+    }
 
     return {string OK}
 }
@@ -818,6 +833,7 @@ proc prompt {cmd} {
 	}
     }
 
+    after 500
     puts {}
     if {!$samp(block)} {
 	puts -nonewline stderr {samp> }
