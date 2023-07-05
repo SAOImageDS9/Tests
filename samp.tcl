@@ -833,7 +833,7 @@ proc prompt {cmd} {
 	}
     }
 
-    after 500
+    after 50
     puts {}
     if {!$samp(block)} {
 	puts -nonewline stderr {samp> }
