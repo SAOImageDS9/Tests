@@ -32,7 +32,6 @@ delay=0
 #2mass
 #dsseso
 #dssstsci
-#footprint
 #nvss
 #skyview
 #vla
@@ -804,7 +803,7 @@ doit
 fi
 
 tt="footprint"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/fp"
 testit "-footprint cxc"
 testit "-footprint hla"
