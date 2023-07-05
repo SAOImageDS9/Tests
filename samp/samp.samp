@@ -1,7 +1,13 @@
 get samp
 
-#set {} samp no
+set {} fits new fits/table.fits
 #set {} samp disconnect
+set {} samp broadcast
+set {} samp broadcast table
+set {} samp send topcat
+set {} samp send table topcat
+set {} samp hub info
+set {} frame delete
 
 set {} single
 set {} raise

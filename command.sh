@@ -2333,12 +2333,15 @@ if [ "$1" = "$tt" ]; then
 initit "$tt"
 testit "-frame new"
 testit "-fits fits/table.fits"
-testit "-samp no"
+testit "-samp yes"
+testit "-samp client yes"
+testit "-samp hub yes"
 testit "-samp connect"
 testit "-samp broadcast"
 testit "-samp broadcast table"
 testit "-samp send topcat"
 testit "-samp send table topcat"
+testit "-samp hub info"
 testit "-frame delete"
 
 doit
