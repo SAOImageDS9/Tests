@@ -1,4 +1,4 @@
-#  Copyright (C) 1999-2011
+#  Copyright (C) 1999-2023
 #  Smithsonian Astrophysical Observatory, Cambridge, MA, USA
 #  For conditions of distribution and use, see copyright notice in "copyright"
 
@@ -10,7 +10,7 @@ proc SAMPConnect {} {
 
     # connected?
     if {$samp(status)} {
-	puts {SAMP: already connected}
+	puts {SAMP-Test: already connected}
 	return
     }
 
@@ -29,7 +29,7 @@ proc SAMPConnect {} {
     # can we find a hub?
     if {![SAMPParseHub]} {
  	if {$samp(debug)} {
-	    puts "SAMP-Test: unable to locate HUB"
+	    puts {SAMP-Test: unable to locate HUB}
 	}
 	return
     }
@@ -37,7 +37,7 @@ proc SAMPConnect {} {
     # register
     set params [list "string $samp(secret)"]
     if {![SAMPSend {samp.hub.register} $params rr]} {
-	puts {SAMP: internal error}
+	puts {SAMP-Test: internal error}
 	return
     }
     set rr [lindex $rr 1]
@@ -64,7 +64,7 @@ proc SAMPConnect {} {
     set param2 [list "struct sampmap"]
     set params "$param1 $param2"
     if {![SAMPSend {samp.hub.declareMetadata} $params rr]} {
-	puts {SAMP: internal error}
+	puts {SAMP-Test: internal error}
 	return
     }
 
@@ -77,7 +77,7 @@ proc SAMPConnect {} {
     set param2 [list "string http://$samp(home)"]
     set params "$param1 $param2"
     if {![SAMPSend {samp.hub.setXmlrpcCallback} $params rr]} {
-	puts {SAMP: internal error}
+	puts {SAMP-Test: internal error}
 	return
     }
 
@@ -97,7 +97,7 @@ proc SAMPConnect {} {
     set param2 [list "struct sampmap"]
     set params "$param1 $param2" 
     if {![SAMPSend {samp.hub.declareSubscriptions} $params rr]} {
-	puts {SAMP: internal error}
+	puts {SAMP-Test: internal error}
 	return
     }
 
@@ -149,7 +149,7 @@ proc SAMPUpdate {} {
     global samp
     
     if {$samp(debug)} {
-	puts "SAMP-Test: SAMPUpdate"
+	puts {SAMP-Test: SAMPUpdate}
     }
 
     # get
@@ -571,7 +571,7 @@ proc SAMPSendDS9Set {id url cmd} {
 
     # connected?
     if {!$samp(status)} {
-	puts {SAMP: not connected}
+	puts {SAMP-Test: not connected}
 	return
     }
 
@@ -620,7 +620,7 @@ proc SAMPSendDS9Get {id cmd} {
 
     # connected?
     if {!$samp(status)} {
-	puts {SAMP: not connected}
+	puts {SAMP-Test: not connected}
 	return
     }
 
@@ -668,7 +668,7 @@ proc SAMPSendClientEnvGet {id name} {
 
     # connected?
     if {!$samp(status)} {
-	puts {SAMP: not connected}
+	puts {SAMP-Test: not connected}
 	return
     }
 

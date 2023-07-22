@@ -1,3 +1,4 @@
+
 echo "SAMP Tests"
 
 echo "Starting DS9..."
