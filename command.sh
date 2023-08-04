@@ -2755,8 +2755,6 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-update"
 testit "-update 1 100 100 300 400"
-testit "-update now"
-testit "-update now 1 100 100 300 400"
 
 doit
 fi

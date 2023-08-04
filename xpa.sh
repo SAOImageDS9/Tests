@@ -3606,8 +3606,6 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 update
 xpaset -p ds9 update 1 100 100 300 400
-xpaset -p ds9 update now
-xpaset -p ds9 update now 1 100 100 300 400
 
 testit $tt
 fi
