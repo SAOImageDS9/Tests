@@ -30,6 +30,7 @@ delay=0
 # -samp
 
 #2mass
+#dss
 #dsseso
 #dssstsci
 #nvss
@@ -623,7 +624,7 @@ doit
 fi
 
 tt="dsssao"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 initit "$tt/dss"
 testit "-dsssao open"
 testit "-dsssao close"
