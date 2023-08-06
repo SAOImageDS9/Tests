@@ -335,6 +335,7 @@ get plot line dash
 get plot line fill
 get plot line fill color
 get plot line shape symbol
+get plot line shape size
 get plot line shape fill
 get plot line shape color
 set {} plot line smooth step
@@ -358,6 +359,7 @@ set {} plot line shape symbol scross
 set {} plot line shape symbol triangle
 set {} plot line shape symbol arrow
 set {} plot line shape symbol circle
+set {} plot line shape size 5
 set {} plot line shape fill yes
 set {} plot line shape color cyan
 set {} plot theme no
@@ -384,6 +386,7 @@ set {} plot close
 # scatter dataset...
 set {} plot scatter plot/xy.dat xy
 get plot scatter symbol
+get plot scatter size
 get plot scatter color
 get plot scatter fill
 
@@ -395,6 +398,7 @@ set {} plot scatter symbol scross
 set {} plot scatter symbol triangle
 set {} plot scatter symbol arrow
 set {} plot scatter symbol circle
+set {} plot scatter size 5
 set {} plot scatter color cyan
 set {} plot scatter fill yes
 set {} plot theme no

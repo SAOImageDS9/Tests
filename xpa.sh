@@ -2641,6 +2641,7 @@ xpaget ds9 plot line dash >> ${tt}.out
 xpaget ds9 plot line fill >> ${tt}.out
 xpaget ds9 plot line fill color >> ${tt}.out
 xpaget ds9 plot line shape symbol >> ${tt}.out
+xpaget ds9 plot line shape size >> ${tt}.out
 xpaget ds9 plot line shape color >> ${tt}.out
 xpaget ds9 plot line shape fill >> ${tt}.out
 
@@ -2663,6 +2664,7 @@ xpaset -p ds9 plot line shape symbol scross
 xpaset -p ds9 plot line shape symbol triangle
 xpaset -p ds9 plot line shape symbol arrow
 xpaset -p ds9 plot line shape symbol circle
+xpaset -p ds9 plot line shape size 5
 xpaset -p ds9 plot line shape color cyan
 xpaset -p ds9 plot line shape fill yes
 
@@ -2694,6 +2696,7 @@ echo "PASSED"
 echo -n " scatter dataset..."
 xpaset -p ds9 plot scatter plot/xy.dat xy
 xpaget ds9 plot scatter symbol >> ${tt}.out
+xpaget ds9 plot scatter size >> ${tt}.out
 xpaget ds9 plot scatter color >> ${tt}.out
 xpaget ds9 plot scatter fill >> ${tt}.out
 
@@ -2705,6 +2708,7 @@ xpaset -p ds9 plot scatter symbol scross
 xpaset -p ds9 plot scatter symbol triangle
 xpaset -p ds9 plot scatter symbol arrow
 xpaset -p ds9 plot scatter symbol circle
+xpaset -p ds9 plot scatter size 5
 xpaset -p ds9 plot scatter color cyan
 xpaset -p ds9 plot scatter fill yes
 
