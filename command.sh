@@ -27,16 +27,9 @@ delay=0
 
 # must be invoked
 # -private
-# -samp
 
 #2mass
 #dss
-#dsseso
-#dssstsci
-#nvss
-#skyview
-#vla
-#vlss
 #vo
 
 # not tested
@@ -655,7 +648,7 @@ doit
 fi
 
 tt="dsseso"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-dsseso open"
 testit "-dsseso close"
@@ -687,7 +680,7 @@ doit
 fi
 
 tt="dssstsci"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-dssstsci open"
 testit "-dssstsci close"
@@ -1508,7 +1501,7 @@ doit
 fi
 
 tt="nvss"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-nvss open"
 testit "-nvss close"
@@ -2331,7 +2324,7 @@ doit
 fi
 
 tt="samp"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new"
 testit "-fits fits/table.fits"
@@ -2547,7 +2540,7 @@ doit
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-skyview open"
 testit "-skyview close"
@@ -2865,7 +2858,7 @@ doit
 fi
 
 tt="vla"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-vla open"
 testit "-vla close"
@@ -2897,7 +2890,7 @@ doit
 fi
 
 tt="vlss"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-vlss open"
 testit "-vlss close"

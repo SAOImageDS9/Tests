@@ -49,18 +49,11 @@ delay=.5
 # console
 # iexam
 # print
-# samp
 # source
 # tcl
 
 #2mass
 #dss
-#dsseso
-#dssstsci
-#nvss
-#skyview
-#vla
-#vlss
 #vo
 
 # slow down?
@@ -785,7 +778,7 @@ testit $tt
 fi
 
 tt="dsseso"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 dsseso open
 xpaset -p ds9 dsseso close
@@ -823,7 +816,7 @@ testit $tt
 fi
 
 tt="dssstsci"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 dssstsci open
 xpaset -p ds9 dssstsci close
@@ -2175,7 +2168,7 @@ testit $tt
 fi
 
 tt="nvss"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 nvss open
 xpaset -p ds9 nvss close
@@ -3184,7 +3177,7 @@ testit $tt
 fi
 
 tt="samp"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "samp..."
 
 xpaset -p ds9 fits new fits/table.fits
@@ -3412,7 +3405,7 @@ testit $tt
 fi
 
 tt="skyview"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 skyview open
 xpaset -p ds9 skyview close
@@ -3745,7 +3738,7 @@ testit $tt
 fi
 
 tt="vla"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 vla open
 xpaset -p ds9 vla close
@@ -3783,7 +3776,7 @@ testit $tt
 fi
 
 tt="vlss"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 vlss open
 xpaset -p ds9 vlss close
