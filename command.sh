@@ -29,7 +29,6 @@ delay=0
 # -private
 
 #2mass
-#dss
 #vo
 
 # not tested
@@ -617,7 +616,7 @@ doit
 fi
 
 tt="dsssao"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/dss"
 testit "-dsssao open"
 testit "-dsssao close"

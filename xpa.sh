@@ -53,7 +53,6 @@ delay=.5
 # tcl
 
 #2mass
-#dss
 #vo
 
 # slow down?
@@ -742,7 +741,7 @@ testit $tt
 fi
 
 tt="dsssao"
-if [ "$1" = "$tt" ]; then
+if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/dss..."
 xpaset -p ds9 dsssao open
 xpaset -p ds9 dsssao close

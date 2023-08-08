@@ -40,8 +40,6 @@ echo "*** samp.sh ***"
 # iexam
 
 #2mass
-#dss
-#dssstsci
 #vo
 
 # slow down?
@@ -77,7 +75,7 @@ doit "$1" crosshair
 doit "$1" cube
 doit "$1" cursor
 doit "$1" data
-#doit "$1" dsssao
+doit "$1" dsssao
 doit "$1" dsseso
 doit "$1" dssstsci
 doit "$1" export
