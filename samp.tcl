@@ -392,22 +392,10 @@ proc SAMPParseHub {} {
 	if {$env(SAMP_HUB) != {}} {
 	    set exp {std-lockurl:(.*)}
 	    if {[regexp $exp $env(SAMP_HUB) dummy url]} {
-
 		ParseURL $url rr
 		switch -- $rr(scheme) {
-		    ftp {
-			set fn [tmpnam {.samp}]
-			lappend samp(tmp,files) $fn
-			GetFileFTP $rr(authority) $rr(path) $fn
-		    }
 		    file {set fn $rr(path)}
-		    http -
-		    https -
-		    default {
-			set fn [tmpnam {.samp}]
-			lappend samp(tmp,files) $fn
-			GetFileHTTP $url $fn
-		    }
+		    default {}
 		}
 	    }
 	}
@@ -456,6 +444,61 @@ proc SAMPParseHub {} {
     if {$samp(debug)} {
 	puts "SAMP-Test: SAMPParseHub $samp(secret) $samp(url) $samp(method)"
     }
+    return 1
+}
+
+proc ParseURL {url varname} {
+    upvar $varname r
+
+    set r(scheme) {}
+    set r(authority) {}
+    set r(path) {}
+    set r(query) {}
+    set r(fragment) {}
+    set exp {^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?}
+
+    if {![regexp -nocase $exp $url x a r(scheme) c r(authority) r(path) f r(query) h r(fragment)]} {
+	return 0
+    }
+
+    # check for windows disk drives
+    global tcl_platform
+    switch $tcl_platform(platform) {
+	unix {
+	    switch -- $r(scheme) {
+		zipfs {
+		    # special case for zipfs
+		    set r(path) "$r(scheme):$r(path)"
+		    set r(scheme) {}
+		}
+		ftp {
+		    # strip any username/passwd
+		    set id [string first {@} $r(authority)]
+		    if { $id != -1} {
+			set r(authority) [string range $r(authority) [expr $id+1] end]
+		    }
+		}
+	    }
+	}
+	windows {
+	    switch -- $r(scheme) {
+		{} -
+		ftp -
+		http -
+		https -
+		file {
+		    if {[regexp {/([A-Z]:)(/.*)} $r(path) a b c]} {
+			set r(path) "$b$c"
+		    }
+		}
+		default {
+		    set r(path) "$r(scheme):$r(path)"
+		    set r(scheme) {}
+		}
+	    }
+	}
+    }
+
     return 1
 }
 
