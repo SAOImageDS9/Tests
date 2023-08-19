@@ -767,39 +767,28 @@ proc InitTempDir {} {
 
 proc GetEnvHome {} {
     global env
-
-    # return current directory by default
-    set home {}
-
     global tcl_platform
+
     switch $tcl_platform(platform) {
 	unix {
-	    if [info exists env(HOME)] {
-		set home $env(HOME)
+	    if {[info exists env(HOME)]} {
+		return $env(HOME)
 	    }
 	}
 	windows {
 	    if {[info exists env(HOME)]} {
 		set hh [file normalize [file nativename $env(HOME)]]
-		if [file isdirectory $hh] {
-		    set home $hh
+		if {[file isdirectory $hh]} {
+		    return $hh
 		}
 	    }
 	    # this is just a backup, the above should always work
-	    if {$home == {} &&
-		[info exists env(HOMEDRIVE)] &&
-		[info exists env(HOMEPATH)]} {
-		set home "$env(HOMEDRIVE)$env(HOMEPATH)"
+	    if {[info exists env(HOMEDRIVE)] &&	[info exists env(HOMEPATH)]} {
+		return "$env(HOMEDRIVE)$env(HOMEPATH)"
 	    }
 	}
     }
-
-    # if there is a problem, just return current directory
-    if {![file isdirectory $home]} {
-	set home {.}
-    }
-
-    return $home
+    return {}
 }
 
 proc prompt {cmd} {
