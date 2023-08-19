@@ -2,20 +2,9 @@
 echo "SAMP Tests"
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]; then
-    ds9 -tcl&
-
-    i=1
-    while [ "$i" -le 30 ]
-	do
-	sleep 2
-	if [ `xpaaccess ds9` = yes ]; then
-	    break
-	fi
-
-	i=`expr $i + 1`
-    done
-fi
+ds9 -zscale fits/img.fits&
+echo "click return to start"
+read
 
 testit () {
     echo 
@@ -48,10 +37,6 @@ if [ "$1" = "slow" ]; then
     slow=1
     shift
 fi
-
-# load default image
-xpaset -p ds9 scale zscale
-xpaset -p ds9 fits fits/img.fits
 
 #doit "$1" 2mass
 doit "$1" 3d
