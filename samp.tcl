@@ -386,25 +386,49 @@ proc SAMPParseHub {} {
     global samp
     global env
 
-    global tcl_platform
-    switch $tcl_platform(platform) {
-	unix {
-	    set fn [file join [GetEnvHome] {.samp}]
-	}
-	windows {
-	    set fn [file join "$env(HOMEDRIVE)$env(HOMEPATH)" {.samp}]
+    set fn {}
+    
+    if {[info exists env(SAMP_HUB)]} {
+	if {$env(SAMP_HUB) != {}} {
+	    set exp {std-lockurl:(.*)}
+	    if {[regexp $exp $env(SAMP_HUB) dummy url]} {
+
+		ParseURL $url rr
+		switch -- $rr(scheme) {
+		    ftp {
+			set fn [tmpnam {.samp}]
+			lappend samp(tmp,files) $fn
+			GetFileFTP $rr(authority) $rr(path) $fn
+		    }
+		    file {set fn $rr(path)}
+		    http -
+		    https -
+		    default {
+			set fn [tmpnam {.samp}]
+			lappend samp(tmp,files) $fn
+			GetFileHTTP $url $fn
+		    }
+		}
+	    }
 	}
     }
 
+    if {$fn == {}} {
+	set fn [file join [GetEnvHome] {.samp}]
+    }
+
+    # no hub to be found
     if {![file exist $fn]} {
-	# no hub to be found
+	return 0
+    }
+    if {[catch {set fp [open $fn r]}]} {
 	return 0
     }
 
     set samp(secret) {}
     set samp(url) {}
     set samp(metod) {}
-    set fp [open $fn r]
+
     while {1} {
 	if {[gets $fp line] == -1} {
 	    break
