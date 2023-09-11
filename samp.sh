@@ -2,7 +2,7 @@
 echo "SAMP Tests"
 
 echo "Starting DS9..."
-ds9 -zscale fits/img.fits&
+ds9 -debug -zscale fits/img.fits&
 echo "click return to start"
 read
 
