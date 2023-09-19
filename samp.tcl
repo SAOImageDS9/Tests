@@ -19,9 +19,9 @@ proc SAMPConnect {} {
     set samp(apps,set) {}
     set samp(apps,evn) {}
 
-#    set samp(proc) samp.hub.call
+    set samp(proc) samp.hub.call
 #   set samp(proc) samp.hub.callAll
-    set samp(proc) samp.hub.callAndWait
+#    set samp(proc) samp.hub.callAndWait
 
     # delete any old tmp files
     SAMPDelTmpFiles
