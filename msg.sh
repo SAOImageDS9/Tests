@@ -1,5 +1,5 @@
 
-echo "SAMP Set Tests"
+echo "SAMP Message Tests"
 
 echo "Starting DS9..."
 ds9 -debug -zscale fits/img.fits&
@@ -9,7 +9,7 @@ read
 testit () {
     echo 
     echo "Testing $1"
-    tclsh samp.tcl $debug block $pp < samp/${1}.samp
+    tclsh samp.tcl $debug block $msg < samp/${1}.samp
     echo "PASSED"
 }
 
@@ -17,20 +17,10 @@ doit () {
     if [ "$1" = "$2" -o  -z "$1" ]; then
     testit "$2"
     fi
-    if [ $slow = "1" ]; then
-	sleep 1
-    fi
 }
 
 echo
 echo "*** samp.sh ***"
-
-# slow down?
-slow=0
-if [ "$1" = "slow" ]; then
-    slow=1
-    shift
-fi
 
 # debug?
 debug=
@@ -40,10 +30,10 @@ if [ "$1" = "debug" ]; then
 fi
 
 # proc
-pp=call
+msg=call
 case $1 in
     notify | notifyAll | call | callAll | callAndWait)
-    pp=$1
+    msg=$1
     shift
     ;;
 esac

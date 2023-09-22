@@ -19,6 +19,8 @@ proc SAMPConnect {} {
     set samp(apps,set) {}
     set samp(apps,evn) {}
 
+    set samp(msgtag) {}
+    
     # delete any old tmp files
     SAMPDelTmpFiles
 
@@ -233,6 +235,10 @@ proc SAMPSend {method params resultVar} {
 	}
 	samp.hub.call -
 	samp.hub.callAll {
+	    set samp(msgtag) [lindex $result 1]
+
+	    # and now we wait
+	    vwait samp(msgtag)
 	}
 	samp.hub.callAndWait {
 	    set status {}
@@ -365,6 +371,11 @@ proc samp.client.receiveResponse {args} {
     set id [lindex $args 1]
     set msgtag [lindex $args 2]
     set map [lindex $args 3]
+
+    if {$samp(msgtag) == {}} {
+	puts "SAMP-Test: samp.client.receiveResponse bad tag $msgtag"
+    }
+    set samp(msgtag) {}
 
     set status {}
     set value {}
