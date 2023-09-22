@@ -19,10 +19,6 @@ proc SAMPConnect {} {
     set samp(apps,set) {}
     set samp(apps,evn) {}
 
-    set samp(proc) samp.hub.call
-#   set samp(proc) samp.hub.callAll
-#    set samp(proc) samp.hub.callAndWait
-
     # delete any old tmp files
     SAMPDelTmpFiles
 
@@ -230,22 +226,6 @@ proc SAMPSend {method params resultVar} {
 	puts "SAMP-Test: SAMPSend Result: $result"
     }
     
-    set status {}
-    set value {}
-    set error {}
-    foreach arg [lindex $result 1] {
-	foreach {key val} $arg {
-	    switch -- $key {
-		samp.result {set value [lindex [lindex $val 0] 1]}
-		samp.status {set status $val}
-		samp.error  {set error [lindex [lindex $val 0] 1]}
-	    }
-	}
-    }
-    if {$status != {}} {
-	puts -nonewline "$status $value $error"
-    }
-
     return 1
 }
 
@@ -644,16 +624,25 @@ proc SAMPSendDS9Set {id url cmd} {
 
     # cmd
     catch {unset sampmap}
+    catch {unset sampmap2}
+
     set sampmap(samp.mtype) {string "ds9.set"}
     set sampmap(samp.params) {struct sampmap2}
-
-    catch {unset sampmap2}
 
     set sampmap2(url) "string \"[XMLQuote $url]\""
     set sampmap2(cmd) "string \"[XMLQuote $cmd]\""
 
     set param1 [list "string $samp(private)"]
     switch $samp(proc) {
+	samp.hub.notify {
+	    set param2 [list "string $id"]
+	    set param3 [list "struct sampmap"]
+	    set params "$param1 $param2 $param3" 
+	}
+	samp.hub.notifyAll {
+	    set param2 [list "struct sampmap"]
+	    set params "$param1 $param2" 
+	}
 	samp.hub.call {
 	    set param2 [list "string $id"]
 	    set param3 [list "string foo"]
@@ -701,6 +690,14 @@ proc SAMPSendDS9Get {id cmd} {
     set sampmap2(cmd) "string \"[XMLQuote $cmd]\""
 
     set param1 [list "string $samp(private)"]
+    # just in case
+    switch $samp(proc) {
+	samp.hub.notify -
+	samp.hub.notifyAll {
+	    set samp(proc) samp.hub.call
+	}
+    }
+
     switch $samp(proc) {
 	samp.hub.call {
 	    set param2 [list "string $id"]
@@ -749,6 +746,14 @@ proc SAMPSendClientEnvGet {id name} {
     set sampmap2(name) "string \"[XMLQuote $name]\""
 
     set param1 [list "string $samp(private)"]
+    # just in case
+    switch $samp(proc) {
+	samp.hub.notify -
+	samp.hub.notifyAll {
+	    set samp(proc) samp.hub.call
+	}
+    }
+
     switch $samp(proc) {
 	samp.hub.call {
 	    set param2 [list "string $id"]
@@ -942,17 +947,31 @@ set samp(timeout,update) 250
 set samp(timeout,wait) 30
 set samp(block) 0
 
+#set samp(proc) samp.hub.notify
+#set samp(proc) samp.hub.notifyAll
+set samp(proc) samp.hub.call
+# set samp(proc) samp.hub.callAll
+# set samp(proc) samp.hub.callAndWait
+
+
 InitTempDir
 SAMPConnect
 
 foreach arg $argv {
     switch $arg {
 	debug {set samp(debug) 1}
+
 	batch -
 	block {set samp(block) 1}
 	interactive -
 	noblock {set samp(block) 0}
-    }
+
+	notify {set samp(proc) samp.hub.notify}
+	notifyAll {set samp(proc) samp.hub.notifyAll}
+	call {set samp(proc) samp.hub.call}
+	callAll {set samp(proc) samp.hub.callAll}
+	callAndWait {set samp(proc) samp.hub.callAndWait}
+   }
 }
 
 if {$samp(block)} {
