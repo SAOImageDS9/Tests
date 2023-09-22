@@ -226,6 +226,31 @@ proc SAMPSend {method params resultVar} {
 	puts "SAMP-Test: SAMPSend Result: $result"
     }
     
+    switch $method {
+	samp.hub.notify -
+	samp.hub.notifyAll {
+	    puts -nonewline "ok"
+	}
+	samp.hub.call -
+	samp.hub.callAll {
+	}
+	samp.hub.callAndWait {
+	    set status {}
+	    set value {}
+	    set error {}
+	    foreach arg [lindex $result 1] {
+		foreach {key val} $arg {
+		    switch -- $key {
+			samp.result {set value [lindex [lindex $val 0] 1]}
+			samp.status {set status $val}
+			samp.error  {set error [lindex [lindex $val 0] 1]}
+		    }
+		}
+	    }
+	    puts -nonewline "$status $value $error"
+	}
+    }
+
     return 1
 }
 
@@ -353,9 +378,7 @@ proc samp.client.receiveResponse {args} {
 	    }
 	}
     }
-    if {$status != {}} {
-	puts -nonewline "$status $value $error"
-    }
+    puts -nonewline "$status $value $error"
 
     return {string OK}
 }
