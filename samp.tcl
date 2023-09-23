@@ -9,7 +9,6 @@ proc SAMPConnect {} {
 
     # connected?
     if {[info exists samp]} {
-	puts [array get samp]
 	puts {SAMP-Test: already connected}
 	return
     }
@@ -20,15 +19,11 @@ proc SAMPConnect {} {
     set samp(clients) {}
     set samp(tmp,files) {}
     set samp(msgtag) {}
-    # used for call and wait (in secs)
-    set samp(timeout,wait) 30
+    set samp(timeout) 30
     
     # can we find a hub?
     if {![SAMPParseHub]} {
-	global debug
- 	if {$debug} {
-	    puts {SAMP-Test: unable to locate HUB}
-	}
+	puts {SAMP-Test: unable to locate HUB}
 	catch {unset samp}
 	return
     }
@@ -800,7 +795,7 @@ proc SAMPSendDS9Set {proc url cmd} {
 	samp.hub.callAndWait {
 	    set param2 [list "string $id"]
 	    set param3 [list "struct sampmap"]
-	    set param4 [list "string $samp(timeout,wait)"]
+	    set param4 [list "string $samp(timeout)"]
 	    set params "$param1 $param2 $param3 $param4" 
 	}
     }
@@ -859,7 +854,7 @@ proc SAMPSendDS9Get {proc cmd} {
 	samp.hub.callAndWait {
 	    set param2 [list "string $id"]
 	    set param3 [list "struct sampmap"]
-	    set param4 [list "string $samp(timeout,wait)"]
+	    set param4 [list "string $samp(timeout)"]
 	    set params "$param1 $param2 $param3 $param4" 
 	}
     }
