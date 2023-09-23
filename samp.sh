@@ -7,7 +7,6 @@ echo "click return to start"
 read
 
 testit () {
-    echo $msg
     echo 
     echo "Testing $1"
     tclsh samp.tcl $debug block $msg < samp/${1}.samp
