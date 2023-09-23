@@ -7,35 +7,40 @@ source xmlrpc.tcl
 proc SAMPConnect {} {
     global samp
     global sampmap
+    global sampmap2
 
     # connected?
-    if {$samp(status)} {
+    if {[info exists samp]} {
+	puts [array get samp]
 	puts {SAMP-Test: already connected}
 	return
     }
 
     # reset samp array
-    set samp(apps,get) {}
-    set samp(apps,set) {}
-    set samp(apps,evn) {}
+    catch {unset samp}
 
+    set samp(clients) {}
+    set samp(tmp,files) {}
     set samp(msgtag) {}
+    # used for call and wait (in secs)
+    set samp(timeout,wait) 30
     
-    # delete any old tmp files
-    SAMPDelTmpFiles
-
     # can we find a hub?
     if {![SAMPParseHub]} {
- 	if {$samp(debug)} {
+	global debug
+ 	if {$debug} {
 	    puts {SAMP-Test: unable to locate HUB}
 	}
+	catch {unset samp}
 	return
     }
 
     # register
     set params [list "string $samp(secret)"]
+    set rr {}
     if {![SAMPSend {samp.hub.register} $params rr]} {
 	puts {SAMP-Test: internal error}
+	catch {unset samp}
 	return
     }
     set rr [lindex $rr 1]
@@ -67,7 +72,8 @@ proc SAMPConnect {} {
     }
 
     # who are we
-    set samp(port) [lindex [fconfigure [xmlrpc::serve 0] -sockname] 2]
+    set samp(sock) [xmlrpc::serve 0]
+    set samp(port) [lindex [fconfigure $samp(sock) -sockname] 2]
     set samp(home) "[info hostname]:$samp(port)"
 
     # callback
@@ -86,10 +92,9 @@ proc SAMPConnect {} {
     set sampmap(samp.hub.event.shutdown) {struct mapShutdown}
     set sampmap(samp.hub.event.register) {struct mapRegister}
     set sampmap(samp.hub.event.unregister) {struct mapUnregister}
+    set sampmap(samp.hub.event.metadata) {struct mapMetadata}
+    set sampmap(samp.hub.event.subscriptions) {struct mapSubscriptions}
     set sampmap(samp.hub.disconnect) {struct mapDisconnect}
-
-#    set sampmap(ds9.get) {struct mapDS9Get}
-#    set sampmap(ds9.set) {struct mapDS9Set}
 
     set param1 [list "string $samp(private)"]
     set param2 [list "struct sampmap"]
@@ -99,25 +104,72 @@ proc SAMPConnect {} {
 	return
     }
 
-    # wait
-    after $samp(timeout,update)
-    SAMPUpdate
-    set samp(status) 1
+    # get current client info
+    set params [list "string $samp(private)"]
+    set rr {}
+    if {![SAMPSend {samp.hub.getRegisteredClients} $params rr]} {
+	puts {SAMP-Test: internal error}
+	return
+    }
+    set samp(clients) [lindex $rr 1]
+
+    foreach cc $samp(clients) {
+	set param1 [list "string $samp(private)"]
+	set param2 [list "string $cc"]
+	set params "$param1 $param2" 
+	set rr {}
+	if {![SAMPSend {samp.hub.getSubscriptions} $params rr]} {
+	    puts {SAMP-Test: internal error}
+	    return
+	}
+	
+	foreach arg [lindex $rr 1] {
+	    foreach {key val} $arg {
+		lappend samp($cc,subscriptions) $key
+	    }
+	}
+
+	set param1 [list "string $samp(private)"]
+	set param2 [list "string $cc"]
+	set params "$param1 $param2" 
+	set rr {}
+	if {![SAMPSend {samp.hub.getMetadata} $params rr]} {
+	    puts {SAMP-Test: internal error}
+	    return
+	}
+
+	foreach arg [lindex $rr 1] {
+	    foreach {key val} $arg {
+		switch -- $key {
+		    samp.name {set samp($cc,name) [XMLUnQuote $val]}
+		}
+	    }
+	}
+    }
+
+    # samp initalization started
+    set samp(init) 1
 }
 
 proc SAMPDisconnect {} {
     global samp
 
     # connected?
-    if {!$samp(status)} {
+    if {![info exists samp]} {
+	puts {SAMP-Test: not connected}
 	return
     }
 
     # disconnect
-    set params [list "string $samp(private)"]
-    set rr {}
-    SAMPSend {samp.hub.unregister} $params rr
-    SAMPShutdown
+    if {[info exists samp(private)]} {
+	set params [list "string $samp(private)"]
+	set rr {}
+	if {![SAMPSend {samp.hub.unregister} $params rr]} {
+	    puts {SAMP-Test: internal error}
+	    return
+	}
+	SAMPShutdown
+    }
 }
 
 # Support
@@ -128,103 +180,28 @@ proc SAMPShutdown {} {
     # delete any files
     SAMPDelTmpFiles
 
-    # reset 
-    set samp(status) 0
-
     # close the server socket if still up
-    catch {close $xmlrpc::acceptfd}
+    catch {close $samp(sock)}
 
-    # update the menus
-    set samp(apps,get) {}
-    set samp(apps,set) {}
-    set samp(apps,env) {}
-}
-
-proc SAMPUpdate {} {
-    # this routine is run after a delay since it needs to 
-    # call the hub for metadata
-
-    global samp
-    
-    if {$samp(debug)} {
-	puts {SAMP-Test: SAMPUpdate}
-    }
-
-    # get
-    set param1 [list "string $samp(private)"]
-    set param2 [list "string ds9.get"]
-    set params "$param1 $param2" 
-    if {![SAMPSend {samp.hub.getSubscribedClients} $params rr]} {
-	return
-    }
-    
-    set samp(apps,get) {}
-    foreach arg [lindex $rr 1] {
-	foreach {key val} $arg {
-	    if {$key != {}} {
-		lappend samp(apps,get) [list $key [SAMPGetAppName $key]]
-	    }
-	}
-    }
-
-    # set
-    set param1 [list "string $samp(private)"]
-    set param2 [list "string ds9.set"]
-    set params "$param1 $param2" 
-    if {![SAMPSend {samp.hub.getSubscribedClients} $params rr]} {
-	return
-    }
-    
-    set samp(apps,set) {}
-    foreach arg [lindex $rr 1] {
-	foreach {key val} $arg {
-	    if {$key != {}} {
-		lappend samp(apps,set) [list $key [SAMPGetAppName $key]]
-	    }
-	}
-    }
-
-    # env
-    set param1 [list "string $samp(private)"]
-    set param2 [list "string client.env.get"]
-    set params "$param1 $param2" 
-    if {![SAMPSend {samp.hub.getSubscribedClients} $params rr]} {
-	return
-    }
-    
-    set samp(apps,env) {}
-    foreach arg [lindex $rr 1] {
-	foreach {key val} $arg {
-	    if {$key != {}} {
-		lappend samp(apps,env) [list $key [SAMPGetAppName $key]]
-	    }
-	}
-    }
-
-    if {$samp(debug)} {
-	puts "SAMP-Test: SAMPUpdate ds9.get apps: $samp(apps,get)"
-	puts "SAMP-Test: SAMPUpdate ds9.set apps: $samp(apps,set)"
-	puts "SAMP-Test: SAMPUpdate client.env.get apps: $samp(apps,env)"
-    }
+    # unset samp array
+    catch {unset samp}
 }
 
 proc SAMPSend {method params resultVar} {
     upvar $resultVar result
-
     global samp
 
-    if {$samp(debug)} {
+    global debug
+    if {$debug} {
 	puts "SAMP-Test: SAMPSend $method $params"
     }
 
     if {[catch {set result [xmlrpc::call $samp(url) $samp(method) $method $params]}]} {
-	if {$samp(debug)} {
-	    puts "SAMP-Test: SAMPSend Error: $result"
-	}
+	puts "SAMP-Test: SAMPSend Error: $result"
 	return 0
     }
 
-    if {$samp(debug)} {
+    if {$debug} {
 	puts "SAMP-Test: SAMPSend Result: $result"
     }
     
@@ -264,8 +241,10 @@ proc SAMPReply {msgid status {result {}} {error {}}} {
     global samp
     global sampmap
     global sampmap2
+    global sampmap3
 
-    if {$samp(debug)} {
+    global debug
+    if {$debug} {
 	puts "SAMP-Test: SAMPReply $msgid $status"
     }
 
@@ -276,14 +255,24 @@ proc SAMPReply {msgid status {result {}} {error {}}} {
 	OK {
 	    set sampmap(samp.status) {string "samp.ok"}
 	    set sampmap(samp.result) {struct sampmap2}
-	    set sampmap2(value) "string \"[XMLQuote $result]\""
+	    if {$result != {}} {
+		set sampmap2(value) "string \"[XMLQuote $result]\""
+	    }
+	    if {$url != {}} {
+		set sampmap2(url) "string \"[XMLQuote $url]\""
+	    }
 	}
 	WARNING {
 	    set sampmap(samp.status) {string "samp.error"}
 	    set sampmap(samp.result)  {struct sampmap2}
 	    set sampmap(samp.error)  {struct sampmap3}
-	    set sampmap2(value) "string \"[XMLQuote $result]\""
-	    set sampmap2(samp.errortxt) "string \"[XMLQuote $error]\""
+	    if {$result != {}} {
+		set sampmap2(value) "string \"[XMLQuote $result]\""
+	    }
+	    if {$url != {}} {
+		set sampmap2(url) "string \"[XMLQuote $url]\""
+	    }
+	    set sampmap3(samp.errortxt) "string \"[XMLQuote $error]\""
 	}
 	ERROR {
 	    set sampmap(samp.status) {string "samp.error"}
@@ -295,45 +284,74 @@ proc SAMPReply {msgid status {result {}} {error {}}} {
     set param2 [list "string $msgid"]
     set param3 [list "struct sampmap"]
     set params "$param1 $param2 $param3"
+    set rr {}
     if {![SAMPSend {samp.hub.reply} $params rr]} {
+	puts {SAMP-Test: internal error}
 	return
+    }
+}
+
+proc SAMPValidMtype {mtype} {
+    switch $mtype {
+	samp.client.receiveNotification -
+	samp.client.receiveCall -
+	samp.client.receiveResponse -
+	samp.hub.event.shutdown -
+	samp.hub.event.register -
+	samp.hub.event.unregister -
+	samp.hub.event.metadata -
+	samp.hub.event.subscriptions -
+	samp.hub.disconnect -
+	samp.app.ping {return 1}
+	default {return 0}
     }
 }
 
 # receiveNotification(string sender-id, map message)
 proc samp.client.receiveNotification {args} {
     global samp
-    if {$samp(debug)} {
+
+    global debug
+    if {$debug} {
 	puts "SAMP-Test: samp.client.receiveNotification $args"
     }
+
     set secret [lindex $args 0]
     set id [lindex $args 1]
     set map [lindex $args 2]
 
-    set mtype [lindex $map 0]
-    set params [lindex $map 1]
+    if {$secret != $samp(private)} {
+	puts {SAMP-Test: internal error}
+	return {string ERROR}
+    }
 
-    set method [lindex $mtype 1]
-    set args [lindex $params 1]
-
-    switch -- $method {
-	samp.hub.event.shutdown {SAMPRcvdEventShutdown args}
-	samp.hub.event.register {SAMPRcvdEventRegister args}
-	samp.hub.event.unregister {SAMPRcvdEventUnregister args}
-	samp.hub.disconnect {SAMPRcvdDisconnect args}
-	default {
-	    if {$samp(debug)} {
-		puts "SAMP-Test: samp.client.receiveNotification bad method $method"
+    set mtype {}
+    set params {}
+    foreach mm $map {
+	foreach {key val} $mm {
+	    switch -- $key {
+		samp.mtype {set mtype $val}
+		samp.params {set params $val}
 	    }
 	}
     }
+
+    if {[SAMPValidMtype $mtype]} {
+	$mtype params
+    } else {
+	Error "SAMP: [msgcat::mc {internal error}]"
+	return {string ERROR}
+    }
+
     return {string OK}
 }
 
 # receiveCall(string sender-id, string msg-id, map message)
 proc samp.client.receiveCall {args} {
     global samp
-    if {$samp(debug)} {
+
+    global debug
+    if {$debug} {
 	puts "SAMP-Test: samp.client.receiveCall $args"
     }
 
@@ -342,29 +360,40 @@ proc samp.client.receiveCall {args} {
     set msgid [lindex $args 2]
     set map [lindex $args 3]
 
-    set mtype [lindex $map 0]
-    set params [lindex $map 1]
+    if {$secret != $samp(private)} {
+	Error "SAMP: [msgcat::mc {internal error}]"
+	return {string ERROR}
+    }
 
-    set method [lindex $mtype 1]
-    set args [lindex $params 1]
-
-    switch -- $method {
-	samp.app.ping {SAMPReply $msgid OK {}}
-	default {
-	    SAMPReply $msgid ERROR "Unknown subscription: $method"
-	    if {$samp(debug)} {
-		puts "SAMP-Test: samp.client.receiveCall bad method $method"
+    set mtype {}
+    set params {}
+    foreach mm $map {
+	foreach {key val} $mm {
+	    switch -- $key {
+		samp.mtype {set mtype $val}
+		samp.params {set params $val}
 	    }
 	}
     }
+
+    if {[SAMPValidMtype $mtype]} {
+	$mtype params
+	SAMPReply $msgid OK
+    } else {
+	Error "SAMP: [msgcat::mc {internal error}]"
+	return {string ERROR}
+    }
+
     return {string OK}
 }
 
 # receiveResponse(string responder-id, string msg-tag, map response)
 proc samp.client.receiveResponse {args} {
     global samp
-    if {$samp(debug)} {
-	puts "SAMP-Test: samp.client.receiveResponse $args"
+
+    global debug
+    if {$debug} {
+	puts stderr "samp.client.receiveResponse $args"
     }
 
     set secret [lindex $args 0]
@@ -430,6 +459,7 @@ proc SAMPParseHub {} {
     set samp(secret) {}
     set samp(url) {}
     set samp(metod) {}
+    set samp(fn) $fn
 
     while {1} {
 	if {[gets $fp line] == -1} {
@@ -444,20 +474,26 @@ proc SAMPParseHub {} {
 	if {[regexp -nocase {samp.secret=(.*)} $line foo ss]} {
 	    set samp(secret) $ss
 	}
-	if {[regexp -nocase {samp.hub.xmlrpc.url=(.*)/(.*)} $line foo ss xx]} {
-	    set samp(url) $ss
-	    set samp(method) $xx
+	if {[regexp -nocase {samp.hub.xmlrpc.url=(.*)} $line foo url]} {
+	    if {[ParseURL $url r]} {
+		set samp(url) $r(scheme)://$r(authority)
+		set samp(method) [string range $r(path) 1 end]
+	    }
 	}
     }
     catch {close $fp}
 
     if {$samp(secret) == {} || $samp(url) == {}} {
+	SAMPDelTmpFiles
+	catch {unset samp}
 	return 0
     }
 
-    if {$samp(debug)} {
+    global debug
+    if {$debug} {
 	puts "SAMP-Test: SAMPParseHub $samp(secret) $samp(url) $samp(method)"
     }
+
     return 1
 }
 
@@ -519,7 +555,8 @@ proc ParseURL {url varname} {
 proc SAMPGetAppName {id} {
     global samp
 
-    if {$samp(debug)} {
+    global debug
+    if {$debug} {
 	puts "SAMP-Test: SAMPGetAppName $id"
     }
 
@@ -542,88 +579,166 @@ proc SAMPGetAppName {id} {
     return $name
 }
 
-# CallBacks
-# Hub
+proc SAMPGetAppsSubscriptions {mtype} {
+    global samp
 
-proc SAMPRcvdEventShutdown {varname} {
+    set ll {}
+    foreach cc $samp(clients) {
+	if {[lsearch $samp($cc,subscriptions) $mtype]>=0} {
+	    lappend ll $cc
+	}
+    }
+    return $ll
+}
+
+# CallBacks
+
+proc samp.hub.event.shutdown {varname} {
     upvar $varname args
 
-    global samp
-    if {$samp(debug)} {
-	puts "SAMP-Test: SAMPRcvdEventShutdown $args"
+    global debug
+    if {$debug} {
+	puts stderr "samp.hub.event.shutdown $args"
     }
 
     SAMPShutdown
 }
 
-proc SAMPRcvdEventRegister {varname} {
+proc samp.hub.event.register {varname} {
     upvar $varname args
-
     global samp
 
-    if {$samp(debug)} {
-	puts "SAMP-Test: SAMPRcvdEventRegister $args"
+    global debug
+    if {$debug} {
+	puts stderr "samp.hub.event.register $args"
     }
 
     foreach arg $args {
 	foreach {key val} $arg {
 	    switch -- $key {
 		id {
-		    # check to see if its just us
-		    if {$samp(self) == $val} {
-			return
-		    }
+		    lappend samp(clients) $val
+		    set samp($val,subscriptions) {}
+		    set samp($val,name) {}
 		}
 	    }
 	}
     }
-
-    # wait
-    if {$samp(block)} {
-	after $samp(timeout,update)
-	SAMPUpdate
-    } else {
-	after $samp(timeout,update) SAMPUpdate
-    }
 }
 
-proc SAMPRcvdEventUnregister {varname} {
+proc samp.hub.event.unregister {varname} {
     upvar $varname args
-
     global samp
 
-    if {$samp(debug)} {
-	puts "SAMP-Test: SAMPRcvdEventUnregister $args"
+    global debug
+    if {$debug} {
+	puts stderr "samp.hub.event.unregister $args"
     }
 
     foreach arg $args {
 	foreach {key val} $arg {
 	    switch -- $key {
 		id {
-		    # check to see if its just us
-		    if {$samp(self) == $val} {
-			return
+		    set id [lsearch $samp(clients) $val]
+		    set samp(clients) [lreplace $samp(clients) $id $id]
+		    unset samp($val,subscriptions)
+		    unset samp($val,name)
+		}
+	    }
+	}
+    }
+}
+
+proc samp.hub.event.metadata {varname} {
+    upvar $varname args
+    global samp
+
+    global debug
+    if {$debug} {
+	puts stderr "samp.hub.event.metadata $args"
+    }
+
+    set id {}
+    set name {}
+    foreach arg $args {
+	foreach {key val} $arg {
+	    switch -- $key {
+		id {
+		    set id $val
+		}
+		metadata {
+		    foreach aa $val {
+			foreach {bb cc} $aa {
+			    if {$bb == {samp.name}} {
+				set name $cc
+			    }
+			}
 		    }
 		}
 	    }
 	}
     }
-
-    # wait
-    if {$samp(block)} {
-	after $samp(timeout,update)
-	SAMPUpdate
-    } else {
-	after $samp(timeout,update) SAMPUpdate
+    
+    # should not happen
+    if {$id == {}} {
+	return
     }
+
+    # just ignore if ourself
+    if {$id == $samp(self)}  {
+	return
+    }
+
+    set samp($id,name) $name
 }
 
-proc SAMPRcvdDisconnect {varname} {
+proc samp.hub.event.subscriptions {varname} {
+    upvar $varname args
+    global samp
+
+    global debug
+    if {$debug} {
+	puts stderr "samp.hub.event.subscriptions $args"
+    }
+
+    set id {}
+    set subs {}
+    foreach arg $args {
+	foreach {key val} $arg {
+	    switch -- $key {
+		id {
+		    set id $val
+		}
+		subscriptions {
+		    foreach aa $val {
+			foreach {bb cc} $aa {
+			    lappend subs $bb
+			}
+		    }
+		}
+	    }
+	}
+    }
+    
+    # should not happen
+    if {$id == {}} {
+	return
+    }
+
+    # just ignore if ourself
+    if {$id == $samp(self)}  {
+	return
+    }
+
+    set samp($id,subscriptions) $subs
+}
+
+proc samp.hub.disconnect {varname} {
     upvar $varname args
 
-    global samp
-    if {$samp(debug)} {
-	puts "SAMP-Test: SAMPRcvdDisconnect $args"
+    global debug
+    if {$debug} {
+	puts stderr "samp.hub.disconnect $args"
     }
 
     set msg {}
@@ -641,18 +756,36 @@ proc SAMPRcvdDisconnect {varname} {
 
 # HTTPClient
 
-proc SAMPSendDS9Set {id url cmd} {
+proc samp.app.ping {varname} {
+    upvar $varname args
+
+    global debug
+    if {$debug} {
+	puts stderr "samp.app.ping $args"
+    }
+}
+
+proc SAMPSendDS9Set {proc url cmd} {
     global samp
     global sampmap
     global sampmap2
 
-    if {$samp(debug)} {
-	puts "SAMP-Test: SAMPSendDS9Set $id $cmd"
+    global debug
+    if {$debug} {
+	puts "SAMP-Test: SAMPSendDS9Set $cmd"
     }
 
     # connected?
-    if {!$samp(status)} {
+    if {![info exists samp]} {
 	puts {SAMP-Test: not connected}
+	return
+    }
+
+    # first found
+    set id [lindex [SAMPGetAppsSubscriptions {ds9.set}] 0]
+
+    if {$id == {}} {
+	puts {SAMP-Test: not subscriptions found}
 	return
     }
 
@@ -662,12 +795,11 @@ proc SAMPSendDS9Set {id url cmd} {
 
     set sampmap(samp.mtype) {string "ds9.set"}
     set sampmap(samp.params) {struct sampmap2}
-
     set sampmap2(url) "string \"[XMLQuote $url]\""
     set sampmap2(cmd) "string \"[XMLQuote $cmd]\""
 
     set param1 [list "string $samp(private)"]
-    switch $samp(proc) {
+    switch $proc {
 	samp.hub.notify {
 	    set param2 [list "string $id"]
 	    set param3 [list "struct sampmap"]
@@ -696,43 +828,50 @@ proc SAMPSendDS9Set {id url cmd} {
 	}
     }
     
-    SAMPSend $samp(proc) $params rr
+    SAMPSend $proc $params rr
 }
 
-proc SAMPSendDS9Get {id cmd} {
+proc SAMPSendDS9Get {proc cmd} {
     global samp
     global sampmap
     global sampmap2
 
-    if {$samp(debug)} {
+    global debug
+    if {$debug} {
 	puts "SAMP-Test: SAMPSendDS9Get"
     }
 
     # connected?
-    if {!$samp(status)} {
+    if {![info exists samp]} {
 	puts {SAMP-Test: not connected}
+	return
+    }
+
+    # first found
+    set id [lindex [SAMPGetAppsSubscriptions {ds9.get}] 0]
+
+    if {$id == {}} {
+	puts {SAMP-Test: not subscriptions found}
 	return
     }
 
     # cmd
     catch {unset sampmap}
+    catch {unset sampmap2}
     set sampmap(samp.mtype) {string "ds9.get"}
     set sampmap(samp.params) {struct sampmap2}
-
-    catch {unset sampmap2}
-
     set sampmap2(cmd) "string \"[XMLQuote $cmd]\""
 
     set param1 [list "string $samp(private)"]
     # just in case
-    switch $samp(proc) {
+    switch $proc {
 	samp.hub.notify -
 	samp.hub.notifyAll {
-	    set samp(proc) samp.hub.call
+	    set proc samp.hub.call
 	}
     }
 
-    switch $samp(proc) {
+    switch $proc {
 	samp.hub.call {
 	    set param2 [list "string $id"]
 	    set param3 [list "string foo"]
@@ -752,71 +891,19 @@ proc SAMPSendDS9Get {id cmd} {
 	}
     }
 
-    SAMPSend $samp(proc) $params rr
-}
-
-proc SAMPSendClientEnvGet {id name} {
-    global samp
-    global sampmap
-    global sampmap2
-
-    if {$samp(debug)} {
-	puts "SAMP-Test: SAMPSendClientEnvGet $id $name"
-    }
-
-    # connected?
-    if {!$samp(status)} {
-	puts {SAMP-Test: not connected}
-	return
-    }
-
-    # name
-    catch {unset sampmap}
-    set sampmap(samp.mtype) {string "client.env.get"}
-    set sampmap(samp.params) {struct sampmap2}
-
-    catch {unset sampmap2}
-
-    set sampmap2(name) "string \"[XMLQuote $name]\""
-
-    set param1 [list "string $samp(private)"]
-    # just in case
-    switch $samp(proc) {
-	samp.hub.notify -
-	samp.hub.notifyAll {
-	    set samp(proc) samp.hub.call
-	}
-    }
-
-    switch $samp(proc) {
-	samp.hub.call {
-	    set param2 [list "string $id"]
-	    set param3 [list "string foo"]
-	    set param4 [list "struct sampmap"]
-	    set params "$param1 $param2 $param3 $param4" 
-	}
-	samp.hub.callAll {
-	    set param2 [list "string foo"]
-	    set param3 [list "struct sampmap"]
-	    set params "$param1 $param2 $param3" 
-	}
-	samp.hub.callAndWait {
-	    set param2 [list "string $id"]
-	    set param3 [list "struct sampmap"]
-	    set param4 [list "string $samp(timeout,wait)"]
-	    set params "$param1 $param2 $param3 $param4" 
-	}
-    }
-
-    SAMPSend $samp(proc) $params rr
+    SAMPSend $proc $params rr
 }
 
 proc SAMPDelTmpFiles {} {
-    global app
+    global samp
 
-    # delete any previous files
-    foreach fn [glob -directory $app(tmpdir) -nocomplain {samp*}] {
-	catch {file delete -force "$fn"}
+    # delete any tmp files
+    if {[info exists samp]} {
+	if {[info exists samp(tmp,files)]} {
+	    foreach fn $samp(tmp,files) {
+		catch {file delete -force "$fn"}
+	    }
+	}
     }
 }
 
@@ -873,15 +960,14 @@ proc GetEnvHome {} {
     return {}
 }
 
-proc prompt {cmd} {
-    global samp
-
+proc prompt {proc block cmd} {
     if {[string range $cmd 0 0] == "#"} {
 	puts $cmd
 	return
     }
     set item [lindex $cmd 0]
-    if {$samp(block) && $cmd != {}} {
+
+    if {$cmd != {}} {
 	puts -nonewline stderr "$cmd> "
     }
 
@@ -892,28 +978,21 @@ proc prompt {cmd} {
 	disconnect {SAMPDisconnect}
 
 	set {
-	    set id [lindex [lindex $samp(apps,set) 0] 0]
 	    set url [lindex $cmd 1]
 	    set params [lrange $cmd 2 end]
-	    SAMPSendDS9Set $id $url $params
+	    SAMPSendDS9Set $proc $url $params
 	}
 	get {
-	    set id [lindex [lindex $samp(apps,get) 0] 0]
 	    set params [lrange $cmd 1 end]
-	    SAMPSendDS9Get $id $params
-	}
-	env {
-	    set id [lindex [lindex $samp(apps,env) 0] 0]
-	    set params [lrange $cmd 1 end]
-	    SAMPSendClientEnvGet $id $params
+	    SAMPSendDS9Get $proc $params
 	}
 
 	sleep {
 	    after [expr int([lindex $cmd 1]*1000)]
 	}
 	echo {
-#	    set params [lrange $cmd 1 end]
-#	    puts -nonewline "$params"
+	    set params [lrange $cmd 1 end]
+	    puts -nonewline "$params"
 	}
 
 	bye -
@@ -930,7 +1009,7 @@ proc prompt {cmd} {
 
     after 50
     puts {}
-    if {!$samp(block)} {
+    if {!$block} {
 	puts -nonewline stderr {samp> }
     }
 
@@ -941,23 +1020,27 @@ namespace eval ::mainloop {}
 
 proc ::mainloop::readable {} {
     variable eof
+    global proc
+    global block
     
     if { [gets stdin text] < 0 } {
  	fileevent stdin readable {}
  	set eof 1
     } else {
- 	prompt $text
+ 	prompt $proc $block $text
     }
     return
 }
  
 proc ::mainloop::mainloop {} {
     variable eof
+    global proc
+    global block
  
     set ::tcl_interactive 1
     fconfigure stdin -buffering line -blocking 0
     fileevent stdin readable ::mainloop::readable
-    prompt {}
+    prompt $proc $block {}
  
     vwait [namespace which -variable eof]
     return
@@ -973,45 +1056,34 @@ proc XMLUnQuote {val} {
 
 # Start
 
-set samp(status) 0
-set samp(debug) 0
-# only used for register/unregister (in micro secs)
-set samp(timeout,update) 250
-# used for call and wait (in secs)
-set samp(timeout,wait) 30
-set samp(block) 0
-
-#set samp(proc) samp.hub.notify
-#set samp(proc) samp.hub.notifyAll
-set samp(proc) samp.hub.call
-# set samp(proc) samp.hub.callAll
-# set samp(proc) samp.hub.callAndWait
-
+set debug 0
+set block 0
+set proc samp.hub.call
 
 InitTempDir
 SAMPConnect
 
 foreach arg $argv {
     switch $arg {
-	debug {set samp(debug) 1}
+	debug {set debug 1}
 
 	batch -
-	block {set samp(block) 1}
+	block {set block 1}
 	interactive -
-	noblock {set samp(block) 0}
+	noblock {set block 0}
 
-	notify {set samp(proc) samp.hub.notify}
-	notifyAll {set samp(proc) samp.hub.notifyAll}
-	call {set samp(proc) samp.hub.call}
-	callAll {set samp(proc) samp.hub.callAll}
-	callAndWait {set samp(proc) samp.hub.callAndWait}
+	notify {set proc samp.hub.notify}
+	notifyAll {set proc samp.hub.notifyAll}
+	call {set proc samp.hub.call}
+	callAll {set proc samp.hub.callAll}
+	callAndWait {set proc samp.hub.callAndWait}
    }
 }
 
-if {$samp(block)} {
+if {$block} {
     set cmd {}
     while {1} {
-	prompt $cmd
+	prompt $proc $block $cmd
 	if {[gets stdin cmd] == -1} {
 	    SAMPDisconnect
 	    exit

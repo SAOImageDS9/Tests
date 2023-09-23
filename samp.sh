@@ -7,18 +7,16 @@ echo "click return to start"
 read
 
 testit () {
+    echo $msg
     echo 
     echo "Testing $1"
-    tclsh samp.tcl block < samp/${1}.samp
+    tclsh samp.tcl $debug block $msg < samp/${1}.samp
     echo "PASSED"
 }
 
 doit () {
     if [ "$1" = "$2" -o  -z "$1" ]; then
     testit "$2"
-    fi
-    if [ $slow = "1" ]; then
-	sleep 1
     fi
 }
 
@@ -31,12 +29,21 @@ echo "*** samp.sh ***"
 #2mass
 #vo
 
-# slow down?
-slow=0
-if [ "$1" = "slow" ]; then
-    slow=1
+# debug?
+debug=
+if [ "$1" = "debug" ]; then
+    debug=$1
     shift
 fi
+
+# proc
+msg=callAndWait
+case $1 in
+    notify | notifyAll | call | callAll | callAndWait)
+    msg=$1
+    shift
+    ;;
+esac
 
 #doit "$1" 2mass
 doit "$1" 3d

@@ -1,5 +1,5 @@
 
-echo "SAMP Message Tests"
+echo "SAMP Hub Tests"
 
 echo "Starting DS9..."
 ds9 -debug -zscale fits/img.fits&
@@ -20,7 +20,7 @@ doit () {
 }
 
 echo
-echo "*** samp.sh ***"
+echo "*** hub.sh ***"
 
 # debug?
 debug=
