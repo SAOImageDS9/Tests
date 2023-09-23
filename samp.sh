@@ -36,7 +36,7 @@ if [ "$1" = "debug" ]; then
 fi
 
 # proc
-msg=callAndWait
+msg=call
 case $1 in
     notify | notifyAll | call | callAll | callAndWait)
     msg=$1

@@ -6,8 +6,6 @@ source xmlrpc.tcl
 
 proc SAMPConnect {} {
     global samp
-    global sampmap
-    global sampmap2
 
     # connected?
     if {[info exists samp]} {
@@ -239,18 +237,12 @@ proc SAMPSend {method params resultVar {ntabs 5} {distance 4}} {
 
 proc SAMPReply {msgid status {result {}} {error {}}} {
     global samp
-    global sampmap
-    global sampmap2
-    global sampmap3
 
     global debug
     if {$debug} {
 	puts "SAMP-Test: SAMPReply $msgid $status"
     }
 
-    catch {unset sampmap}
-    catch {unset sampmap2}
-    catch {unset sampmap3}
     switch -- $status {
 	OK {
 	    set sampmap(samp.status) {string "samp.ok"}
@@ -767,8 +759,6 @@ proc samp.app.ping {varname} {
 
 proc SAMPSendDS9Set {proc url cmd} {
     global samp
-    global sampmap
-    global sampmap2
 
     global debug
     if {$debug} {
@@ -790,9 +780,6 @@ proc SAMPSendDS9Set {proc url cmd} {
     }
 
     # cmd
-    catch {unset sampmap}
-    catch {unset sampmap2}
-
     set sampmap(samp.mtype) {string "ds9.set"}
     set sampmap(samp.params) {struct sampmap2}
     set sampmap2(url) "string \"[XMLQuote $url]\""
@@ -833,8 +820,6 @@ proc SAMPSendDS9Set {proc url cmd} {
 
 proc SAMPSendDS9Get {proc cmd} {
     global samp
-    global sampmap
-    global sampmap2
 
     global debug
     if {$debug} {
@@ -856,8 +841,6 @@ proc SAMPSendDS9Get {proc cmd} {
     }
 
     # cmd
-    catch {unset sampmap}
-    catch {unset sampmap2}
     set sampmap(samp.mtype) {string "ds9.get"}
     set sampmap(samp.params) {struct sampmap2}
     set sampmap2(cmd) "string \"[XMLQuote $cmd]\""
