@@ -187,7 +187,7 @@ proc SAMPShutdown {} {
     catch {unset samp}
 }
 
-proc SAMPSend {method params resultVar} {
+proc SAMPSend {method params resultVar {ntabs 5} {distance 4}} {
     upvar $resultVar result
     global samp
 
@@ -196,7 +196,7 @@ proc SAMPSend {method params resultVar} {
 	puts "SAMP-Test: SAMPSend $method $params"
     }
 
-    if {[catch {set result [xmlrpc::call $samp(url) $samp(method) $method $params]}]} {
+    if {[catch {set result [xmlrpc::call $samp(url) $samp(method) $method $params $ntabs $distance]}]} {
 	puts "SAMP-Test: SAMPSend Error: $result"
 	return 0
     }
