@@ -950,7 +950,7 @@ proc prompt {proc block cmd} {
     }
     set item [lindex $cmd 0]
 
-    if {$cmd != {}} {
+    if {$block && $cmd != {}} {
 	puts -nonewline stderr "$cmd> "
     }
 
