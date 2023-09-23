@@ -37,7 +37,6 @@ proc SAMPConnect {} {
     set params [list "string $samp(secret)"]
     set rr {}
     if {![SAMPSend {samp.hub.register} $params rr]} {
-	puts {SAMP-Test: internal error}
 	catch {unset samp}
 	return
     }
@@ -65,7 +64,6 @@ proc SAMPConnect {} {
     set param2 [list "struct sampmap"]
     set params "$param1 $param2"
     if {![SAMPSend {samp.hub.declareMetadata} $params rr]} {
-	puts {SAMP-Test: internal error}
 	return
     }
 
@@ -79,7 +77,6 @@ proc SAMPConnect {} {
     set param2 [list "string http://$samp(home)"]
     set params "$param1 $param2"
     if {![SAMPSend {samp.hub.setXmlrpcCallback} $params rr]} {
-	puts {SAMP-Test: internal error}
 	return
     }
 
@@ -98,7 +95,6 @@ proc SAMPConnect {} {
     set param2 [list "struct sampmap"]
     set params "$param1 $param2" 
     if {![SAMPSend {samp.hub.declareSubscriptions} $params rr]} {
-	puts {SAMP-Test: internal error}
 	return
     }
 
@@ -106,7 +102,6 @@ proc SAMPConnect {} {
     set params [list "string $samp(private)"]
     set rr {}
     if {![SAMPSend {samp.hub.getRegisteredClients} $params rr]} {
-	puts {SAMP-Test: internal error}
 	return
     }
     set samp(clients) [lindex $rr 1]
@@ -117,7 +112,6 @@ proc SAMPConnect {} {
 	set params "$param1 $param2" 
 	set rr {}
 	if {![SAMPSend {samp.hub.getSubscriptions} $params rr]} {
-	    puts {SAMP-Test: internal error}
 	    return
 	}
 	
@@ -132,7 +126,6 @@ proc SAMPConnect {} {
 	set params "$param1 $param2" 
 	set rr {}
 	if {![SAMPSend {samp.hub.getMetadata} $params rr]} {
-	    puts {SAMP-Test: internal error}
 	    return
 	}
 
@@ -163,7 +156,6 @@ proc SAMPDisconnect {} {
 	set params [list "string $samp(private)"]
 	set rr {}
 	if {![SAMPSend {samp.hub.unregister} $params rr]} {
-	    puts {SAMP-Test: internal error}
 	    return
 	}
 	SAMPShutdown
@@ -277,10 +269,8 @@ proc SAMPReply {msgid status {result {}} {error {}}} {
     set param3 [list "struct sampmap"]
     set params "$param1 $param2 $param3"
     set rr {}
-    if {![SAMPSend {samp.hub.reply} $params rr]} {
-	puts {SAMP-Test: internal error}
-	return
-    }
+
+    SAMPSend {samp.hub.reply} $params rr
 }
 
 proc SAMPValidMtype {mtype} {
