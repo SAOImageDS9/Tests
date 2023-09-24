@@ -132,9 +132,6 @@ proc SAMPConnect {} {
 	    }
 	}
     }
-
-    # samp initalization started
-    set samp(init) 1
 }
 
 proc SAMPDisconnect {} {
@@ -214,6 +211,9 @@ proc SAMPSend {method params resultVar {ntabs 5} {distance 4}} {
 			samp.error  {set error [lindex [lindex $val 0] 1]}
 		    }
 		}
+	    }
+	    if {$debug} {
+		puts "SAMP-Test: callAndWait: $status $value $error"
 	    }
 	    puts -nonewline "$status $value $error"
 	}
