@@ -807,33 +807,6 @@ proc SAMPDelTmpFiles {} {
     }
 }
 
-proc InitTempDir {} {
-    global app
-    global env
-
-    # check environment vars first
-    #   windows is very picky as to file name format 
-    if [info exists env(TEMP)] {
-	set app(tmpdir) [file normalize [file nativename $env(TEMP)]]
-    } elseif [info exists env(TMP)] {
-	set app(tmpdir) [file normalize [file nativename $env(TMP)]]
-    }
-
-    #   nothing so far, go with defaults
-    if {![info exists app(tmpdir)]} {
-	global tcl_platform
-	switch $tcl_platform(platform) {
-	    unix {set app(tmpdir) "/tmp"}
-	    windows {set app(tmpdir) "C:/WINDOWS/Temp"}
-	}
-    }
-
-    #   see if it is valid, else current directory
-    if {![file isdirectory $app(tmpdir)]} {
-	set app(tmpdir) {.}
-    }
-}
-
 proc GetEnvHome {} {
     global env
     global tcl_platform
@@ -960,7 +933,6 @@ set debug 0
 set block 0
 set proc samp.hub.call
 
-InitTempDir
 SAMPConnect
 
 foreach arg $argv {
