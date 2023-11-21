@@ -636,10 +636,6 @@ proc samp.app.ping {msgid args} {
 
 proc SAMPSendDS9 {proc mtype url cmd} {
     global samp
-    puts "proc=$proc"
-    puts "mtype=$mtype"
-    puts "url=$url"
-    puts "cmd=$cmd"
     
     # connected?
     if {![info exists samp]} {
@@ -649,8 +645,6 @@ proc SAMPSendDS9 {proc mtype url cmd} {
 
     # first found
     set id [lindex [SAMPGetAppsSubscriptions $mtype] 0]
-    puts "id=$id"
-    
     if {$id == {}} {
 	puts {SAMP-Test: not subscriptions found}
 	return
