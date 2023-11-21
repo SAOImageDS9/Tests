@@ -292,14 +292,14 @@ proc SAMPSend {method params resultVar} {
     upvar $resultVar result
     global samp
 
-    puts "SAMPSend: $samp(url) $samp(method) $method $params"
+#    puts "SAMPSend: $samp(url) $samp(method) $method $params"
 
     if {[catch {set result [xmlrpcCall $samp(url) $samp(method) $method $params]}]} {
-	puts stderr "SAMP-Test: bad xmlrpcCall"
+	puts {SAMP-Test: bad xmlrpcCall}
 	return 0
     }
 
-    puts "SAMPSend Result: $result"
+#    puts "SAMPSend Result: $result"
 
     switch $method {
 	samp.hub.notify -
@@ -634,9 +634,13 @@ proc samp.app.ping {msgid args} {
 
 # Support
 
-proc SAMPSendDS9Set {proc url cmd} {
+proc SAMPSendDS9 {proc mtype url cmd} {
     global samp
-
+    puts "proc=$proc"
+    puts "mtype=$mtype"
+    puts "url=$url"
+    puts "cmd=$cmd"
+    
     # connected?
     if {![info exists samp]} {
 	puts {SAMP-Test: not connected}
@@ -644,130 +648,69 @@ proc SAMPSendDS9Set {proc url cmd} {
     }
 
     # first found
-    set id [lindex [SAMPGetAppsSubscriptions {ds9.set}] 0]
-
+    set id [lindex [SAMPGetAppsSubscriptions $mtype] 0]
+    puts "id=$id"
+    
     if {$id == {}} {
 	puts {SAMP-Test: not subscriptions found}
 	return
     }
 
-    # cmd
+    switch $mtype {
+	ds9.get {
+	    switch $proc {
+		samp.hub.notify -
+		samp.hub.notifyAll {set proc samp.hub.call}
+	    }
+	}
+	ds9.set {
+	    set map2(url) "string $url"
+	}
+    }
+
     set samp(msgtag) {}
 
-    set map2(url) "string $url"
     set map2(cmd) "string \"$cmd\""
     set m2 [list2rpcMember [array get map2]]
 
-    set map(samp.mtype) "string ds9.set"
+    set map(samp.mtype) "string $mtype"
     set map(samp.params) [list struct $m2]
     set m1 [list2rpcMember [array get map]]
 
+    set param1 [list param [list value [list string $samp(private)]]]
     switch $proc {
 	samp.hub.notify {
-	    set param1 [list param [list value [list string $samp(private)]]]
 	    set param2 [list param [list value [list string $id]]]
 	    set param3 [list param [list value [list struct $m1]]]
-
 	    set params [list $param1 $param2 $param3]
 	}
 	samp.hub.notifyAll {
-	    set param1 [list param [list value [list string $samp(private)]]]
 	    set param2 [list param [list value [list struct $m1]]]
-
 	    set params [list $param1 $param2]
 	}
 	samp.hub.call {
 	    set samp(msgtag) "foo"
 
-	    set param1 [list param [list value [list string $samp(private)]]]
 	    set param2 [list param [list value [list string $id]]]
-	    set param3 [list "string $samp(msgtag)"]
+	    set param3 [list param [list value [list string $samp(msgtag)]]]
 	    set param4 [list param [list value [list struct $m1]]]
-
 	    set params [list $param1 $param2 $param3 $param4]
 	}
 	samp.hub.callAll {
 	    set samp(msgtag) "foo"
 
-	    set param1 [list param [list value [list string $samp(private)]]]
-	    set param2 [list "string $samp(msgtag)"]
+	    set param2 [list param [list value [list string $samp(msgtag)]]]
 	    set param3 [list param [list value [list struct $m1]]]
-
 	    set params [list $param1 $param2 $param3]
 	}
 	samp.hub.callAndWait {
-	    set map(samp.mtype) "string ds9.set"
-	    set map(samp.params) [list struct $m2]
-	    set m1 [list2rpcMember [array get map]]
-
-	    set param1 [list param [list value [list string $samp(private)]]]
-	    set param2 [list "string $id"]
+	    set param2 [list param [list value [list string $id]]]
 	    set param3 [list param [list value [list struct $m1]]]
-	    set param4 [list "string $samp(timeout)"]
+	    set param4 [list param [list value [list string $samp(timeout)]]]
 	    set params [list $param1 $param2 $param3 $param4]
 	}
     }
     
-    SAMPSend $proc $params rr
-}
-
-proc SAMPSendDS9Get {proc cmd} {
-    global samp
-
-    # connected?
-    if {![info exists samp]} {
-	puts {SAMP-Test: not connected}
-	return
-    }
-
-    # first found
-    set id [lindex [SAMPGetAppsSubscriptions {ds9.get}] 0]
-
-    if {$id == {}} {
-	puts {SAMP-Test: not subscriptions found}
-	return
-    }
-
-    # cmd
-    set map(samp.mtype) {string "ds9.get"}
-    set map(samp.params) {struct map2}
-    set map2(cmd) "string \"[XMLQuote $cmd]\""
-
-    set param1 [list "string $samp(private)"]
-    # just in case
-    switch $proc {
-	samp.hub.notify -
-	samp.hub.notifyAll {
-	    set proc samp.hub.call
-	}
-    }
-
-    set samp(msgtag) {}
-    switch $proc {
-	samp.hub.call {
-	    set samp(msgtag) "foo"
-
-	    set param2 [list "string $id"]
-	    set param3 [list "string $samp(msgtag)"]
-
-	    set param4 [list "struct map"]
-	    set params "$param1 $param2 $param3 $param4" 
-	}
-	samp.hub.callAll {
-	    set samp(msgtag) "foo"
-
-	    set param2 [list "string $samp(msgtag)"]
-	    set param3 [list "struct map"]
-	    set params "$param1 $param2 $param3" 
-	}
-	samp.hub.callAndWait {
-	    set param2 [list "string $id"]
-	    set param3 [list "struct map"]
-	    set param4 [list "string $samp(timeout)"]
-	    set params "$param1 $param2 $param3 $param4" 
-	}
-    }
-
     SAMPSend $proc $params rr
 }
 
@@ -835,8 +778,6 @@ proc SAMPParseHub {} {
 	catch {unset samp}
 	return 0
     }
-
-    puts "SAMPParseHub: $samp(secret) $samp(url) $samp(method)"
 
     return 1
 }
@@ -951,11 +892,11 @@ proc prompt {proc block cmd} {
 	set {
 	    set url [lindex $cmd 1]
 	    set params [lrange $cmd 2 end]
-	    SAMPSendDS9Set $proc $url $params
+	    SAMPSendDS9 $proc ds9.set $url $params
 	}
 	get {
 	    set params [lrange $cmd 1 end]
-	    SAMPSendDS9Get $proc $params
+	    SAMPSendDS9 $proc ds9.get {} $params
 	}
 
 	sleep {
