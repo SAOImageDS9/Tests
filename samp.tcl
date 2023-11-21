@@ -3,6 +3,7 @@
 #  For conditions of distribution and use, see copyright notice in "copyright"
 
 source /Users/joye/SAOImageDS9/ds9/library/xmlrpc.tcl
+source /Users/joye/SAOImageDS9/ds9/library/share.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tab.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
@@ -778,22 +779,6 @@ proc SAMPParseHub {} {
     return 1
 }
 
-proc ParseURL {url varname} {
-    upvar $varname r
-
-    set r(scheme) {}
-    set r(authority) {}
-    set r(path) {}
-    set r(query) {}
-    set r(fragment) {}
-    set exp {^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?}
-
-    if {![regexp -nocase $exp $url x a r(scheme) c r(authority) r(path) f r(query) h r(fragment)]} {
-       return 0
-    }
-    return 1
-}
-
 proc SAMPDelTmpFiles {} {
     global samp
 
@@ -805,40 +790,6 @@ proc SAMPDelTmpFiles {} {
 	    }
 	}
     }
-}
-
-proc GetEnvHome {} {
-    global env
-    global tcl_platform
-
-    switch $tcl_platform(platform) {
-	unix {
-	    if {[info exists env(HOME)]} {
-		return $env(HOME)
-	    }
-	}
-	windows {
-	    if {[info exists env(HOME)]} {
-		set hh [file normalize [file nativename $env(HOME)]]
-		if {[file isdirectory $hh]} {
-		    return $hh
-		}
-	    }
-	    # this is just a backup, the above should always work
-	    if {[info exists env(HOMEDRIVE)] &&	[info exists env(HOMEPATH)]} {
-		return "$env(HOMEDRIVE)$env(HOMEPATH)"
-	    }
-	}
-    }
-    return {}
-}
-
-proc XMLQuote {val} {
-    return [string map {& &amp; < &lt; > &gt; \' &apos; \" &quot;} $val]
-}
-
-proc XMLUnQuote {val} {
-    return [string map {&amp; & &lt; < &gt; > &apos; \' &quot; \"} $val]
 }
 
 proc prompt {proc block cmd} {
