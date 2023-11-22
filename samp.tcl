@@ -47,6 +47,8 @@ proc SAMPConnectSubscriptions {} {
     set map(samp.hub.event.subscriptions) {struct {}}
     set map(samp.hub.disconnect) {struct {}}
 
+    set map(client.env.get) {struct {}}
+
     set param1 [list param [list value [list string $samp(private)]]]
     set param2 [list param [list value [list struct [list2rpcMember [array get map]]]]]
     set params [list $param1 $param2]
@@ -59,41 +61,26 @@ proc SAMPConnectSubscriptions {} {
     }
 }
 
-proc SAMPDisconnect {verbose} {
-    global samp
-
-    # connected?
-    if {![info exists samp]} {
-	if {$verbose} {
-	    Error "SAMP: [msgcat::mc {not connected}]"
-	}
-	return
-    }
-
-    # disconnect
-    set params [list [list param [list value [list string $samp(private)]]]]
-    if {![SAMPSend samp.hub.unregister $params rr]} {
-	puts {SAMP-Test: bad samp.hub.unregister call}
-	catch {unset samp}
-	# Error
-	return
-    }
-    SAMPShutdown
-    SAMPUpdateMenus
-}
-
 proc SAMPSend {method params resultVar} {
     upvar $resultVar result
     global samp
 
-#    puts "SAMPSend: $samp(url) $samp(method) $method $params"
+    global debug
+    if {$debug(tcl,samp)} {
+	puts stderr "SAMPSend: $samp(url) $samp(method) $method $params"
+    }
 
     if {[catch {set result [xmlrpcCall $samp(url) $samp(method) $method $params]}]} {
-	puts {SAMP-Test: bad xmlrpcCall}
+	if {$debug(tcl,samp)} {
+	    puts stderr "SAMPSend: bad xmlrpcCAll"
+	}
+	# Error
 	return 0
     }
 
-#    puts "SAMPSend Result: $result"
+    if {$debug(tcl,samp)} {
+	puts stderr "SAMPSend Result: $result"
+    }
 
     switch $method {
 	samp.hub.notify -
@@ -129,63 +116,6 @@ proc SAMPSend {method params resultVar} {
     }
 
     return 1
-}
-
-proc SAMPReply {msgid status {result {}} {url {}} {error {}}} {
-    global samp
-
-    switch -- $status {
-	OK {
-	    if {$result != {}} {
-		set map2(value) "string \"$result\""
-	    }
-	    if {$url != {}} {
-		set map2(url) "string \"$url\""
-	    }
-	    set m2 [list2rpcMember [array get map2]]
-
-	    set map(samp.status) {string samp.ok}
-	    set map(samp.result) [list struct $m2]
-	    set m1 [list2rpcMember [array get map]]
-
-	    set param3 [list param [list value [list struct $m1]]]
-	}
-	WARNING {
-	    set map3(samp.errortxt) "string $error"
-	    set m3 [list2rpcMember [array get map3]]
-
-	    if {$result != {}} {
-		set map2(value) "string \"$result\""
-	    }
-	    if {$url != {}} {
-		set map2(url) "string \"$url\""
-	    }
-	    set m2 [list2rpcMember $map2]
-
-	    set map(samp.status) {string samp.warning}
-	    set map(samp.result) [list struct $m2]
-	    set map(samp.error)  [list struct $m3]
-	    set m1 [list2rpcMember [array get map]]
-
-	    set param3 [list param [list value [list struct $m1]]]
-	}
-	ERROR {
-	    set map3(samp.errortxt) "string $error"
-	    set m3 [list2rpcMember [array get map3]]
-
-	    set map(samp.status) {string samp.error}
-	    set map(samp.error) [list struct $m3]
-	    set map(samp.errortxt) "string $error"
-	    set m1 [list2rpcMember [array get map]]
-
-	    set param3 [list param [list value [list struct $m1]]]
-	}
-    }
-    set param1 [list param [list value [list string $samp(private)]]]
-    set param2 [list param [list value [list string $msgid]]]
-
-    set params [list $param1 $param2 $param3]
-    SAMPSend samp.hub.reply $params rr
 }
 
 proc samp.client.receiveNotification {rpc} {
@@ -288,135 +218,6 @@ proc samp.client.receiveResponse {rpc} {
     puts -nonewline "$status $value $error"
 
     return {string OK}
-}
-
-proc samp.hub.event.shutdown {msgid args} {
-    SAMPShutdown
-
-    if {$msgid != {}} {
-	SAMPReply $msgid OK
-    }
-}
-
-proc samp.hub.event.register {msgid args} {
-    global samp
-
-    foreach {key val} $args {
-	switch -- $key {
-	    id {
-		lappend samp(clients) $val
-		set samp($val,subscriptions) {}
-		set samp($val,name) {}
-	    }
-	}
-    }
-
-    if {$msgid != {}} {
-	SAMPReply $msgid OK
-    }
-}
-
-proc samp.hub.event.unregister {msgid args} {
-    global samp
-
-    foreach {key val} $args {
-	switch -- $key {
-	    id {
-		set id [lsearch $samp(clients) $val]
-		set samp(clients) [lreplace $samp(clients) $id $id]
-		unset samp($val,subscriptions)
-		unset samp($val,name)
-	    }
-	}
-    }
-
-    if {$msgid != {}} {
-	SAMPReply $msgid OK
-    }
-}
-
-proc samp.hub.event.metadata {msgid args} {
-    global samp
-
-    set id {}
-    set name {}
-    foreach {key val} $args {
-	switch -- $key {
-	    id {set id $val}
-	    metadata {
-		foreach {key2 val2} $val {
-		    if {$key2 == {samp.name}} {
-			set name $val2
-		    }
-		}
-	    }
-	}
-    }
-    
-    # should not happen
-    if {$id == {}} {
-	return
-    }
-
-    # just ignore if ourself
-    if {$id == $samp(self)}  {
-	return
-    }
-
-    set samp($id,name) $name
-
-    if {$msgid != {}} {
-	SAMPReply $msgid OK
-    }
-}
-
-proc samp.hub.event.subscriptions {msgid args} {
-    global samp
-
-    set id {}
-    set subs {}
-    foreach {key val} $args {
-	switch -- $key {
-	    id {set id $val}
-	    subscriptions {lappend subs $val}
-	}
-    }
-    
-    # should not happen
-    if {$id == {}} {
-	return
-    }
-
-    # just ignore if ourself
-    if {$id == $samp(self)}  {
-	return
-    }
-
-    set samp($id,subscriptions) $subs
-
-    if {$msgid != {}} {
-	SAMPReply $msgid OK
-    }
-}
-
-proc samp.hub.disconnect {msgid args} {
-    set msg {}
-
-    foreach {key val} $args {
-	switch -- $key {
-	    reason {set msg $val}
-	}
-    }
-
-    SAMPShutdown
-}
-
-proc samp.app.ping {msgid args} {
-    upvar $varname args
-
-    if {$msgid != {}} {
-	SAMPReply $msgid OK
-    }
 }
 
 # Support
@@ -658,7 +459,7 @@ proc ::mainloop::mainloop {} {
 
 # Start
 
-set debug 0
+set debug(tcl,samp) 0
 set block 0
 set proc samp.hub.call
 
@@ -666,7 +467,10 @@ SAMPConnect 1
 
 foreach arg $argv {
     switch $arg {
-	debug {set debug 1}
+	debug {
+	    global debug
+	    set debug(tcl,samp) 1
+	}
 
 	batch -
 	block {set block 1}
