@@ -2,86 +2,12 @@
 #  Smithsonian Astrophysical Observatory, Cambridge, MA, USA
 #  For conditions of distribution and use, see copyright notice in "copyright"
 
-source /Users/joye/SAOImageDS9/ds9/library/xmlrpc.tcl
+source /Users/joye/SAOImageDS9/ds9/library/sampshare.tcl
 source /Users/joye/SAOImageDS9/ds9/library/utilshare.tcl
+source /Users/joye/SAOImageDS9/ds9/library/xmlrpc.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tab.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
-
-proc SAMPConnect {} {
-    global samp
-
-    # connected?
-    if {[info exists samp]} {
-	puts {SAMP-Test: already connected}
-	return
-    }
-
-    # reset samp array
-    catch {unset samp}
-
-    set samp(clients) {}
-    set samp(tmp,files) {}
-    set samp(msgtag) {}
-    set samp(timeout) 30
-    
-    # can we find a hub?
-    if {![SAMPParseHub]} {
-	puts {SAMP-Test: unable to locate HUB}
-	catch {unset samp}
-	# Error
-	return
-    }
-
-    # register
-    SAMPConnectRegister
-
-    # declare metadata
-    SAMPConnectMetadata
-
-    # who are we
-    set samp(sock) [xmlrpcServe 0]
-    set samp(port) [lindex [fconfigure $samp(sock) -sockname] 2]
-    set samp(home) "[info hostname]:$samp(port)"
-
-    # callback
-    SAMPConnectCallback
-
-    # declare subscriptions
-    SAMPConnectSubscriptions
-
-    # get current client info
-    set samp(clients) [SAMPConnectGetClients]
-    foreach cc $samp(clients) {
-	SAMPConnectGetSubscriptions $cc
-	SAMPConnectGetMetadata $cc
-    }
-}
-
-proc SAMPConnectRegister {} {
-    global samp
-
-    set params [list [list param [list value [list string $samp(secret)]]]]
-    if {![SAMPSend samp.hub.register $params rr]} {
-	puts {SAMP-Test: bad samp.hub.register call}
-	catch {unset samp}
-	# Error
-	return
-    }
-
-    # first param
-    set rr [lindex $rr 0]
-    set rr [lindex $rr 1]
-
-    rpcStruct2List $rr ll
-    foreach {key val} [lindex $ll 0] {
-	switch -- $key {
-	    samp.hub-id {set samp(hub) $val}
-	    samp.self-id {set samp(self) $val}
-	    samp.private-key {set samp(private) $val}
-	}
-    }
-}
 
 proc SAMPConnectMetadata {} {
     global samp
@@ -103,21 +29,6 @@ proc SAMPConnectMetadata {} {
     
     if {![SAMPSend samp.hub.declareMetadata $params rr]} {
 	puts {SAMP-Test: bad samp.hub.decleareMetadata call}
-	catch {unset samp}
-	# Error
-	return
-    }
-}
-
-proc SAMPConnectCallback {} {
-    global samp
-    
-    set param1 [list param [list value [list string $samp(private)]]]
-    set param2 [list param [list value [list string "http://$samp(home)"]]]
-    set params [list $param1 $param2]
-
-    if {![SAMPSend samp.hub.setXmlrpcCallback $params rr]} {
-	puts {SAMP-Test: bad samp.hub.setXmlrepcCallback call}
 	catch {unset samp}
 	# Error
 	return
@@ -148,71 +59,6 @@ proc SAMPConnectSubscriptions {} {
     }
 }
 
-proc SAMPConnectGetClients {} {
-    global samp
-    
-    set params [list [list param [list value [list string $samp(private)]]]]
-    if {![SAMPSend samp.hub.getRegisteredClients $params rr]} {
-	puts {SAMP-Test: bad samp.hub.getRegisteredClients call}
-	catch {unset samp}
-	# Error
-	return
-    }
-
-    # first param
-    set rr [lindex $rr 0]
-    set rr [lindex $rr 1]
-
-    rpcArray2List $rr ll
-    return $ll
-}
-
-proc SAMPConnectGetSubscriptions {cc} {
-    global samp
-
-    set param1 [list param [list value [list string $samp(private)]]]
-    set param2 [list param [list value [list string $cc]]]
-    set params [list $param1 $param2]
-    if {![SAMPSend samp.hub.getSubscriptions $params rr]} {
-	puts {SAMP-Test: bad samp.hub.getSubscriptions call}
-	catch {unset samp}
-	# Error
-	return
-    }
-    
-    # first param
-    set rr [lindex $rr 0]
-    set rr [lindex $rr 1]
-
-    rpcStruct2List $rr ll 
-    set samp($cc,subscriptions) [lindex $ll 0]
-}
-
-proc SAMPConnectGetMetadata {cc} {
-    global samp
-
-    set param1 [list param [list value [list string $samp(private)]]]
-    set param2 [list param [list value [list string $cc]]]
-    set params [list $param1 $param2]
-    if {![SAMPSend samp.hub.getMetadata $params rr]} {
-	puts {SAMP-Test: bad samp.hub.getMetadata call}
-	catch {unset samp}
-	# Error
-	return
-    }
-    
-    # first param
-    set rr [lindex $rr 0]
-    set rr [lindex $rr 1]
-
-    rpcStruct2List $rr ll
-    foreach {key val} [lindex $ll 0] {
-	switch -- $key {
-	    samp.name {set samp($cc,name) $val}
-	}
-    }
-}
-
 proc SAMPDisconnect {} {
     global samp
 
@@ -230,63 +76,6 @@ proc SAMPDisconnect {} {
 	return
     }
     SAMPShutdown
-}
-
-proc SAMPShutdown {} {
-    global samp
-
-    # delete any files
-    SAMPDelTmpFiles
-
-    # close the server socket if still up
-    catch {close $samp(sock)}
-
-    # unset samp array
-    catch {unset samp}
-}
-
-proc SAMPGetAppsImage {} {
-    global samp
-
-    set ll {}
-    foreach cc [SAMPGetAppsSubscriptions image.load.fits] {
-	lappend ll [list $cc $samp($cc,name)]
-    }
-    return $ll
-}
-
-proc SAMPGetAppsTable {} {
-    global samp
-
-    set ll {}
-    foreach cc [SAMPGetAppsSubscriptions table.load.fits] {
-	lappend ll [list $cc $samp($cc,name)]
-    }
-    return $ll
-}
-
-proc SAMPGetAppsVOTable {} {
-    global samp
-
-    set ll {}
-    foreach cc [SAMPGetAppsSubscriptions table.load.votable] {
-	lappend ll [list $cc $samp($cc,name)]
-    }
-    return $ll
-}
-
-proc SAMPGetAppsSubscriptions {mtype} {
-    global samp
-
-    set ll {}
-    foreach cc $samp(clients) {
-	foreach {key val} $samp($cc,subscriptions) {
-	    if {$key == $mtype} {
-		lappend ll $cc
-	    }
-	}
-    }
-    return $ll
 }
 
 proc SAMPSend {method params resultVar} {
@@ -393,21 +182,6 @@ proc SAMPReply {msgid status {result {}} {url {}} {error {}}} {
 
     set params [list $param1 $param2 $param3]
     SAMPSend samp.hub.reply $params rr
-}
-
-
-# procs
-
-proc SAMPrpc2List {rpc varname} {
-    upvar $varname var
-
-    # params
-    set rpc [lindex $rpc 1]
-
-    # each param
-    foreach pp $rpc {
-	rpcParams2List [lindex $pp 1] var
-    }
 }
 
 proc samp.client.receiveNotification {rpc} {
@@ -785,17 +559,7 @@ proc SAMPParseHub {} {
     return 1
 }
 
-proc SAMPDelTmpFiles {} {
-    global samp
-
-    # delete any tmp files
-    if {[info exists samp]} {
-	if {[info exists samp(tmp,files)]} {
-	    foreach fn $samp(tmp,files) {
-		catch {file delete -force "$fn"}
-	    }
-	}
-    }
+proc SAMPUpdateMenus {} {
 }
 
 proc prompt {proc block cmd} {
@@ -811,7 +575,7 @@ proc prompt {proc block cmd} {
 
     switch -- $item {
 	con -
-	connect {SAMPConnect}
+	connect {SAMPConnect 1}
 	dis -
 	disconnect {SAMPDisconnect}
 
@@ -890,7 +654,7 @@ set debug 0
 set block 0
 set proc samp.hub.call
 
-SAMPConnect
+SAMPConnect 1
 
 foreach arg $argv {
     switch $arg {
