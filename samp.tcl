@@ -59,11 +59,14 @@ proc SAMPConnectSubscriptions {} {
     }
 }
 
-proc SAMPDisconnect {} {
+proc SAMPDisconnect {verbose} {
     global samp
 
     # connected?
     if {![info exists samp]} {
+	if {$verbose} {
+	    Error "SAMP: [msgcat::mc {not connected}]"
+	}
 	return
     }
 
@@ -76,6 +79,7 @@ proc SAMPDisconnect {} {
 	return
     }
     SAMPShutdown
+    SAMPUpdateMenus
 }
 
 proc SAMPSend {method params resultVar} {
@@ -559,6 +563,10 @@ proc SAMPParseHub {} {
     return 1
 }
 
+proc Error {message} {
+    puts sterr $message
+}
+
 proc SAMPUpdateMenus {} {
 }
 
@@ -577,7 +585,7 @@ proc prompt {proc block cmd} {
 	con -
 	connect {SAMPConnect 1}
 	dis -
-	disconnect {SAMPDisconnect}
+	disconnect {SAMPDisconnect 1}
 
 	set {
 	    set url [lindex $cmd 1]
@@ -600,7 +608,7 @@ proc prompt {proc block cmd} {
 	bye -
 	exit -
 	quit {
-	    SAMPDisconnect
+	    SAMPDisconnect 1
 	    exit
 	}
 	{} {}
@@ -678,7 +686,7 @@ if {$block} {
     while {1} {
 	prompt $proc $block $cmd
 	if {[gets stdin cmd] == -1} {
-	    SAMPDisconnect
+	    SAMPDisconnect 1
 	    exit
 	}
     }
