@@ -9,6 +9,12 @@ source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tab.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
 
+proc SAMPConnect {} {
+    global debug
+
+    SAMPConnectInit true true $debug
+}
+
 proc SAMPConnectMetadata {} {
     global samp
 
@@ -59,104 +65,6 @@ proc SAMPConnectSubscriptions {} {
 	# Error
 	return
     }
-}
-
-proc SAMPSend {method params resultVar} {
-    upvar $resultVar result
-    global samp
-
-    global debug
-    if {$debug(tcl,samp)} {
-	puts stderr "SAMPSend: $samp(url) $samp(method) $method $params"
-    }
-
-    if {[catch {set result [xmlrpcCall $samp(url) $samp(method) $method $params]}]} {
-	if {$debug(tcl,samp)} {
-	    puts stderr "SAMPSend: bad xmlrpcCAll"
-	}
-	# Error
-	return 0
-    }
-
-    if {$debug(tcl,samp)} {
-	puts stderr "SAMPSend Result: $result"
-    }
-
-    switch $method {
-	samp.hub.notify -
-	samp.hub.notifyAll {}
-
-	samp.hub.call -
-	samp.hub.callAll {
-	    # and now we wait
-	    # must be set before
-	    vwait samp(msgtag)
-	}
-
-	samp.hub.callAndWait {
-	    SAMPrpc2List [list params $result] args
-	    
-	    set map [lindex $args 0]
-
-	    set status {}
-	    set value {}
-	    set error {}
-	    foreach mm $map {
-		foreach {key val} $mm {
-		    switch -- $key {
-			samp.status {set status $val}
-			samp.result {set value [lindex $val 1]}
-			samp.error  {set error [lindex $val 1]}
-		    }
-		}
-	    }
-
-	    puts -nonewline "$status $value $error"
-	}
-    }
-
-    return 1
-}
-
-proc samp.client.receiveResponse {rpc} {
-    global samp
-
-    SAMPrpc2List $rpc args
-
-    set secret [lindex $args 0]
-    set id [lindex $args 1]
-    set msgtag [lindex $args 2]
-    set map [lindex $args 3]
-
-    if {$secret != $samp(private)} {
-	puts {SAMP-Test: samp.client.recievedResponse bad secret}
-	# Error
-	return {string ERROR}
-    }
-
-    if {$msgtag != $samp(msgtag)} {
-	puts {SAMP-Test: samp.client.recievedResponse bad msgtag}
-	# Error
-	return {string ERROR}
-    }
-    set samp(msgtag) {}
-
-    set status {}
-    set value {}
-    set error {}
-    foreach mm $map {
-	foreach {key val} $mm {
-	    switch -- $key {
-		samp.status {set status $val}
-		samp.result {set value [lindex $val 1]}
-		samp.error  {set error [lindex $val 1]}
-	    }
-	}
-    }
-
-    puts -nonewline "$status $value $error"
-
-    return {string OK}
 }
 
 # Support
@@ -235,8 +143,8 @@ proc SAMPSendDS9 {proc mtype url cmd} {
     SAMPSend $proc $params rr
 }
 
-proc Error {message} {
-    puts sterr $message
+proc SAMPError {message} {
+    puts stderr $message
 }
 
 proc SAMPUpdateMenus {} {
@@ -255,9 +163,9 @@ proc prompt {proc block cmd} {
 
     switch -- $item {
 	con -
-	connect {SAMPConnect 1}
+	connect {SAMPConnect}
 	dis -
-	disconnect {SAMPDisconnect 1}
+	disconnect {SAMPDisconnect}
 
 	set {
 	    set url [lindex $cmd 1]
@@ -280,7 +188,7 @@ proc prompt {proc block cmd} {
 	bye -
 	exit -
 	quit {
-	    SAMPDisconnect 1
+	    SAMPDisconnect
 	    exit
 	}
 	{} {}
@@ -330,18 +238,13 @@ proc ::mainloop::mainloop {} {
 
 # Start
 
-set debug(tcl,samp) 0
+set debug 0
 set block 0
 set proc samp.hub.call
 
-SAMPConnect 1
-
 foreach arg $argv {
     switch $arg {
-	debug {
-	    global debug
-	    set debug(tcl,samp) 1
-	}
+	debug {set debug 1}
 
 	batch -
 	block {set block 1}
@@ -356,12 +259,14 @@ foreach arg $argv {
    }
 }
 
+SAMPConnect
+
 if {$block} {
     set cmd {}
     while {1} {
 	prompt $proc $block $cmd
 	if {[gets stdin cmd] == -1} {
-	    SAMPDisconnect 1
+	    SAMPDisconnect
 	    exit
 	}
     }
