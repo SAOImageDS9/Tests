@@ -31,7 +31,7 @@ proc SAMPConnectMetadata {} {
 
     set param1 [list param [list value [list string $samp(private)]]]
     set param2 [list param [list value [list struct [list2rpcMember [array get map]]]]]
-    set params [list $param1 $param2]
+    set params [list params [list $param1 $param2]]
     
     if {![SAMPSend samp.hub.declareMetadata $params rr]} {
 	puts {SAMP-Test: bad samp.hub.decleareMetadata call}
@@ -57,7 +57,7 @@ proc SAMPConnectSubscriptions {} {
 
     set param1 [list param [list value [list string $samp(private)]]]
     set param2 [list param [list value [list struct [list2rpcMember [array get map]]]]]
-    set params [list $param1 $param2]
+    set params [list params [list $param1 $param2]]
 
     if {![SAMPSend samp.hub.declareSubscriptions $params rr]} {
 	puts {SAMP-Test: bad samp.hub.declareSubscriptions call}
@@ -111,11 +111,11 @@ proc SAMPSendDS9 {proc mtype url cmd} {
 	samp.hub.notify {
 	    set param2 [list param [list value [list string $id]]]
 	    set param3 [list param [list value [list struct $m1]]]
-	    set params [list $param1 $param2 $param3]
+	    set params [list params [list $param1 $param2 $param3]]
 	}
 	samp.hub.notifyAll {
 	    set param2 [list param [list value [list struct $m1]]]
-	    set params [list $param1 $param2]
+	    set params [list params [list $param1 $param2]]
 	}
 	samp.hub.call {
 	    set samp(msgtag) "foo"
@@ -123,20 +123,20 @@ proc SAMPSendDS9 {proc mtype url cmd} {
 	    set param2 [list param [list value [list string $id]]]
 	    set param3 [list param [list value [list string $samp(msgtag)]]]
 	    set param4 [list param [list value [list struct $m1]]]
-	    set params [list $param1 $param2 $param3 $param4]
+	    set params [list params [list $param1 $param2 $param3 $param4]]
 	}
 	samp.hub.callAll {
 	    set samp(msgtag) "foo"
 
 	    set param2 [list param [list value [list string $samp(msgtag)]]]
 	    set param3 [list param [list value [list struct $m1]]]
-	    set params [list $param1 $param2 $param3]
+	    set params [list params [list $param1 $param2 $param3]]
 	}
 	samp.hub.callAndWait {
 	    set param2 [list param [list value [list string $id]]]
 	    set param3 [list param [list value [list struct $m1]]]
 	    set param4 [list param [list value [list string $samp(timeout)]]]
-	    set params [list $param1 $param2 $param3 $param4]
+	    set params [list params [list $param1 $param2 $param3 $param4]]
 	}
     }
     
