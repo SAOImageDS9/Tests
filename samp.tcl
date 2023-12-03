@@ -30,7 +30,7 @@ proc SAMPConnectMetadata {} {
     set map(test.version) "string 1.0"
 
     set param1 [list param [list value [list string $samp(private)]]]
-    set param2 [list param [list value [list struct [list2rpcMember [array get map]]]]]
+    set param2 [list param [list value [list struct [xmlrpcList2Member [array get map]]]]]
     set params [list params [list $param1 $param2]]
     
     if {![SAMPSend samp.hub.declareMetadata $params rr]} {
@@ -56,7 +56,7 @@ proc SAMPConnectSubscriptions {} {
     set map(client.env.get) {struct {}}
 
     set param1 [list param [list value [list string $samp(private)]]]
-    set param2 [list param [list value [list struct [list2rpcMember [array get map]]]]]
+    set param2 [list param [list value [list struct [xmlrpcList2Member [array get map]]]]]
     set params [list params [list $param1 $param2]]
 
     if {![SAMPSend samp.hub.declareSubscriptions $params rr]} {
@@ -100,11 +100,11 @@ proc SAMPSendDS9 {proc mtype url cmd} {
     set samp(msgtag) {}
 
     set map2(cmd) "string \"$cmd\""
-    set m2 [list2rpcMember [array get map2]]
+    set m2 [xmlrpcList2Member [array get map2]]
 
     set map(samp.mtype) "string $mtype"
     set map(samp.params) [list struct $m2]
-    set m1 [list2rpcMember [array get map]]
+    set m1 [xmlrpcList2Member [array get map]]
 
     set param1 [list param [list value [list string $samp(private)]]]
     switch $proc {
