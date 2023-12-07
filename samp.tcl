@@ -53,8 +53,6 @@ proc SAMPConnectSubscriptions {} {
     set map(samp.hub.event.subscriptions) {struct {}}
     set map(samp.hub.disconnect) {struct {}}
 
-    set map(client.env.get) {struct {}}
-
     set param1 [list param [list value [list string $samp(private)]]]
     set param2 [list param [list value [list struct [xmlrpcList2Member [array get map]]]]]
     set params [list params [list $param1 $param2]]
@@ -188,7 +186,9 @@ proc prompt {proc block cmd} {
 	bye -
 	exit -
 	quit {
-	    SAMPDisconnect
+	    if {[info exists samp]} {
+		SAMPDisconnect
+	    }
 	    exit
 	}
 	{} {}
@@ -238,6 +238,7 @@ proc ::mainloop::mainloop {} {
 
 # Start
 
+global samp
 set debug 0
 set block 0
 set proc samp.hub.call
@@ -266,7 +267,9 @@ if {$block} {
     while {1} {
 	prompt $proc $block $cmd
 	if {[gets stdin cmd] == -1} {
-	    SAMPDisconnect
+	    if {[info exists samp]} {
+		SAMPDisconnect
+	    }
 	    exit
 	}
     }
