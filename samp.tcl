@@ -148,6 +148,13 @@ proc SAMPError {message} {
 proc SAMPUpdateMenus {} {
 }
 
+proc ParserError {msg yycnt yy_current_buffer index_} {
+    puts stderr "[string range $yy_current_buffer 0 60]"
+    puts stderr [format "%*s" $index_ ^]
+    puts stderr "$msg"
+    exit
+}
+
 proc prompt {proc block cmd} {
     if {[string range $cmd 0 0] == "#"} {
 	puts $cmd
