@@ -12,7 +12,9 @@ source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
 proc SAMPConnect {} {
     global debug
 
-    SAMPConnectInit true true $debug
+    if {![SAMPConnectInit true true $debug]} {
+	exit
+    }
 }
 
 proc SAMPConnectMetadata {} {
@@ -97,6 +99,7 @@ proc SAMPSendDS9 {proc mtype url cmd} {
 
     set samp(msgtag) {}
 
+    # quotes are really needed
     set map2(cmd) "string \"$cmd\""
     set m2 [xmlrpcList2Member [array get map2]]
 
@@ -156,6 +159,8 @@ proc ParserError {msg yycnt yy_current_buffer index_} {
 }
 
 proc prompt {proc block cmd} {
+    global samp
+    
     if {[string range $cmd 0 0] == "#"} {
 	puts $cmd
 	return
