@@ -1,10 +1,13 @@
 
 echo "SAMP Tests"
 
-echo "Starting DS9..."
-ds9 -debug -zscale fits/img.fits&
-echo "click return to start"
-read
+startit () {
+    echo "Starting DS9..."
+    echo "ds9 -debug $samp -debug $samphub -zscale fits/img.fits"
+    ds9 -debug $samp -debug $samphub -zscale fits/img.fits&
+    echo "click return to start"
+    read
+}
 
 testit () {
     echo 
@@ -30,19 +33,25 @@ echo "*** samp.sh ***"
 
 # debug?
 debug=
+samp=
+samphub=
 if [ "$1" = "debug" ]; then
     debug=$1
+    samp=samp
+    samphub=samphub
     shift
 fi
 
 # proc
-msg=call
+msg=callAndWait
 case $1 in
     notify | notifyAll | call | callAll | callAndWait)
     msg=$1
     shift
     ;;
 esac
+
+startit
 
 #doit "$1" 2mass
 doit "$1" 3d

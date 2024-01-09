@@ -2,9 +2,10 @@
 #  Smithsonian Astrophysical Observatory, Cambridge, MA, USA
 #  For conditions of distribution and use, see copyright notice in "copyright"
 
+source /Users/joye/SAOImageDS9/ds9/library/xmlrpcthread.tcl
 source /Users/joye/SAOImageDS9/ds9/library/sampshare.tcl
 source /Users/joye/SAOImageDS9/ds9/library/utilshare.tcl
-source /Users/joye/SAOImageDS9/ds9/library/xmlrpc.tcl
+
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tab.tcl
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
