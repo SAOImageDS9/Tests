@@ -1,9 +1,9 @@
-#  Copyright (C) 1999-2023
+#  Copyright (C) 1999-2024
 #  Smithsonian Astrophysical Observatory, Cambridge, MA, USA
 #  For conditions of distribution and use, see copyright notice in "copyright"
 
 source /Users/joye/SAOImageDS9/ds9/library/xmlrpc.tcl
-source /Users/joye/SAOImageDS9/ds9/library/sampshare.tcl
+source /Users/joye/SAOImageDS9/ds9/library/sampclient.tcl
 source /Users/joye/SAOImageDS9/ds9/library/utilshare.tcl
 
 source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
