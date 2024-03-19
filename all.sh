@@ -2,7 +2,7 @@ io.sh
 
 xpa.sh
 command.sh
-#samp.sh
+samp.sh
 
 regions.sh
 regions3d.sh
