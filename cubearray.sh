@@ -80,6 +80,7 @@ StartDS9 () {
 	    i=`expr $i + 1`
 	done
     fi
+    sleep 1
 }
 
 # slow down?

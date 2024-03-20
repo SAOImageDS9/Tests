@@ -94,6 +94,7 @@ if [ `xpaaccess ds9` = no ]; then
 
         i=`expr $i + 1`
     done
+    sleep 1
 fi
 
 if [ "$1" = "ds9" -o -z "$1" ]; then

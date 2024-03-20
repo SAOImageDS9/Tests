@@ -68,7 +68,7 @@ if [ "$1" = "slow" ]; then
 fi
 
 echo
-echo "*** regions.sh ***"
+echo "*** regions3d.sh ***"
 
 echo "Starting DS9..."
 if [ `xpaaccess ds9` = no ]; then
@@ -85,6 +85,7 @@ if [ `xpaaccess ds9` = no ]; then
 
         i=`expr $i + 1`
     done
+    sleep 1
 fi
 
 echo "Loading Data..."
