@@ -28,9 +28,6 @@ echo "*** samp.sh ***"
 # must be invoked
 # iexam
 
-#2mass
-#vo
-
 # debug?
 debug=
 samp=
@@ -53,7 +50,7 @@ esac
 
 startit
 
-#doit "$1" 2mass
+doit "$1" 2mass
 doit "$1" 3d
 doit "$1" about
 doit "$1" align
@@ -90,6 +87,8 @@ doit "$1" graph
 doit "$1" grid
 doit "$1" header
 doit "$1" height
+doit "$1" hls
+doit "$1" hsv
 doit "$1" iconify
 doit "$1" iis
 doit "$1" illustrate
@@ -178,7 +177,7 @@ doit "$1" version
 doit "$1" view
 doit "$1" vla
 doit "$1" vlss
-#doit "$1" vo
+doit "$1" vo
 doit "$1" wcs
 doit "$1" web
 doit "$1" width

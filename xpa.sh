@@ -1609,6 +1609,106 @@ xpaset -p ds9 height 443
 testit $tt
 fi
 
+tt="hls"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 hls open
+xpaset -p ds9 hls close
+xpaset -p ds9 hls
+xpaget ds9 hls channel >> ${tt}.out
+xpaget ds9 hls view hue >> ${tt}.out
+xpaget ds9 hls view lightness >> ${tt}.out
+xpaget ds9 hls view saturation >> ${tt}.out
+xpaget ds9 hls system >> ${tt}.out
+xpaget ds9 hls lock wcs >> ${tt}.out
+xpaget ds9 hls lock crop >> ${tt}.out
+xpaget ds9 hls lock slice >> ${tt}.out
+xpaget ds9 hls lock bin >> ${tt}.out
+xpaget ds9 hls lock scale >> ${tt}.out
+xpaget ds9 hls lock scalelimits >> ${tt}.out
+xpaget ds9 hls lock colorbar >> ${tt}.out
+xpaget ds9 hls lock block >> ${tt}.out
+xpaget ds9 hls lock smooth >> ${tt}.out
+xpaset -p ds9 hls lightness
+xpaset -p ds9 hls channel saturation
+xpaset -p ds9 hls view saturation off
+xpaset -p ds9 hls system wcs
+xpaset -p ds9 hls lock wcs yes
+xpaset -p ds9 hls lock wcs no
+xpaset -p ds9 hls lock crop yes
+xpaset -p ds9 hls lock crop no
+xpaset -p ds9 hls lock slice yes
+xpaset -p ds9 hls lock slice no
+xpaset -p ds9 hls lock bin yes
+xpaset -p ds9 hls lock bin no
+xpaset -p ds9 hls lock scale yes
+xpaset -p ds9 hls lock scale no
+# will set to scale user mode
+xpaset -p ds9 hls lock scalelimits yes
+xpaset -p ds9 hls lock scalelimits no
+xpaset -p ds9 scale zscale
+xpaset -p ds9 hls lock colorbar yes
+xpaset -p ds9 hls lock colorbar no
+xpaset -p ds9 hls lock block yes
+xpaset -p ds9 hls lock block no
+xpaset -p ds9 hls lock smooth yes
+xpaset -p ds9 hls lock smooth no
+xpaset -p ds9 hls close
+xpaset -p ds9 frame delete
+
+testit $tt
+fi
+
+tt="hsv"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 hsv open
+xpaset -p ds9 hsv close
+xpaset -p ds9 hsv
+xpaget ds9 hsv channel >> ${tt}.out
+xpaget ds9 hsv view hue >> ${tt}.out
+xpaget ds9 hsv view saturation >> ${tt}.out
+xpaget ds9 hsv view value >> ${tt}.out
+xpaget ds9 hsv system >> ${tt}.out
+xpaget ds9 hsv lock wcs >> ${tt}.out
+xpaget ds9 hsv lock crop >> ${tt}.out
+xpaget ds9 hsv lock slice >> ${tt}.out
+xpaget ds9 hsv lock bin >> ${tt}.out
+xpaget ds9 hsv lock scale >> ${tt}.out
+xpaget ds9 hsv lock scalelimits >> ${tt}.out
+xpaget ds9 hsv lock colorbar >> ${tt}.out
+xpaget ds9 hsv lock block >> ${tt}.out
+xpaget ds9 hsv lock smooth >> ${tt}.out
+xpaset -p ds9 hsv saturation
+xpaset -p ds9 hsv channel value
+xpaset -p ds9 hsv view value off
+xpaset -p ds9 hsv system wcs
+xpaset -p ds9 hsv lock wcs yes
+xpaset -p ds9 hsv lock wcs no
+xpaset -p ds9 hsv lock crop yes
+xpaset -p ds9 hsv lock crop no
+xpaset -p ds9 hsv lock slice yes
+xpaset -p ds9 hsv lock slice no
+xpaset -p ds9 hsv lock bin yes
+xpaset -p ds9 hsv lock bin no
+xpaset -p ds9 hsv lock scale yes
+xpaset -p ds9 hsv lock scale no
+# will set to scale user mode
+xpaset -p ds9 hsv lock scalelimits yes
+xpaset -p ds9 hsv lock scalelimits no
+xpaset -p ds9 scale zscale
+xpaset -p ds9 hsv lock colorbar yes
+xpaset -p ds9 hsv lock colorbar no
+xpaset -p ds9 hsv lock block yes
+xpaset -p ds9 hsv lock block no
+xpaset -p ds9 hsv lock smooth yes
+xpaset -p ds9 hsv lock smooth no
+xpaset -p ds9 hsv close
+xpaset -p ds9 frame delete
+
+testit $tt
+fi
+
 tt="iconify"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."

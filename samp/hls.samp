@@ -1,0 +1,45 @@
+set {} hls open
+set {} hls close
+set {} hls
+get hls channel
+get hls view hue
+get hls view lightness
+get hls view saturation
+get hls system
+get hls lock wcs
+get hls lock crop
+get hls lock slice
+get hls lock bin
+get hls lock scale
+get hls lock scalelimits
+get hls lock colorbar
+get hls lock block
+get hls lock smooth
+set {} hls lightness
+set {} hls channel saturation
+set {} hls view saturation off
+set {} hls system wcs
+set {} hls lock wcs yes
+set {} hls lock wcs no
+set {} hls lock crop yes
+set {} hls lock crop no
+set {} hls lock slice yes
+set {} hls lock slice no
+set {} hls lock bin yes
+set {} hls lock bin no
+set {} hls lock scale yes
+set {} hls lock scale no
+set {} hls lock scalelimits yes
+set {} hls lock scalelimits no
+set {} scale zscale
+set {} hls lock colorbar yes
+set {} hls lock colorbar no
+set {} hls lock block yes
+set {} hls lock block no
+set {} hls lock smooth yes
+set {} hls lock smooth no
+set {} hls close
+set {} frame delete
+
+set {} single
+set {} raise

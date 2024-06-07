@@ -1056,6 +1056,92 @@ testit "-histequ"
 doit
 fi
 
+tt="hls"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-hls open"
+testit "-hls close"
+testit "-hls"
+testit "-hls lightness"
+testit "-hls channel saturation"
+testit "-hue"
+testit "-lightness"
+testit "-saturation"
+testit "-hls view saturation off"
+testit "-hls system wcs"
+testit "-hls lock wcs yes"
+testit "-hls lock wcs no"
+testit "-hls lock crop yes"
+testit "-hls lock crop no"
+testit "-hls lock slice yes"
+testit "-hls lock slice no"
+testit "-hls lock bin yes"
+testit "-hls lock bin no"
+testit "-hls lock scale yes"
+testit "-hls lock scale no"
+testit "-hls lock scalelimits yes"
+testit "-hls lock scalelimits no"
+testit "-scale zscale"
+testit "-hls lock colorbar yes"
+testit "-hls lock colorbar no"
+testit "-hls lock block yes"
+testit "-hls lock block no"
+testit "-hls lock smooth yes"
+testit "-hls lock smooth no"
+testit "-hls close"
+testit "-frame delete"
+
+doit
+fi
+
+tt="hsv"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-hsv open"
+testit "-hsv close"
+testit "-hsv"
+testit "-hsv saturation"
+testit "-hsv channel value"
+testit "-hue"
+testit "-saturation"
+testit "-value"
+testit "-hsv view lightness off"
+testit "-hsv system wcs"
+testit "-hsv lock wcs yes"
+testit "-hsv lock wcs no"
+testit "-hsv lock crop yes"
+testit "-hsv lock crop no"
+testit "-hsv lock slice yes"
+testit "-hsv lock slice no"
+testit "-hsv lock bin yes"
+testit "-hsv lock bin no"
+testit "-hsv lock scale yes"
+testit "-hsv lock scale no"
+testit "-hsv lock scalelimits yes"
+testit "-hsv lock scalelimits no"
+testit "-scale zscale"
+testit "-hsv lock colorbar yes"
+testit "-hsv lock colorbar no"
+testit "-hsv lock block yes"
+testit "-hsv lock block no"
+testit "-hsv lock smooth yes"
+testit "-hsv lock smooth no"
+testit "-hsv close"
+testit "-frame delete"
+
+doit
+fi
+
+tt="hue"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hsv"
+testit "-hue"
+
+testit "-hsv close"
+doit
+fi
+
 tt="iconify"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -1144,6 +1230,16 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-language fr"
 
+doit
+fi
+
+tt="lightness"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hls"
+testit "-lightness"
+
+testit "-hls close"
 doit
 fi
 
@@ -2342,6 +2438,16 @@ testit "-frame delete"
 doit
 fi
 
+tt="saturation"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hsv"
+testit "-saturation"
+
+testit "-hsv close"
+doit
+fi
+
 tt="save"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt/savefits"
@@ -2762,6 +2868,16 @@ testit "-frame new"
 testit "-url http://ds9.si.edu/download/data/img.fits"
 testit "-frame delete"
 
+doit
+fi
+
+tt="value"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hsv"
+testit "-value"
+
+testit "-hsv close"
 doit
 fi
 

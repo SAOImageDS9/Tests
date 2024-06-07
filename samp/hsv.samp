@@ -1,0 +1,45 @@
+set {} hsv open
+set {} hsv close
+set {} hsv
+get hsv channel
+get hsv view hue
+get hsv view saturation
+get hsv view value
+get hsv system
+get hsv lock wcs
+get hsv lock crop
+get hsv lock slice
+get hsv lock bin
+get hsv lock scale
+get hsv lock scalelimits
+get hsv lock colorbar
+get hsv lock block
+get hsv lock smooth
+set {} hsv saturation
+set {} hsv channel value
+set {} hsv view value off
+set {} hsv system wcs
+set {} hsv lock wcs yes
+set {} hsv lock wcs no
+set {} hsv lock crop yes
+set {} hsv lock crop no
+set {} hsv lock slice yes
+set {} hsv lock slice no
+set {} hsv lock bin yes
+set {} hsv lock bin no
+set {} hsv lock scale yes
+set {} hsv lock scale no
+set {} hsv lock scalelimits yes
+set {} hsv lock scalelimits no
+set {} scale zscale
+set {} hsv lock colorbar yes
+set {} hsv lock colorbar no
+set {} hsv lock block yes
+set {} hsv lock block no
+set {} hsv lock smooth yes
+set {} hsv lock smooth no
+set {} hsv close
+set {} frame delete
+
+set {} single
+set {} raise
