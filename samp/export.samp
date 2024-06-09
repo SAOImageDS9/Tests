@@ -12,9 +12,10 @@ set {} export png foo.png
 set {} export foo.png
 
 set {} frame new rgb
-set {} rgbcube rgbcube/float.fits
-set {} export rgbarray foo.rgb little
-set {} export foo.rgb
+set {} rgbcube rgb/rgbcube.fits
+set {} export rgbarray foo.arr little
+set {} export foo.arr
+set {} export foo.png
 set {} frame delete
 
 set {} rgb close

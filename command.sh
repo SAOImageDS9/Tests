@@ -737,9 +737,10 @@ testit "-export png foo.png"
 testit "-export foo.png"
 
 testit "-frame new rgb"
-testit "-rgbcube rgbcube/float.fits"
-testit "-export rgbarray foo.rgb little"
-testit "-export foo.rgb"
+testit "-rgbcube rgb/rgbcube.fits"
+testit "-export rgbarray foo.arr little"
+testit "-export foo.arr"
+testit "-export foo.png"
 testit "-frame delete"
 
 testit "-rgb close"
