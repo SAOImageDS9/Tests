@@ -20,42 +20,9 @@ set {} file fits slice fits/float.fits
 set {} file mask fits fits/float.fits
 set {} frame delete
 
-# sfits...
-set {} frame new
-set {} file sfits sfits/float.hdr sfits/float.arr
-set {} frame delete
-
-set {} file new sfits sfits/float.hdr sfits/float.arr
-set {} file mask sfits sfits/float.hdr sfits/float.arr
-set {} frame delete
-
 # url...
 set {} frame new
 set {} file url http://ds9.si.edu/download/data/img.fits
-set {} frame delete
-
-# rgbimage...
-set {} frame new rgb
-set {} file rgbimage mecube/float.fits
-set {} frame delete
-
-set {} file new rgbimage mecube/float.fits
-set {} frame delete
-
-# rgbcube...
-set {} frame new rgb
-set {} file rgbcube rgbcube/float.fits
-set {} frame delete
-
-set {} file new rgbcube rgbcube/float.fits
-set {} frame delete
-
-# srgbcube...
-set {} frame new rgb
-set {} file srgbcube srgbcube/float.hdr srgbcube/float.arr
-set {} frame delete
-
-set {} file new srgbcube srgbcube/float.hdr srgbcube/float.arr
 set {} frame delete
 
 # mecube...
@@ -154,12 +121,6 @@ set {} frame delete
 set {} file new mosaicimagewfpc2 mosaic/hst.fits
 set {} frame delete
 
-# smosaic...no test...
-
-# smosaiciraf...no test...
-
-# smosaicwcs...no test...
-
 # array...
 set {} frame new
 set {} file array array/float_big.arr[dim=256,bitpix=-32,endian=big]
@@ -169,12 +130,28 @@ set {} file new array array/float_big.arr[dim=256,bitpix=-32,endian=big]
 set {} file mask array array/float_big.arr[dim=256,bitpix=-32,endian=big]
 set {} frame delete
 
-# rgbarray...
+# rgbimage...
 set {} frame new rgb
-set {} file rgbarray rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+set {} file rgbimage rgb/rgbimage.fits
 set {} frame delete
 
-set {} file new rgbarray rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+set {} file new rgbimage rgb/rgbimage.fits
+set {} frame delete
+
+# rgbcube...
+set {} frame new rgb
+set {} file rgbcube rgb/rgbcube.fits
+set {} frame delete
+
+set {} file new rgbcube rgb/rgbcube.fits
+set {} frame delete
+
+# rgbarray...
+set {} frame new rgb
+set {} file rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+set {} frame delete
+
+set {} file new rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
 set {} frame delete
 
 # photo...

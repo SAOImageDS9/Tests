@@ -2377,7 +2377,7 @@ tt="rgbarray"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new rgb"
-testit "-rgbarray rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]"
+testit "-rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]"
 testit "-frame delete"
 
 testit "-rgb close"
@@ -2388,7 +2388,7 @@ tt="rgbcube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new rgb"
-testit "-rgbcube rgbcube/float.fits"
+testit "-rgbcube rgb/rgbcube.fits"
 testit "-frame delete"
 
 testit "-rgb close"
@@ -2399,7 +2399,7 @@ tt="rgbimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new rgb"
-testit "-rgbimage mecube/float.fits"
+testit "-rgbimage rgb/rgbimage.fits"
 testit "-frame delete"
 
 testit "-rgb close"
@@ -2579,19 +2579,6 @@ testit "-scale close"
 doit
 fi
 
-# backward compatibility
-tt="sfits"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt...backward compatibility"
-testit "-frame new"
-testit "-sfits sfits/float.hdr sfits/float.arr"
-testit "-sfits -slice sfits/float.hdr sfits/float.arr -noslice"
-testit "-sfits -mask sfits/float.hdr sfits/float.arr -nomask"
-testit "-frame delete"
-
-doit
-fi
-
 tt="shm"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -2765,18 +2752,6 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-source aux/source.tcl"
 
-doit
-fi
-
-# backward compatibility
-tt="srgbcube"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt...backward compatibility"
-testit "-frame new rgb"
-testit "-srgbcube srgbcube/float.hdr srgbcube/float.arr"
-testit "-frame delete"
-
-testit "-rgb close"
 doit
 fi
 

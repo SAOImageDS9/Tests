@@ -935,46 +935,9 @@ xpaset -p ds9 file mask fits fits/float.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
-echo -n " sfits..."
-xpaset -p ds9 frame new
-xpaset -p ds9 file sfits sfits/float.hdr sfits/float.arr
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new sfits sfits/float.hdr sfits/float.arr
-xpaset -p ds9 file mask sfits sfits/float.hdr sfits/float.arr
-xpaset -p ds9 frame delete
-echo "PASSED"
-
 echo -n " url..."
 xpaset -p ds9 frame new
 xpaset -p ds9 file url http://ds9.si.edu/download/data/img.fits
-xpaset -p ds9 frame delete
-echo "PASSED"
-
-echo -n " rgbimage..."
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 file rgbimage mecube/float.fits
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new rgbimage mecube/float.fits
-xpaset -p ds9 frame delete
-echo "PASSED"
-
-echo -n " rgbcube..."
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 file rgbcube rgbcube/float.fits
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new rgbcube rgbcube/float.fits
-xpaset -p ds9 frame delete
-echo "PASSED"
-
-echo -n " srgbcube..."
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 file srgbcube srgbcube/float.hdr srgbcube/float.arr
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 file new srgbcube srgbcube/float.hdr srgbcube/float.arr
 xpaset -p ds9 frame delete
 echo "PASSED"
 
@@ -1076,15 +1039,6 @@ xpaset -p ds9 file mask mosaicimagewfpc2 mosaic/hst.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
-echo -n " smosaic...no test..."
-echo "PASSED"
-
-echo -n " smosaiciraf...no test..."
-echo "PASSED"
-
-echo -n " smosaicwcs...no test..."
-echo "PASSED"
-
 echo -n " array..."
 xpaset -p ds9 frame new
 xpaset -p ds9 file array array/float_big.arr[dim=256,bitpix=-32,endian=big]
@@ -1095,12 +1049,30 @@ xpaset -p ds9 file mask array array/float_big.arr[dim=256,bitpix=-32,endian=big]
 xpaset -p ds9 frame delete
 echo "PASSED"
 
-echo -n " rgbarray..."
+echo -n " rgbimage..."
 xpaset -p ds9 frame new rgb
-xpaset -p ds9 file rgbarray rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+xpaset -p ds9 file rgbimage rgb/rgbimage.fits
 xpaset -p ds9 frame delete
 
-xpaset -p ds9 file new rgbarray rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+xpaset -p ds9 file new rgbimage rgb/rgbimage.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " rgbcube..."
+xpaset -p ds9 frame new rgb
+xpaset -p ds9 file rgbcube rgb/rgbcube.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new rgbcube rgb/rgbcube.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " rgbarray..."
+xpaset -p ds9 frame new rgb
+xpaset -p ds9 file rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
 xpaset -p ds9 frame delete
 echo "PASSED"
 
