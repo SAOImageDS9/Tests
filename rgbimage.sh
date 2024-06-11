@@ -1,1 +1,1 @@
-fullrgb.sh RGBImage mecube fits rgbimage $1 $2
+fulla.sh RGBImage mecube fits rgbimage rgb $1 $2

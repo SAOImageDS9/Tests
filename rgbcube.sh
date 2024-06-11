@@ -1,1 +1,1 @@
-fullrgb.sh RGBCube rgbcube fits rgbcube $1 $2
+fulla.sh RGBCube rgbcube fits rgbcube rgb $1 $2

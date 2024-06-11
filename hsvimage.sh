@@ -1,1 +1,1 @@
-fullhsv.sh HSVImage mecube fits hsvimage $1 $2
+fulla.sh HSVImage mecube fits hsvimage hsv $1 $2

@@ -1,6 +1,6 @@
 StartDS9 () {
     if [ `xpaaccess ds9` = no ]; then
-	ds9 -frame delete -hsv&
+	ds9 -frame delete -$who&
 
 	i=1
 	while [ "$i" -le 30 ]
@@ -27,6 +27,9 @@ ext=$1
 shift
 
 what=$1
+shift
+
+who=$1
 shift
 
 # slow down?
@@ -80,9 +83,9 @@ echo "Testing Command save"
 for f in $where/*.$ext 
 do 
     echo " ${f#$where/}"
-    opt="-tile -frame delete -hsv -$what $f"
+    opt="-tile -frame delete -$who -$what $f"
     opt="$opt -save $what foo.fits"
-    opt="$opt -frame new hsv -$what foo.fits -sleep .1"
+    opt="$opt -frame new $who -$what foo.fits -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
     fi
@@ -145,7 +148,7 @@ do
     xpaset -p ds9 tile
     xpaset -p ds9 $what $f
     xpaget ds9 $what > foo.fits
-    xpaset -p ds9 frame new hsv
+    xpaset -p ds9 frame new $who
     xpaset -p ds9 $what foo.fits
     if [ $slow = "1" ]; then
 	sleep 1

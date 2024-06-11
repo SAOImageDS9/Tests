@@ -1,1 +1,1 @@
-fullhls.sh HLSImage mecube fits hlsimage $1 $2
+fulla.sh HLSImage mecube fits hlsimage hls $1 $2
