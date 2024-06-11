@@ -212,17 +212,17 @@ xpaset -p ds9 rgb close
 
 # backward compatibility
 xpaset -p ds9 frame new hls
-cat hls/hlsarray.arr | xpaset ds9 array hls -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+cat hls/hls.arr | xpaset ds9 array hls -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
 xpaset -p ds9 frame delete
-cat hls/hlsarray.arr | xpaset ds9 array new hls -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+cat hls/hls.arr | xpaset ds9 array new hls -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
 xpaset -p ds9 frame delete
 xpaset -p ds9 hls close
 
 # backward compatibility
 xpaset -p ds9 frame new hsv
-cat hsv/hsvarray.arr | xpaset ds9 array hsv -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+cat hsv/hsv.arr | xpaset ds9 array hsv -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
 xpaset -p ds9 frame delete
-cat hsv/hsvarray.arr | xpaset ds9 array new hsv -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+cat hsv/hsv.arr | xpaset ds9 array new hsv -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
 xpaset -p ds9 frame delete
 xpaset -p ds9 hsv close
 
@@ -1276,18 +1276,44 @@ cat mosaic/hst.fits | xpaset ds9 fits mask mosaicimagewfpc2
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new rgb
-cat rgbcube/float.fits | xpaset ds9 fits rgbcube
+cat rgb/rgbimage.fits | xpaset ds9 fits rgbimage
 xpaset -p ds9 frame delete
-cat rgbcube/float.fits | xpaset ds9 fits new rgbcube
+cat rgb/rgbimage.fits | xpaset ds9 fits new rgbimage
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new rgb
-cat mecube/float.fits | xpaset ds9 fits rgbimage
+cat rgb/rgbcube.fits | xpaset ds9 fits rgbcube
 xpaset -p ds9 frame delete
-cat mecube/float.fits | xpaset ds9 fits new rgbimage
+cat rgb/rgbcube.fits | xpaset ds9 fits new rgbcube
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 frame new hls
+cat hls/hlsimage.fits | xpaset ds9 fits hlsimage
+xpaset -p ds9 frame delete
+cat hls/hlsimage.fits | xpaset ds9 fits new hlsimage
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 frame new hls
+cat hls/hlscube.fits | xpaset ds9 fits hlscube
+xpaset -p ds9 frame delete
+cat hls/hlscube.fits | xpaset ds9 fits new hlscube
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 frame new hsv
+cat hsv/hsvimage.fits | xpaset ds9 fits hsvimage
+xpaset -p ds9 frame delete
+cat hsv/hsvimage.fits | xpaset ds9 fits new hsvimage
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 frame new hsv
+cat hsv/hsvcube.fits | xpaset ds9 fits hsvcube
+xpaset -p ds9 frame delete
+cat hsv/hsvcube.fits | xpaset ds9 fits new hsvcube
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 rgb close
+xpaset -p ds9 hls close
+xpaset -p ds9 hsv close
 xpaset -p ds9 cube close
 testit $tt
 fi
@@ -1364,6 +1390,10 @@ xpaget ds9 frame has wcs celestial wcsa >> ${tt}.out
 xpaget ds9 frame has wcs linear wcsa >> ${tt}.out
 xpaset -p ds9 frame new rgb
 xpaset -p ds9 frame delete
+xpaset -p ds9 frame new hls
+xpaset -p ds9 frame delete
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 frame delete
 xpaset -p ds9 frame new 3d
 xpaset -p ds9 frame delete
 xpaset -p ds9 frame new
@@ -1410,6 +1440,8 @@ xpaset -p ds9 frame delete all
 xpaset -p ds9 fits new fits/img.fits
 
 xpaset -p ds9 rgb close
+xpaset -p ds9 hls close
+xpaset -p ds9 hsv close
 xpaset -p ds9 3d close
 xpaset -p ds9 cube close
 testit $tt
@@ -1718,6 +1750,38 @@ xpaset -p ds9 frame delete
 testit $tt
 fi
 
+tt="hlsimage"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 frame new hls
+xpaset -p ds9 hlsimage hls/hlsimage.fits
+cat hls/hlsimage.fits | xpaset ds9 hlsimage
+xpaget ds9 hlsimage > /dev/null
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hlsimage new hls/hlsimage.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hls close
+testit $tt
+fi
+
+tt="hlscube"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 frame new hls
+xpaset -p ds9 hlscube hls/hlscube.fits
+cat hls/hlscube.fits | xpaset ds9 hlscube
+xpaget ds9 hlscube > /dev/null
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hlscube new hls/hlscube.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hls close
+testit $tt
+fi
+
 tt="hsv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -1765,6 +1829,38 @@ xpaset -p ds9 hsv lock smooth no
 xpaset -p ds9 hsv close
 xpaset -p ds9 frame delete
 
+testit $tt
+fi
+
+tt="hsvimage"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 hsvimage hsv/hsvimage.fits
+cat hsv/hsvimage.fits | xpaset ds9 hsvimage
+xpaget ds9 hsvimage > /dev/null
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hsvimage new hsv/hsvimage.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hsv close
+testit $tt
+fi
+
+tt="hsvcube"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 hsvcube hsv/hsvcube.fits
+cat hsv/hsvcube.fits | xpaset ds9 hsvcube
+xpaget ds9 hsvcube > /dev/null
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hsvcube new hsv/hsvcube.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 hsv close
 testit $tt
 fi
 
@@ -3289,32 +3385,32 @@ xpaset -p ds9 rgb close
 testit $tt
 fi
 
-tt="rgbcube"
+tt="rgbimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 frame new rgb
-xpaset -p ds9 rgbcube rgbcube/float.fits
-cat rgbcube/float.fits | xpaset ds9 rgbcube
-xpaget ds9 rgbcube > /dev/null
+xpaset -p ds9 rgbimage rgb/rgbimage.fits
+cat rgb/rgbimage.fits | xpaset ds9 rgbimage
+xpaget ds9 rgbimage > /dev/null
 xpaset -p ds9 frame delete
 
-xpaset -p ds9 rgbcube new rgbcube/float.fits
+xpaset -p ds9 rgbimage new rgb/rgbimage.fits
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 rgb close
 testit $tt
 fi
 
-tt="rgbimage"
+tt="rgbcube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 frame new rgb
-xpaset -p ds9 rgbimage mecube/float.fits
-cat mecube/float.fits | xpaset ds9 rgbimage
-xpaget ds9 rgbimage > /dev/null
+xpaset -p ds9 rgbcube rgb/rgbcube.fits
+cat rgb/rgbcube.fits | xpaset ds9 rgbcube
+xpaget ds9 rgbcube > /dev/null
 xpaset -p ds9 frame delete
 
-xpaset -p ds9 rgbimage new mecube/float.fits
+xpaset -p ds9 rgbcube new rgb/rgbcube.fits
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 rgb close
@@ -3373,20 +3469,6 @@ xpaset -p ds9 save fits foo.fits table
 xpaset -p ds9 frame delete
 echo "PASSED"
 
-echo -n " rgbimage..."
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 rgbimage mecube/float.fits
-xpaset -p ds9 save rgbimage foo.fits
-xpaset -p ds9 frame delete
-echo "PASSED"
-
-echo -n " rgbcube..."
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 rgbcube rgbcube/float.fits
-xpaset -p ds9 save rgbcube foo.fits
-xpaset -p ds9 frame delete
-echo "PASSED"
-
 echo -n " mecube..."
 xpaset -p ds9 frame new
 xpaset -p ds9 mecube mecube/float.fits
@@ -3408,12 +3490,56 @@ xpaset -p ds9 save mosaic foo.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
+echo -n " rgbimage..."
+xpaset -p ds9 frame new rgb
+xpaset -p ds9 rgbimage rgb/rgbimage.fits
+xpaset -p ds9 save rgbimage foo.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " rgbcube..."
+xpaset -p ds9 frame new rgb
+xpaset -p ds9 rgbcube rgb/rgbcube.fits
+xpaset -p ds9 save rgbcube foo.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hlsimage..."
+xpaset -p ds9 frame new hls
+xpaset -p ds9 hlsimage hls/hlsimage.fits
+xpaset -p ds9 save hlsimage foo.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hlscube..."
+xpaset -p ds9 frame new hls
+xpaset -p ds9 hlscube hls/hlscube.fits
+xpaset -p ds9 save hlscube foo.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hsvimage..."
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 hsvimage hsv/hsvimage.fits
+xpaset -p ds9 save hsvimage foo.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hsvcube..."
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 hsvcube hsv/hsvcube.fits
+xpaset -p ds9 save hsvcube foo.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
 # backward compatibility
 echo -n " savefits..."
 xpaset -p ds9 savefits foo.fits
 echo "PASSED"
 
 xpaset -p ds9 rgb close
+xpaset -p ds9 hls close
+xpaset -p ds9 hsv close
 xpaset -p ds9 cube close
 testit $tt
 fi
@@ -3858,9 +3984,31 @@ xpaset -p ds9 view green yes
 xpaset -p ds9 view blue no
 xpaset -p ds9 view blue yes
 xpaset -p ds9 frame delete
+xpaset -p ds9 rgb close
 sleep $delay
 
-xpaset -p ds9 rgb close
+xpaset -p ds9 frame new hls
+xpaset -p ds9 view hue no
+xpaset -p ds9 view hue yes
+xpaset -p ds9 view lightness no
+xpaset -p ds9 view lightness yes
+xpaset -p ds9 view saturation no
+xpaset -p ds9 view saturation yes
+xpaset -p ds9 frame delete
+xpaset -p ds9 hls close
+sleep $delay
+
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 view hue no
+xpaset -p ds9 view hue yes
+xpaset -p ds9 view saturation no
+xpaset -p ds9 view saturation yes
+xpaset -p ds9 view value no
+xpaset -p ds9 view value yes
+xpaset -p ds9 frame delete
+xpaset -p ds9 hsv close
+sleep $delay
+
 testit $tt
 fi
 
