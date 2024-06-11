@@ -82,7 +82,6 @@ echo "Command Line Shm Tests"
 
 # basics
 DoCmd "..fits" fits/img.fits fits foo linear zscale
-DoSCmd "..sfits" sfits/float.hdr sfits/float.arr sfits foo linear zscale
 DoCmd "..table" fits/table.fits "" foo log minmax
 DoCmd "..table filter" fits/table.fits "" 'foo[bin=rawx,rawy]' log minmax
 
@@ -96,7 +95,6 @@ DoCmd "..mosaic iraf" mosaic/mosaicimage.fits "mosaic iraf" foo linear zscale
 DoCmd "..mosaic iraf datacube" mosaic/naxis4.fits "mosaic iraf" foo linear zscale
 DoCmd "..mosaic wcs" mosaic/mosaicimage.fits "mosaic wcs" foo linear zscale
 DoCmd "..mosaic wcsp" mosaic/ds9_8amp_2x2.fits "mosaic wcsp" foo linear minmax
-#DoSCmd "..mosaic wcs sfits" sfits/float.hdr sfits/float.arr "smosaic wcs" foo linear zscale
 
 # backward compatibility
 DoCmd "..mosaic image iraf(bc)" mosaic/mosaicimage.fits mosaicimageiraf foo linear zscale
@@ -111,7 +109,6 @@ DoCmd "..array cube" rgbarray/float_big.rgb array 'foo[dim=256,zdim=3,bitpix=-32
 
 # rgb
 DoCmd "..rgbcube" rgbcube/float.fits rgbcube foo linear minmax
-DoSCmd "..rgbcube sfits" srgbcube/float.hdr srgbcube/float.arr srgbcube foo linear minmax
 DoCmd "..rgbimage" mecube/float.fits rgbimage foo linear minmax
 
 echo "PASSED"
@@ -140,7 +137,6 @@ done
 
 # basics
 DoXPA "..fits" fits/img.fits fits foo linear zscale 
-DoSXPA "..split fits" sfits/float.hdr sfits/float.arr sfits foo linear zscale
 DoXPA "..table" fits/table.fits "" foo log minmax
 DoXPA "..table filter" fits/table.fits "" 'foo[bin=rawx,rawy]' log minmax
 
@@ -154,7 +150,6 @@ DoXPA "..mosaic iraf" mosaic/mosaicimage.fits "mosaic iraf" foo linear zscale
 DoXPA "..mosaic iraf datacube" mosaic/naxis4.fits "mosaic iraf" foo linear zscale
 DoXPA "..mosaic wcs" mosaic/mosaicimage.fits "mosaic wcs" foo linear zscale
 DoXPA "..mosaic wcsp" mosaic/ds9_8amp_2x2.fits "mosaicimage wcs" foo linear minmax
-#DoSXPA "..sfits mosaic wcs" sfits/float.hdr sfits/float.arr "smosaic wcs" foo linear zscale
 
 # backward compatibility
 DoXPA "..mosaic image iraf(bc)" mosaic/mosaicimage.fits mosaicimageiraf foo linear zscale
@@ -172,7 +167,6 @@ xpaset -p ds9 scale linear
 xpaset -p ds9 scale mode minmax
 xpaset -p ds9 rgb
 DoXPA "..rgbcube" rgbcube/float.fits rgbcube foo linear minmax
-DoSXPA "..rgbcube sfits" srgbcube/float.hdr srgbcube/float.arr srgbcube foo linear minmax
 DoXPA "..rgbimage" mecube/float.fits rgbimage foo linear minmax
 xpaset -p ds9 frame delete
 

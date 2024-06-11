@@ -146,24 +146,14 @@ doit "$1" samp
 doit "$1" save
 doit "$1" saveimage
 doit "$1" scale
-# backward compatibility
-doit "$1" sfits
 doit "$1" single
 # no tests
 #doit "$1" shm
 doit "$1" sia
 doit "$1" skyview
 doit "$1" sleep
-# no tests
-#doit "$1" smosaic
-# no tests
-#doit "$1" smosaicwcs
-# no tests
-#doit "$1" smosaiciraf
 doit "$1" smooth
 doit "$1" source
-# backward compatibility
-doit "$1" srgbcube
 doit "$1" tcl
 # backward compatibility prefs
 doit "$1" theme

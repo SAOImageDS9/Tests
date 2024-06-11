@@ -80,16 +80,6 @@ if [ "$1" = "mosaic" -o -z "$1" ]; then
     testfull "mosaicwcs original" mosaicwcs mosaic/mosaicimage.fits " -source aux/pds9.tcl "
 fi
 
-if [ "$1" = "sfits" -o -z "$1" ]; then
-    testhalf sfits sfits sfits/float.arr
-    testhalf "sfits original" sfits sfits/float.arr " -source aux/pds9.tcl "
-fi
-
-if [ "$1" = "srgbcube" -o -z "$1" ]; then
-    testhalf srgbcube srgbcube srgbcube/float.arr
-    testhalf "srgbcube original" srgbcube srgbcube/float.arr " -source aux/pds9.tcl "
-fi
-
 if [ "$1" = "array" -o -z "$1" ]; then
     testfull array array array/float_big.arr [dim=256,bitpix=-32,endian=big]
     testfull "array original" array array/float_big.arr [dim=256,bitpix=-32,endian=big] " -source aux/pds9.tcl "

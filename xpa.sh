@@ -3410,22 +3410,6 @@ xpaset -p ds9 scale close
 testit $tt
 fi
 
-# backward compatibility
-tt="sfits"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt...backward compatibility..."
-xpaset -p ds9 frame new
-xpaset -p ds9 sfits sfits/float.hdr sfits/float.arr
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 sfits new sfits/float.hdr sfits/float.arr
-xpaset -p ds9 sfits slice sfits/float.hdr sfits/float.arr
-xpaset -p ds9 sfits mask sfits/float.hdr sfits/float.arr
-xpaset -p ds9 frame delete
-
-testit $tt
-fi
-
 tt="single"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -3583,21 +3567,6 @@ if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 source aux/source.tcl
 
-testit $tt
-fi
-
-# backward compatibility
-tt="srgbcube"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt...backward compatibility..."
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 srgbcube srgbcube/float.hdr srgbcube/float.arr
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 srgbcube new srgbcube/float.hdr srgbcube/float.arr
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 rgb close
 testit $tt
 fi
 
