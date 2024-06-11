@@ -886,8 +886,22 @@ xpaset -p ds9 export rgbarray foo.arr little
 xpaset -p ds9 export foo.arr
 xpaset -p ds9 export foo.png
 xpaset -p ds9 frame delete
-
 xpaset -p ds9 rgb close
+
+xpaset -p ds9 frame new hls
+xpaset -p ds9 hlscube hls/hlscube.fits
+xpaset -p ds9 export hlsarray foo.arr little
+xpaset -p ds9 export foo.arr
+xpaset -p ds9 frame delete
+xpaset -p ds9 rgb close
+
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 hsvcube hsv/hsvcube.fits
+xpaset -p ds9 export hsvarray foo.arr little
+xpaset -p ds9 export foo.arr
+xpaset -p ds9 frame delete
+xpaset -p ds9 rgb close
+
 testit $tt
 fi
 
