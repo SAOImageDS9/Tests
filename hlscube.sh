@@ -1,1 +1,1 @@
-fullhls.sh HLSCube hlscube fits hlscube $1 $2
+fullhls.sh HLSCube rgbcube fits hlscube $1 $2

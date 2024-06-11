@@ -1,1 +1,1 @@
-fullhsv.sh HSVCube hsvcube fits hsvcube $1 $2
+fullhsv.sh HSVCube rgbcube fits hsvcube $1 $2
