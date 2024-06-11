@@ -204,12 +204,28 @@ xpaset -p ds9 frame delete
 
 # backward compatibility
 xpaset -p ds9 frame new rgb
-cat rgbarray/float_big.rgb | xpaset ds9 array rgb -[dim=256,bitpix=-32,endian=big]
+cat rgb/rgb.arr | xpaset ds9 array rgb -[dim=1600,bitpix=-32,endian=little]
 xpaset -p ds9 frame delete
-cat rgbarray/float_big.rgb | xpaset ds9 array new rgb -[dim=256,bitpix=-32,endian=big]
+cat rgb/rgb.arr | xpaset ds9 array new rgb -[dim=1600,bitpix=-32,endian=little]
 xpaset -p ds9 frame delete
-
 xpaset -p ds9 rgb close
+
+# backward compatibility
+xpaset -p ds9 frame new hls
+cat hls/hlsarray.arr | xpaset ds9 array hls -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+xpaset -p ds9 frame delete
+cat hls/hlsarray.arr | xpaset ds9 array new hls -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+xpaset -p ds9 frame delete
+xpaset -p ds9 hls close
+
+# backward compatibility
+xpaset -p ds9 frame new hsv
+cat hsv/hsvarray.arr | xpaset ds9 array hsv -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+xpaset -p ds9 frame delete
+cat hsv/hsvarray.arr | xpaset ds9 array new hsv -[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+xpaset -p ds9 frame delete
+xpaset -p ds9 hsv close
+
 testit $tt
 fi
 
@@ -893,14 +909,14 @@ xpaset -p ds9 hlscube hls/hlscube.fits
 xpaset -p ds9 export hlsarray foo.arr little
 xpaset -p ds9 export foo.arr
 xpaset -p ds9 frame delete
-xpaset -p ds9 rgb close
+xpaset -p ds9 hls close
 
 xpaset -p ds9 frame new hsv
 xpaset -p ds9 hsvcube hsv/hsvcube.fits
 xpaset -p ds9 export hsvarray foo.arr little
 xpaset -p ds9 export foo.arr
 xpaset -p ds9 frame delete
-xpaset -p ds9 rgb close
+xpaset -p ds9 hsv close
 
 testit $tt
 fi
@@ -1064,6 +1080,15 @@ xpaset -p ds9 file mask array array/float_big.arr[dim=256,bitpix=-32,endian=big]
 xpaset -p ds9 frame delete
 echo "PASSED"
 
+echo -n " rgbarray..."
+xpaset -p ds9 frame new rgb
+xpaset -p ds9 file rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+xpaset -p ds9 frame delete
+echo "PASSED"
+
 echo -n " rgbimage..."
 xpaset -p ds9 frame new rgb
 xpaset -p ds9 file rgbimage rgb/rgbimage.fits
@@ -1082,12 +1107,57 @@ xpaset -p ds9 file new rgbcube rgb/rgbcube.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
-echo -n " rgbarray..."
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 file rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+echo -n " hlsarray..."
+xpaset -p ds9 frame new hls
+xpaset -p ds9 file hlsarray hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
 xpaset -p ds9 frame delete
 
-xpaset -p ds9 file new rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+xpaset -p ds9 file new hlsarray hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hlsimage..."
+xpaset -p ds9 frame new hls
+xpaset -p ds9 file hlsimage hls/hlsimage.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new hlsimage hls/hlsimage.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hlscube..."
+xpaset -p ds9 frame new hls
+xpaset -p ds9 file hlscube hls/hlscube.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new hlscube hls/hlscube.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hsvarray..."
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 file hsvarray hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new hsvarray hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hsvimage..."
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 file hsvimage hsv/hsvimage.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new hsvimage hsv/hsvimage.fits
+xpaset -p ds9 frame delete
+echo "PASSED"
+
+echo -n " hsvcube..."
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 file hsvcube hsv/hsvcube.fits
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 file new hsvcube hsv/hsvcube.fits
 xpaset -p ds9 frame delete
 echo "PASSED"
 
@@ -1118,6 +1188,8 @@ xpaset -p ds9 file save resample gz foo.fits.gz
 echo "PASSED"
 
 xpaset -p ds9 rgb close
+xpaset -p ds9 hls close
+xpaset -p ds9 hsv close
 xpaset -p ds9 cube close
 testit $tt
 fi
