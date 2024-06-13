@@ -26,13 +26,17 @@ get view red
 get view green
 get view blue
 
-get view hue
-get view lightness
-get view saturation
+get view rgb red
+get view rgb green
+get view rgb blue
 
-get view hue
-get view saturation
-get view value
+get view hls hue
+get view hls lightness
+get view hls saturation
+
+get view hsv hue
+get view hsv saturation
+get view hsv value
 
 set {} tile
 set {} frame new
@@ -95,32 +99,32 @@ set {} view frame yes
 set {} sleep .5
 
 set {} frame new rgb
-set {} view red no
-set {} view red yes
-set {} view green no
-set {} view green yes
-set {} view blue no
-set {} view blue yes
+set {} view rgb red no
+set {} view rgb red yes
+set {} view rgb green no
+set {} view rgb green yes
+set {} view rgb blue no
+set {} view rgb blue yes
 set {} frame delete
 set {} sleep .5
 
 set {} frame new hls
-set {} view hue no
-set {} view hue yes
-set {} view lightness no
-set {} view lightness yes
-set {} view saturation no
-set {} view saturation yes
+set {} view hls hue no
+set {} view hls hue yes
+set {} view hls lightness no
+set {} view hls lightness yes
+set {} view hls saturation no
+set {} view hls saturation yes
 set {} frame delete
 set {} sleep .5
 
 set {} frame new hsv
-set {} view hue no
-set {} view hue yes
-set {} view saturation no
-set {} view saturation yes
-set {} view value no
-set {} view value yes
+set {} view hsv hue no
+set {} view hsv hue yes
+set {} view hsv saturation no
+set {} view hsv saturation yes
+set {} view hsv value no
+set {} view hsv value yes
 set {} frame delete
 set {} sleep .5
 

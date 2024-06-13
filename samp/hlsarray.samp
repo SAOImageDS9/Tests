@@ -1,6 +1,6 @@
 set {} frame new hls
 set {} hlsarray hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
-get hlsarray littel
+get hlsarray little
 set {} frame delete
 
 set {} hlsarray new hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]

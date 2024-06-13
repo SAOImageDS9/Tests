@@ -3909,13 +3909,17 @@ xpaget ds9 view red >> ${tt}.out
 xpaget ds9 view green >> ${tt}.out
 xpaget ds9 view blue >> ${tt}.out
 
-xpaget ds9 view hue >> ${tt}.out
-xpaget ds9 view lightness >> ${tt}.out
-xpaget ds9 view saturation >> ${tt}.out
+xpaget ds9 view rgb red >> ${tt}.out
+xpaget ds9 view rgb green >> ${tt}.out
+xpaget ds9 view rgb blue >> ${tt}.out
 
-xpaget ds9 view hue >> ${tt}.out
-xpaget ds9 view saturation >> ${tt}.out
-xpaget ds9 view value >> ${tt}.out
+xpaget ds9 view hls hue >> ${tt}.out
+xpaget ds9 view hls lightness >> ${tt}.out
+xpaget ds9 view hls saturation >> ${tt}.out
+
+xpaget ds9 view hsv hue >> ${tt}.out
+xpaget ds9 view hsv saturation >> ${tt}.out
+xpaget ds9 view hsv value >> ${tt}.out
 
 xpaset -p ds9 tile
 xpaset -p ds9 frame new
@@ -3986,32 +3990,32 @@ xpaset -p ds9 view frame yes
 sleep $delay
 
 xpaset -p ds9 frame new rgb
-xpaset -p ds9 view red no
-xpaset -p ds9 view red yes
-xpaset -p ds9 view green no
-xpaset -p ds9 view green yes
-xpaset -p ds9 view blue no
-xpaset -p ds9 view blue yes
+xpaset -p ds9 view rgb red no
+xpaset -p ds9 view rgb red yes
+xpaset -p ds9 view rgb green no
+xpaset -p ds9 view rgb green yes
+xpaset -p ds9 view rgb blue no
+xpaset -p ds9 view rgb blue yes
 xpaset -p ds9 frame delete
 sleep $delay
 
 xpaset -p ds9 frame new hls
-xpaset -p ds9 view hue no
-xpaset -p ds9 view hue yes
-xpaset -p ds9 view lightness no
-xpaset -p ds9 view lightness yes
-xpaset -p ds9 view saturation no
-xpaset -p ds9 view saturation yes
+xpaset -p ds9 view hls hue no
+xpaset -p ds9 view hls hue yes
+xpaset -p ds9 view hls lightness no
+xpaset -p ds9 view hls lightness yes
+xpaset -p ds9 view hls saturation no
+xpaset -p ds9 view hls saturation yes
 xpaset -p ds9 frame delete
 sleep $delay
 
 xpaset -p ds9 frame new hsv
-xpaset -p ds9 view hue no
-xpaset -p ds9 view hue yes
-xpaset -p ds9 view saturation no
-xpaset -p ds9 view saturation yes
-xpaset -p ds9 view value no
-xpaset -p ds9 view value yes
+xpaset -p ds9 view hsv hue no
+xpaset -p ds9 view hsv hue yes
+xpaset -p ds9 view hsv saturation no
+xpaset -p ds9 view hsv saturation yes
+xpaset -p ds9 view hsv value no
+xpaset -p ds9 view hsv value yes
 xpaset -p ds9 frame delete
 sleep $delay
 
