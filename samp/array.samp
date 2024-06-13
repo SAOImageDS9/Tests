@@ -5,12 +5,27 @@ set {} frame delete
 
 # backward compatibiliy
 set {} frame new rgb
-set {} array rgb rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+set {} array rgb rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
 set {} frame delete
-
-set {} array new rgb rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+set {} array new rgb rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
 set {} frame delete
-
 set {} rgb close
+
+# backward compatibiliy
+set {} frame new hls
+set {} array hls hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+set {} array new hls hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+set {} hls close
+
+# backward compatibiliy
+set {} frame new hsv
+set {} array hsv hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+set {} array new hsv hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+set {} hsv close
+
 set {} single
 set {} raise

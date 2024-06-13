@@ -130,6 +130,14 @@ set {} file new array array/float_big.arr[dim=256,bitpix=-32,endian=big]
 set {} file mask array array/float_big.arr[dim=256,bitpix=-32,endian=big]
 set {} frame delete
 
+# rgbarray...
+set {} frame new rgb
+set {} file rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+set {} frame delete
+
+set {} file new rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+set {} frame delete
+
 # rgbimage...
 set {} frame new rgb
 set {} file rgbimage rgb/rgbimage.fits
@@ -146,12 +154,52 @@ set {} frame delete
 set {} file new rgbcube rgb/rgbcube.fits
 set {} frame delete
 
-# rgbarray...
-set {} frame new rgb
-set {} file rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+# hlsarray...
+set {} frame new hls
+set {} file hlsarray hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
 set {} frame delete
 
-set {} file new rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
+set {} file new hlsarray hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+
+# hlsimage...
+set {} frame new hls
+set {} file hlsimage hls/hlsimage.fits
+set {} frame delete
+
+set {} file new hlsimage hls/hlsimage.fits
+set {} frame delete
+
+# hlscube...
+set {} frame new hls
+set {} file hlscube hls/hlscube.fits
+set {} frame delete
+
+set {} file new hlscube hls/hlscube.fits
+set {} frame delete
+
+# hsvarray...
+set {} frame new hsv
+set {} file hsvarray hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+
+set {} file new hsvarray hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+
+# hsvimage...
+set {} frame new hsv
+set {} file hsvimage hsv/hsvimage.fits
+set {} frame delete
+
+set {} file new hsvimage hsv/hsvimage.fits
+set {} frame delete
+
+# hsvcube...
+set {} frame new hsv
+set {} file hsvcube hsv/hsvcube.fits
+set {} frame delete
+
+set {} file new hsvcube hsv/hsvcube.fits
 set {} frame delete
 
 # photo...
@@ -176,6 +224,8 @@ set {} file save resample foo.fits
 set {} file save resample gz foo.fits.gz
 
 set {} rgb close
+set {} hls close
+set {} hsv close
 set {} cube close
 set {} single
 set {} raise
