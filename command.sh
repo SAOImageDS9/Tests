@@ -742,8 +742,22 @@ testit "-export rgbarray foo.arr little"
 testit "-export foo.arr"
 testit "-export foo.png"
 testit "-frame delete"
-
 testit "-rgb close"
+
+testit "-frame new hls"
+testit "-hlscube hls/hlscube.fits"
+testit "-export hlsarray foo.arr little"
+testit "-export foo.arr"
+testit "-frame delete"
+testit "-hls close"
+
+testit "-frame new hsv"
+testit "-hsvcube hsv/hsvcube.fits"
+testit "-export hsvarray foo.arr little"
+testit "-export foo.arr"
+testit "-frame delete"
+testit "-hsv close"
+
 testit "-cube close"
 doit
 fi
@@ -843,6 +857,10 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new rgb"
 testit "-frame delete"
+testit "-frame new hls"
+testit "-frame delete"
+testit "-frame new hsv"
+testit "-frame delete"
 testit "-frame new 3d"
 testit "-frame delete"
 testit "-fits fits/img.fits"
@@ -884,6 +902,8 @@ testit "-frame delete all"
 testit "-frame new -fits fits/img.fits"
 
 testit "-rgb close"
+testit "-hls close"
+testit "-hsv close"
 testit "-3d close"
 testit "-cube close"
 doit
@@ -1095,6 +1115,39 @@ testit "-frame delete"
 doit
 fi
 
+tt="hlsarray"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hls"
+testit "-hlsarray hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]"
+testit "-frame delete"
+
+testit "-hls close"
+doit
+fi
+
+tt="hlsimage"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hls"
+testit "-hlsimage hls/hlsimage.fits"
+testit "-frame delete"
+
+testit "-hls close"
+doit
+fi
+
+tt="hlscube"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hls"
+testit "-hlscube hls/hlscube.fits"
+testit "-frame delete"
+
+testit "-hls close"
+doit
+fi
+
 tt="hsv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -1130,6 +1183,39 @@ testit "-hsv lock smooth no"
 testit "-hsv close"
 testit "-frame delete"
 
+doit
+fi
+
+tt="hsvarray"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hsv"
+testit "-hsvarray hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]"
+testit "-frame delete"
+
+testit "-hsv close"
+doit
+fi
+
+tt="hsvimage"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hsv"
+testit "-hsvimage hsv/hsvimage.fits"
+testit "-frame delete"
+
+testit "-hsv close"
+doit
+fi
+
+tt="hsvcube"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new hsv"
+testit "-hsvcube hsv/hsvcube.fits"
+testit "-frame delete"
+
+testit "-hsv close"
 doit
 fi
 
@@ -2385,22 +2471,22 @@ testit "-rgb close"
 doit
 fi
 
-tt="rgbcube"
+tt="rgbimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new rgb"
-testit "-rgbcube rgb/rgbcube.fits"
+testit "-rgbimage rgb/rgbimage.fits"
 testit "-frame delete"
 
 testit "-rgb close"
 doit
 fi
 
-tt="rgbimage"
+tt="rgbcube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new rgb"
-testit "-rgbimage rgb/rgbimage.fits"
+testit "-rgbcube rgb/rgbcube.fits"
 testit "-frame delete"
 
 testit "-rgb close"
@@ -2469,16 +2555,6 @@ testit "-save foo.fits table"
 testit "-save fits foo.fits table"
 testit "-frame delete"
 
-testit "-frame new rgb"
-testit "-rgbimage mecube/float.fits"
-testit "-save rgbimage foo.fits"
-testit "-frame delete"
-
-testit "-frame new rgb"
-testit "-rgbcube rgbcube/float.fits"
-testit "-save rgbcube foo.fits"
-testit "-frame delete"
-
 testit "-frame new"
 testit "-mecube mecube/float.fits"
 testit "-save mecube foo.fits"
@@ -2494,10 +2570,42 @@ testit "-mosaicimage mosaic/mosaicimage.fits"
 testit "-save mosaic foo.fits"
 testit "-frame delete"
 
+testit "-frame new rgb"
+testit "-rgbimage rgb/rgbimage.fits"
+testit "-save rgbimage foo.fits"
+testit "-frame delete"
+
+testit "-frame new rgb"
+testit "-rgbcube rgb/rgbcube.fits"
+testit "-save rgbcube foo.fits"
+testit "-frame delete"
+
+testit "-frame new hls"
+testit "-hlsimage hls/hlsimage.fits"
+testit "-save hlsimage foo.fits"
+testit "-frame delete"
+
+testit "-frame new hls"
+testit "-hlscube hls/hlscube.fits"
+testit "-save hlscube foo.fits"
+testit "-frame delete"
+
+testit "-frame new hsv"
+testit "-hsvimage hsv/hsvimage.fits"
+testit "-save hsvimage foo.fits"
+testit "-frame delete"
+
+testit "-frame new hsv"
+testit "-hsvcube hsv/hsvcube.fits"
+testit "-save hsvcube foo.fits"
+testit "-frame delete"
+
 # backward compatibility
 testit "-savefits foo.fits"
 
 testit "-rgb close"
+testit "-hls close"
+testit "-hsv close"
 testit "-cube close"
 doit
 fi
@@ -2944,8 +3052,30 @@ testit "-view blue no"
 testit "-view blue yes"
 testit "-frame delete"
 testit "-sleep $delay"
-
 testit "-rgb close"
+
+testit "-frame new hls"
+testit "-view hue no"
+testit "-view hue yes"
+testit "-view lightness no"
+testit "-view lightness yes"
+testit "-view saturation no"
+testit "-view saturation yes"
+testit "-frame delete"
+testit "-sleep $delay"
+testit "-hls close"
+
+testit "-frame new hsv"
+testit "-view hue no"
+testit "-view hue yes"
+testit "-view saturation no"
+testit "-view saturation yes"
+testit "-view value no"
+testit "-view value yes"
+testit "-frame delete"
+testit "-sleep $delay"
+testit "-hsv close"
+
 doit
 fi
 
