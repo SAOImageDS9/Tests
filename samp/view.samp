@@ -21,9 +21,18 @@ get view amplifier
 get view physical
 get view image
 get view frame
+
 get view red
 get view green
 get view blue
+
+get view hue
+get view lightness
+get view saturation
+
+get view hue
+get view saturation
+get view value
 
 set {} tile
 set {} frame new
@@ -95,6 +104,28 @@ set {} view blue yes
 set {} frame delete
 set {} sleep .5
 
+set {} frame new hls
+set {} view hue no
+set {} view hue yes
+set {} view lightness no
+set {} view lightness yes
+set {} view saturation no
+set {} view saturation yes
+set {} frame delete
+set {} sleep .5
+
+set {} frame new hsv
+set {} view hue no
+set {} view hue yes
+set {} view saturation no
+set {} view saturation yes
+set {} view value no
+set {} view value yes
+set {} frame delete
+set {} sleep .5
+
 set {} rgb close
+set {} hls close
+set {} hsv close
 set {} single
 set {} raise

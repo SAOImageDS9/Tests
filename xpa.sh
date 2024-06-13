@@ -3904,9 +3904,18 @@ xpaget ds9 view amplifier >> ${tt}.out
 xpaget ds9 view physical >> ${tt}.out
 xpaget ds9 view image >> ${tt}.out
 xpaget ds9 view frame >> ${tt}.out
+
 xpaget ds9 view red >> ${tt}.out
 xpaget ds9 view green >> ${tt}.out
 xpaget ds9 view blue >> ${tt}.out
+
+xpaget ds9 view hue >> ${tt}.out
+xpaget ds9 view lightness >> ${tt}.out
+xpaget ds9 view saturation >> ${tt}.out
+
+xpaget ds9 view hue >> ${tt}.out
+xpaget ds9 view saturation >> ${tt}.out
+xpaget ds9 view value >> ${tt}.out
 
 xpaset -p ds9 tile
 xpaset -p ds9 frame new
@@ -3984,7 +3993,6 @@ xpaset -p ds9 view green yes
 xpaset -p ds9 view blue no
 xpaset -p ds9 view blue yes
 xpaset -p ds9 frame delete
-xpaset -p ds9 rgb close
 sleep $delay
 
 xpaset -p ds9 frame new hls
@@ -3995,7 +4003,6 @@ xpaset -p ds9 view lightness yes
 xpaset -p ds9 view saturation no
 xpaset -p ds9 view saturation yes
 xpaset -p ds9 frame delete
-xpaset -p ds9 hls close
 sleep $delay
 
 xpaset -p ds9 frame new hsv
@@ -4006,9 +4013,11 @@ xpaset -p ds9 view saturation yes
 xpaset -p ds9 view value no
 xpaset -p ds9 view value yes
 xpaset -p ds9 frame delete
-xpaset -p ds9 hsv close
 sleep $delay
 
+xpaset -p ds9 rgb close
+xpaset -p ds9 hls close
+xpaset -p ds9 hsv close
 testit $tt
 fi
 

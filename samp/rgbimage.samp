@@ -1,10 +1,10 @@
 set {} frame new rgb
-set {} rgbimage mecube/float.fits
-set file:mecube/float.fits rgbimage
+set {} rgbimage rgb/rgbimage.fits
+set file:rgb/rgbimage.fits rgbimage
 get rgbimage
 set {} frame delete
 
-set {} rgbimage new mecube/float.fits
+set {} rgbimage new rgb/rgbimage.fits
 set {} frame delete
 
 set {} rgb close

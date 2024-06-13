@@ -1,10 +1,10 @@
 set {} frame new rgb
-set {} rgbcube rgbcube/float.fits
-set file:rgbcube/float.fits rgbcube
+set {} rgbcube rgb/rgbcube.fits
+set file:rgb/rgbcube.fits rgbcube
 get rgbcube
 set {} frame delete
 
-set {} rgbcube new rgbcube/float.fits
+set {} rgbcube new rgb/rgbcube.fits
 set {} frame delete
 
 set {} rgb close

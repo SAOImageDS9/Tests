@@ -24,6 +24,10 @@ get frame has wcs celestial wcsa
 get frame has wcs linear wcsa
 set {} frame new rgb
 set {} frame delete
+set {} frame new hls
+set {} frame delete
+set {} frame new hsv
+set {} frame delete
 set {} frame new 3d
 set {} frame delete
 set {} frame new
@@ -69,6 +73,8 @@ set {} frame delete all
 set {} file new fits/img.fits
 
 set {} rgb close
+set {} hls close
+set {} hsv close
 set {} 3d close
 set {} cube close
 set {} single

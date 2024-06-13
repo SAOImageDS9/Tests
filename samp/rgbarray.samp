@@ -1,9 +1,9 @@
 set {} frame new rgb
-set {} rgbarray rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+set {} rgbarray rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
 get rgbarray big
 set {} frame delete
 
-set {} rgbarray new rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
+set {} rgbarray new rgb/rgb.arr[dim=1600,bitpix=-32,endian=little]
 set {} frame delete
 
 set {} rgb close

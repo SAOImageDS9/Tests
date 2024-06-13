@@ -17,7 +17,6 @@ set {} export rgbarray foo.arr little
 set {} export foo.arr
 set {} export foo.png
 set {} frame delete
-set {} rgb close
 
 set {} frame new hls
 set {} hlscube hls/hlscube.fits
@@ -25,7 +24,6 @@ set {} export hlsarray foo.arr little
 set {} export foo.arr
 set {} export foo.png
 set {} frame delete
-set {} hls close
 
 set {} frame new hsv
 set {} hsvcube hsv/hsvcube.fits
@@ -33,7 +31,9 @@ set {} export hsvarray foo.arr little
 set {} export foo.arr
 set {} export foo.png
 set {} frame delete
-set {} hsv close
 
+set {} rgb close
+set {} hsv close
+set {} hls close
 set {} single
 set {} raise

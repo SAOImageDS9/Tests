@@ -16,18 +16,6 @@ set {} save foo.fits table
 set {} save fits foo.fits table
 set {} frame delete
 
-# rgbimage...
-set {} frame new rgb
-set {} rgbimage mecube/float.fits
-set {} save rgbimage foo.fits
-set {} frame delete
-
-# rgbcube...
-set {} frame new rgb
-set {} rgbcube rgbcube/float.fits
-set {} save rgbcube foo.fits
-set {} frame delete
-
 # mecube...
 set {} frame new
 set {} mecube mecube/float.fits
@@ -46,11 +34,49 @@ set {} mosaicimage mosaic/mosaicimage.fits
 set {} save mosaic foo.fits
 set {} frame delete
 
+# rgbimage...
+set {} frame new rgb
+set {} rgbimage rgb/rgbimage.fits
+set {} save rgbimage foo.fits
+set {} frame delete
+
+# rgbcube...
+set {} frame new rgb
+set {} rgbcube rgb/rgbcube.fits
+set {} save rgbcube foo.fits
+set {} frame delete
+
+# hlsimage...
+set {} frame new hls
+set {} hlsimage hls/hlsimage.fits
+set {} save hlsimage foo.fits
+set {} frame delete
+
+# hlscube...
+set {} frame new hls
+set {} hlscube hls/hlscube.fits
+set {} save hlscube foo.fits
+set {} frame delete
+
+# hsvimage...
+set {} frame new hsv
+set {} hsvimage hsv/hsvimage.fits
+set {} save hsvimage foo.fits
+set {} frame delete
+
+# hsvcube...
+set {} frame new hsv
+set {} hsvcube hsv/hsvcube.fits
+set {} save hsvcube foo.fits
+set {} frame delete
+
 # backward compatibility
 # savefits...
 set {} savefits foo.fits
 
 set {} rgb close
+set {} hls close
+set {} hsv close
 set {} cube close
 set {} single
 set {} raise
