@@ -88,7 +88,13 @@ doit "$1" grid
 doit "$1" header
 doit "$1" height
 doit "$1" hls
+doit "$1" hlsarray
+doit "$1" hlsimage
+doit "$1" hlscube
 doit "$1" hsv
+doit "$1" hsvarray
+doit "$1" hsvimage
+doit "$1" hsvcube
 doit "$1" iconify
 doit "$1" iis
 doit "$1" illustrate
@@ -139,8 +145,8 @@ doit "$1" raise
 doit "$1" regions
 doit "$1" rgb
 doit "$1" rgbarray
-doit "$1" rgbcube
 doit "$1" rgbimage
+doit "$1" rgbcube
 doit "$1" rotate
 doit "$1" samp
 doit "$1" save

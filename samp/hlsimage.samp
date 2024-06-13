@@ -1,0 +1,12 @@
+set {} frame new hls
+set {} hlsimage hls/hlsimage.fits
+set file:hls/hlsimage.fits hlsimage
+get hlsimage
+set {} frame delete
+
+set {} hlsimage new hls/hlsimage.fits
+set {} frame delete
+
+set {} hls close
+set {} single
+set {} raise

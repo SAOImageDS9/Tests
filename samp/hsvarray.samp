@@ -1,0 +1,11 @@
+set {} frame new hsv
+set {} hsvarray hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+get hsvarray little
+set {} frame delete
+
+set {} hsvarray new hsv/hsv.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+
+set {} hsv close
+set {} single
+set {} raise

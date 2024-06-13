@@ -1,0 +1,12 @@
+set {} frame new hls
+set {} hlscube hls/hlscube.fits
+set file:hls/hlscube.fits hlscube
+get hlscube
+set {} frame delete
+
+set {} hlscube new hls/hlscube.fits
+set {} frame delete
+
+set {} hls close
+set {} single
+set {} raise

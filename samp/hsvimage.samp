@@ -1,0 +1,12 @@
+set {} frame new hsv
+set {} hsvimage hsv/hsvimage.fits
+set file:hsv/hsvimage.fits hsvimage
+get hsvimage
+set {} frame delete
+
+set {} hsvimage new hsv/hsvimage.fits
+set {} frame delete
+
+set {} hsv close
+set {} single
+set {} raise

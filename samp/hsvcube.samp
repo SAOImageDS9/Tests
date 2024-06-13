@@ -1,0 +1,12 @@
+set {} frame new hsv
+set {} hsvcube hsv/hsvcube.fits
+set file:hsv/hsvcube.fits hsvcube
+get hsvcube
+set {} frame delete
+
+set {} hsvcube new hsv/hsvcube.fits
+set {} frame delete
+
+set {} hsv close
+set {} single
+set {} raise

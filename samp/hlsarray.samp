@@ -1,0 +1,11 @@
+set {} frame new hls
+set {} hlsarray hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+get hlsarray littel
+set {} frame delete
+
+set {} hlsarray new hls/hls.arr[xdim=1389,ydim=1387,bitpix=-64,endian=little]
+set {} frame delete
+
+set {} hls close
+set {} single
+set {} raise
