@@ -27,6 +27,8 @@ echo "*** samp.sh ***"
 
 # must be invoked
 # iexam
+# 2mass
+# vo
 
 # debug?
 debug=
@@ -50,7 +52,7 @@ esac
 
 startit
 
-doit "$1" 2mass
+#doit "$1" 2mass
 doit "$1" 3d
 doit "$1" about
 doit "$1" align
@@ -173,7 +175,7 @@ doit "$1" version
 doit "$1" view
 doit "$1" vla
 doit "$1" vlss
-doit "$1" vo
+#doit "$1" vo
 doit "$1" wcs
 doit "$1" web
 doit "$1" width
