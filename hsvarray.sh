@@ -36,9 +36,9 @@ DoXPAStdout () {
     echo "$1"
     xpaset -p ds9 tile
     xpaset -p ds9 hsvarray $2
-    xpaget ds9 hsvarray $3 > foo.rgb
-    xpaset -p ds9 frame new rgb
-    xpaset -p ds9 hsvarray foo.rgb$4
+    xpaget ds9 hsvarray $3 > foo.hsv
+    xpaset -p ds9 frame new hsv
+    xpaset -p ds9 hsvarray foo.hsv$4
     if [ $slow = "1" ]; then
 	sleep 1
     fi
@@ -52,8 +52,8 @@ initit () {
 }
 
 testit () {
-    opt="$opt -export hsvarray foo.rgb $1 -sleep .1"
-    opt="$opt -frame new rgb -hsvarray foo.rgb$2"
+    opt="$opt -export hsvarray foo.hsv $1 -sleep .1"
+    opt="$opt -frame new hsv -hsvarray foo.hsv$2"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
     fi
@@ -61,13 +61,13 @@ testit () {
 }
 
 doit () {
-    eval ds9 -tile -frame delete -rgb -hsvarray $1 "$opt" -exit
+    eval ds9 -tile -frame delete -hsv -hsvarray $1 "$opt" -exit
     echo "PASSED"
 }
 
 StartDS9 () {
     if [ `xpaaccess ds9` = no ]; then
-	ds9 -frame delete -rgb&
+	ds9 -frame delete -hsv&
 
 	i=1
 	while [ "$i" -le 30 ]
