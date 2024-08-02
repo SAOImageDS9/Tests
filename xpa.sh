@@ -3721,30 +3721,6 @@ xpaset -p ds9 sleep 2
 testit $tt
 fi
 
-# backward compatibility
-tt="smosaic"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt...backward compatibility...no test..."
-
-testit $tt
-fi
-
-# backward compatibility
-tt="smosaicwcs"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt...backward compatibility...no test..."
-
-testit $tt
-fi
-
-# backward compatibility
-tt="smosaiciraf"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt...backward compatibility...no test..."
-
-testit $tt
-fi
-
 tt="smooth"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."

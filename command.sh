@@ -2792,33 +2792,6 @@ testit "-noslice"
 doit
 fi
 
-# backward compatibility
-tt="smosaic"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt...backward compatibility"
-# no test
-
-doit
-fi
-
-# backward compatibility
-tt="smosaicwcs"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt...backward compatibility"
-# no test
-
-doit
-fi
-
-# backward compatibility
-tt="smosaiciraf"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt...backward compatibility"
-# no test
-
-doit
-fi
-
 tt="smooth"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
