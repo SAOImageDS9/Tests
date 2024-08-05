@@ -36,9 +36,9 @@ DoXPAStdout () {
     echo "$1"
     xpaset -p ds9 tile
     xpaset -p ds9 hlsarray $2
-    xpaget ds9 hlsarray $3 > foo.hsv
-    xpaset -p ds9 frame new hsv
-    xpaset -p ds9 hlsarray foo.hsv$4
+    xpaget ds9 hlsarray $3 > foo.hls
+    xpaset -p ds9 frame new hls
+    xpaset -p ds9 hlsarray foo.hls$4
     if [ $slow = "1" ]; then
 	sleep 1
     fi
@@ -52,8 +52,8 @@ initit () {
 }
 
 testit () {
-    opt="$opt -export hlsarray foo.hsv $1 -sleep .1"
-    opt="$opt -frame new hsv -hlsarray foo.hsv$2"
+    opt="$opt -export hlsarray foo.hls $1 -sleep .1"
+    opt="$opt -frame new hls -hlsarray foo.hls$2"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
     fi
@@ -61,13 +61,13 @@ testit () {
 }
 
 doit () {
-    eval ds9 -tile -frame delete -hsv -hlsarray $1 "$opt" -exit
+    eval ds9 -tile -frame delete -hls -hlsarray $1 "$opt" -exit
     echo "PASSED"
 }
 
 StartDS9 () {
     if [ `xpaaccess ds9` = no ]; then
-	ds9 -frame delete -hsv&
+	ds9 -frame delete -hls&
 
 	i=1
 	while [ "$i" -le 30 ]
@@ -446,16 +446,16 @@ DoXPA ".. double big" rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big]
 DoXPA ".. double big gzip" rgbarray/double_big.rgb.gz[dim=256,bitpix=-64,arch=big]
 
 echo ".. backward compatibility"
-echo ".. array rgb"
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 array rgb rgbarray/char.rgb[dim=256,bitpix=8]
+echo ".. array hls"
+xpaset -p ds9 frame new hls
+xpaset -p ds9 array hls rgbarray/char.rgb[dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
 xpaset -p ds9 frame clear
 
-echo ".. array new rgb"
-xpaset -p ds9 array new rgb rgbarray/char.rgb[dim=256,bitpix=8]
+echo ".. array new hls"
+xpaset -p ds9 array new hls rgbarray/char.rgb[dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
@@ -499,16 +499,16 @@ DoXPAStdin ".. double big" rgbarray/double_big.rgb [dim=256,bitpix=-64,arch=big]
 DoXPAStdin ".. double big gzip" rgbarray/double_big.rgb.gz [dim=256,bitpix=-64,arch=big]
 
 echo ".. backward compatibility"
-echo ".. array rgb"
-xpaset -p ds9 frame new rgb
-cat rgbarray/char.rgb | xpaset ds9 array rgb [dim=256,bitpix=8]
+echo ".. array hls"
+xpaset -p ds9 frame new hls
+cat rgbarray/char.rgb | xpaset ds9 array hls [dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
 xpaset -p ds9 frame clear
 
-echo ".. array new rgb"
-cat rgbarray/char.rgb | xpaset ds9 array new rgb [dim=256,bitpix=8]
+echo ".. array new hls"
+cat rgbarray/char.rgb | xpaset ds9 array new hls [dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi

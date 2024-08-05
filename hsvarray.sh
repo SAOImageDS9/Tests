@@ -446,16 +446,16 @@ DoXPA ".. double big" rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big]
 DoXPA ".. double big gzip" rgbarray/double_big.rgb.gz[dim=256,bitpix=-64,arch=big]
 
 echo ".. backward compatibility"
-echo ".. array rgb"
-xpaset -p ds9 frame new rgb
-xpaset -p ds9 array rgb rgbarray/char.rgb[dim=256,bitpix=8]
+echo ".. array hsv"
+xpaset -p ds9 frame new hsv
+xpaset -p ds9 array hsv rgbarray/char.rgb[dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
 xpaset -p ds9 frame clear
 
-echo ".. array new rgb"
-xpaset -p ds9 array new rgb rgbarray/char.rgb[dim=256,bitpix=8]
+echo ".. array new hsv"
+xpaset -p ds9 array new hsv rgbarray/char.rgb[dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
@@ -499,16 +499,16 @@ DoXPAStdin ".. double big" rgbarray/double_big.rgb [dim=256,bitpix=-64,arch=big]
 DoXPAStdin ".. double big gzip" rgbarray/double_big.rgb.gz [dim=256,bitpix=-64,arch=big]
 
 echo ".. backward compatibility"
-echo ".. array rgb"
-xpaset -p ds9 frame new rgb
-cat rgbarray/char.rgb | xpaset ds9 array rgb [dim=256,bitpix=8]
+echo ".. array hsv"
+xpaset -p ds9 frame new hsv
+cat rgbarray/char.rgb | xpaset ds9 array hsv [dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
 xpaset -p ds9 frame clear
 
-echo ".. array new rgb"
-cat rgbarray/char.rgb | xpaset ds9 array new rgb [dim=256,bitpix=8]
+echo ".. array new hsv"
+cat rgbarray/char.rgb | xpaset ds9 array new hsv [dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
