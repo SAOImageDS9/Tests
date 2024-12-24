@@ -10,6 +10,7 @@ set {} mask mark zero
 set {} mask range 10 100
 set {} mask transparency 25
 set {} mask blend source
+set {} mask blend screen
 set {} mask system physical
 set {} mask load fits/img.fits
 sleep 1

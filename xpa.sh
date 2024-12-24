@@ -2094,6 +2094,7 @@ xpaset -p ds9 mask mark zero
 xpaset -p ds9 mask range 10 100
 xpaset -p ds9 mask transparency 25
 xpaset -p ds9 mask blend source
+xpaset -p ds9 mask blend screen
 xpaset -p ds9 mask system physical
 xpaset -p ds9 mask load fits/img.fits
 sleep $delay

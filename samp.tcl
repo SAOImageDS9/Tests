@@ -72,19 +72,12 @@ proc SAMPConnectSubscriptions {} {
 
 # Support
 
-proc SAMPSendDS9 {proc mtype url cmd} {
+proc SAMPSendDS9 {proc mtype url cmd id} {
     global samp
     
     # connected?
     if {![info exists samp]} {
 	puts {SAMP-Test: not connected}
-	return
-    }
-
-    # first found
-    set id [lindex [SAMPGetAppsSubscriptions $mtype] 0]
-    if {$id == {}} {
-	puts {SAMP-Test: not subscriptions found}
 	return
     }
 
@@ -161,7 +154,7 @@ proc ParserError {msg yycnt yy_current_buffer index_} {
     exit
 }
 
-proc prompt {proc block cmd} {
+proc prompt {proc block cmd id} {
     global samp
     
     if {[string range $cmd 0 0] == "#"} {
@@ -181,13 +174,25 @@ proc prompt {proc block cmd} {
 	disconnect {SAMPDisconnect}
 
 	set {
+	    set mtype ds9.set
 	    set url [lindex $cmd 1]
 	    set params [lrange $cmd 2 end]
-	    SAMPSendDS9 $proc ds9.set $url $params
+
+	    if {[lsearch [SAMPGetAppsSubscriptions $mtype] $id]<0} {
+		puts {SAMP-Test: subscription ds9.set not found}
+	    } else {
+		SAMPSendDS9 $proc $mtype $url $params $id
+	    }
 	}
 	get {
+	    set mtype ds9.get
 	    set params [lrange $cmd 1 end]
-	    SAMPSendDS9 $proc ds9.get {} $params
+
+	    if {[lsearch [SAMPGetAppsSubscriptions $mtype] $id]<0} {
+		puts {SAMP-Test: subscription ds9.get not found}
+	    } else {
+		SAMPSendDS9 $proc $mtype {} $params $id
+	    }
 	}
 
 	sleep {
@@ -227,12 +232,13 @@ proc ::mainloop::readable {} {
     variable eof
     global proc
     global block
+    global id
     
     if { [gets stdin text] < 0 } {
  	fileevent stdin readable {}
  	set eof 1
     } else {
- 	prompt $proc $block $text
+ 	prompt $proc $block $text $id
     }
     return
 }
@@ -241,11 +247,12 @@ proc ::mainloop::mainloop {} {
     variable eof
     global proc
     global block
+    global id
  
     set ::tcl_interactive 1
     fconfigure stdin -buffering line -blocking 0
     fileevent stdin readable ::mainloop::readable
-    prompt $proc $block {}
+    prompt $proc $block {} $id
  
     vwait [namespace which -variable eof]
     return
@@ -256,6 +263,8 @@ proc ::mainloop::mainloop {} {
 global samp
 set debug 0
 set block 0
+set name ds9
+set id {}
 set proc samp.hub.call
 
 foreach arg $argv {
@@ -272,15 +281,28 @@ foreach arg $argv {
 	call {set proc samp.hub.call}
 	callAll {set proc samp.hub.callAll}
 	callAndWait {set proc samp.hub.callAndWait}
+
+	default {set name $arg}
    }
 }
 
 SAMPConnect
 
+foreach cc $samp(clients) {
+    if {$samp($cc,name) == $name} {
+	set id $cc
+    }
+}
+
+if {$id == {}} {
+    puts "SAMP-Test: client $name not found"
+    return
+}
+
 if {$block} {
     set cmd {}
     while {1} {
-	prompt $proc $block $cmd
+	prompt $proc $block $cmd $id
 	if {[gets stdin cmd] == -1} {
 	    if {[info exists samp]} {
 		SAMPDisconnect
