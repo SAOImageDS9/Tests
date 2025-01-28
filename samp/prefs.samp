@@ -27,7 +27,7 @@ set {} prefs nan color white
 set {} prefs nancolor white
 set {} prefs precision 8 7 4 3 8 7 5 3 8
 set {} prefs auto recovery yes
-set {} prefs auto recovery 5
+set {} prefs auto recovery interval 5
 set {} prefs theme default
 set {} prefs threads 12
 set {} prefs irafalign yes

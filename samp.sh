@@ -50,7 +50,7 @@ case $1 in
     ;;
 esac
 
-#startit
+startit
 
 #doit "$1" 2mass
 doit "$1" 3d
