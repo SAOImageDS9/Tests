@@ -50,7 +50,7 @@ case $1 in
     ;;
 esac
 
-startit
+#startit
 
 #doit "$1" 2mass
 doit "$1" 3d
@@ -67,7 +67,7 @@ doit "$1" catalog
 doit "$1" cd
 doit "$1" cmap
 doit "$1" colorbar
-doit "$1" console
+#doit "$1" console
 doit "$1" contour
 doit "$1" crop
 doit "$1" crosshair

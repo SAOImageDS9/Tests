@@ -3043,6 +3043,8 @@ xpaget ds9 prefs nan >> ${tt}.out
 xpaget ds9 prefs nan color >> ${tt}.out
 xpaget ds9 prefs nancolor >> ${tt}.out
 xpaget ds9 prefs precision >> ${tt}.out
+xpaget ds9 prefs auto recovery >> ${tt}.out
+xpaget ds9 prefs auto recovery interval >> ${tt}.out
 xpaget ds9 prefs theme >> ${tt}.out
 xpaget ds9 prefs threads >> ${tt}.out
 xpaget ds9 prefs irafalign >> ${tt}.out
@@ -3061,6 +3063,8 @@ xpaset -p ds9 prefs nan white
 xpaset -p ds9 prefs nan color white
 xpaset -p ds9 prefs nancolor white
 xpaset -p ds9 prefs precision 8 7 4 3 8 7 5 3 8
+xpaset -p ds9 prefs auto recovery yes
+xpaset -p ds9 prefs auto recovery interval 5
 xpaset -p ds9 prefs theme default
 xpaset -p ds9 prefs threads 12
 xpaset -p ds9 prefs irafalign yes

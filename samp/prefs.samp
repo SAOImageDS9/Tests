@@ -10,6 +10,8 @@ get prefs nan
 get prefs nan color
 get prefs nancolor
 get prefs precision
+get prefs auto recovery
+get prefs auto recovery interval
 get prefs theme
 get prefs threads
 get prefs irafalign
@@ -24,6 +26,8 @@ set {} prefs nan white
 set {} prefs nan color white
 set {} prefs nancolor white
 set {} prefs precision 8 7 4 3 8 7 5 3 8
+set {} prefs auto recovery yes
+set {} prefs auto recovery 5
 set {} prefs theme default
 set {} prefs threads 12
 set {} prefs irafalign yes
