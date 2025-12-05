@@ -27,6 +27,8 @@ echo "*** samp.sh ***"
 
 # must be invoked
 # iexam
+# nvss
+# vla
 # 2mass
 # vo
 
@@ -130,7 +132,7 @@ doit "$1" nameserver
 doit "$1" nan
 doit "$1" notes
 doit "$1" nrrd
-doit "$1" nvss
+#doit "$1" nvss
 doit "$1" orient
 doit "$1" pagesetup
 doit "$1" pan
@@ -173,7 +175,7 @@ doit "$1" update
 doit "$1" url
 doit "$1" version
 doit "$1" view
-doit "$1" vla
+#doit "$1" vla
 doit "$1" vlss
 #doit "$1" vo
 doit "$1" wcs

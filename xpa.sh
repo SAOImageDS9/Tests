@@ -52,6 +52,8 @@ delay=.5
 # source
 # tcl
 
+#nvss
+#vla
 #2mass
 #vo
 
@@ -1322,7 +1324,7 @@ tt="footprint"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt/fp..."
 xpaset -p ds9 footprint cxc
-xpaset -p ds9 footprint hla
+#xpaset -p ds9 footprint hla
 xpaset -p ds9 footprint current cxc
 
 xpaget ds9 footprint >> ${tt}.out
@@ -2423,7 +2425,7 @@ testit $tt
 fi
 
 tt="nvss"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 nvss open
 xpaset -p ds9 nvss close
@@ -4007,7 +4009,7 @@ testit $tt
 fi
 
 tt="vla"
-if [ "$1" = "$tt" -o -z "$1" ]; then
+if [ "$1" = "$tt" ]; then
 echo -n "$tt..."
 xpaset -p ds9 vla open
 xpaset -p ds9 vla close

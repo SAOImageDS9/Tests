@@ -1,5 +1,5 @@
 set {} footprint cxc
-set {} footprint hla
+#set {} footprint hla
 set {} footprint current cxc
 
 get footprint
