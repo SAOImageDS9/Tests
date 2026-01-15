@@ -4125,13 +4125,9 @@ xpaset -p ds9 wcs skyformat degrees
 xpaset -p ds9 wcs load aux/image.wcs
 xpaset -p ds9 wcs save foo.wcs
 xpaset -p ds9 wcs save 1 foo.wcs
-# backward compatibility
 cat aux/image.wcs | xpaset ds9 wcs append
-# backward compatibility
 cat aux/image.wcs | xpaset ds9 wcs replace
-# backward compatibility
 xpaset -p ds9 wcs append aux/image.wcs
-# backward compatibility
 xpaset -p ds9 wcs replace aux/image.wcs
 xpaset -p ds9 wcs reset
 xpaset -p ds9 wcs skyformat sexagesimal
