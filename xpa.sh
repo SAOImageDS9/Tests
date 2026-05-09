@@ -638,7 +638,7 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 mode crop
 xpaset -p ds9 crop open
-xpaset -p ds9 crop  978 970  356 308 
+xpaset -p ds9 crop  978 970  356 308
 xpaget ds9 crop >> ${tt}.out
 xpaget ds9 crop wcs fk5 sexagesimal arcsec >> ${tt}.out
 xpaget ds9 crop lock >> ${tt}.out
@@ -885,7 +885,7 @@ fi
 tt="export"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
-xpaset -p ds9 export array foo.arr little 
+xpaset -p ds9 export array foo.arr little
 xpaset -p ds9 export foo.arr
 xpaset -p ds9 export nrrd foo.nrrd big
 xpaset -p ds9 export foo.nrrd
@@ -1243,38 +1243,38 @@ xpaget ds9 fits table gz> /dev/null
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new
-cat mecube/float.fits | xpaset ds9 fits mecube 
+cat mecube/float.fits | xpaset ds9 fits mecube
 xpaset -p ds9 frame delete
 cat mecube/float.fits | xpaset ds9 fits new mecube
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new
-cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimage 
-cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimage wcs 
+cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimage
+cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimage wcs
 xpaset -p ds9 frame delete
-cat mosaic/mosaicimage.fits | xpaset ds9 fits new mosaicimage 
-cat mosaic/mosaicimage.fits | xpaset ds9 fits mask mosaicimage 
-xpaset -p ds9 frame delete
-
-xpaset -p ds9 frame new
-cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimagewcs 
-xpaset -p ds9 frame delete
-cat mosaic/mosaicimage.fits | xpaset ds9 fits new mosaicimagewcs 
-cat mosaic/mosaicimage.fits | xpaset ds9 fits mask mosaicimagewcs 
+cat mosaic/mosaicimage.fits | xpaset ds9 fits new mosaicimage
+cat mosaic/mosaicimage.fits | xpaset ds9 fits mask mosaicimage
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new
-cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimageiraf 
+cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimagewcs
 xpaset -p ds9 frame delete
-cat mosaic/mosaicimage.fits | xpaset ds9 fits new mosaicimageiraf 
-cat mosaic/mosaicimage.fits | xpaset ds9 fits mask mosaicimageiraf 
+cat mosaic/mosaicimage.fits | xpaset ds9 fits new mosaicimagewcs
+cat mosaic/mosaicimage.fits | xpaset ds9 fits mask mosaicimagewcs
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new
-cat mosaic/hst.fits | xpaset ds9 fits mosaicimagewfpc2 
+cat mosaic/mosaicimage.fits | xpaset ds9 fits mosaicimageiraf
 xpaset -p ds9 frame delete
-cat mosaic/hst.fits | xpaset ds9 fits new mosaicimagewfpc2 
-cat mosaic/hst.fits | xpaset ds9 fits mask mosaicimagewfpc2 
+cat mosaic/mosaicimage.fits | xpaset ds9 fits new mosaicimageiraf
+cat mosaic/mosaicimage.fits | xpaset ds9 fits mask mosaicimageiraf
+xpaset -p ds9 frame delete
+
+xpaset -p ds9 frame new
+cat mosaic/hst.fits | xpaset ds9 fits mosaicimagewfpc2
+xpaset -p ds9 frame delete
+cat mosaic/hst.fits | xpaset ds9 fits new mosaicimagewfpc2
+cat mosaic/hst.fits | xpaset ds9 fits mask mosaicimagewfpc2
 xpaset -p ds9 frame delete
 
 xpaset -p ds9 frame new rgb
@@ -1500,7 +1500,7 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p ds9 wcs wcs
 xpaget ds9 grid >> ${tt}.out
- 
+
 xpaget ds9 grid type >> ${tt}.out
 xpaget ds9 grid system >> ${tt}.out
 xpaget ds9 grid sky >> ${tt}.out
@@ -1515,7 +1515,7 @@ xpaget ds9 grid grid style >> ${tt}.out
 xpaget ds9 grid grid gap1 >> ${tt}.out
 xpaget ds9 grid grid gap2 >> ${tt}.out
 xpaget ds9 grid grid gap3 >> ${tt}.out
- 
+
 xpaget ds9 grid axes >> ${tt}.out
 xpaget ds9 grid axes color >> ${tt}.out
 xpaget ds9 grid axes width >> ${tt}.out
@@ -1524,7 +1524,7 @@ xpaget ds9 grid axes dash >> ${tt}.out
 xpaget ds9 grid axes style >> ${tt}.out
 xpaget ds9 grid axes type >> ${tt}.out
 xpaget ds9 grid axes origin >> ${tt}.out
- 
+
 xpaget ds9 grid format1 >> ${tt}.out
 xpaget ds9 grid format2 >> ${tt}.out
 
@@ -1588,7 +1588,7 @@ xpaset -p ds9 grid close
 
 xpaset -p ds9 grid
 xpaset -p ds9 grid yes
- 
+
 xpaset -p ds9 grid type analysis
 xpaset -p ds9 grid system wcs
 xpaset -p ds9 grid sky fk5
@@ -1603,7 +1603,7 @@ xpaset -p ds9 grid grid style 1
 xpaset -p ds9 grid grid gap1 .01
 xpaset -p ds9 grid grid gap2 .01
 xpaset -p ds9 grid grid gap3 .01
- 
+
 xpaset -p ds9 grid axes yes
 xpaset -p ds9 grid axes color red
 xpaset -p ds9 grid axes width 2
@@ -1612,7 +1612,7 @@ xpaset -p ds9 grid axes dash yes
 xpaset -p ds9 grid axes style 1
 xpaset -p ds9 grid axes type exterior
 xpaset -p ds9 grid axes origin lll
- 
+
 xpaset -p ds9 grid format1 d.2
 xpaset -p ds9 grid format2 d.2
 
@@ -1937,7 +1937,7 @@ echo "circle 100 100 40 # color = red fill = yes" | xpaset ds9 illustrate
 echo "ellipse 100 200 40 20" | xpaset ds9 illustrate
 echo "box 200 100 40 20" | xpaset ds9 illustrate
 echo "polygon 200 200 200 250 250 250 250 200" | xpaset ds9 illustrate
-echo "line 300 200 300 250 # dash = yes line = 0 1" | xpaset ds9 illustrate
+echo "line 300 200 300 250 # dash = yes arrow = 0 1" | xpaset ds9 illustrate
 echo "text 117.0 339.0 "BANG!" # color = yellow font = times fontsize = 48 angle = 45.0" | xpaset ds9 illustrate
 echo "image 100 100 regions/chandra.png" | xpaset ds9 illustrate
 
@@ -2391,7 +2391,7 @@ tt="notes"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaget ds9 notes > /dev/null
-xpaset -p ds9 notes 
+xpaset -p ds9 notes
 xpaset -p ds9 notes close
 xpaset -p ds9 notes open
 xpaset -p ds9 notes {Hello World}
@@ -3142,7 +3142,7 @@ xpaset -p ds9 frame delete
 xpaset -p ds9 prism mode newplot
 xpaset -p ds9 prism histogram PHA 40
 xpaset -p ds9 prism histogram PHA 40 0 4000
-xpaset -p ds9 prism plot X Y xy 
+xpaset -p ds9 prism plot X Y xy
 xpaset -p ds9 prism close
 
 xpaset -p ds9 plot close
