@@ -16,20 +16,20 @@ cat.sh
 sia.sh
 print.sh
 
-# requires input
-scale.sh
-lock.sh
-matrix.sh
-align.sh
-posang.sh
-wcs.sh
-wcs2.sh
+#~ # requires input
+yes | scale.sh
+yes | lock.sh
+yes | matrix.sh
+yes | align.sh
+yes | posang.sh
+yes | wcs.sh
+yes | wcs2.sh
 #vo.sh xpa
-vo.sh mime
-backup.sh
-analysis.sh
+yes | vo.sh mime
+yes | backup.sh
+yes | analysis.sh
 
-layoutnone.sh
-layoutone.sh
-layoutmulti.sh
-layoutnomulti.sh
+yes | layoutnone.sh
+yes | layoutone.sh
+yes | layoutmulti.sh
+yes | layoutnomulti.sh

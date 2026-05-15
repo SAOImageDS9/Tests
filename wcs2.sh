@@ -2,14 +2,14 @@ echo
 echo "*** wcs2.sh ***"
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]; then
-    ds9 &
+if [ `xpaaccess DS9Test` = no ]; then
+    ds9 -title DS9Test &
 
     i=1
     while [ "$i" -le 30 ]
 	do
 	sleep 2
-	if [ `xpaaccess ds9` = yes ]; then
+	if [ `xpaaccess DS9Test` = yes ]; then
 	    break
 	fi
 
@@ -19,19 +19,19 @@ fi
 
 testit () {
     echo "Testing $1"
-    xpaset -p ds9 fits $1
-    xpaset -p ds9 zoom $2
-    xpaset -p ds9 wcs sky fk5
-    xpaset -p ds9 align yes
+    xpaset -p DS9Test fits $1
+    xpaset -p DS9Test zoom $2
+    xpaset -p DS9Test wcs sky fk5
+    xpaset -p DS9Test align yes
     read
-    xpaset -p ds9 wcs sky galactic
+    xpaset -p DS9Test wcs sky galactic
     read
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 }
 
 # load default image
-xpaset -p ds9 grid yes
-xpaset -p ds9 wcs skyformat degrees
+xpaset -p DS9Test grid yes
+xpaset -p DS9Test wcs skyformat degrees
 
 #echo "DSS"
 #testit wcs2/wcen.fits.gz 1
@@ -96,6 +96,6 @@ testit wcs2/GLM_00350+0115_mosaic_I4_cutout_14706.fits 1
 echo "xxLN-xxLT"
 testit wcs2/MolaTopographyPolar.miss.fits.fz 1
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 
 

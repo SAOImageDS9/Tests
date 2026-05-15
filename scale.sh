@@ -1,25 +1,25 @@
 testit () {
     echo "Testing $1..."
-    xpaset -p ds9 scale $1
-    xpaset -p ds9 contour scale $1
-    xpaset -p ds9 file $2
-    xpaset -p ds9 contour yes
+    xpaset -p DS9Test scale $1
+    xpaset -p DS9Test contour scale $1
+    xpaset -p DS9Test file $2
+    xpaset -p DS9Test contour yes
     read
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 }
 
 echo
 echo "*** scale.sh ***"
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]; then
-    ds9&
+if [ `xpaaccess DS9Test` = no ]; then
+    ds9 -title DS9Test &
 
     i=1
     while [ "$i" -le 30 ]
     do
         sleep 2
-        if [ `xpaaccess ds9` = yes ]
+        if [ `xpaaccess DS9Test` = yes ]
         then
 	    break
         fi
@@ -29,9 +29,9 @@ if [ `xpaaccess ds9` = no ]; then
 fi
 
 echo "Setup..."
-xpaset -p ds9 cmap i8
-xpaset -p ds9 contour nlevels 9
-xpaset -p ds9 contour color black
+xpaset -p DS9Test cmap i8
+xpaset -p DS9Test contour nlevels 9
+xpaset -p DS9Test contour color black
 
 testit linear scale/linear.fits
 testit log scale/pow.fits
@@ -42,37 +42,37 @@ testit asinh scale/sinh.fits
 testit sinh scale/asinh.fits
 
 echo "Testing histequ..."
-xpaset -p ds9 scale histequ
-xpaset -p ds9 contour scale histequ
-xpaset -p ds9 fits scale/linear.fits
-xpaset -p ds9 contour generate
-xpaset -p ds9 contour yes
+xpaset -p DS9Test scale histequ
+xpaset -p DS9Test contour scale histequ
+xpaset -p DS9Test fits scale/linear.fits
+xpaset -p DS9Test contour generate
+xpaset -p DS9Test contour yes
 read
-xpaset -p ds9 fits scale/log.fits
-xpaset -p ds9 contour generate
-xpaset -p ds9 contour yes
+xpaset -p DS9Test fits scale/log.fits
+xpaset -p DS9Test contour generate
+xpaset -p DS9Test contour yes
 read
-xpaset -p ds9 fits scale/pow.fits
-xpaset -p ds9 contour generate
-xpaset -p ds9 contour yes
+xpaset -p DS9Test fits scale/pow.fits
+xpaset -p DS9Test contour generate
+xpaset -p DS9Test contour yes
 read
-xpaset -p ds9 fits scale/sqrt.fits
-xpaset -p ds9 contour generate
-xpaset -p ds9 contour yes
+xpaset -p DS9Test fits scale/sqrt.fits
+xpaset -p DS9Test contour generate
+xpaset -p DS9Test contour yes
 read
-xpaset -p ds9 fits scale/squ.fits
-xpaset -p ds9 contour generate
-xpaset -p ds9 contour yes
+xpaset -p DS9Test fits scale/squ.fits
+xpaset -p DS9Test contour generate
+xpaset -p DS9Test contour yes
 read
-xpaset -p ds9 fits scale/asinh.fits
-xpaset -p ds9 contour generate
-xpaset -p ds9 contour yes
+xpaset -p DS9Test fits scale/asinh.fits
+xpaset -p DS9Test contour generate
+xpaset -p DS9Test contour yes
 read
-xpaset -p ds9 fits scale/sinh.fits
-xpaset -p ds9 contour generate
-xpaset -p ds9 contour yes
+xpaset -p DS9Test fits scale/sinh.fits
+xpaset -p DS9Test contour generate
+xpaset -p DS9Test contour yes
 read
-xpaset -p ds9 frame clear
+xpaset -p DS9Test frame clear
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 

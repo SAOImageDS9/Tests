@@ -2,46 +2,46 @@ KillIt () {
     i=1
     while [ "$i" -le 15 ]; do
       sleep 1
-      if [ `xpaaccess ds9` = yes ]; then
+      if [ `xpaaccess DS9Test` = yes ]; then
 	  if [ $slow = "1" ]; then
 	      sleep 1
 	  fi
-	  xpaset -p ds9 quit
+	  xpaset -p DS9Test quit
 	  break
       fi
-      
+
       i=`expr $i + 1`
     done
 }
 
 DoXPA () {
     echo "$1"
-    xpaset -p ds9 $2 $3
+    xpaset -p DS9Test $2 $3
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 }
 
 DoXPAStdin () {
     echo "$1"
-    cat $3 | xpaset ds9 $2
+    cat $3 | xpaset DS9Test $2
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 }
 
 DoXPAStdout () {
     echo "..  $2"
-    xpaset -p ds9 tile
-    xpaget ds9 $2 > foo.$2
-    xpaset -p ds9 frame new $1
-    xpaset -p ds9 $2 foo.$2
+    xpaset -p DS9Test tile
+    xpaget DS9Test $2 > foo.$2
+    xpaset -p DS9Test frame new $1
+    xpaset -p DS9Test $2 foo.$2
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame delete
+    xpaset -p DS9Test frame delete
 }
 
 initit () {
@@ -60,19 +60,19 @@ testit () {
 }
 
 doit () {
-    eval ds9 -tile $1 -tiff photo/rose.tiff "$opt" -exit
+    eval ds9 -title DS9Test -tile $1 -tiff photo/rose.tiff "$opt" -exit
     echo "PASSED"
 }
 
 StartDS9 () {
-    if [ `xpaaccess ds9` = no ]; then
-	ds9&
+    if [ `xpaaccess DS9Test` = no ]; then
+	ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 30 ]
 	    do
 	    sleep 2
-	    if [ `xpaaccess ds9` = yes ]; then
+	    if [ `xpaaccess DS9Test` = yes ]; then
 		break
 	    fi
 
@@ -99,56 +99,56 @@ echo "Testing Command Line File"
 
 echo ".. base"
 echo "..  gif"
-ds9 -gif photo/rose.gif &
+ds9 -title DS9Test -gif photo/rose.gif &
 KillIt
 echo "..  tiff"
-ds9 -tiff photo/rose.tiff &
+ds9 -title DS9Test -tiff photo/rose.tiff &
 KillIt
 echo "..  jpeg"
-ds9 -jpeg photo/rose.jpeg &
+ds9 -title DS9Test -jpeg photo/rose.jpeg &
 KillIt
 echo "..  png"
-ds9 -png photo/rose.png &
+ds9 -title DS9Test -png photo/rose.png &
 KillIt
 echo ".. # backward compatibility"
 echo "..  -photo"
-ds9 -photo photo/rose.tiff &
+ds9 -title DS9Test -photo photo/rose.tiff &
 KillIt
 
 echo ".. rgb"
 echo "..  gif"
-ds9 -rgb -gif photo/rose.gif &
+ds9 -title DS9Test -rgb -gif photo/rose.gif &
 KillIt
 echo "..  tiff"
-ds9 -rgb -tiff photo/rose.tiff &
+ds9 -title DS9Test -rgb -tiff photo/rose.tiff &
 KillIt
 echo "..  jpeg"
-ds9 -rgb -jpeg photo/rose.jpeg &
+ds9 -title DS9Test -rgb -jpeg photo/rose.jpeg &
 KillIt
 echo "..  png"
-ds9 -rgb -png photo/rose.png &
+ds9 -title DS9Test -rgb -png photo/rose.png &
 KillIt
 echo ".. # backward compatibility"
 echo "..  -photo"
-ds9 -rgb -photo photo/rose.tiff &
+ds9 -title DS9Test -rgb -photo photo/rose.tiff &
 KillIt
 
 echo ".. 3d"
 echo "..  gif"
-ds9 -3d -gif photo/rose.gif &
+ds9 -title DS9Test -3d -gif photo/rose.gif &
 KillIt
 echo "..  tiff"
-ds9 -3d -tiff photo/rose.tiff &
+ds9 -title DS9Test -3d -tiff photo/rose.tiff &
 KillIt
 echo "..  jpeg"
-ds9 -3d -jpeg photo/rose.jpeg &
+ds9 -title DS9Test -3d -jpeg photo/rose.jpeg &
 KillIt
 echo "..  png"
-ds9 -3d -png photo/rose.png &
+ds9 -title DS9Test -3d -png photo/rose.png &
 KillIt
 echo ".. # backward compatibility"
 echo "..  -photo"
-ds9 -3d -photo photo/rose.tiff &
+ds9 -title DS9Test -3d -photo photo/rose.tiff &
 KillIt
 
 echo "PASSED"
@@ -161,44 +161,44 @@ echo "Testing Command Stdin"
 
 echo ".. base"
 echo "..  gif"
-cat photo/rose.gif | ds9 -gif - &
+cat photo/rose.gif | ds9 -title DS9Test -gif - &
 KillIt
 echo "..  tiff"
-cat photo/rose.tiff | ds9 -tiff - &
+cat photo/rose.tiff | ds9 -title DS9Test -tiff - &
 KillIt
 echo "..  jpeg"
-cat photo/rose.jpeg | ds9 -jpeg - &
+cat photo/rose.jpeg | ds9 -title DS9Test -jpeg - &
 KillIt
 echo "..  png"
-cat photo/rose.png | ds9 -png - &
+cat photo/rose.png | ds9 -title DS9Test -png - &
 KillIt
 
 echo ".. rgb"
 echo "..  gif"
-cat photo/rose.gif | ds9 -rgb -gif - &
+cat photo/rose.gif | ds9 -title DS9Test -rgb -gif - &
 KillIt
 echo "..  tiff"
-cat photo/rose.tiff | ds9 -rgb -tiff - &
+cat photo/rose.tiff | ds9 -title DS9Test -rgb -tiff - &
 KillIt
 echo "..  jpeg"
-cat photo/rose.jpeg | ds9 -rgb -jpeg - &
+cat photo/rose.jpeg | ds9 -title DS9Test -rgb -jpeg - &
 KillIt
 echo "..  png"
-cat photo/rose.png | ds9 -rgb -png - &
+cat photo/rose.png | ds9 -title DS9Test -rgb -png - &
 KillIt
 
 echo ".. 3d"
 echo "..  gif"
-cat photo/rose.gif | ds9 -3d -gif - &
+cat photo/rose.gif | ds9 -title DS9Test -3d -gif - &
 KillIt
 echo "..  tiff"
-cat photo/rose.tiff | ds9 -3d -tiff - &
+cat photo/rose.tiff | ds9 -title DS9Test -3d -tiff - &
 KillIt
 echo "..  jpeg"
-cat photo/rose.jpeg | ds9 -3d -jpeg - &
+cat photo/rose.jpeg | ds9 -title DS9Test -3d -jpeg - &
 KillIt
 echo "..  png"
-cat photo/rose.png | ds9 -3d -png - &
+cat photo/rose.png | ds9 -title DS9Test -3d -png - &
 KillIt
 
 echo "PASSED"
@@ -242,20 +242,20 @@ DoXPA "..  tiff" tiff photo/rose.tiff
 DoXPA "..  png" png photo/rose.png
 
 echo ".. rgb"
-xpaset -p ds9 rgb
+xpaset -p DS9Test rgb
 DoXPA "..  gif" gif photo/rose.gif
 DoXPA "..  jpeg" jpeg photo/rose.jpeg
 DoXPA "..  tiff" tiff photo/rose.tiff
 DoXPA "..  png" png photo/rose.png
 
 echo ".. 3d"
-xpaset -p ds9 3d
+xpaset -p DS9Test 3d
 DoXPA "..  gif" gif photo/rose.gif
 DoXPA "..  jpeg" jpeg photo/rose.jpeg
 DoXPA "..  tiff" tiff photo/rose.tiff
 DoXPA "..  png" png photo/rose.png
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 
@@ -272,20 +272,20 @@ DoXPAStdin "..  tiff" tiff photo/rose.tiff
 DoXPAStdin "..  png" png photo/rose.png
 
 echo ".. rgb"
-xpaset -p ds9 rgb
+xpaset -p DS9Test rgb
 DoXPAStdin "..  gif" gif photo/rose.gif
 DoXPAStdin "..  jpeg" jpeg photo/rose.jpeg
 DoXPAStdin "..  tiff" tiff photo/rose.tiff
 DoXPAStdin "..  png" png photo/rose.png
 
 echo ".. 3d"
-xpaset -p ds9 3d
+xpaset -p DS9Test 3d
 DoXPAStdin "..  gif" gif photo/rose.gif
 DoXPAStdin "..  jpeg" jpeg photo/rose.jpeg
 DoXPAStdin "..  tiff" tiff photo/rose.tiff
 DoXPAStdin "..  png" png photo/rose.png
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 
@@ -296,23 +296,23 @@ echo "Testing XPA Stdout"
 StartDS9
 
 echo ".. base"
-xpaset -p ds9 tiff photo/rose.tiff
+xpaset -p DS9Test tiff photo/rose.tiff
 DoXPAStdout "" gif
 DoXPAStdout "" jpeg
 DoXPAStdout "" tiff
 DoXPAStdout "" png
 
 echo ".. rgb"
-xpaset -p ds9 frame delete
-xpaset -p ds9 rgb
-xpaset -p ds9 tiff photo/rose.tiff
+xpaset -p DS9Test frame delete
+xpaset -p DS9Test rgb
+xpaset -p DS9Test tiff photo/rose.tiff
 # not enough colors
 #DoXPAStdout rgb gif
 DoXPAStdout rgb jpeg
 DoXPAStdout rgb tiff
 DoXPAStdout rgb png
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 

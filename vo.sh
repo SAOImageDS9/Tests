@@ -2,14 +2,14 @@ echo
 echo "*** vo.sh ***"
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]; then
-    ds9&
+if [ `xpaaccess DS9Test` = no ]; then
+    ds9 -title DS9Test &
 
     i=1
     while [ "$i" -le 30 ]
 	do
 	sleep 2
-	if [ `xpaaccess ds9` = yes ]; then
+	if [ `xpaaccess DS9Test` = yes ]; then
 	    break
 	fi
 
@@ -21,113 +21,113 @@ doit () {
     dd=1
     ddd=4
 
-    xpaset -p ds9 vo xray1.physics.rutgers
-#    xpaset -p ds9 vo rinzai.rutgers.edu
-    xpaset -p ds9 web click 4
+    xpaset -p DS9Test vo xray1.physics.rutgers
+#    xpaset -p DS9Test vo rinzai.rutgers.edu
+    xpaset -p DS9Test web click 4
     sleep $ddd
-    xpaset -p ds9 web click back
-    xpaset -p ds9 raise
+    xpaset -p DS9Test web click back
+    xpaset -p DS9Test raise
 
     echo "..Overview of Chandra-Ed Analysis Tools"
-    xpaset -p ds9 analysis 0
+    xpaset -p DS9Test analysis 0
     sleep $dd
 
     echo "..Radial Profile Plot"
-    xpaset -p ds9 regions regions/vo2.reg
-    xpaset -p ds9 analysis 1
+    xpaset -p DS9Test regions regions/vo2.reg
+    xpaset -p DS9Test analysis 1
     sleep $dd
 
     echo "..Counts in Regions"
-    xpaset -p ds9 regions deleteall
-    xpaset -p ds9 regions regions/vo1.reg
-    xpaset -p ds9 analysis 2
+    xpaset -p DS9Test regions deleteall
+    xpaset -p DS9Test regions regions/vo1.reg
+    xpaset -p DS9Test analysis 2
     sleep $dd
 
     echo "..Quick Energy Spectrum Plot"
-    xpaset -p ds9 analysis 3
+    xpaset -p DS9Test analysis 3
     sleep $dd
 
     echo "..Quick Light Curve Plot"
-    xpaset -p ds9 analysis 4
+    xpaset -p DS9Test analysis 4
     sleep $dd
 
     echo "..Histogram Plot"
-    xpaset -p ds9 analysis 5
+    xpaset -p DS9Test analysis 5
     sleep $dd
 
     echo "..Column Histogram"
-    xpaset -p ds9 analysis 6
+    xpaset -p DS9Test analysis 6
     sleep $dd
 
     echo "..Refine (Centroid) Position"
-    xpaset -p ds9 analysis 7
+    xpaset -p DS9Test analysis 7
     sleep $ddd
 
     echo "..Imexam"
-    xpaset -p ds9 analysis 8
+    xpaset -p DS9Test analysis 8
     sleep $ddd
 
     echo "..Rebin image"
-    xpaset -p ds9 analysis 9
+    xpaset -p DS9Test analysis 9
     sleep $ddd
     sleep $ddd
-    xpaset -p ds9 frame delete
+    xpaset -p DS9Test frame delete
 
     echo "..Energy Filter"
-    xpaset -p ds9 analysis 10
+    xpaset -p DS9Test analysis 10
     sleep $ddd
     sleep $ddd
-    xpaset -p ds9 frame delete
+    xpaset -p DS9Test frame delete
 
     echo "..Time Filter"
-    xpaset -p ds9 analysis 11
+    xpaset -p DS9Test analysis 11
     sleep $ddd
     sleep $ddd
-    xpaset -p ds9 frame delete
+    xpaset -p DS9Test frame delete
 
     echo "..Column Filter"
-    xpaset -p ds9 analysis 12
+    xpaset -p DS9Test analysis 12
     sleep $ddd
     sleep $ddd
-    xpaset -p ds9 frame delete
+    xpaset -p DS9Test frame delete
 
     echo "..CIAO/Sherpa Spectral Fit"
-    xpaset -p ds9 analysis 13
+    xpaset -p DS9Test analysis 13
     sleep $ddd
 
     echo "..FTOOLS/Light Curve"
-    xpaset -p ds9 analysis 14
+    xpaset -p DS9Test analysis 14
     sleep $ddd
 
     echo "..FTOOLS/Power Spectrum"
-    xpaset -p ds9 analysis 15
+    xpaset -p DS9Test analysis 15
     sleep $ddd
 
     echo "..FTOOLS/Period Fold"
-    xpaset -p ds9 analysis 16
+    xpaset -p DS9Test analysis 16
     sleep $ddd
 
-    xpaset -p ds9 regions deleteall
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test regions deleteall
+    xpaset -p DS9Test frame clear
 
-    xpaset -p ds9 vo disconnect chandra-ed
-    xpaset -p ds9 web close
+    xpaset -p DS9Test vo disconnect chandra-ed
+    xpaset -p DS9Test web close
 
     echo "PASSED"
 }
 
 if [ "$1" = "xpa" ]; then
     echo "Testing xpa"
-    xpaset -p ds9 vo method xpa
+    xpaset -p DS9Test vo method xpa
     doit
 fi
 
 if [ "$1" = "mime" ]; then
     echo "Testing mime"
-    xpaset -p ds9 vo method mime
+    xpaset -p DS9Test vo method mime
     doit
 fi
 
-xpaset -p ds9 exit
+xpaset -p DS9Test exit
 
 echo "DONE"

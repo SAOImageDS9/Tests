@@ -1,12 +1,12 @@
 StartDS9 () {
-    if [ `xpaaccess ds9` = no ]; then
-	ds9 -frame delete -$who&
+    if [ `xpaaccess DS9Test` = no ]; then
+	ds9 -title DS9Test -frame delete -$who&
 
 	i=1
 	while [ "$i" -le 30 ]
 	    do
 	    sleep 2
-	    if [ `xpaaccess ds9` = yes ]; then
+	    if [ `xpaaccess DS9Test` = yes ]; then
 		break
 	    fi
 
@@ -46,14 +46,14 @@ echo "*** $which ***"
 if [ "$1" = "command" -o  -z "$1" ]; then
 echo "Testing Command Line File"
 
-for f in $where/*.$ext 
-do 
+for f in $where/*.$ext
+do
     echo " ${f#$where/}"
     opt="-$what $f -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
-    fi 
-    ds9 $opt -exit
+    fi
+    ds9 -title DS9Test $opt -exit
 done
 
 echo "PASSED"
@@ -63,14 +63,14 @@ fi
 if [ "$1" = "stdin" -o  -z "$1" ]; then
 echo "Testing Stdin File"
 
-for f in $where/*.$ext 
-do 
+for f in $where/*.$ext
+do
     echo " ${f#$where/}"
     opt="-$what - -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
-    fi 
-    cat $f | ds9 $opt -exit
+    fi
+    cat $f | ds9 -title DS9Test $opt -exit
 done
 
 echo "PASSED"
@@ -80,8 +80,8 @@ fi
 if [ "$1" = "save" -o -z "$1" ]; then
 echo "Testing Command save"
 
-for f in $where/*.$ext 
-do 
+for f in $where/*.$ext
+do
     echo " ${f#$where/}"
     opt="-tile -frame delete -$who -$what $f"
     opt="$opt -save $what foo.fits"
@@ -90,7 +90,7 @@ do
 	opt="$opt -sleep 1"
     fi
     opt="$opt -frame delete"
-    ds9 $opt -exit
+    ds9 -title DS9Test $opt -exit
 done
 
 echo "PASSED"
@@ -102,17 +102,17 @@ echo "Testing XPA File"
 
 StartDS9
 
-for f in $where/*.$ext 
-do 
+for f in $where/*.$ext
+do
     echo " ${f#$where/}"
-    xpaset -p ds9 $what $f
+    xpaset -p DS9Test $what $f
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 done
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 
@@ -122,17 +122,17 @@ echo "Testing XPA Stdin"
 
 StartDS9
 
-for f in $where/*.$ext 
-do 
+for f in $where/*.$ext
+do
     echo " ${f#$where/}"
-    cat $f | xpaset ds9 $what
+    cat $f | xpaset DS9Test $what
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 done
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 
@@ -142,22 +142,22 @@ echo "Testing XPA Stdout"
 
 StartDS9
 
-for f in $where/*.$ext 
-do 
+for f in $where/*.$ext
+do
     echo " ${f#$where/}"
-    xpaset -p ds9 tile
-    xpaset -p ds9 $what $f
-    xpaget ds9 $what > foo.fits
-    xpaset -p ds9 frame new $who
-    xpaset -p ds9 $what foo.fits
+    xpaset -p DS9Test tile
+    xpaset -p DS9Test $what $f
+    xpaget DS9Test $what > foo.fits
+    xpaset -p DS9Test frame new $who
+    xpaset -p DS9Test $what foo.fits
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame delete
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame delete
+    xpaset -p DS9Test frame clear
 done
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 

@@ -2,27 +2,27 @@ KillIt () {
     i=1
     while [ "$i" -le 15 ]; do
       sleep 1
-      if [ `xpaaccess ds9` = yes ]; then
+      if [ `xpaaccess DS9Test` = yes ]; then
 	  if [ $slow = "1" ]; then
 	      sleep 1
 	  fi
-	  xpaset -p ds9 quit
+	  xpaset -p DS9Test quit
 	  break
       fi
-      
+
       i=`expr $i + 1`
     done
 }
 
 StartDS9 () {
-    if [ `xpaaccess ds9` = no ]; then
-	ds9 &
+    if [ `xpaaccess DS9Test` = no ]; then
+	ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 30 ]
 	    do
 	    sleep 2
-	    if [ `xpaaccess ds9` = yes ]; then
+	    if [ `xpaaccess DS9Test` = yes ]; then
 		break
 	    fi
 
@@ -53,9 +53,9 @@ if [ "$1" = "command" -o  -z "$1" ]; then
 echo "Testing Command Line File"
 
 for f in $where/*.$ext
-do 
+do
     echo " ${f#$where/}"
-    ds9 -$what $f &
+    ds9 -title DS9Test -$what $f &
     KillIt
 done
 
@@ -67,9 +67,9 @@ if [ "$1" = "stdin" -o  -z "$1" ]; then
 echo "Testing Stdin File"
 
 for f in $where/*.$ext
-do 
+do
     echo " ${f#$where/}"
-    cat $f | ds9 -$what - &
+    cat $f | ds9 -title DS9Test -$what - &
     KillIt
 done
 
@@ -81,19 +81,19 @@ if [ "$1" = "xpa" -o  -z "$1" ]; then
 echo "Testing XPA File"
 
 StartDS9
-xpaset -p ds9 frame delete all
+xpaset -p DS9Test frame delete all
 
 for f in $where/*.$ext
-do 
+do
     echo " ${f#$where/}"
-    xpaset -p ds9 $what $f
+    xpaset -p DS9Test $what $f
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame delete all
+    xpaset -p DS9Test frame delete all
 done
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 
@@ -102,19 +102,19 @@ if [ "$1" = "xpastdin" -o  -z "$1" ]; then
 echo "Testing XPA Stdin"
 
 StartDS9
-xpaset -p ds9 frame delete all
+xpaset -p DS9Test frame delete all
 
 for f in $where/*.$ext
-do 
+do
     echo " ${f#$where/}"
-    cat $f | xpaset ds9 $what
+    cat $f | xpaset DS9Test $what
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame delete all
+    xpaset -p DS9Test frame delete all
 done
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 

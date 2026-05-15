@@ -2,14 +2,14 @@ echo
 echo "*** wcs.sh ***"
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]; then
-    ds9&
+if [ `xpaaccess DS9Test` = no ]; then
+    ds9 -title DS9Test &
 
     i=1
     while [ "$i" -le 30 ]
 	do
 	sleep 2
-	if [ `xpaaccess ds9` = yes ]; then
+	if [ `xpaaccess DS9Test` = yes ]; then
 	    break
 	fi
 
@@ -18,21 +18,21 @@ if [ `xpaaccess ds9` = no ]; then
 fi
 
 
-xpaset -p ds9 grid on
-xpaset -p ds9 grid system wcs
-xpaset -p ds9 scale zscale
-xpaset -p ds9 wcs skyformat degrees
+xpaset -p DS9Test grid on
+xpaset -p DS9Test grid system wcs
+xpaset -p DS9Test scale zscale
+xpaset -p DS9Test wcs skyformat degrees
 
 for f in wcs/*.fits
 do
 echo $f
-xpaset -p ds9 fits $f
+xpaset -p DS9Test fits $f
 read
-xpaset -p ds9 align
+xpaset -p DS9Test align
 read
 done
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "DONE"
 
 

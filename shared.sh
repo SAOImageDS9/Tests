@@ -8,12 +8,12 @@ KillIt () {
     i=1
     while [ "$i" -le 15 ]; do
       sleep 1
-      if [ `xpaaccess ds9` = yes ]; then
+      if [ `xpaaccess DS9Test` = yes ]; then
 	  sleep 1
-	  xpaset -p ds9 quit
+	  xpaset -p DS9Test quit
 	  break
       fi
-      
+
       i=`expr $i + 1`
     done
 }
@@ -21,7 +21,7 @@ KillIt () {
 DoCmd () {
     echo "$1"
     shmid=`shmload -q $2`
-    ds9 -scale $5 -scale mode $6 -shm $3 shmid $shmid $4 &
+    ds9 -title DS9Test -scale $5 -scale mode $6 -shm $3 shmid $shmid $4 &
     KillIt
     ipcrm -m $shmid
 }
@@ -30,7 +30,7 @@ DoSCmd () {
     echo "$1"
     shmid1=`shmload -q $2`
     shmid2=`shmload -q $3`
-    ds9  -scale $6 -scale mode $7 -shm $4 shmid $shmid1 $shmid2 $5 &
+    ds9 -title DS9Test -scale $6 -scale mode $7 -shm $4 shmid $shmid1 $shmid2 $5 &
     KillIt
     ipcrm -m $shmid1
     ipcrm -m $shmid2
@@ -39,13 +39,13 @@ DoSCmd () {
 DoXPA () {
     echo "$1"
     shmid=`shmload -q $2`
-    xpaset -p ds9 scale $5
-    xpaset -p ds9 scale mode $6
-    xpaset -p ds9 shm $3 shmid $shmid $4
+    xpaset -p DS9Test scale $5
+    xpaset -p DS9Test scale mode $6
+    xpaset -p DS9Test shm $3 shmid $shmid $4
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
     ipcrm -m $shmid
 }
 
@@ -53,13 +53,13 @@ DoSXPA () {
     echo "$1"
     shmid1=`shmload -q $2`
     shmid2=`shmload -q $3`
-    xpaset -p ds9 scale $6
-    xpaset -p ds9 scale mode $7
-    xpaset -p ds9 shm $4 shmid $shmid1 $shmid2 $5
+    xpaset -p DS9Test scale $6
+    xpaset -p DS9Test scale mode $7
+    xpaset -p DS9Test shm $4 shmid $shmid1 $shmid2 $5
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
     ipcrm -m $shmid1
     ipcrm -m $shmid2
 }
@@ -118,16 +118,16 @@ if [ "$1" = "xpa" -o  -z "$1" ]; then
 echo "XPA Shm Tests"
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]
+if [ `xpaaccess DS9Test` = no ]
 then
-    ds9&
+    ds9 -title DS9Test &
 fi
 
 i=1
 while [ "$i" -le 15 ]
 do
     sleep 1
-    if [ `xpaaccess ds9` = yes ]
+    if [ `xpaaccess DS9Test` = yes ]
     then
 	break
     fi
@@ -136,7 +136,7 @@ do
 done
 
 # basics
-DoXPA "..fits" fits/img.fits fits foo linear zscale 
+DoXPA "..fits" fits/img.fits fits foo linear zscale
 DoXPA "..table" fits/table.fits "" foo log minmax
 DoXPA "..table filter" fits/table.fits "" 'foo[bin=rawx,rawy]' log minmax
 
@@ -163,14 +163,14 @@ DoXPA "..array" array/float_big.arr array 'foo[dim=256,bitpix=-32,arch=big]' lin
 DoXPA "..array cube" rgbarray/float_big.rgb array 'foo[dim=256,zdim=3,bitpix=-32,arch=big]' linear minmax
 
 # rgb
-xpaset -p ds9 scale linear
-xpaset -p ds9 scale mode minmax
-xpaset -p ds9 rgb
+xpaset -p DS9Test scale linear
+xpaset -p DS9Test scale mode minmax
+xpaset -p DS9Test rgb
 DoXPA "..rgbcube" rgbcube/float.fits rgbcube foo linear minmax
 DoXPA "..rgbimage" mecube/float.fits rgbimage foo linear minmax
-xpaset -p ds9 frame delete
+xpaset -p DS9Test frame delete
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 

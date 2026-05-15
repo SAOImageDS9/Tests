@@ -3,14 +3,25 @@ echo "SAMP Tests"
 
 startit () {
     echo "Starting DS9..."
-    echo "ds9 -debug $samp -debug $samphub -zscale fits/img.fits"
-    ds9 -debug $samp -debug $samphub -zscale fits/img.fits&
-    echo "click return to start"
-    read
+    echo "ds9 -title DS9Test -debug $samp -debug $samphub -zscale fits/img.fits"
+    ds9 -title DS9Test -debug $samp -debug $samphub -zscale fits/img.fits&
+    #~ echo "click return to start"
+    #~ read
+    i=1
+    while test $i -lt 20
+    do
+      sleep 2
+      if test `xpaaccess DS9Test` = "yes"
+      then
+          break
+      fi
+    done
+
+
 }
 
 testit () {
-    echo 
+    echo
     echo "Testing $1"
     tclsh samp.tcl $debug block $msg < samp/${1}.samp
     echo "PASSED"

@@ -2,48 +2,48 @@ KillIt () {
     i=1
     while [ "$i" -le 15 ]; do
       sleep 1
-      if [ `xpaaccess ds9` = yes ]; then
+      if [ `xpaaccess DS9Test` = yes ]; then
 	  if [ $slow = "1" ]; then
 	      sleep 1
 	  fi
-	  xpaset -p ds9 quit
+	  xpaset -p DS9Test quit
 	  break
       fi
-      
+
       i=`expr $i + 1`
     done
 }
 
 DoXPA () {
     echo "$1"
-    xpaset -p ds9 hsvarray $2
+    xpaset -p DS9Test hsvarray $2
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 }
 
 DoXPAStdin () {
     echo "$1"
-    cat $2 | xpaset ds9 hsvarray $3
+    cat $2 | xpaset DS9Test hsvarray $3
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 }
 
 DoXPAStdout () {
     echo "$1"
-    xpaset -p ds9 tile
-    xpaset -p ds9 hsvarray $2
-    xpaget ds9 hsvarray $3 > foo.hsv
-    xpaset -p ds9 frame new hsv
-    xpaset -p ds9 hsvarray foo.hsv$4
+    xpaset -p DS9Test tile
+    xpaset -p DS9Test hsvarray $2
+    xpaget DS9Test hsvarray $3 > foo.hsv
+    xpaset -p DS9Test frame new hsv
+    xpaset -p DS9Test hsvarray foo.hsv$4
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame delete
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame delete
+    xpaset -p DS9Test frame clear
 }
 
 initit () {
@@ -61,19 +61,19 @@ testit () {
 }
 
 doit () {
-    eval ds9 -tile -frame delete -hsv -hsvarray $1 "$opt" -exit
+    eval ds9 -title DS9Test -tile -frame delete -hsv -hsvarray $1 "$opt" -exit
     echo "PASSED"
 }
 
 StartDS9 () {
-    if [ `xpaaccess ds9` = no ]; then
-	ds9 -frame delete -hsv&
+    if [ `xpaaccess DS9Test` = no ]; then
+	ds9 -title DS9Test -frame delete -hsv&
 
 	i=1
 	while [ "$i" -le 30 ]
 	    do
 	    sleep 2
-	    if [ `xpaaccess ds9` = yes ]; then
+	    if [ `xpaaccess DS9Test` = yes ]; then
 		break
 	    fi
 
@@ -99,107 +99,107 @@ if [ "$1" = "command" -o  -z "$1" ]; then
 echo "Testing Command File"
 
 echo ".. char"
-ds9 -hsvarray rgbarray/char.rgb[dim=256,bitpix=8] &
+ds9 -title DS9Test -hsvarray rgbarray/char.rgb[dim=256,bitpix=8] &
 KillIt
 
 echo ".. char gzip"
-ds9 -hsvarray rgbarray/char.rgb.gz[dim=256,bitpix=8] &
+ds9 -title DS9Test -hsvarray rgbarray/char.rgb.gz[dim=256,bitpix=8] &
 KillIt
 
 echo ".. short little"
-ds9 -hsvarray rgbarray/short_little.rgb[dim=256,bitpix=16,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/short_little.rgb[dim=256,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short little gzip"
-ds9 -hsvarray rgbarray/short_little.rgb.gz[dim=256,bitpix=16,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/short_little.rgb.gz[dim=256,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short big"
-ds9 -hsvarray rgbarray/short_big.rgb[dim=256,bitpix=16,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/short_big.rgb[dim=256,bitpix=16,arch=big] &
 KillIt
 
 echo ".. short big gzip"
-ds9 -hsvarray rgbarray/short_big.rgb.gz[dim=256,bitpix=16,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/short_big.rgb.gz[dim=256,bitpix=16,arch=big] &
 KillIt
 
 echo ".. ushort little"
-ds9 -hsvarray rgbarray/ushort_little.rgb[dim=256,bitpix=-16,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/ushort_little.rgb[dim=256,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort little gzip"
-ds9 -hsvarray rgbarray/ushort_little.rgb.gz[dim=256,bitpix=-16,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/ushort_little.rgb.gz[dim=256,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort big"
-ds9 -hsvarray rgbarray/ushort_big.rgb[dim=256,bitpix=-16,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/ushort_big.rgb[dim=256,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. ushort big gzip"
-ds9 -hsvarray rgbarray/ushort_big.rgb.gz[dim=256,bitpix=-16,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/ushort_big.rgb.gz[dim=256,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. int little"
-ds9 -hsvarray rgbarray/int_little.rgb[dim=256,bitpix=32,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/int_little.rgb[dim=256,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int little gzip"
-ds9 -hsvarray rgbarray/int_little.rgb.gz[dim=256,bitpix=32,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/int_little.rgb.gz[dim=256,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int big"
-ds9 -hsvarray rgbarray/int_big.rgb[dim=256,bitpix=32,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/int_big.rgb[dim=256,bitpix=32,arch=big] &
 KillIt
 
 echo ".. int big gzip"
-ds9 -hsvarray rgbarray/int_big.rgb.gz[dim=256,bitpix=32,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/int_big.rgb.gz[dim=256,bitpix=32,arch=big] &
 KillIt
 
 echo ".. longlong little"
-ds9 -hsvarray rgbarray/longlong_little.rgb[dim=256,bitpix=64,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/longlong_little.rgb[dim=256,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong little gzip"
-ds9 -hsvarray rgbarray/longlong_little.rgb.gz[dim=256,bitpix=64,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/longlong_little.rgb.gz[dim=256,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong big"
-ds9 -hsvarray rgbarray/longlong_big.rgb[dim=256,bitpix=64,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/longlong_big.rgb[dim=256,bitpix=64,arch=big] &
 KillIt
 
 echo ".. longlong big gzip"
-ds9 -hsvarray rgbarray/longlong_big.rgb.gz[dim=256,bitpix=64,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/longlong_big.rgb.gz[dim=256,bitpix=64,arch=big] &
 KillIt
 
 echo ".. float little"
-ds9 -hsvarray rgbarray/float_little.rgb[dim=256,bitpix=-32,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/float_little.rgb[dim=256,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float little gzip"
-ds9 -hsvarray rgbarray/float_little.rgb.gz[dim=256,bitpix=-32,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/float_little.rgb.gz[dim=256,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float big"
-ds9 -hsvarray rgbarray/float_big.rgb[dim=256,bitpix=-32,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/float_big.rgb[dim=256,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. float big gzip"
-ds9 -hsvarray rgbarray/float_big.rgb.gz[dim=256,bitpix=-32,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/float_big.rgb.gz[dim=256,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. double little"
-ds9 -hsvarray rgbarray/double_little.rgb[dim=256,bitpix=-64,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/double_little.rgb[dim=256,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double little gzip"
-ds9 -hsvarray rgbarray/double_little.rgb.gz[dim=256,bitpix=-64,arch=little] &
+ds9 -title DS9Test -hsvarray rgbarray/double_little.rgb.gz[dim=256,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double big"
-ds9 -hsvarray rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big] &
 KillIt
 
 echo ".. double big gzip"
-ds9 -hsvarray rgbarray/double_big.rgb.gz[dim=256,bitpix=-64,arch=big] &
+ds9 -title DS9Test -hsvarray rgbarray/double_big.rgb.gz[dim=256,bitpix=-64,arch=big] &
 KillIt
 
 echo "PASSED"
@@ -211,107 +211,107 @@ if [ "$1" = "stdin" -o  -z "$1" ]; then
 echo "Testing Command Stdin"
 
 echo ".. char"
-cat rgbarray/char.rgb | ds9 -hsvarray -[dim=256,bitpix=8] &
+cat rgbarray/char.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=8] &
 KillIt
 
 echo ".. char gzip"
-cat rgbarray/char.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=8] &
+cat rgbarray/char.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=8] &
 KillIt
 
 echo ".. short little"
-cat rgbarray/short_little.rgb | ds9 -hsvarray -[dim=256,bitpix=16,arch=little] &
+cat rgbarray/short_little.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short little gzip"
-cat rgbarray/short_little.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=16,arch=little] &
+cat rgbarray/short_little.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short big"
-cat rgbarray/short_big.rgb | ds9 -hsvarray -[dim=256,bitpix=16,arch=big] &
+cat rgbarray/short_big.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=16,arch=big] &
 KillIt
 
 echo ".. short big gzip"
-cat rgbarray/short_big.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=16,arch=big] &
+cat rgbarray/short_big.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=16,arch=big] &
 KillIt
 
 echo ".. ushort little"
-cat rgbarray/ushort_little.rgb | ds9 -hsvarray -[dim=256,bitpix=-16,arch=little] &
+cat rgbarray/ushort_little.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort little gzip"
-cat rgbarray/ushort_little.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=-16,arch=little] &
+cat rgbarray/ushort_little.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort big"
-cat rgbarray/ushort_big.rgb | ds9 -hsvarray -[dim=256,bitpix=-16,arch=big] &
+cat rgbarray/ushort_big.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. ushort big gzip"
-cat rgbarray/ushort_big.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=-16,arch=big] &
+cat rgbarray/ushort_big.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. int little"
-cat rgbarray/int_little.rgb | ds9 -hsvarray -[dim=256,bitpix=32,arch=little] &
+cat rgbarray/int_little.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int little gzip"
-cat rgbarray/int_little.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=32,arch=little] &
+cat rgbarray/int_little.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int big"
-cat rgbarray/int_big.rgb | ds9 -hsvarray -[dim=256,bitpix=32,arch=big] &
+cat rgbarray/int_big.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=32,arch=big] &
 KillIt
 
 echo ".. int big gzip"
-cat rgbarray/int_big.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=32,arch=big] &
+cat rgbarray/int_big.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=32,arch=big] &
 KillIt
 
 echo ".. longlong little"
-cat rgbarray/longlong_little.rgb | ds9 -hsvarray -[dim=256,bitpix=64,arch=little] &
+cat rgbarray/longlong_little.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong little gzip"
-cat rgbarray/longlong_little.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=64,arch=little] &
+cat rgbarray/longlong_little.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong big"
-cat rgbarray/longlong_big.rgb | ds9 -hsvarray -[dim=256,bitpix=64,arch=big] &
+cat rgbarray/longlong_big.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=64,arch=big] &
 KillIt
 
 echo ".. longlong big gzip"
-cat rgbarray/longlong_big.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=64,arch=big] &
+cat rgbarray/longlong_big.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=64,arch=big] &
 KillIt
 
 echo ".. float little"
-cat rgbarray/float_little.rgb | ds9 -hsvarray -[dim=256,bitpix=-32,arch=little] &
+cat rgbarray/float_little.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float little gzip"
-cat rgbarray/float_little.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=-32,arch=little] &
+cat rgbarray/float_little.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float big"
-cat rgbarray/float_big.rgb | ds9 -hsvarray -[dim=256,bitpix=-32,arch=big] &
+cat rgbarray/float_big.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. float big gzip"
-cat rgbarray/float_big.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=-32,arch=big] &
+cat rgbarray/float_big.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. double little"
-cat rgbarray/double_little.rgb | ds9 -hsvarray -[dim=256,bitpix=-64,arch=little] &
+cat rgbarray/double_little.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double little gzip"
-cat rgbarray/double_little.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=-64,arch=little] &
+cat rgbarray/double_little.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double big"
-cat rgbarray/double_big.rgb | ds9 -hsvarray -[dim=256,bitpix=-64,arch=big] &
+cat rgbarray/double_big.rgb | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-64,arch=big] &
 KillIt
 
 echo ".. double big gzip"
-cat rgbarray/double_big.rgb.gz | ds9 -hsvarray -[dim=256,bitpix=-64,arch=big] &
+cat rgbarray/double_big.rgb.gz | ds9 -title DS9Test -hsvarray -[dim=256,bitpix=-64,arch=big] &
 KillIt
 
 echo "PASSED"
@@ -326,87 +326,87 @@ initit ".. char"
 testit little [dim=256,bitpix=8]
 doit rgbarray/char.rgb[dim=256,bitpix=8]
 
-initit ".. short little little" 
+initit ".. short little little"
 testit little [dim=256,bitpix=16,arch=little]
 doit rgbarray/short_little.rgb[dim=256,bitpix=16,arch=little]
-initit ".. short little big" 
+initit ".. short little big"
 testit big [dim=256,bitpix=16,arch=big]
 doit rgbarray/short_little.rgb[dim=256,bitpix=16,arch=little]
 
-initit ".. short big little" 
+initit ".. short big little"
 testit little [dim=256,bitpix=16,arch=little]
 doit rgbarray/short_big.rgb[dim=256,bitpix=16,arch=big]
-initit ".. short big big" 
+initit ".. short big big"
 testit big [dim=256,bitpix=16,arch=big]
 doit rgbarray/short_big.rgb[dim=256,bitpix=16,arch=big]
 
-initit ".. ushort little little" 
+initit ".. ushort little little"
 testit little [dim=256,bitpix=-16,arch=little]
 doit rgbarray/ushort_little.rgb[dim=256,bitpix=-16,arch=little]
-initit ".. ushort little big" 
+initit ".. ushort little big"
 testit big [dim=256,bitpix=-16,arch=big]
 doit rgbarray/ushort_little.rgb[dim=256,bitpix=-16,arch=little]
 
-initit ".. ushort big little" 
+initit ".. ushort big little"
 testit little [dim=256,bitpix=-16,arch=little]
 doit rgbarray/ushort_big.rgb[dim=256,bitpix=-16,arch=big]
-initit ".. ushort big big" 
+initit ".. ushort big big"
 testit big [dim=256,bitpix=-16,arch=big]
 doit rgbarray/ushort_big.rgb[dim=256,bitpix=-16,arch=big]
 
-initit ".. int little little" 
+initit ".. int little little"
 testit little [dim=256,bitpix=32,arch=little]
 doit rgbarray/int_little.rgb[dim=256,bitpix=32,arch=little]
-initit ".. int little big" 
+initit ".. int little big"
 testit big [dim=256,bitpix=32,arch=big]
 doit rgbarray/int_little.rgb[dim=256,bitpix=32,arch=little]
 
-initit ".. int big little" 
+initit ".. int big little"
 testit little [dim=256,bitpix=32,arch=little]
 doit rgbarray/int_big.rgb[dim=256,bitpix=32,arch=big]
-initit ".. int big big" 
+initit ".. int big big"
 testit big [dim=256,bitpix=32,arch=big]
 doit rgbarray/int_big.rgb[dim=256,bitpix=32,arch=big]
 
-initit ".. longlong little little" 
+initit ".. longlong little little"
 testit little [dim=256,bitpix=64,arch=little]
 doit rgbarray/longlong_little.rgb[dim=256,bitpix=64,arch=little]
-initit ".. longlong little big" 
+initit ".. longlong little big"
 testit big [dim=256,bitpix=64,arch=big]
 doit rgbarray/longlong_little.rgb[dim=256,bitpix=64,arch=little]
 
-initit ".. longlong big little" 
+initit ".. longlong big little"
 testit little [dim=256,bitpix=64,arch=little]
 doit rgbarray/longlong_big.rgb[dim=256,bitpix=64,arch=big]
-initit ".. longlong big big" 
+initit ".. longlong big big"
 testit big [dim=256,bitpix=64,arch=big]
 doit rgbarray/longlong_big.rgb[dim=256,bitpix=64,arch=big]
 
-initit ".. float little little" 
+initit ".. float little little"
 testit little [dim=256,bitpix=-32,arch=little]
 doit rgbarray/float_little.rgb[dim=256,bitpix=-32,arch=little]
-initit ".. float little big" 
+initit ".. float little big"
 testit big [dim=256,bitpix=-32,arch=big]
 doit rgbarray/float_little.rgb[dim=256,bitpix=-32,arch=little]
 
-initit ".. float big little" 
+initit ".. float big little"
 testit little [dim=256,bitpix=-32,arch=little]
 doit rgbarray/float_big.rgb[dim=256,bitpix=-32,arch=big]
-initit ".. float big big" 
+initit ".. float big big"
 testit big [dim=256,bitpix=-32,arch=big]
 doit rgbarray/float_big.rgb[dim=256,bitpix=-32,arch=big]
 
-initit ".. double little little" 
+initit ".. double little little"
 testit little [dim=256,bitpix=-64,arch=little]
 doit rgbarray/double_little.rgb[dim=256,bitpix=-64,arch=little]
-initit ".. double little big" 
+initit ".. double little big"
 testit big [dim=256,bitpix=-64,arch=big]
 doit rgbarray/double_little.rgb[dim=256,bitpix=-64,arch=little]
 
-initit ".. double big little" 
+initit ".. double big little"
 testit little [dim=256,bitpix=-64,arch=little]
 doit rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big]
-initit ".. double big big" 
+initit ".. double big big"
 testit big [dim=256,bitpix=-64,arch=big]
 doit rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big]
 
@@ -447,21 +447,21 @@ DoXPA ".. double big gzip" rgbarray/double_big.rgb.gz[dim=256,bitpix=-64,arch=bi
 
 echo ".. backward compatibility"
 echo ".. array hsv"
-xpaset -p ds9 frame new hsv
-xpaset -p ds9 array hsv rgbarray/char.rgb[dim=256,bitpix=8]
+xpaset -p DS9Test frame new hsv
+xpaset -p DS9Test array hsv rgbarray/char.rgb[dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
-xpaset -p ds9 frame clear
+xpaset -p DS9Test frame clear
 
 echo ".. array new hsv"
-xpaset -p ds9 array new hsv rgbarray/char.rgb[dim=256,bitpix=8]
+xpaset -p DS9Test array new hsv rgbarray/char.rgb[dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
-xpaset -p ds9 frame clear
+xpaset -p DS9Test frame clear
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 
@@ -500,21 +500,21 @@ DoXPAStdin ".. double big gzip" rgbarray/double_big.rgb.gz [dim=256,bitpix=-64,a
 
 echo ".. backward compatibility"
 echo ".. array hsv"
-xpaset -p ds9 frame new hsv
-cat rgbarray/char.rgb | xpaset ds9 array hsv [dim=256,bitpix=8]
+xpaset -p DS9Test frame new hsv
+cat rgbarray/char.rgb | xpaset DS9Test array hsv [dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
-xpaset -p ds9 frame clear
+xpaset -p DS9Test frame clear
 
 echo ".. array new hsv"
-cat rgbarray/char.rgb | xpaset ds9 array new hsv [dim=256,bitpix=8]
+cat rgbarray/char.rgb | xpaset DS9Test array new hsv [dim=256,bitpix=8]
 if [ $slow = "1" ]; then
     sleep 1
 fi
-xpaset -p ds9 frame clear
+xpaset -p DS9Test frame clear
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 
@@ -550,7 +550,7 @@ DoXPAStdout ".. double little big" rgbarray/double_little.rgb[dim=256,bitpix=-64
 DoXPAStdout ".. double big little" rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big] little [dim=256,bitpix=-64,arch=little]
 DoXPAStdout ".. double big big" rgbarray/double_big.rgb[dim=256,bitpix=-64,arch=big] big [dim=256,bitpix=-64,arch=big]
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 

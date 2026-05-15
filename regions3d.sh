@@ -1,15 +1,15 @@
 testit () {
     echo "Test $1 $2 $3 $4 $5"
-    xpaset -p ds9 regions format $1
-    xpaset -p ds9 regions system $2
-    xpaset -p ds9 regions sky $3
-    xpaset -p ds9 regions skyformat $4
-    xpaset -p ds9 regions file $5
-    xpaset -p ds9 regions save ${5}.out
+    xpaset -p DS9Test regions format $1
+    xpaset -p DS9Test regions system $2
+    xpaset -p DS9Test regions sky $3
+    xpaset -p DS9Test regions skyformat $4
+    xpaset -p DS9Test regions file $5
+    xpaset -p DS9Test regions save ${5}.out
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 regions deleteall
+    xpaset -p DS9Test regions deleteall
 
     o=`diff $5 ${5}.out`
     if [ "$o" = "" ]
@@ -24,16 +24,16 @@ testit () {
 
 testit2 () {
     echo "Test $1 $2 $3 $4 $5 $6"
-    xpaset -p ds9 regions format $1
-    xpaset -p ds9 regions system $2
-    xpaset -p ds9 regions sky $3
-    xpaset -p ds9 regions skyformat $4
-    xpaset -p ds9 regions file $5
-    xpaset -p ds9 regions save ${5}.out
+    xpaset -p DS9Test regions format $1
+    xpaset -p DS9Test regions system $2
+    xpaset -p DS9Test regions sky $3
+    xpaset -p DS9Test regions skyformat $4
+    xpaset -p DS9Test regions file $5
+    xpaset -p DS9Test regions save ${5}.out
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 regions deleteall
+    xpaset -p DS9Test regions deleteall
 
     o=`diff $6 ${5}.out`
     if [ "$o" = "" ]
@@ -48,15 +48,15 @@ testit2 () {
 
 testit3 () {
     echo "Test $1 $2 $3 $4 $5"
-    xpaset -p ds9 regions format $1
-    xpaset -p ds9 regions system $2
-    xpaset -p ds9 regions sky $3
-    xpaset -p ds9 regions skyformat $4
-    xpaset -p ds9 regions file $5
+    xpaset -p DS9Test regions format $1
+    xpaset -p DS9Test regions system $2
+    xpaset -p DS9Test regions sky $3
+    xpaset -p DS9Test regions skyformat $4
+    xpaset -p DS9Test regions file $5
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 regions deleteall
+    xpaset -p DS9Test regions deleteall
     echo "PASSED"
 }
 
@@ -71,14 +71,14 @@ echo
 echo "*** regions3d.sh ***"
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]; then
-    ds9 -3d -3d vp 45 30&
+if [ `xpaaccess DS9Test` = no ]; then
+    ds9 -title DS9Test -3d -3d vp 45 30&
 
     i=1
     while [ "$i" -le 30 ]
     do
         sleep 2
-        if [ `xpaaccess ds9` = yes ]
+        if [ `xpaaccess DS9Test` = yes ]
         then
 	    break
         fi
@@ -89,7 +89,7 @@ if [ `xpaaccess ds9` = no ]; then
 fi
 
 echo "Loading Data..."
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test fits fits/img.fits
 
 if [ "$1" = "ds9" -o  -z "$1" ]; then
 echo
@@ -124,5 +124,5 @@ testit xml wcs ecliptic sexagesimal regions/xml.ecliptic.hms.reg
 fi
 
 if [ -z "$1" ]; then
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 fi

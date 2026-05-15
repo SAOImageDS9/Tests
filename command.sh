@@ -11,7 +11,7 @@ testit () {
 }
 
 doit () {
-    eval ds9 -zscale fits/img.fits "$opt" -exit
+    eval ds9 -title DS9Test -zscale fits/img.fits "$opt" -exit
     echo "PASSED"
     echo ""
     if [ $slow = "1" ]; then
@@ -957,7 +957,7 @@ testit "-grid close"
 
 testit "-grid"
 testit "-grid yes"
- 
+
 testit "-grid type analysis"
 testit "-grid system wcs"
 testit "-grid sky fk5"
@@ -972,7 +972,7 @@ testit "-grid grid style 1"
 testit "-grid grid gap1 .01"
 testit "-grid grid gap2 .01"
 testit "-grid grid gap3 .01"
- 
+
 testit "-grid axes yes"
 testit "-grid axes color red"
 testit "-grid axes width 2"
@@ -981,7 +981,7 @@ testit "-grid axes dash yes"
 testit "-grid axes style 1"
 testit "-grid axes type exterior"
 testit "-grid axes origin lll"
- 
+
 testit "-grid format1 d.2"
 testit "-grid format2 d.2"
 

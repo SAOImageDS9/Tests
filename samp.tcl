@@ -2,13 +2,13 @@
 #  Smithsonian Astrophysical Observatory, Cambridge, MA, USA
 #  For conditions of distribution and use, see copyright notice in "copyright"
 
-source /Users/joye/SAOImageDS9/ds9/library/xmlrpc.tcl
-source /Users/joye/SAOImageDS9/ds9/library/sampclient.tcl
-source /Users/joye/SAOImageDS9/ds9/library/utilshare.tcl
+source /lenin1.real/DS9/build_from_source/SAOImageDS9/SAOImageDS9-20260204/ds9/library/xmlrpc.tcl
+source /lenin1.real/DS9/build_from_source/SAOImageDS9/SAOImageDS9-20260204/ds9/library/sampclient.tcl
+source /lenin1.real/DS9/build_from_source/SAOImageDS9/SAOImageDS9-20260204/ds9/library/utilshare.tcl
 
-source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
-source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tab.tcl
-source /Users/joye/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
+source /lenin1.real/DS9/build_from_source/SAOImageDS9/SAOImageDS9-20260204/ds9/parsers/xmlrpclex.tcl
+source /lenin1.real/DS9/build_from_source/SAOImageDS9/SAOImageDS9-20260204/ds9/parsers/xmlrpcparser.tab.tcl
+source /lenin1.real/DS9/build_from_source/SAOImageDS9/SAOImageDS9-20260204/ds9/parsers/xmlrpcparser.tcl
 
 proc SAMPConnect {} {
     global debug
@@ -37,7 +37,7 @@ proc SAMPConnectMetadata {} {
     set param1 [list param [list value [list string $samp(private)]]]
     set param2 [list param [list value [list struct [xmlrpcList2Member [array get map]]]]]
     set params [list params [list $param1 $param2]]
-    
+
     if {![SAMPSend samp.hub.declareMetadata $params rr]} {
 	puts {SAMP-Test: bad samp.hub.decleareMetadata call}
 	catch {unset samp}
@@ -48,7 +48,7 @@ proc SAMPConnectMetadata {} {
 
 proc SAMPConnectSubscriptions {} {
     global samp
-    
+
     set map(samp.app.ping) {struct {}}
 
     set map(samp.hub.event.shutdown) {struct {}}
@@ -74,7 +74,7 @@ proc SAMPConnectSubscriptions {} {
 
 proc SAMPSendDS9 {proc mtype url cmd id} {
     global samp
-    
+
     # connected?
     if {![info exists samp]} {
 	puts {SAMP-Test: not connected}
@@ -136,7 +136,7 @@ proc SAMPSendDS9 {proc mtype url cmd id} {
 	    set params [list params [list $param1 $param2 $param3 $param4]]
 	}
     }
-    
+
     SAMPSend $proc $params rr
 }
 
@@ -156,7 +156,7 @@ proc ParserError {msg yycnt yy_current_buffer index_} {
 
 proc prompt {proc block cmd id} {
     global samp
-    
+
     if {[string range $cmd 0 0] == "#"} {
 	puts $cmd
 	return
@@ -233,7 +233,7 @@ proc ::mainloop::readable {} {
     global proc
     global block
     global id
-    
+
     if { [gets stdin text] < 0 } {
  	fileevent stdin readable {}
  	set eof 1
@@ -242,18 +242,18 @@ proc ::mainloop::readable {} {
     }
     return
 }
- 
+
 proc ::mainloop::mainloop {} {
     variable eof
     global proc
     global block
     global id
- 
+
     set ::tcl_interactive 1
     fconfigure stdin -buffering line -blocking 0
     fileevent stdin readable ::mainloop::readable
     prompt $proc $block {} $id
- 
+
     vwait [namespace which -variable eof]
     return
 }

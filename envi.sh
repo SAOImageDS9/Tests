@@ -1,12 +1,12 @@
 StartDS9 () {
-    if [ `xpaaccess ds9` = no ]; then
-	ds9 &
+    if [ `xpaaccess DS9Test` = no ]; then
+	ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 30 ]
 	    do
 	    sleep 2
-	    if [ `xpaaccess ds9` = yes ]; then
+	    if [ `xpaaccess DS9Test` = yes ]; then
 		break
 	    fi
 
@@ -40,20 +40,20 @@ if [ "$1" = "command" -o  -z "$1" ]; then
 echo "Testing Command Line File"
 
 for f in $where/*.$ext
-do 
+do
     echo " ${f#$where/} 1"
     opt="-$what ${f%.$ext}.hdr -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
-    fi 
-    ds9 $opt -exit
+    fi
+    ds9 -title DS9Test $opt -exit
 
     echo " ${f#$where/} 2"
     opt="-$what ${f%.$ext}.hdr $f -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
-    fi 
-    ds9 $opt -exit
+    fi
+    ds9 -title DS9Test $opt -exit
 done
 echo "PASSED"
 fi
@@ -63,16 +63,16 @@ if [ "$1" = "$save" -o -z "$1" ]; then
 echo "Testing Command $save"
 
 for f in $where/*.$ext
-do 
+do
     echo " ${f#$where/} 1"
     opt="-tile -$what ${f%.$ext}.hdr $f"
     opt="$opt -$save $what foo.hdr foo.bsq"
     opt="$opt -frame new -$what foo.hdr -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
-    fi 
+    fi
     opt="$opt -frame delete"
-    ds9 $opt -exit
+    ds9 -title DS9Test $opt -exit
 
     echo " ${f#$where/} 2"
     opt="-tile -$what ${f%.$ext}.hdr $f"
@@ -80,9 +80,9 @@ do
     opt="$opt -frame new -$what foo.hdr foo.bsq -sleep .1"
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
-    fi 
+    fi
     opt="$opt -frame delete"
-    ds9 $opt -exit
+    ds9 -title DS9Test $opt -exit
 done
 
 echo "PASSED"
@@ -94,24 +94,24 @@ echo "Testing XPA File"
 
 StartDS9
 
-for f in $where/*.$ext 
-do 
+for f in $where/*.$ext
+do
     echo " ${f#$where/} 1"
-    xpaset -p ds9 $what ${f%.$ext}.hdr
+    xpaset -p DS9Test $what ${f%.$ext}.hdr
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 
     echo " ${f#$where/} 2"
-    xpaset -p ds9 $what ${f%.$ext}.hdr $f
+    xpaset -p DS9Test $what ${f%.$ext}.hdr $f
     if [ $slow = "1" ]; then
 	sleep 1
     fi
-    xpaset -p ds9 frame clear
+    xpaset -p DS9Test frame clear
 done
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
 echo "PASSED"
 fi
 

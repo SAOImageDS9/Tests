@@ -8,14 +8,14 @@ testfull () {
 # $5 cmd
     echo -n "$1"
     echo -n "."
-    ds9 $5 -$2 $3$4 -backup foo.bck -sleep 1 -exit
+    ds9 -title DS9Test $5 -$2 $3$4 -backup foo.bck -sleep 1 -exit
     echo -n "*"
-    ds9 -restore foo.bck -sleep 1 -exit
+    ds9 -title DS9Test -restore foo.bck -sleep 1 -exit
     rm -rf foo.bck*
     echo -n "."
-    cat $3 | ds9 $5 -$2 -$4 -backup foo.bck -sleep 1 -exit
+    cat $3 | ds9 -title DS9Test $5 -$2 -$4 -backup foo.bck -sleep 1 -exit
     echo -n "*"
-    ds9 -restore foo.bck -sleep 1 -exit
+    ds9 -title DS9Test -restore foo.bck -sleep 1 -exit
     rm -rf foo.bck*
     echo -n "."
     echo "PASSED"
@@ -27,9 +27,9 @@ testhalf () {
 # $3 file
     echo -n "$1"
     echo -n "."
-    ds9 -$2 ${3%.arr}.hdr $3 -backup foo.bck -sleep 1 -exit
+    ds9 -title DS9Test -$2 ${3%.arr}.hdr $3 -backup foo.bck -sleep 1 -exit
     echo -n "*"
-    ds9 -restore foo.bck -sleep 1 -exit
+    ds9 -title DS9Test -restore foo.bck -sleep 1 -exit
     rm -rf foo.bck*
     echo -n "."
     echo "PASSED"
@@ -96,7 +96,7 @@ if [ "$1" = "nrrd" -o -z "$1" ]; then
 fi
 
 if [ "$1" = "photo" -o -z "$1" ]; then
-    testfull photo tiff photo/rose.tiff 
+    testfull photo tiff photo/rose.tiff
     testfull "photo original" tiff photo/rose.tiff " -source aux/pds9.tcl "
 fi
 
@@ -110,7 +110,7 @@ if [ "$1" = "old" -o -z "$1" ]; then
     for f in backup/*.bck
     do
 	echo "Testing $f"
-	ds9 -restore $f
+	ds9 -title DS9Test -restore $f
 	echo "PASSED"
     done
 fi

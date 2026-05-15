@@ -7,7 +7,7 @@ testit () {
 }
 
 doit () {
-    eval ds9 -zscale fits/img.fits "$opt" -exit
+    eval ds9 -title DS9Test -zscale fits/img.fits "$opt" -exit
     echo "PASSED"
     echo ""
 }

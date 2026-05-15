@@ -1,29 +1,29 @@
 doit () {
     echo "Generating $6 $7 $8 $9 in ${10}"
-    xpaset -p ds9 regions format $1
-    xpaset -p ds9 regions system $2
-    xpaset -p ds9 regions sky $3
-    xpaset -p ds9 regions skyformat $4
-    xpaset -p ds9 regions load $5
+    xpaset -p DS9Test regions format $1
+    xpaset -p DS9Test regions system $2
+    xpaset -p DS9Test regions sky $3
+    xpaset -p DS9Test regions skyformat $4
+    xpaset -p DS9Test regions load $5
 
-    xpaset -p ds9 regions format $6
-    xpaset -p ds9 regions system $7
-    xpaset -p ds9 regions sky $8
-    xpaset -p ds9 regions skyformat $9
-    xpaset -p ds9 regions save ${10}
+    xpaset -p DS9Test regions format $6
+    xpaset -p DS9Test regions system $7
+    xpaset -p DS9Test regions sky $8
+    xpaset -p DS9Test regions skyformat $9
+    xpaset -p DS9Test regions save ${10}
 
-    xpaset -p ds9 regions deleteall
+    xpaset -p DS9Test regions deleteall
 }
 
 echo "Starting DS9..."
-if [ `xpaaccess ds9` = no ]; then
-    ds9&
+if [ `xpaaccess DS9Test` = no ]; then
+    ds9 -title DS9Test &
 
     i=1
     while [ "$i" -le 30 ]
     do
         sleep 2
-        if [ `xpaaccess ds9` = yes ]
+        if [ `xpaaccess DS9Test` = yes ]
         then
 	    break
         fi
@@ -35,10 +35,10 @@ fi
 if [ "$1" = "ds9" -o -z "$1" ]; then
 echo
 echo "DS9 Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
 
-doit ds9 image fk5 degrees regions/ds9.image.reg ds9 physical fk5 degrees regions/ds9.physical.reg 
+doit ds9 image fk5 degrees regions/ds9.image.reg ds9 physical fk5 degrees regions/ds9.physical.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 degrees regions/ds9.fk4.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 sexagesimal regions/ds9.fk4.hms.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk5 degrees regions/ds9.fk5.reg
@@ -58,12 +58,12 @@ fi
 if [ "$1" = "strip" -o -z "$1" ]; then
 echo
 echo "DS9 strip Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
-xpaset -p ds9 regions strip yes
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
+xpaset -p DS9Test regions strip yes
 
-doit ds9 image fk5 degrees regions/ds9.image.reg ds9 image fk5 degrees regions/ds9.image.strip.reg 
-doit ds9 image fk5 degrees regions/ds9.image.reg ds9 physical fk5 degrees regions/ds9.physical.strip.reg 
+doit ds9 image fk5 degrees regions/ds9.image.reg ds9 image fk5 degrees regions/ds9.image.strip.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg ds9 physical fk5 degrees regions/ds9.physical.strip.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 degrees regions/ds9.fk4.strip.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk4 sexagesimal regions/ds9.fk4.hms.strip.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs fk5 degrees regions/ds9.fk5.strip.reg
@@ -75,7 +75,7 @@ doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs galactic sexagesimal re
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs ecliptic degrees regions/ds9.ecliptic.strip.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg ds9 wcs ecliptic sexagesimal regions/ds9.ecliptic.hms.strip.reg
 
-xpaset -p ds9 regions strip no
+xpaset -p DS9Test regions strip no
 fi
 
 # test not generated: composite
@@ -83,9 +83,9 @@ fi
 if [ "$1" = "mosaic" -o -z "$1" ]; then
 echo
 echo "DS9 Mosaic Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 file mosaicimage mosaic/mosaicimage.fits
-xpaset -p ds9 zoom .5
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test file mosaicimage mosaic/mosaicimage.fits
+xpaset -p DS9Test zoom .5
 
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 physical fk5 degrees regions/ds9.mosaic.physical.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg ds9 wcs fk4 degrees regions/ds9.mosaic.fk4.reg
@@ -103,9 +103,9 @@ fi
 if [ "$1" = "linear" -o -z "$1" ]; then
 echo
 echo "DS9 Linear Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 mosaicimage mosaic/ds9_8amp_2x2.fits
-xpaset -p ds9 zoom .5
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test mosaicimage mosaic/ds9_8amp_2x2.fits
+xpaset -p DS9Test zoom .5
 
 doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsa fk5 degrees regions/ds9.linear.wcsa.reg
 doit ds9 wcs fk5 degrees regions/ds9.linear.wcs.reg ds9 wcsc fk5 degrees regions/ds9.linear.wcsc.reg
@@ -117,11 +117,11 @@ fi
 if [ "$1" = "xml" -o -z "$1" ]; then
 echo
 echo "XML Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
 
-doit ds9 image fk5 degrees regions/ds9.image.reg xml image fk5 degrees regions/xml.image.reg 
-doit ds9 image fk5 degrees regions/ds9.image.reg xml physical fk5 degrees regions/xml.physical.reg 
+doit ds9 image fk5 degrees regions/ds9.image.reg xml image fk5 degrees regions/xml.image.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg xml physical fk5 degrees regions/xml.physical.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk4 degrees regions/xml.fk4.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk4 sexagesimal regions/xml.fk4.hms.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg xml wcs fk5 degrees regions/xml.fk5.reg
@@ -137,9 +137,9 @@ fi
 if [ "$1" = "xmlmosaic" -o -z "$1" ]; then
 echo
 echo "XML Mosaic Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 mosaicimage mosaic/mosaicimage.fits
-xpaset -p ds9 zoom .5
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test mosaicimage mosaic/mosaicimage.fits
+xpaset -p DS9Test zoom .5
 
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg xml image fk5 degrees regions/xml.mosaic.image.reg
 doit ds9 image fk5 degrees regions/ds9.mosaic.image.reg xml physical fk5 degrees regions/xml.mosaic.physical.reg
@@ -158,18 +158,18 @@ fi
 if [ "$1" = "ciao" -o -z "$1" ]; then
 echo
 echo "CIAO Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
 
-doit ds9 image fk5 degrees regions/ds9.image.reg ciao physical fk5 degrees regions/ciao.physical.reg 
-doit ds9 image fk5 degrees regions/ds9.image.reg ciao wcs fk5 sexagesimal regions/ciao.fk5.reg 
+doit ds9 image fk5 degrees regions/ds9.image.reg ciao physical fk5 degrees regions/ciao.physical.reg
+doit ds9 image fk5 degrees regions/ds9.image.reg ciao wcs fk5 sexagesimal regions/ciao.fk5.reg
 fi
 
 if [ "$1" = "saotng" -o -z "$1" ]; then
 echo
 echo "SAOtng Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg saotng image fk5 degrees regions/saotng.image.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg saotng wcs fk4 degrees regions/saotng.fk4.reg
@@ -187,8 +187,8 @@ fi
 if [ "$1" = "pros" -o -z "$1" ]; then
 echo
 echo "IRAF Pros Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg pros image fk5 degrees regions/pros.image.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg pros physical fk5 degrees regions/pros.physical.reg
@@ -205,8 +205,8 @@ fi
 if [ "$1" = "saoimage" -o -z "$1" ]; then
 echo
 echo "SAOImage Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg saoimage image fk5 degrees regions/saoimage.reg
 fi
@@ -214,8 +214,8 @@ fi
 if [ "$1" = "xy" -o -z "$1" ]; then
 echo
 echo "X Y Format..."
-xpaset -p ds9 frame clear
-xpaset -p ds9 fits fits/img.fits
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
 
 doit ds9 image fk5 degrees regions/ds9.image.reg xy image fk5 degrees regions/xy.image.reg
 doit ds9 image fk5 degrees regions/ds9.image.reg xy physical fk5 degrees regions/xy.physical.reg
@@ -233,4 +233,4 @@ fi
 
 # test not generated: fits
 
-xpaset -p ds9 quit
+xpaset -p DS9Test quit
