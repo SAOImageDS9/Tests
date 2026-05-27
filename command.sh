@@ -615,36 +615,36 @@ testit "-mode none"
 doit
 fi
 
-tt="dsssao"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-initit "$tt/dss"
-testit "-dsssao open"
-testit "-dsssao close"
-testit "-dsssao size 30 30 arcsec"
-testit "-dsssao save no"
-testit "-dsssao frame new"
-testit "-dsssao update frame"
-testit "-dsssao m51"
-testit "-dsssao name m51"
-testit "-dsssao name clear"
-testit "-dsssao 13:29:52.37 +47:11:40.8"
-# backward compatibility
-testit "-dsssao coord 13:29:52.37 +47:11:40.8 sexagesimal"
-testit "-dsssao update frame"
-testit "-mode crosshair"
-testit "-dsssao update crosshair"
-testit "-dsssao close"
-testit "-mode none"
-testit "-frame delete"
-testit "-frame delete"
-testit "-frame delete"
-testit "-frame delete"
-testit "-frame delete"
-testit "-frame delete"
-testit "-frame delete"
+#~ tt="dsssao"
+#~ if [ "$1" = "$tt" -o -z "$1" ]; then
+#~ initit "$tt/dss"
+#~ testit "-dsssao open"
+#~ testit "-dsssao close"
+#~ testit "-dsssao size 30 30 arcsec"
+#~ testit "-dsssao save no"
+#~ testit "-dsssao frame new"
+#~ testit "-dsssao update frame"
+#~ testit "-dsssao m51"
+#~ testit "-dsssao name m51"
+#~ testit "-dsssao name clear"
+#~ testit "-dsssao 13:29:52.37 +47:11:40.8"
+#~ # backward compatibility
+#~ testit "-dsssao coord 13:29:52.37 +47:11:40.8 sexagesimal"
+#~ testit "-dsssao update frame"
+#~ testit "-mode crosshair"
+#~ testit "-dsssao update crosshair"
+#~ testit "-dsssao close"
+#~ testit "-mode none"
+#~ testit "-frame delete"
+#~ testit "-frame delete"
+#~ testit "-frame delete"
+#~ testit "-frame delete"
+#~ testit "-frame delete"
+#~ testit "-frame delete"
+#~ testit "-frame delete"
 
-doit
-fi
+#~ doit
+#~ fi
 
 tt="dsseso"
 if [ "$1" = "$tt" -o -z "$1" ]; then

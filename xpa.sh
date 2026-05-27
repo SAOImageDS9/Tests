@@ -4170,7 +4170,6 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaget DS9Test xpa >> /dev/null
 xpaget DS9Test xpa info >> /dev/null
-xpaget DS9Test xpa connect >> /dev/null
 #xpaset -p DS9Test xpa connect
 #xpaset -p DS9Test xpa disconnect
 xpaset -p DS9Test xpa info

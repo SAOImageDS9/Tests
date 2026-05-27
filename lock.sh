@@ -13,7 +13,7 @@ fi
 
 if [ "$1" = "crop" -o -z "$1" ]; then
 echo "Testing crop"
-ds9 -title DS9Test -debug -zscale fits/img.fits -rgb fits/img.fits -green fits/img.fits -blue fits/img.fits -tile -lock crop wcs -crop open -mode crop -rgb lock crop yes
+ds9 -title DS9Test -debug -zscale fits/img.fits -rgb fits/img.fits -green fits/img.fits -blue fits/img.fits -tile -lock crop wcs -crop open -mode crop -rgb lock crop yes -exit
 ds9 -title DS9Test -debug -zscale data/3d.fits -3d data/3d.fits -3d vp 45 30 -tile -lock crop wcs -mode crop -exit
 fi
 
