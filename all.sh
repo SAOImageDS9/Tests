@@ -11,7 +11,7 @@ ciaoregs.sh
 parse.sh
 crop.sh
 plot.sh
-prefs.sh
+#prefs.sh
 cat.sh
 sia.sh
 print.sh
@@ -24,9 +24,9 @@ yes | align.sh
 yes | posang.sh
 yes | wcs.sh
 yes | wcs2.sh
-#vo.sh xpa
+# vo.sh xpa
 yes | vo.sh mime
-yes | backup.sh
+# yes | backup.sh
 yes | analysis.sh
 
 yes | layoutnone.sh

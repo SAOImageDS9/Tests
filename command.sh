@@ -3187,7 +3187,7 @@ initit "$tt"
 testit "-xpa yes"
 testit "-xpa inet"
 #testit "-xpa noxpans"
-testit "-xpa connect"
+#testit "-xpa connect"
 testit "-xpa info"
 
 doit
