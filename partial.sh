@@ -1,6 +1,6 @@
 StartDS9 () {
     if [ `xpaaccess DS9Test` = no ]; then
-	ds9 -title DS9Test &
+	timeout 1m ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 30 ]
@@ -49,7 +49,7 @@ do
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
     fi
-    ds9 -title DS9Test $opt -exit
+    timeout 10s ds9 -title DS9Test $opt -exit
 done
 
 echo "PASSED"
@@ -66,7 +66,7 @@ do
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
     fi
-    cat $f | ds9 -title DS9Test $opt -exit
+    cat $f | timeout 10s ds9 -title DS9Test $opt -exit
 done
 
 echo "PASSED"
