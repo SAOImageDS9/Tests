@@ -8,7 +8,7 @@ then
 fi
 
 i=1
-while [ "$i" -le 30 ]
+while [ "$i" -le 10 ]
 do
     sleep 2
     if [ `xpaaccess DS9Test` = yes ]

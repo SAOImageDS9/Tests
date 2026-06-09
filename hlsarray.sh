@@ -1,6 +1,6 @@
 KillIt () {
     i=1
-    while [ "$i" -le 15 ]; do
+    while [ "$i" -le 10 ]; do
       sleep 1
       if [ `xpaaccess DS9Test` = yes ]; then
 	  if [ $slow = "1" ]; then
@@ -70,7 +70,7 @@ StartDS9 () {
 	ds9 -title DS9Test -frame delete -hls&
 
 	i=1
-	while [ "$i" -le 30 ]
+	while [ "$i" -le 10 ]
 	    do
 	    sleep 2
 	    if [ `xpaaccess DS9Test` = yes ]; then

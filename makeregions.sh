@@ -20,7 +20,7 @@ if [ `xpaaccess DS9Test` = no ]; then
     ds9 -title DS9Test &
 
     i=1
-    while [ "$i" -le 30 ]
+    while [ "$i" -le 10 ]
     do
         sleep 2
         if [ `xpaaccess DS9Test` = yes ]

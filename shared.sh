@@ -6,7 +6,7 @@
 
 KillIt () {
     i=1
-    while [ "$i" -le 15 ]; do
+    while [ "$i" -le 10 ]; do
       sleep 1
       if [ `xpaaccess DS9Test` = yes ]; then
 	  sleep 1
@@ -124,7 +124,7 @@ then
 fi
 
 i=1
-while [ "$i" -le 15 ]
+while [ "$i" -le 10 ]
 do
     sleep 1
     if [ `xpaaccess DS9Test` = yes ]

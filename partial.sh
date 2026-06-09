@@ -3,7 +3,7 @@ StartDS9 () {
 	timeout 1m ds9 -title DS9Test &
 
 	i=1
-	while [ "$i" -le 30 ]
+	while [ "$i" -le 10 ]
 	    do
 	    sleep 2
 	    if [ `xpaaccess DS9Test` = yes ]; then
