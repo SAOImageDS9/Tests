@@ -6,7 +6,7 @@ do
     echo " ${f#compress/}"
     rm -f foo.fits
     funpack -O foo.fits $f
-    ds9 -title DS9Test $f foo.fits -mode crosshair -lock crosshair image -lock scale -lock colorbar -lock frame image -lock slice -exit
+    timeout 10s ds9 -title DS9Test $f foo.fits -mode crosshair -lock crosshair image -lock scale -lock colorbar -lock frame image -lock slice -exit
 done
 
 echo "PASSED"
