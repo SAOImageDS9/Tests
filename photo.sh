@@ -161,44 +161,44 @@ echo "Testing Command Stdin"
 
 echo ".. base"
 echo "..  gif"
-cat photo/rose.gif | ds9 -title DS9Test -gif - &
+cat photo/rose.gif | timeout 10s ds9 -title DS9Test -gif - &
 KillIt
 echo "..  tiff"
-cat photo/rose.tiff | ds9 -title DS9Test -tiff - &
+cat photo/rose.tiff | timeout 10s ds9 -title DS9Test -tiff - &
 KillIt
 echo "..  jpeg"
-cat photo/rose.jpeg | ds9 -title DS9Test -jpeg - &
+cat photo/rose.jpeg | timeout 10s ds9 -title DS9Test -jpeg - &
 KillIt
 echo "..  png"
-cat photo/rose.png | ds9 -title DS9Test -png - &
+cat photo/rose.png | timeout 10s ds9 -title DS9Test -png - &
 KillIt
 
 echo ".. rgb"
 echo "..  gif"
-cat photo/rose.gif | ds9 -title DS9Test -rgb -gif - &
+cat photo/rose.gif | timeout 10s ds9 -title DS9Test -rgb -gif - &
 KillIt
 echo "..  tiff"
-cat photo/rose.tiff | ds9 -title DS9Test -rgb -tiff - &
+cat photo/rose.tiff | timeout 10s ds9 -title DS9Test -rgb -tiff - &
 KillIt
 echo "..  jpeg"
-cat photo/rose.jpeg | ds9 -title DS9Test -rgb -jpeg - &
+cat photo/rose.jpeg | timeout 10s ds9 -title DS9Test -rgb -jpeg - &
 KillIt
 echo "..  png"
-cat photo/rose.png | ds9 -title DS9Test -rgb -png - &
+cat photo/rose.png | timeout 10s ds9 -title DS9Test -rgb -png - &
 KillIt
 
 echo ".. 3d"
 echo "..  gif"
-cat photo/rose.gif | ds9 -title DS9Test -3d -gif - &
+cat photo/rose.gif | timeout 10s ds9 -title DS9Test -3d -gif - &
 KillIt
 echo "..  tiff"
-cat photo/rose.tiff | ds9 -title DS9Test -3d -tiff - &
+cat photo/rose.tiff | timeout 10s ds9 -title DS9Test -3d -tiff - &
 KillIt
 echo "..  jpeg"
-cat photo/rose.jpeg | ds9 -title DS9Test -3d -jpeg - &
+cat photo/rose.jpeg | timeout 10s ds9 -title DS9Test -3d -jpeg - &
 KillIt
 echo "..  png"
-cat photo/rose.png | ds9 -title DS9Test -3d -png - &
+cat photo/rose.png | timeout 10s ds9 -title DS9Test -3d -png - &
 KillIt
 
 echo "PASSED"

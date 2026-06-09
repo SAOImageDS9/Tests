@@ -211,107 +211,107 @@ if [ "$1" = "stdin" -o  -z "$1" ]; then
 echo "Testing Command Stdin"
 
 echo ".. char"
-cat rgbarray/char.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=8] &
+cat rgbarray/char.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=8] &
 KillIt
 
 echo ".. char gzip"
-cat rgbarray/char.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=8] &
+cat rgbarray/char.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=8] &
 KillIt
 
 echo ".. short little"
-cat rgbarray/short_little.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=little] &
+cat rgbarray/short_little.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short little gzip"
-cat rgbarray/short_little.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=little] &
+cat rgbarray/short_little.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short big"
-cat rgbarray/short_big.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=big] &
+cat rgbarray/short_big.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=big] &
 KillIt
 
 echo ".. short big gzip"
-cat rgbarray/short_big.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=big] &
+cat rgbarray/short_big.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=16,arch=big] &
 KillIt
 
 echo ".. ushort little"
-cat rgbarray/ushort_little.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=little] &
+cat rgbarray/ushort_little.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort little gzip"
-cat rgbarray/ushort_little.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=little] &
+cat rgbarray/ushort_little.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort big"
-cat rgbarray/ushort_big.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=big] &
+cat rgbarray/ushort_big.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. ushort big gzip"
-cat rgbarray/ushort_big.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=big] &
+cat rgbarray/ushort_big.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. int little"
-cat rgbarray/int_little.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=little] &
+cat rgbarray/int_little.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int little gzip"
-cat rgbarray/int_little.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=little] &
+cat rgbarray/int_little.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int big"
-cat rgbarray/int_big.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=big] &
+cat rgbarray/int_big.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=big] &
 KillIt
 
 echo ".. int big gzip"
-cat rgbarray/int_big.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=big] &
+cat rgbarray/int_big.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=32,arch=big] &
 KillIt
 
 echo ".. longlong little"
-cat rgbarray/longlong_little.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=little] &
+cat rgbarray/longlong_little.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong little gzip"
-cat rgbarray/longlong_little.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=little] &
+cat rgbarray/longlong_little.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong big"
-cat rgbarray/longlong_big.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=big] &
+cat rgbarray/longlong_big.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=big] &
 KillIt
 
 echo ".. longlong big gzip"
-cat rgbarray/longlong_big.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=big] &
+cat rgbarray/longlong_big.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=64,arch=big] &
 KillIt
 
 echo ".. float little"
-cat rgbarray/float_little.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=little] &
+cat rgbarray/float_little.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float little gzip"
-cat rgbarray/float_little.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=little] &
+cat rgbarray/float_little.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float big"
-cat rgbarray/float_big.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=big] &
+cat rgbarray/float_big.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. float big gzip"
-cat rgbarray/float_big.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=big] &
+cat rgbarray/float_big.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. double little"
-cat rgbarray/double_little.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=little] &
+cat rgbarray/double_little.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double little gzip"
-cat rgbarray/double_little.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=little] &
+cat rgbarray/double_little.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double big"
-cat rgbarray/double_big.rgb | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=big] &
+cat rgbarray/double_big.rgb | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=big] &
 KillIt
 
 echo ".. double big gzip"
-cat rgbarray/double_big.rgb.gz | ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=big] &
+cat rgbarray/double_big.rgb.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,zdim=3,bitpix=-64,arch=big] &
 KillIt
 
 echo "PASSED"

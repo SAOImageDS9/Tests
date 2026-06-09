@@ -13,7 +13,7 @@ testfull () {
     ds9 -title DS9Test -restore foo.bck -sleep 1 -exit
     rm -rf foo.bck*
     echo -n "."
-    cat $3 | ds9 -title DS9Test $5 -$2 -$4 -backup foo.bck -sleep 1 -exit
+    cat $3 | timeout 10s ds9 -title DS9Test $5 -$2 -$4 -backup foo.bck -sleep 1 -exit
     echo -n "*"
     ds9 -title DS9Test -restore foo.bck -sleep 1 -exit
     rm -rf foo.bck*

@@ -211,107 +211,107 @@ if [ "$1" = "stdin" -o  -z "$1" ]; then
 echo "Testing Command Stdin"
 
 echo ".. char"
-cat array/char.arr | ds9 -title DS9Test -array -[dim=256,bitpix=8] &
+cat array/char.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=8] &
 KillIt
 
 echo ".. char gzip"
-cat array/char.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=8] &
+cat array/char.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=8] &
 KillIt
 
 echo ".. short little"
-cat array/short_little.arr | ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=little] &
+cat array/short_little.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short little gzip"
-cat array/short_little.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=little] &
+cat array/short_little.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=little] &
 KillIt
 
 echo ".. short big"
-cat array/short_big.arr | ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=big] &
+cat array/short_big.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=big] &
 KillIt
 
 echo ".. short big gzip"
-cat array/short_big.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=big] &
+cat array/short_big.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=16,arch=big] &
 KillIt
 
 echo ".. ushort little"
-cat array/ushort_little.arr | ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=little] &
+cat array/ushort_little.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort little gzip"
-cat array/ushort_little.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=little] &
+cat array/ushort_little.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=little] &
 KillIt
 
 echo ".. ushort big"
-cat array/ushort_big.arr | ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=big] &
+cat array/ushort_big.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. ushort big gzip"
-cat array/ushort_big.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=big] &
+cat array/ushort_big.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-16,arch=big] &
 KillIt
 
 echo ".. int little"
-cat array/int_little.arr | ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=little] &
+cat array/int_little.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int little gzip"
-cat array/int_little.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=little] &
+cat array/int_little.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=little] &
 KillIt
 
 echo ".. int big"
-cat array/int_big.arr | ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=big] &
+cat array/int_big.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=big] &
 KillIt
 
 echo ".. int big gzip"
-cat array/int_big.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=big] &
+cat array/int_big.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=32,arch=big] &
 KillIt
 
 echo ".. longlong little"
-cat array/longlong_little.arr | ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=little] &
+cat array/longlong_little.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong little gzip"
-cat array/longlong_little.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=little] &
+cat array/longlong_little.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=little] &
 KillIt
 
 echo ".. longlong big"
-cat array/longlong_big.arr | ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=big] &
+cat array/longlong_big.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=big] &
 KillIt
 
 echo ".. longlong big gzip"
-cat array/longlong_big.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=big] &
+cat array/longlong_big.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=64,arch=big] &
 KillIt
 
 echo ".. float little"
-cat array/float_little.arr | ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=little] &
+cat array/float_little.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float little gzip"
-cat array/float_little.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=little] &
+cat array/float_little.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=little] &
 KillIt
 
 echo ".. float big"
-cat array/float_big.arr | ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=big] &
+cat array/float_big.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. float big gzip"
-cat array/float_big.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=big] &
+cat array/float_big.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-32,arch=big] &
 KillIt
 
 echo ".. double little"
-cat array/double_little.arr | ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=little] &
+cat array/double_little.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double little gzip"
-cat array/double_little.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=little] &
+cat array/double_little.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=little] &
 KillIt
 
 echo ".. double big"
-cat array/double_big.arr | ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=big] &
+cat array/double_big.arr | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=big] &
 KillIt
 
 echo ".. double big gzip"
-cat array/double_big.arr.gz | ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=big] &
+cat array/double_big.arr.gz | timeout 10s ds9 -title DS9Test -array -[dim=256,bitpix=-64,arch=big] &
 KillIt
 
 echo "PASSED"

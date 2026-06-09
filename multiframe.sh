@@ -69,7 +69,7 @@ echo "Testing Stdin File"
 for f in $where/*.$ext
 do
     echo " ${f#$where/}"
-    cat $f | ds9 -title DS9Test -$what - &
+    cat $f | timeout 10s ds9 -title DS9Test -$what - &
     KillIt
 done
 

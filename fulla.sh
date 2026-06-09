@@ -70,7 +70,7 @@ do
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
     fi
-    cat $f | ds9 -title DS9Test $opt -exit
+    cat $f | timeout 10s ds9 -title DS9Test $opt -exit
 done
 
 echo "PASSED"

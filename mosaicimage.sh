@@ -76,25 +76,25 @@ if [ "$1" = "stdin" -o  -z "$1" ]; then
 echo "Testing Stdin File"
 
 echo " -mosaicimage"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaicimage -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaicimage -&
 KillIt
 echo " -mosaicimage wcs"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaicimage wcs -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaicimage wcs -&
 KillIt
 echo " -mosaicimagewcs"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaicimagewcs -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaicimagewcs -&
 KillIt
 echo " -mosaicimage iraf"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaicimage iraf -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaicimage iraf -&
 KillIt
 echo " -mosaicimageiraf"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaicimageiraf -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaicimageiraf -&
 KillIt
 echo " -mosaicimage wfpc2"
-cat mosaic/hst.fits | ds9 -title DS9Test -mosaicimage wfpc2 -&
+cat mosaic/hst.fits | timeout 10s ds9 -title DS9Test -mosaicimage wfpc2 -&
 KillIt
 echo " -mosaicimagewfpc2"
-cat mosaic/hst.fits | ds9 -title DS9Test -mosaicimagewfpc2 -&
+cat mosaic/hst.fits | timeout 10s ds9 -title DS9Test -mosaicimagewfpc2 -&
 KillIt
 
 echo "PASSED"

@@ -70,19 +70,19 @@ if [ "$1" = "stdin" -o  -z "$1" ]; then
 echo "Testing Stdin File"
 
 echo " -mosaic"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaic -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaic -&
 KillIt
 echo " -mosaic wcs"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaic wcs -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaic wcs -&
 KillIt
 echo " -mosaicwcs"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaicwcs -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaicwcs -&
 KillIt
 echo " -mosaic iraf"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaic iraf -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaic iraf -&
 KillIt
 echo " -mosaiciraf"
-cat mosaic/mosaicimage.fits | ds9 -title DS9Test -mosaiciraf -&
+cat mosaic/mosaicimage.fits | timeout 10s ds9 -title DS9Test -mosaiciraf -&
 KillIt
 
 echo "PASSED"
