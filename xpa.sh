@@ -520,6 +520,8 @@ xpaset -p DS9Test colorbar fontslant italic
 xpaset -p DS9Test colorbar fontstyle italic
 xpaset -p DS9Test colorbar size 30
 xpaset -p DS9Test colorbar ticks 9
+xpaset -p DS9Test colorbar width 0.5
+xpaset -p DS9Test colorbar center 1
 xpaset -p DS9Test colorbar match
 xpaset -p DS9Test colorbar lock yes
 xpaset -p DS9Test colorbar lock no
@@ -530,6 +532,8 @@ xpaset -p DS9Test colorbar fontweight normal
 xpaset -p DS9Test colorbar fontslant roman
 xpaset -p DS9Test colorbar size 20
 xpaset -p DS9Test colorbar ticks 11
+xpaset -p DS9Test colorbar width 1
+xpaset -p DS9Test colorbar center 0.5
 
 testit $tt
 fi

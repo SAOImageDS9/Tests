@@ -24,6 +24,12 @@ testit () {
     echo -n "  fontsize 9"
     xpaset -p DS9Test colorbar fontsize 9
     read
+    echo -n "  width 0.5"
+    xpaset -p DS9Test colorbar width 0.5
+    read
+    echo -n "  center 1"
+    xpaset -p DS9Test colorbar center 1
+    read
     echo -n "  row"
     xpaset -p DS9Test tile row
     read

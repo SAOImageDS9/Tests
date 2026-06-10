@@ -422,6 +422,8 @@ testit "-colorbar fontslant italic"
 # backward compatibility
 testit "-colorbar fontstyle italic"
 testit "-colorbar size 30"
+testit "-colorbar width 0.5"
+testit "-colorbar center 1"
 testit "-colorbar ticks 9"
 testit "-colorbar match"
 testit "-colorbar lock yes"
@@ -432,6 +434,8 @@ testit "-colorbar fontweight normal"
 testit "-colorbar fontslant roman"
 testit "-colorbar size 20"
 testit "-colorbar size 11"
+testit "-colorbar width 1"
+testit "-colorbar center 0.5"
 
 doit
 fi

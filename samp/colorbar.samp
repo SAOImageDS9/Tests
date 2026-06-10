@@ -26,6 +26,8 @@ set {} colorbar fontslant italic
 # backward compatibility
 set {} colorbar fontstyle italic
 set {} colorbar size 30
+set {} colorbar width 0.5
+set {} colorbar center 1
 set {} colorbar ticks 9
 set {} colorbar match
 set {} colorbar lock yes
