@@ -1,6 +1,6 @@
 StartDS9 () {
     if [ `xpaaccess DS9Test` = no ]; then
-	timeout 1min ds9 -title DS9Test &
+	timeout 1m ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 10 ]
