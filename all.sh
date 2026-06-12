@@ -11,10 +11,13 @@ ciaoregs.sh
 parse.sh
 crop.sh
 plot.sh
+pdf.sh
+plotpdf.sh
 #prefs.sh
 cat.sh
 sia.sh
 print.sh
+
 
 #~ # requires input
 yes | scale.sh
