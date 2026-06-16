@@ -14,4 +14,7 @@ set {} savempeg foo.mpg
 set {} 3d close
 set {} cube close
 set {} single
+
+set {} movie script gif movie.script script.gif
+
 set {} raise

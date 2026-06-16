@@ -2341,6 +2341,8 @@ xpaset -p DS9Test savempeg foo.mpg
 
 xpaset -p DS9Test 3d close
 xpaset -p DS9Test cube close
+
+xpaset -p DS9Test movie script gif movie.script script_xpa.gif
 testit $tt
 fi
 

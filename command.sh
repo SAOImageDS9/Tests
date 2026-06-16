@@ -1608,6 +1608,8 @@ testit "-savempeg foo.mpg"
 
 testit "-3d close"
 testit "-cube close"
+
+testit "-movie script gif movie.script script.gif"
 doit
 fi
 
