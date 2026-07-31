@@ -139,6 +139,7 @@ doit "$1" mosaicimageiraf
 doit "$1" mosaicimagewfpc2
 doit "$1" movie
 doit "$1" multiframe
+doit "$1" multicolor
 doit "$1" nameserver
 # backward compatibility prefs
 doit "$1" nan

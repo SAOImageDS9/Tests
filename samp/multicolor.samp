@@ -1,0 +1,202 @@
+set {} multicolor
+set {} layer color red
+set {} fits data/i.fits
+set {} layer create
+set {} layer color green
+set {} fits data/r.fits
+set {} layer create
+set {} layer color blue
+set {} fits data/v.fits
+
+get layer count
+get layer layerno
+get layer 1 color
+get layer 2 color
+get layer 3 color
+get layer blend
+get layer 3 transparency
+get layer view
+
+set {} layer 1
+get layer layerno
+set {} layer layerno 2
+get layer layerno
+set {} layer color cyan
+get layer color
+set {} layer 2 color green
+get layer 2 color
+
+set {} multicolor system image
+get multicolor system
+set {} multicolor system physical
+get multicolor system
+set {} multicolor system amplifier
+get multicolor system
+set {} multicolor system detector
+get multicolor system
+set {} multicolor system wcs
+get multicolor system
+set {} multicolor system wcsa
+get multicolor system
+set {} multicolor system wcsb
+get multicolor system
+set {} multicolor system wcsc
+get multicolor system
+set {} multicolor system wcsd
+get multicolor system
+set {} multicolor system wcse
+get multicolor system
+set {} multicolor system wcsf
+get multicolor system
+set {} multicolor system wcsg
+get multicolor system
+set {} multicolor system wcsh
+get multicolor system
+set {} multicolor system wcsi
+get multicolor system
+set {} multicolor system wcsj
+get multicolor system
+set {} multicolor system wcsk
+get multicolor system
+set {} multicolor system wcsl
+get multicolor system
+set {} multicolor system wcsm
+get multicolor system
+set {} multicolor system wcsn
+get multicolor system
+set {} multicolor system wcso
+get multicolor system
+set {} multicolor system wcsp
+get multicolor system
+set {} multicolor system wcsq
+get multicolor system
+set {} multicolor system wcsr
+get multicolor system
+set {} multicolor system wcss
+get multicolor system
+set {} multicolor system wcst
+get multicolor system
+set {} multicolor system wcsu
+get multicolor system
+set {} multicolor system wcsv
+get multicolor system
+set {} multicolor system wcsw
+get multicolor system
+set {} multicolor system wcsx
+get multicolor system
+set {} multicolor system wcsy
+get multicolor system
+set {} multicolor system wcsz
+get multicolor system
+set {} multicolor system wcs
+get multicolor system
+
+set {} multicolor lock wcs yes
+get multicolor lock wcs
+set {} multicolor lock wcs no
+get multicolor lock wcs
+set {} multicolor lock crop yes
+get multicolor lock crop
+set {} multicolor lock crop no
+get multicolor lock crop
+set {} multicolor lock slice yes
+get multicolor lock slice
+set {} multicolor lock slice no
+get multicolor lock slice
+set {} multicolor lock bin yes
+get multicolor lock bin
+set {} multicolor lock bin no
+get multicolor lock bin
+set {} multicolor lock scale yes
+get multicolor lock scale
+set {} multicolor lock scale no
+get multicolor lock scale
+set {} multicolor lock scalelimits yes
+get multicolor lock scalelimits
+set {} multicolor lock scalelimits no
+get multicolor lock scalelimits
+set {} multicolor lock colorbar yes
+get multicolor lock colorbar
+set {} multicolor lock colorbar no
+get multicolor lock colorbar
+set {} multicolor lock block yes
+get multicolor lock block
+set {} multicolor lock block no
+get multicolor lock block
+set {} multicolor lock smooth yes
+get multicolor lock smooth
+set {} multicolor lock smooth no
+get multicolor lock smooth
+
+set {} layer 2 blend source
+get layer blend
+set {} layer blend multiply
+get layer 2 blend
+set {} layer blend screen
+get layer blend
+set {} layer blend overlay
+get layer blend
+set {} layer blend darken
+get layer blend
+set {} layer blend lighten
+get layer blend
+set {} layer blend color-dodge
+get layer blend
+set {} layer blend color-burn
+get layer blend
+set {} layer blend hard-light
+get layer blend
+set {} layer blend soft-light
+get layer blend
+set {} layer blend difference
+get layer blend
+set {} layer blend exclusion
+get layer blend
+set {} layer blend hue
+get layer blend
+set {} layer blend saturation
+get layer blend
+set {} layer blend color
+get layer blend
+set {} layer blend luminosity
+get layer blend
+
+set {} layer transparency 0
+get layer transparency
+set {} layer transparency 35
+get layer transparency
+set {} layer 2 transparency 100
+get layer 2 transparency
+set {} layer view no
+get layer view
+set {} layer 2 view yes
+get layer 2 view
+
+set {} layer 3 top
+get layer 1 color
+get layer 2 color
+get layer 3 color
+set {} layer bottom
+get layer 1 color
+get layer 2 color
+get layer 3 color
+set {} layer 3 up
+get layer 1 color
+get layer 2 color
+get layer 3 color
+set {} layer down
+get layer 1 color
+get layer 2 color
+get layer 3 color
+
+set {} layer 2 delete
+get layer count
+get layer 1 color
+get layer 2 color
+set {} layer 2
+set {} layer delete
+get layer count
+set {} frame delete
+
+set {} single
+set {} raise

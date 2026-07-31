@@ -2441,6 +2441,212 @@ xpaset -p DS9Test frame delete
 testit $tt
 fi
 
+tt="multicolor"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p DS9Test multicolor
+xpaset -p DS9Test layer color red
+xpaset -p DS9Test fits data/i.fits
+xpaset -p DS9Test layer create
+xpaset -p DS9Test layer color green
+xpaset -p DS9Test fits data/r.fits
+xpaset -p DS9Test layer create
+xpaset -p DS9Test layer color blue
+xpaset -p DS9Test fits data/v.fits
+
+xpaget DS9Test layer count >> ${tt}.out
+xpaget DS9Test layer layerno >> ${tt}.out
+xpaget DS9Test layer 1 color >> ${tt}.out
+xpaget DS9Test layer 2 color >> ${tt}.out
+xpaget DS9Test layer 3 color >> ${tt}.out
+xpaget DS9Test layer blend >> ${tt}.out
+xpaget DS9Test layer 3 transparency >> ${tt}.out
+xpaget DS9Test layer view >> ${tt}.out
+
+xpaset -p DS9Test layer 1
+xpaget DS9Test layer layerno >> ${tt}.out
+xpaset -p DS9Test layer layerno 2
+xpaget DS9Test layer layerno >> ${tt}.out
+xpaset -p DS9Test layer color cyan
+xpaget DS9Test layer color >> ${tt}.out
+xpaset -p DS9Test layer 2 color green
+xpaget DS9Test layer 2 color >> ${tt}.out
+
+xpaset -p DS9Test multicolor system image
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system physical
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system amplifier
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system detector
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcs
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsa
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsb
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsc
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsd
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcse
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsf
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsg
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsh
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsi
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsj
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsk
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsl
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsm
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsn
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcso
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsp
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsq
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsr
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcss
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcst
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsu
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsv
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsw
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsx
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsy
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcsz
+xpaget DS9Test multicolor system >> ${tt}.out
+xpaset -p DS9Test multicolor system wcs
+xpaget DS9Test multicolor system >> ${tt}.out
+
+xpaset -p DS9Test multicolor lock wcs yes
+xpaget DS9Test multicolor lock wcs >> ${tt}.out
+xpaset -p DS9Test multicolor lock wcs no
+xpaget DS9Test multicolor lock wcs >> ${tt}.out
+xpaset -p DS9Test multicolor lock crop yes
+xpaget DS9Test multicolor lock crop >> ${tt}.out
+xpaset -p DS9Test multicolor lock crop no
+xpaget DS9Test multicolor lock crop >> ${tt}.out
+xpaset -p DS9Test multicolor lock slice yes
+xpaget DS9Test multicolor lock slice >> ${tt}.out
+xpaset -p DS9Test multicolor lock slice no
+xpaget DS9Test multicolor lock slice >> ${tt}.out
+xpaset -p DS9Test multicolor lock bin yes
+xpaget DS9Test multicolor lock bin >> ${tt}.out
+xpaset -p DS9Test multicolor lock bin no
+xpaget DS9Test multicolor lock bin >> ${tt}.out
+xpaset -p DS9Test multicolor lock scale yes
+xpaget DS9Test multicolor lock scale >> ${tt}.out
+xpaset -p DS9Test multicolor lock scale no
+xpaget DS9Test multicolor lock scale >> ${tt}.out
+xpaset -p DS9Test multicolor lock scalelimits yes
+xpaget DS9Test multicolor lock scalelimits >> ${tt}.out
+xpaset -p DS9Test multicolor lock scalelimits no
+xpaget DS9Test multicolor lock scalelimits >> ${tt}.out
+xpaset -p DS9Test multicolor lock colorbar yes
+xpaget DS9Test multicolor lock colorbar >> ${tt}.out
+xpaset -p DS9Test multicolor lock colorbar no
+xpaget DS9Test multicolor lock colorbar >> ${tt}.out
+xpaset -p DS9Test multicolor lock block yes
+xpaget DS9Test multicolor lock block >> ${tt}.out
+xpaset -p DS9Test multicolor lock block no
+xpaget DS9Test multicolor lock block >> ${tt}.out
+xpaset -p DS9Test multicolor lock smooth yes
+xpaget DS9Test multicolor lock smooth >> ${tt}.out
+xpaset -p DS9Test multicolor lock smooth no
+xpaget DS9Test multicolor lock smooth >> ${tt}.out
+
+xpaset -p DS9Test layer 2 blend source
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend multiply
+xpaget DS9Test layer 2 blend >> ${tt}.out
+xpaset -p DS9Test layer blend screen
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend overlay
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend darken
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend lighten
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend color-dodge
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend color-burn
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend hard-light
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend soft-light
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend difference
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend exclusion
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend hue
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend saturation
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend color
+xpaget DS9Test layer blend >> ${tt}.out
+xpaset -p DS9Test layer blend luminosity
+xpaget DS9Test layer blend >> ${tt}.out
+
+xpaset -p DS9Test layer transparency 0
+xpaget DS9Test layer transparency >> ${tt}.out
+xpaset -p DS9Test layer transparency 35
+xpaget DS9Test layer transparency >> ${tt}.out
+xpaset -p DS9Test layer 2 transparency 100
+xpaget DS9Test layer 2 transparency >> ${tt}.out
+xpaset -p DS9Test layer view no
+xpaget DS9Test layer view >> ${tt}.out
+xpaset -p DS9Test layer 2 view yes
+xpaget DS9Test layer 2 view >> ${tt}.out
+
+xpaset -p DS9Test layer 3 top
+xpaget DS9Test layer 1 color >> ${tt}.out
+xpaget DS9Test layer 2 color >> ${tt}.out
+xpaget DS9Test layer 3 color >> ${tt}.out
+xpaset -p DS9Test layer bottom
+xpaget DS9Test layer 1 color >> ${tt}.out
+xpaget DS9Test layer 2 color >> ${tt}.out
+xpaget DS9Test layer 3 color >> ${tt}.out
+xpaset -p DS9Test layer 3 up
+xpaget DS9Test layer 1 color >> ${tt}.out
+xpaget DS9Test layer 2 color >> ${tt}.out
+xpaget DS9Test layer 3 color >> ${tt}.out
+xpaset -p DS9Test layer down
+xpaget DS9Test layer 1 color >> ${tt}.out
+xpaget DS9Test layer 2 color >> ${tt}.out
+xpaget DS9Test layer 3 color >> ${tt}.out
+
+xpaset -p DS9Test layer 2 delete
+xpaget DS9Test layer count >> ${tt}.out
+xpaget DS9Test layer 1 color >> ${tt}.out
+xpaget DS9Test layer 2 color >> ${tt}.out
+xpaset -p DS9Test layer 2
+xpaset -p DS9Test layer delete
+xpaget DS9Test layer count >> ${tt}.out
+xpaset -p DS9Test frame delete
+
+testit $tt
+fi
+
 tt="nameserver"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
