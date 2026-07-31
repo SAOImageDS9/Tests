@@ -1,7 +1,12 @@
 get colorbar
+get colorbar show
 get colorbar orientation
+get colorbar position
+get colorbar label position
 get colorbar numerics
 get colorbar space
+get colorbar foreground
+get colorbar background
 get colorbar font
 get colorbar fontsize
 get colorbar fontweight
@@ -15,6 +20,30 @@ set {} colorbar vertical
 set {} colorbar horizontal
 # backward compatibility
 set {} colorbar orientation horizontal
+set {} colorbar show no
+set {} colorbar show yes
+set {} colorbar position bottom
+set {} colorbar label position natural
+set {} colorbar position bottom
+set {} colorbar label position opposite
+set {} colorbar position top
+set {} colorbar label position natural
+set {} colorbar position top
+set {} colorbar label position opposite
+set {} colorbar position left
+set {} colorbar label position natural
+set {} colorbar position left
+set {} colorbar label position opposite
+set {} colorbar position right
+set {} colorbar label position natural
+set {} colorbar position right
+set {} colorbar label position opposite
+set {} colorbar position bottom
+set {} colorbar label position natural
+set {} colorbar foreground red
+set {} colorbar background blue
+set {} colorbar foreground theme
+set {} colorbar background theme
 set {} colorbar numerics no
 set {} colorbar numerics yes
 set {} colorbar space value

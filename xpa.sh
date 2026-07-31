@@ -532,9 +532,14 @@ tt="colorbar"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaget DS9Test colorbar >> ${tt}.out
+xpaget DS9Test colorbar show >> ${tt}.out
 xpaget DS9Test colorbar orientation >> ${tt}.out
+xpaget DS9Test colorbar position >> ${tt}.out
+xpaget DS9Test colorbar label position >> ${tt}.out
 xpaget DS9Test colorbar numerics >> ${tt}.out
 xpaget DS9Test colorbar space >> ${tt}.out
+xpaget DS9Test colorbar foreground >> ${tt}.out
+xpaget DS9Test colorbar background >> ${tt}.out
 xpaget DS9Test colorbar font >> ${tt}.out
 xpaget DS9Test colorbar fontsize >> ${tt}.out
 xpaget DS9Test colorbar fontweight >> ${tt}.out
@@ -548,6 +553,30 @@ xpaset -p DS9Test colorbar vertical
 xpaset -p DS9Test colorbar horizontal
 # backward compatibility
 xpaset -p DS9Test colorbar orientation horizontal
+xpaset -p DS9Test colorbar show no
+xpaset -p DS9Test colorbar show yes
+xpaset -p DS9Test colorbar position bottom
+xpaset -p DS9Test colorbar label position natural
+xpaset -p DS9Test colorbar position bottom
+xpaset -p DS9Test colorbar label position opposite
+xpaset -p DS9Test colorbar position top
+xpaset -p DS9Test colorbar label position natural
+xpaset -p DS9Test colorbar position top
+xpaset -p DS9Test colorbar label position opposite
+xpaset -p DS9Test colorbar position left
+xpaset -p DS9Test colorbar label position natural
+xpaset -p DS9Test colorbar position left
+xpaset -p DS9Test colorbar label position opposite
+xpaset -p DS9Test colorbar position right
+xpaset -p DS9Test colorbar label position natural
+xpaset -p DS9Test colorbar position right
+xpaset -p DS9Test colorbar label position opposite
+xpaset -p DS9Test colorbar position bottom
+xpaset -p DS9Test colorbar label position natural
+xpaset -p DS9Test colorbar foreground red
+xpaset -p DS9Test colorbar background blue
+xpaset -p DS9Test colorbar foreground theme
+xpaset -p DS9Test colorbar background theme
 xpaset -p DS9Test colorbar numerics no
 xpaset -p DS9Test colorbar numerics yes
 xpaset -p DS9Test colorbar space value
