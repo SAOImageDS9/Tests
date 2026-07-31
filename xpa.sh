@@ -143,6 +143,24 @@ xpaset -p DS9Test 3d lock
 xpaset -p DS9Test 3d lock no
 xpaset -p DS9Test frame delete
 
+xpaset -p DS9Test 3d
+xpaset -p DS9Test fits data/ds9_counts_cube.fits
+xpaset -p DS9Test 3d method fip
+xpaset -p DS9Test 3d shade yes
+xpaset -p DS9Test 3d shade ambient 0.25
+xpaset -p DS9Test 3d shade strength 0.75
+xpaset -p DS9Test 3d shade normal yes
+xpaset -p DS9Test 3d shade normal strength 0.5
+xpaget DS9Test 3d method >> ${tt}.out
+xpaget DS9Test 3d shade >> ${tt}.out
+xpaget DS9Test 3d shade ambient >> ${tt}.out
+xpaget DS9Test 3d shade strength >> ${tt}.out
+xpaget DS9Test 3d shade normal >> ${tt}.out
+xpaget DS9Test 3d shade normal strength >> ${tt}.out
+xpaset -p DS9Test 3d shade normal no
+xpaset -p DS9Test 3d shade no
+xpaset -p DS9Test frame delete
+
 xpaset -p DS9Test 3d close
 xpaset -p DS9Test cube close
 testit $tt
@@ -3351,6 +3369,10 @@ xpaset -p DS9Test region command {circle 100 100 20}
 xpaset -p DS9Test region analysis stats
 xpaset -p DS9Test region analysis stats close
 #xpaset -p DS9Test region analysis histogram save
+xpaset -p DS9Test region analysis plot3d
+xpaset -p DS9Test region analysis plot3d close
+xpaset -p DS9Test region analysis surface3d
+xpaset -p DS9Test region analysis surface3d close
 xpaset -p DS9Test region savetemplate foo.tpl
 xpaset -p DS9Test region delete
 xpaset -p DS9Test region template foo.tpl

@@ -32,6 +32,24 @@ set {} 3d lock
 set {} 3d lock no
 set {} frame delete
 
+set {} 3d
+set {} fits data/ds9_counts_cube.fits
+set {} 3d method fip
+set {} 3d shade yes
+set {} 3d shade ambient 0.25
+set {} 3d shade strength 0.75
+set {} 3d shade normal yes
+set {} 3d shade normal strength 0.5
+get 3d method
+get 3d shade
+get 3d shade ambient
+get 3d shade strength
+get 3d shade normal
+get 3d shade normal strength
+set {} 3d shade normal no
+set {} 3d shade no
+set {} frame delete
+
 set {} 3d close
 set {} cube close
 set {} single

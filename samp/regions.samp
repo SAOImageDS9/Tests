@@ -125,6 +125,10 @@ set {} region command "circle 100 100 20"
 set {} region analysis stats
 set {} region analysis stats close
 #set {} region analysis histogram save
+set {} region analysis plot3d
+set {} region analysis plot3d close
+set {} region analysis surface3d
+set {} region analysis surface3d close
 set {} region savetemplate foo.tpl
 set {} region delete
 set {} region template foo.tpl
