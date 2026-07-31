@@ -2,6 +2,13 @@ set {} sia mast
 set {} sia cxc
 set {} sia current mast
 
+set {} sia registry
+set {} sia registry filter Chandra
+set {} sia registry ivoid ivo://cxc.harvard.edu/cda.siap
+set {} sia registry load
+set {} sia registry clear
+set {} sia registry retrieve
+
 get sia
 set {} sia save foo.xml
 set {} sia export rdb foo.rdb

@@ -73,6 +73,7 @@ doit "$1" analysis
 doit "$1" array
 # backward compatibility prefs
 doit "$1" bg
+doit "$1" bookmark
 doit "$1" bin
 doit "$1" blink
 doit "$1" block

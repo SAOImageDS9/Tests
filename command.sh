@@ -167,6 +167,23 @@ testit "-background white"
 doit
 fi
 
+tt="bookmark"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-bookmark clear"
+testit "-sleep .5"
+testit "-bookmark add 'Source A'"
+testit "-bookmark goto 1"
+testit "-bookmark save foo.bmrk"
+testit "-bookmark delete 1"
+testit "-bookmark clear"
+testit "-bookmark load foo.bmrk"
+testit "-bookmark goto 1"
+testit "-bookmark clear"
+
+doit
+fi
+
 tt="bin"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
@@ -2711,6 +2728,13 @@ initit "$tt"
 testit "-sia mast"
 testit "-sia cxc"
 testit "-sia current mast"
+
+testit "-sia registry"
+testit "-sia registry filter Chandra"
+testit "-sia registry ivoid ivo://cxc.harvard.edu/cda.siap"
+testit "-sia registry load"
+testit "-sia registry clear"
+testit "-sia registry retrieve"
 
 testit "-sia save foo.xml"
 testit "-sia export rdb foo.rdb"

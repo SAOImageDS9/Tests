@@ -243,6 +243,28 @@ xpaset -p DS9Test background white
 testit $tt
 fi
 
+tt="bookmark"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p DS9Test bookmark clear
+xpaset -p DS9Test bookmark add
+xpaset -p DS9Test bookmark add {Source A}
+xpaget DS9Test bookmark >> ${tt}.out
+xpaget DS9Test bookmark 1 > /dev/null
+xpaget DS9Test bookmark 2 > /dev/null
+xpaset -p DS9Test bookmark goto 1
+xpaset -p DS9Test bookmark delete 1
+xpaset -p DS9Test bookmark save foo.bmrk
+xpaset -p DS9Test bookmark clear
+xpaset -p DS9Test bookmark load foo.bmrk
+xpaget DS9Test bookmark >> ${tt}.out
+xpaget DS9Test bookmark 1 > /dev/null
+xpaset -p DS9Test bookmark goto 1
+xpaset -p DS9Test bookmark clear
+
+testit $tt
+fi
+
 tt="bin"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
@@ -3659,6 +3681,13 @@ echo -n "$tt..."
 xpaset -p DS9Test sia mast
 xpaset -p DS9Test sia cxc
 xpaset -p DS9Test sia current mast
+
+xpaset -p DS9Test sia registry
+xpaset -p DS9Test sia registry filter Chandra
+xpaset -p DS9Test sia registry ivoid ivo://cxc.harvard.edu/cda.siap
+xpaset -p DS9Test sia registry load
+xpaset -p DS9Test sia registry clear
+xpaset -p DS9Test sia registry retrieve
 
 xpaget DS9Test sia >> ${tt}.out
 xpaset -p DS9Test sia save foo.xml

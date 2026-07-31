@@ -1,0 +1,15 @@
+set {} bookmark clear
+set {} bookmark add
+set {} bookmark add {Source A}
+get bookmark
+get bookmark 1
+get bookmark 2
+set {} bookmark goto 1
+set {} bookmark delete 1
+set {} bookmark save foo.bmrk
+set {} bookmark clear
+set {} bookmark load foo.bmrk
+get bookmark
+get bookmark 1
+set {} bookmark goto 1
+set {} bookmark clear
