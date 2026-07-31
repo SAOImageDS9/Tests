@@ -6,6 +6,11 @@ set {} save fits foo.fits image
 set {} save foo.fits slice
 set {} save fits foo.fits slice
 
+# pixmask...
+set {} region command "circle 100 100 20"
+set {} save pixmask foo.pixmask.fits
+set {} region delete all
+
 set {} frame new
 set {} fits fits/table.fits
 set {} save foo.fits

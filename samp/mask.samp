@@ -10,7 +10,21 @@ set {} mask mark zero
 set {} mask range 10 100
 set {} mask transparency 25
 set {} mask blend source
+set {} mask blend multiply
 set {} mask blend screen
+set {} mask blend overlay
+set {} mask blend darken
+set {} mask blend lighten
+set {} mask blend color-dodge
+set {} mask blend color-burn
+set {} mask blend hard-light
+set {} mask blend soft-light
+set {} mask blend difference
+set {} mask blend exclusion
+set {} mask blend hue
+set {} mask blend saturation
+set {} mask blend color
+set {} mask blend luminosity
 set {} mask system physical
 set {} mask load fits/img.fits
 sleep 1

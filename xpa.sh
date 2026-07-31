@@ -2121,7 +2121,21 @@ xpaset -p DS9Test mask mark zero
 xpaset -p DS9Test mask range 10 100
 xpaset -p DS9Test mask transparency 25
 xpaset -p DS9Test mask blend source
+xpaset -p DS9Test mask blend multiply
 xpaset -p DS9Test mask blend screen
+xpaset -p DS9Test mask blend overlay
+xpaset -p DS9Test mask blend darken
+xpaset -p DS9Test mask blend lighten
+xpaset -p DS9Test mask blend color-dodge
+xpaset -p DS9Test mask blend color-burn
+xpaset -p DS9Test mask blend hard-light
+xpaset -p DS9Test mask blend soft-light
+xpaset -p DS9Test mask blend difference
+xpaset -p DS9Test mask blend exclusion
+xpaset -p DS9Test mask blend hue
+xpaset -p DS9Test mask blend saturation
+xpaset -p DS9Test mask blend color
+xpaset -p DS9Test mask blend luminosity
 xpaset -p DS9Test mask system physical
 xpaset -p DS9Test mask load fits/img.fits
 sleep $delay
@@ -3491,6 +3505,13 @@ xpaset -p DS9Test save foo.fits image
 xpaset -p DS9Test save fits foo.fits image
 xpaset -p DS9Test save foo.fits slice
 xpaset -p DS9Test save fits foo.fits slice
+echo "PASSED"
+
+echo -n " pixmask..."
+xpaset -p DS9Test region command {circle 100 100 20}
+xpaset -p DS9Test save pixmask foo.pixmask.fits
+xpaset -p DS9Test region delete all
+echo "PASSED"
 
 xpaset -p DS9Test frame new
 xpaset -p DS9Test fits fits/table.fits
