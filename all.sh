@@ -15,6 +15,7 @@ pdf.sh
 plotpdf.sh
 #prefs.sh
 cat.sh
+regioncatalog.sh
 sia.sh
 print.sh
 
