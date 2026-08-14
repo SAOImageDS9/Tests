@@ -72,5 +72,13 @@ proc rcCompareLegacy {frame id} {
             rcClose [dict get $values $key] [lindex $row $column] 2e-5 \
                 "$key differs from legacy Statistics"
         }
+        foreach {key column} {
+            core.centroid_image_x 10 core.centroid_image_y 11
+        } {
+            if {[dict exists $values $key]} {
+                rcClose [dict get $values $key] [lindex $row $column] 2e-8 \
+                    "$key differs from legacy Statistics"
+            }
+        }
     }
 }

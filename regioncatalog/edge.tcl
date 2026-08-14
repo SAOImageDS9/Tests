@@ -50,4 +50,33 @@ rcRun {
     $frame threads 8
     set parallel [$frame get marker analysis stats all data image fk5]
     rcAssert {$serial eq $parallel} {edge-case threaded result changed}
+
+    # A small positive fixture has a hand-computable intensity-weighted
+    # centroid. Pixel centers are (1,1), (2,1), and (3,1).
+    set centroidFile [file join $env(DS9_REGIONCATALOG_TEST_TMP) centroid.arr]
+    set channel [open $centroidFile wb]
+    fconfigure $channel -translation binary -encoding iso8859-1
+    puts -nonewline $channel [binary format d* {1 2 3 -1 -2 -3}]
+    close $channel
+    set argv [list "${centroidFile}\[xdim=3,ydim=2,bitpix=-64,arch=$architecture\]"]
+    set i 0
+    ProcessArrayCmd argv i {} {}
+    $frame marker delete all
+    RegionCmdCommand {image; box(2,1,3,1,0)}
+    set id [lindex [$frame get marker id all] 0]
+    set result [$frame get marker $id analysis stats data image fk5]
+    set measured [dict get [lindex [dict get $result components] 0] values]
+    rcClose [dict get $measured core.centroid_image_x] [expr {14.0/6.0}] \
+        1e-12 {weighted centroid X is wrong}
+    rcClose [dict get $measured core.centroid_image_y] 1.0 \
+        1e-12 {weighted centroid Y is wrong}
+    RegionCmdCommand {image; box(2,2,3,1,0)}
+    set negativeId [lindex [$frame get marker id all] end]
+    set negative [$frame get marker $negativeId analysis stats data image fk5]
+    set negativeValues [dict get [lindex [dict get $negative components] 0] values]
+    rcAssert {[dict get $negativeValues core.pixel_count] == 3} \
+        {negative-weight region lost pixels}
+    rcAssert {![dict exists $negativeValues core.centroid_image_x] &&
+        ![dict exists $negativeValues core.centroid_image_y]} \
+        {non-positive total weight produced a centroid}
 }

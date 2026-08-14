@@ -25,6 +25,29 @@ rcRun {
     set wcsResult [$frame get marker $id analysis stats data wcs fk5]
     rcAssert {[dict get $wcsResult area_unit] eq {arcsec_squared}} \
         {celestial area unit changed}
+    rcAssert {[dict get $imageResult centroid_wcs_system] eq {wcs}} \
+        {image query did not fall back to primary WCS for centroid}
+    rcAssert {[dict get $imageResult centroid_wcs_unit] eq {deg}} \
+        {celestial centroid WCS unit is wrong}
+    set imageValues [dict get [lindex [dict get $imageResult components] 0] values]
+    set wcsValues [dict get [lindex [dict get $wcsResult components] 0] values]
+    foreach key {core.centroid_image_x core.centroid_image_y \
+        core.centroid_wcs_x core.centroid_wcs_y} {
+        rcAssert {[dict exists $imageValues $key]} "$key missing from image result"
+        rcAssert {[dict exists $wcsValues $key]} "$key missing from WCS result"
+        rcClose [dict get $imageValues $key] [dict get $wcsValues $key] 1e-12 \
+            "$key changed with requested coordinate system"
+    }
+
+    set legacy [rcLegacyRows [$frame get marker $id analysis stats wcs fk5]]
+    set legacyRow [dict get $legacy 1]
+    foreach {key column} {
+        core.centroid_image_x 10 core.centroid_image_y 11
+        core.centroid_wcs_x 12 core.centroid_wcs_y 13
+    } {
+        rcClose [dict get $wcsValues $key] [lindex $legacyRow $column] 2e-8 \
+            "$key missing from legacy Statistics output"
+    }
 
     set varname [RegionCatalogCreate $frame]
     upvar #0 $varname var
@@ -35,6 +58,16 @@ rcRun {
         {celestial coordinate unit changed}
     rcAssert {[lindex $db(Ucd) [expr {$db(RA_J2000)-1}]] eq {pos.eq.ra}} \
         {RA UCD missing}
+    foreach column {centroid_x centroid_y centroid_wcs_x centroid_wcs_y} {
+        rcAssert {[info exists db($column)]} "$column catalog column missing"
+    }
+    rcAssert {[lindex $db(Unit) [expr {$db(centroid_x)-1}]] eq {pixel}} \
+        {image centroid unit changed}
+    rcAssert {[lindex $db(Unit) [expr {$db(centroid_wcs_x)-1}]] eq {deg}} \
+        {WCS centroid unit changed}
+    rcClose $db(1,$db(centroid_wcs_x)) \
+        [dict get $wcsValues core.centroid_wcs_x] 1e-12 \
+        {catalog WCS centroid does not match structured result}
 
     set var(panto) 1
     set ::rcPanCalls {}

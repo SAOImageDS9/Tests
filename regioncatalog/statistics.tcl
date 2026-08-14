@@ -25,7 +25,7 @@ rcRun {
 
     set schema [$frame get marker analysis stats fields]
     rcAssert {[dict get $schema schema_version] == 1} {bad schema version}
-    rcAssert {[llength [dict get $schema fields]] == 13} \
+    rcAssert {[llength [dict get $schema fields]] == 17} \
         {unexpected registered-field count}
 
     foreach id [lrange $ids 0 11] {rcCompareLegacy $frame $id}
@@ -42,6 +42,9 @@ rcRun {
     rcAssert {[dict get $values core.pixel_count] == 13} {known pixel count changed}
     rcAssert {[dict get $values core.sum] == 65.0} {known sum changed}
     rcAssert {[dict get $values core.mean] == 5.0} {known mean changed}
+    foreach key {core.centroid_image_x core.centroid_image_y} {
+        rcAssert {[dict exists $values $key]} "$key missing from known region"
+    }
 
     set batch [$frame get marker analysis stats all data image fk5]
     set regions [dict get $batch regions]
