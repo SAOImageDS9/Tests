@@ -115,7 +115,18 @@ rcRun {
         rcAssert {[lindex $key 0] != $annulus} {deleted rows remain}
     }
 
+    # Teardown must cancel every pending blink callback before its frame can
+    # be deleted.  Raw frame commands left in the timer queue caused a Linux
+    # race during test shutdown.
+    RegionCatalogPanToRow $varname 1
+    set blinkTimers $var(regioncatalog,blink,after)
+    rcAssert {[llength $blinkTimers] == 5} \
+        {region highlite did not schedule the expected blink callbacks}
     RegionCatalogDestroy $varname
+    foreach token $blinkTimers {
+        rcAssert {[lsearch -exact [after info] $token] < 0} \
+            {catalog destruction left a blink callback pending}
+    }
     rcAssert {![$frame get marker $highlightedId highlite]} \
         {catalog destruction left the source region highlited}
     rcAssert {![info exists iregioncatalog(frame,$frame)]} \
