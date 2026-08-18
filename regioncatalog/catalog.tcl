@@ -37,6 +37,11 @@ rcRun {
         {plot selection did not Pan To without catalog markers}
     rcAssert {[lindex [lindex $::rcCatalogPanCalls 0] 0] eq $frame} \
         {plot selection panned the wrong frame}
+    set highlightedId [lindex [rcCatalogKeyAtRow $varname 1] 0]
+    rcAssert {[$frame get marker $highlightedId highlite]} \
+        {Pan To did not highlite the source region}
+    rcAssert {[$frame get marker highlite number] == 1} \
+        {Pan To highlited more than the source region}
 
     set emptyId [lindex [$frame get marker id all] 2]
     set emptyRow $var(regioncatalog,record,$emptyId,1)
@@ -111,6 +116,8 @@ rcRun {
     }
 
     RegionCatalogDestroy $varname
+    rcAssert {![$frame get marker $highlightedId highlite]} \
+        {catalog destruction left the source region highlited}
     rcAssert {![info exists iregioncatalog(frame,$frame)]} \
         {catalog association survived destruction}
 }
