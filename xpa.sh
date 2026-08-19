@@ -833,7 +833,7 @@ fi
 
 tt="dsssao"
 if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt/dss... skipped"
+echo -n "$tt/dss... skipped\n"
 #~ xpaset -p DS9Test dsssao open
 #~ xpaset -p DS9Test dsssao close
 #~ xpaset -p DS9Test dsssao size 30 30 arcsec
