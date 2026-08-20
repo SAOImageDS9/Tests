@@ -43,6 +43,11 @@ set {} catalog clear
 set {} catalog close
 set {} frame delete
 
+set {} catalog load data/ds9.xml
+set {} catalog histogram Jmag 40
+set {} catalog histogram Jmag 40 0 20
+set {} catalog close
+
 set {} catalog cds 2mass
 set {} catalog plot {$Jmag} {$Hmag} {$e_Jmag} {$e_Hmag}
 set {} catalog symbol condition {$Jmag>15}

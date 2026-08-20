@@ -319,6 +319,11 @@ testit "-catalog clear"
 testit "-catalog close"
 testit "-frame delete"
 
+testit "-catalog load data/ds9.xml"
+testit "-catalog histogram Jmag 40"
+testit "-catalog histogram Jmag 40 0 20"
+testit "-catalog close"
+
 testit "-catalog cds 2mass"
 testit "-catalog plot '\$Jmag' '\$Hmag' '\$e_Jmag' '\$e_Hmag'"
 testit "-catalog symbol condition '\$Jmag>15'"

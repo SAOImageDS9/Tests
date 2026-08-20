@@ -412,6 +412,12 @@ xpaset -p DS9Test catalog clear
 xpaset -p DS9Test catalog close
 xpaset -p DS9Test frame delete
 
+echo " histogram..."
+xpaset -p DS9Test catalog load data/ds9.xml
+xpaset -p DS9Test catalog histogram Jmag 40
+xpaset -p DS9Test catalog histogram Jmag 40 0 20
+xpaset -p DS9Test catalog close
+
 echo " dialog..."
 xpaset -p DS9Test catalog cds 2mass
 xpaset -p DS9Test catalog plot '$Jmag' '$Hmag' '$e_Jmag' '$e_Hmag'
