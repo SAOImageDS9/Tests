@@ -3630,6 +3630,26 @@ xpaset -p DS9Test region delete
 testit $tt
 fi
 
+tt="reveal"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaget DS9Test reveal >> ${tt}.out
+xpaget DS9Test reveal split >> ${tt}.out
+xpaget DS9Test reveal bar >> ${tt}.out
+xpaset -p DS9Test frame new
+xpaset -p DS9Test reveal
+xpaset -p DS9Test reveal yes
+xpaset -p DS9Test reveal split .25
+xpaset -p DS9Test reveal split .75
+xpaset -p DS9Test reveal bar no
+xpaset -p DS9Test reveal bar yes
+xpaset -p DS9Test reveal no
+xpaset -p DS9Test single
+xpaset -p DS9Test frame delete
+
+testit $tt
+fi
+
 tt="rgb"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."

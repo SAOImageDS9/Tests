@@ -160,6 +160,7 @@ doit "$1" print
 doit "$1" prism
 doit "$1" raise
 doit "$1" regions
+doit "$1" reveal
 doit "$1" rgb
 doit "$1" rgbarray
 doit "$1" rgbimage

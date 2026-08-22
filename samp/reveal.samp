@@ -1,0 +1,16 @@
+get reveal
+get reveal split
+get reveal bar
+set {} frame new
+set {} reveal
+set {} reveal yes
+set {} reveal split .25
+set {} reveal split .75
+set {} reveal bar no
+set {} reveal bar yes
+set {} reveal no
+set {} single
+set {} frame delete
+
+set {} single
+set {} raise

@@ -2618,6 +2618,22 @@ testit "-rgb close"
 doit
 fi
 
+tt="reveal"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new"
+testit "-reveal"
+testit "-reveal yes"
+testit "-reveal split .25"
+testit "-reveal split .75"
+testit "-reveal bar no"
+testit "-reveal bar yes"
+testit "-reveal no"
+testit "-single"
+
+doit
+fi
+
 tt="rgb"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
