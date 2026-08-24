@@ -93,6 +93,38 @@ doit "..Gray Level 1" gray 1 r
 echo "PASSED"
 fi
 
+if [ "$1" = "reveal" -o  -z "$1" ]; then
+echo "Testing Reveal"
+
+# reveal needs exactly two non-3d frames, so build them from scratch.
+# different colormaps make the split visible in the output, and the
+# regions and the grid enabled above exercise the clip on the vector
+# layers as well as on the image.
+xpaset -p DS9Test single
+xpaset -p DS9Test frame delete all
+xpaset -p DS9Test frame new
+xpaset -p DS9Test fits fits/img.fits
+xpaset -p DS9Test regions load regions/ds9.fk5.hms.reg
+xpaset -p DS9Test frame new
+xpaset -p DS9Test fits fits/img.fits
+xpaset -p DS9Test cmap bb
+xpaset -p DS9Test regions load regions/ds9.fk5.hms.reg
+xpaset -p DS9Test reveal
+
+doit "..RGB Level 3" rgb 3 v
+doit "..CMYK Level 3" cmyk 3 v
+doit "..Gray Level 3" gray 3 v
+
+doit "..RGB Level 2" rgb 2 v
+doit "..CMYK Level 2" cmyk 2 v
+doit "..Gray Level 2" gray 2 v
+
+doit "..RGB Level 1" rgb 1 v
+doit "..Gray Level 1" gray 1 v
+
+echo "PASSED"
+fi
+
 echo "DONE"
 
 if [ -z "$1" ]; then

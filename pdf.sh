@@ -503,6 +503,29 @@ snap_pdf
 xpaset -p ${title} region delete
 
 
+tt="reveal"
+printf "\n$tt..."
+xpaset -p ${title} fits new fits/img.fits
+xpaset -p ${title} cmap bb
+xpaset -p ${title} reveal
+snap_pdf
+
+xpaset -p ${title} reveal split .25
+snap_pdf
+
+xpaset -p ${title} reveal split .75
+snap_pdf
+
+xpaset -p ${title} reveal bar no
+snap_pdf
+
+xpaset -p ${title} reveal bar yes
+snap_pdf
+
+xpaset -p ${title} single
+xpaset -p ${title} frame delete
+
+
 tt="tile"
 printf "\n$tt..."
 xpaset -p ${title} fits new fits/img.fits
