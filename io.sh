@@ -10,6 +10,8 @@ plio.sh
 compress.sh
 compress2.sh
 
+partialtile.sh
+
 mecube.sh
 multiframe.sh
 mosaic.sh
