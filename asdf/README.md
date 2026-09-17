@@ -295,31 +295,41 @@ meta: {"primitive": "affine", "expect_at": [10.0, 20.0],
        "expect_lonlat": [21.0, 58.0], "expect_sky": "icrs"}
 ```
 
-**13 of 19 verified exactly** — 0.0000″ for everything but `rotate2d` and
+**16 of 19 verified exactly** — 0.0000″ for everything but `rotate2d` and
 `rotate3d`, which come in at 0.0002″ (print precision, not error).
 
 | group | primitive | state |
 |---|---|---|
 | transform | identity, shift, scale, linear1d, multiplyscale, affine, rotate2d, remap_axes, concatenate, compose, rotate3d | **verified** |
-| frames | icrs, galactic | **verified** — identity transform, so lon/lat must equal the pixel |
-| frames | supergalactic | loads and converts correctly, but DS9 has no supergalactic display system to read it back in, so only the ICRS conversion was checked |
-| frames | fk4, fk4noeterms, fk5, ecliptic, altaz | **not working** — see below |
+| frames | icrs, galactic, fk5, fk4, ecliptic | **verified** — identity transform, so lon/lat must equal the pixel when read in the frame's own system |
+| frames | fk4noeterms, supergalactic | load and convert correctly, but DS9 has no display system for either, so only the ICRS conversion was checked |
+| frames | altaz | **not working** — see below |
 
 `shift`, `scale`, `linear1d` and `multiplyscale` are 1-in/1-out, so a 2-D WCS
 has to pair them with `concatenate`; that is noted in each fixture rather than
 glossed over. `concatenate` and `compose` get their own fixtures using
 *different* children, so they test the combinator rather than the pair.
 
-The five failing frames are a fixture problem, not a reader one.
-`yamlchan.c` requires specific `frame_attributes` per frame — FK4 and
-FK4NOETERMS want `obstime` *and* `equinox`, FK5 and ECLIPTIC want `equinox`,
-ALTAZ wants `location` *and* `obstime` — which is exactly why ICRS, GALACTIC
-and SUPERGALACTIC (which need none) worked immediately. The fixtures now
-supply them as `!time/time-1.1.0` and `earthlocation` objects, but AST still
-declines, so the serialization of those two object types is not right yet.
-That is the open item here.
+`altaz` is the one frame still failing, and it is the least consequential: an
+AzEl WCS is not something a Roman product contains, and DS9 has no azel
+display system to read one back in. AZEL needs both `location` (an
+`earthlocation` carrying x/y/z Quantities in metres) and `obstime`, and
+something in that serialization is still wrong — it builds no FrameSet.
+What is already ruled out: `GetQuantity()` reads `unit` with `Get0C`, so the
+unit must be a plain string rather than a tagged `!unit/unit-1.0.0` scalar
+(the fixture now does that); and although
+`MAKE_TEST(EarthLocation, astropy/coordinates/earthlocation, 1, 0)` builds
+the odd expected class `astropy/coordinates/earthlocation/EarthLocation`,
+that still prefix-matches the real tag, because `strncasecmp` compares only
+up to the version dash.
 
-### Three AST bugs this turned up
+The other four were fixed by two things. First, `yamlchan.c` validates a
+Time's `format` against a short list — `iso`, `byear`, `jyear`, `jd`, `mjd`
+— and errors on anything else, so astropy's own spellings (`jyear_str`,
+`isot`) are rejected. Second, and more interesting, they were then
+*silently wrong* rather than failing: see AST bug 3 below.
+
+### Four AST bugs this turned up
 
 None of these are in DS9, and all three are recorded in the project's
 `TODO.md` as upstream candidates:
@@ -331,7 +341,16 @@ None of these are in DS9, and all three are recorded in the project's
    assigned `outa` twice — the second store overwriting the correct one — and
    never assigned `outb` at all. The resulting mapping was arbitrary and not
    even reproducible. Fixed locally; `linear1d` then lands exactly.
-3. **`zenithal_perspective` is mapped to the wrong projection** (`AST__SZP`,
+3. **`GetTime()` tested the wrong string for its epoch prefix.** Each branch
+   read `strncasecmp(format, "B", 1)` where it meant `value` — asking whether
+   the *value* already carries the prefix. Since `"jyear"` itself starts with
+   a `j`, every branch was dead, so an equinox of `2000.0` reached
+   `astUnformat()` with the TimeFrame's default format and was read as **MJD
+   2000, i.e. 1864** — about 1.8° of precession from J2000. That is exactly
+   what the FK4/FK5/ecliptic fixtures measured before the fix, and it is the
+   nastiest of these bugs because the WCS loads and looks plausible.
+   Fixed locally.
+4. **`zenithal_perspective` is mapped to the wrong projection** (`AST__SZP`,
    whose 2nd/3rd parameters mean something other than AZP's). Not fixed — it
    needs an upstream decision, since AST does have an `AST__AZP`.
 

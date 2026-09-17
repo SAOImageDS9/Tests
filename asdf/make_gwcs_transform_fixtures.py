@@ -249,23 +249,43 @@ def main():
     #   ALTAZ            -> location (an earthlocation) and obstime
     # ICRS, GALACTIC and SUPERGALACTIC need nothing, which is exactly why
     # those three worked with an empty frame_attributes and the rest did not.
-    EQUINOX = ("equinox: !time/time-1.1.0 {value: 'J2000.000', "
-               "format: jyear_str, scale: tt}")
-    OBSTIME = ("obstime: !time/time-1.1.0 {value: '2020-01-01T00:00:00.000', "
-               "format: isot, scale: utc}")
+    # GetTime() accepts either a bare string or a tagged Time object, but it
+    # validates `format' against a short list -- iso, byear, jyear, jd, mjd --
+    # and errors on anything else. astropy's own spellings (jyear_str, isot)
+    # are NOT on it, which is what made the first attempt at these five fail.
+    # `scale' becomes AST's TimeScale and is required in the object form.
+    #
+    # For byear/jyear AST prepends the B/J prefix itself, so the value is the
+    # bare epoch number.
+    J2000 = ("equinox: !time/time-1.1.0 {value: '2000.0', "
+             "format: jyear, scale: tt}")
+    B1950 = ("equinox: !time/time-1.1.0 {value: '1950.0', "
+             "format: byear, scale: tt}")
+    OBSTIME = ("obstime: !time/time-1.1.0 {value: '2020-01-01 00:00:00.000', "
+               "format: iso, scale: utc}")
+    # ReadEarthLocation wants x/y/z as Quantities in metres, and an optional
+    # ellipsoid defaulting to WGS84. These are the ITRF coordinates of the
+    # AAT, which is as good a fixed observatory as any.
+    # GetQuantity reads "unit" with Get0C, i.e. as a plain string, so the
+    # unit is written bare rather than as a tagged !unit/unit-1.0.0 scalar.
     LOCATION = """location: !<tag:astropy.org:astropy/coordinates/earthlocation-1.0.0>
-          x: !unit/quantity-1.1.0 {value: 4517590.0, unit: !unit/unit-1.0.0 m}
-          y: !unit/quantity-1.1.0 {value: 2922041.0, unit: !unit/unit-1.0.0 m}
-          z: !unit/quantity-1.1.0 {value: -3508110.0, unit: !unit/unit-1.0.0 m}"""
+            x: !unit/quantity-1.1.0 {value: -4554231.533, unit: m}
+            y: !unit/quantity-1.1.0 {value: 2816759.109, unit: m}
+            z: !unit/quantity-1.1.0 {value: -3454036.323, unit: m}"""
     NEEDS = {
-        "fk4": [OBSTIME, EQUINOX], "fk4noeterms": [OBSTIME, EQUINOX],
-        "fk5": [EQUINOX], "ecliptic": [EQUINOX],
+        "fk4": [OBSTIME, B1950], "fk4noeterms": [OBSTIME, B1950],
+        "fk5": [J2000], "ecliptic": [J2000],
         "altaz": [OBSTIME, LOCATION],
     }
     for frame in FRAME_TAGS:
         need = NEEDS.get(frame)
         if need:
-            attrs = "\n" + "\n".join("        " + a for a in need)
+            # `frame_attributes:' is emitted at column 8, so its children sit
+            # at 10. Getting this wrong makes them siblings of
+            # frame_attributes rather than its contents -- which AST reports
+            # only as "could not read this WCS", exactly like every other
+            # malformation here.
+            attrs = "\n" + "\n".join("          " + a for a in need)
         else:
             attrs = "{}"
         note = "identity transform, so lon/lat should equal the pixel"
