@@ -71,6 +71,7 @@ doit "$1" about
 doit "$1" align
 doit "$1" analysis
 doit "$1" array
+doit "$1" asdf
 # backward compatibility prefs
 doit "$1" bg
 doit "$1" bookmark

@@ -161,6 +161,16 @@ testit "-rgb close"
 doit
 fi
 
+tt="asdf"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new"
+testit "-asdf asdf/fixtures/none/float.asdf"
+testit "-frame delete"
+
+doit
+fi
+
 tt="asinh"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"

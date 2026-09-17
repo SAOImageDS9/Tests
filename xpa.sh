@@ -249,6 +249,17 @@ xpaset -p DS9Test hsv close
 testit $tt
 fi
 
+tt="asdf"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+xpaset -p DS9Test frame new
+xpaset -p DS9Test asdf asdf/fixtures/none/float.asdf
+xpaset -p DS9Test frame delete
+xpaset -p DS9Test asdf new asdf/fixtures/none/float.asdf
+xpaset -p DS9Test frame delete
+testit $tt
+fi
+
 # backward compatibility prefs
 tt="bg"
 if [ "$1" = "$tt" -o -z "$1" ]; then

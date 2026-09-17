@@ -1,0 +1,9 @@
+set {} frame new
+set {} asdf asdf/fixtures/none/float.asdf
+set {} frame delete
+
+set {} asdf new asdf/fixtures/none/float.asdf
+set {} frame delete
+
+set {} single
+set {} raise
