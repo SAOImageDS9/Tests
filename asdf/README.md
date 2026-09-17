@@ -31,13 +31,28 @@ data: !core/ndarray-1.1.0
 meta: {source_fits_file: double_nan.fits, original_bitpix: -64, ...}
 ```
 
-This is intentional: `asdf_format`'s Phase 2 container reader
-(`ds9/library/asdf.tcl`'s `AsdfFindNdarray`) and Phase 3 WCS bridge only look
-for keys at a Roman-specific indent/nesting (2-space direct children of
-`roman:`, or 4-space under `roman.meta:`) — they will **not** find `data:`
-here, and that's expected. These fixtures exist for that project's Phase 4/5
-generalization work (arbitrary-path support, a tree-browser, or similar), not
-as a regression check against the current Roman-only reader.
+This is intentional, and it is the point of the fixtures: the `asdf_format`
+project's Phase 2/3 reader only looked for keys at a Roman-specific
+indent/nesting (2-space direct children of `roman:`, or 4-space under
+`roman.meta:`), so a flat `data:` was invisible to it.
+
+**Phase 4 changed that, and all 21 now load.** Its `AsdfEnumNdarrays` walks
+the whole tree and gives every `core/ndarray` a root-relative path, and a
+bare name resolves either as `roman/<name>` or — failing that — as any
+*uniquely* matching path, so plain `data` is found here without a
+Roman-style prefix. Verified against the real reader: 63/63 of the
+`none`/`zlib`/`lz4` fixtures load, with dimensions and `minmax` both
+matching DS9's own reading of the source FITS image in every case.
+
+These fixtures still exist for that project's Phase 4/5 generalization work
+rather than as a Roman regression check — and they have already paid for
+themselves there. The four masked `_blank` files caught a silent misread in
+Phase 4's enumerator: a `mask:` ndarray nested inside `data:` had its
+`source:` merged into the parent, so `data` read the boolean mask block as
+if it were the image. In `char_blank` specifically that is undetectable by
+size alone, because `uint8` data and a `bool8` mask are both one byte per
+element. Fixed in `asdf_format` by making the enumerator stack nested
+ndarrays; `data` and `data/mask` are now separate paths.
 
 ## Source images and what each exercises
 
