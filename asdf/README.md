@@ -195,6 +195,63 @@ write, so it's excluded here):
   byte 0 and the block header's `used` field is the whole compressed
   length.
 
+## Running them
+
+`../asdf.sh` drives these through DS9, and is wired into `../io.sh` along with the
+other format tests (`nrrd.sh`, `envi.sh`, `photo.sh`). It follows the suite's
+usual shape: a `command` section, an `xpa` section, an optional leading
+`slow`, and the `.sav`/`.out` baseline idiom `ciaoregs.sh` uses.
+
+```
+./asdf.sh              # both sections
+./asdf.sh command      # command line only: ds9 -asdf <file> -exit
+./asdf.sh xpa          # load over XPA and diff against the baselines
+./asdf.sh save         # (re)create the baselines
+./asdf.sh slow xpa     # add a sleep between files
+```
+
+**Files are found, not listed.** The script does
+`find asdf -name '*.asdf' -type f | sort`, so dropping a new file anywhere
+under `asdf/` — including at the top level, not just in `fixtures/<codec>/` —
+picks it up with no edit to the script. A file with no baseline yet is
+reported as
+
+```
+ aaa_newfile_test.asdf
+  NO BASELINE -- run './asdf.sh save' to create aaa_newfile_test.asdf.sav
+    size 256 256
+    bitpix 16
+    ...
+```
+
+which prints the values so they can be eyeballed before `save` accepts them.
+`save` regenerates every baseline, so review `git diff` afterwards rather
+than trusting it blindly — that diff is the actual test result when something
+has changed on purpose.
+
+Unlike most of the suite, this is more than a smoke test. Each file's
+baseline records what DS9 actually made of it:
+
+```
+size 256 256
+bitpix 16
+blank 256
+value 1 1 0
+value 128 128 254
+value 256 256 510
+wcs none
+```
+
+The pixel samples are the part that earns its keep. An ASDF file can load at
+the wrong shape, or from the wrong array, and still "work" — a Roman
+`*_cal.asdf` has 15 arrays of identical shape *and* identical WCS, so size
+alone cannot tell them apart. The sample coordinates are derived from the
+reported size rather than hardwired, so the probe stays valid for any shape,
+from a 4x4096 reference strip to a 5000² coadd. `blank` catches the
+integer-null sentinel on the `_blank`/`_blank_scalar` files, and `wcs` reads
+`none` for these flat fixtures but becomes the single most valuable number in
+the file if a real Roman product is dropped in.
+
 ## Regenerating
 
 ```

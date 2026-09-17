@@ -1,0 +1,7 @@
+size 800 800
+bitpix -32
+blank none
+value 1 1 0
+value 400 400 23
+value 800 800 0
+wcs none
