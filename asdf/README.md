@@ -39,13 +39,14 @@ project's Phase 2/3 reader only looked for keys at a Roman-specific
 indent/nesting (2-space direct children of `roman:`, or 4-space under
 `roman.meta:`), so a flat `data:` was invisible to it.
 
-**Phase 4 changed that, and all 21 now load.** Its `AsdfEnumNdarrays` walks
+**Phase 4 changed that, and all 27 now load.** Its `AsdfEnumNdarrays` walks
 the whole tree and gives every `core/ndarray` a root-relative path, and a
 bare name resolves either as `roman/<name>` or — failing that — as any
 *uniquely* matching path, so plain `data` is found here without a
-Roman-style prefix. Verified against the real reader: 63/63 of the
-`none`/`zlib`/`lz4` fixtures load, with dimensions and `minmax` both
-matching DS9's own reading of the source FITS image in every case.
+Roman-style prefix. Verified against the real reader: with bzip2 support
+added in Phase 5, all **108/108** fixtures load — all 27 in each of the four
+codec directories — with dimensions and `minmax` both matching DS9's own
+reading of the source FITS image in every case.
 
 These fixtures still exist for that project's Phase 4/5 generalization work
 rather than as a Roman regression check — and they have already paid for
@@ -187,9 +188,12 @@ write, so it's excluded here):
 - **`zlib`** — already supported by `ds9/library/asdf.tcl`'s `AsdfReadBlock`.
 - **`lz4`** — already supported (via the `tclasdf` extension's
   `asdflz4decompress`, per Phase 0/2).
-- **`bzp2`** (bzip2) — **not yet supported** by DS9's reader. Included
-  deliberately so Phase 5 has a real fixture to build bzip2 support against,
-  rather than needing to generate one later.
+- **`bzp2`** (bzip2) — supported as of Phase 5, and these fixtures are what
+  it was built against. Unlike lz4 (which has no stream format, so asdf
+  frames it as length-prefixed chunks), a bzp2 block payload is a single
+  plain bzip2 stream: every payload here starts with the `BZh9` magic at
+  byte 0 and the block header's `used` field is the whole compressed
+  length.
 
 ## Regenerating
 
