@@ -91,13 +91,16 @@ FRAME_UCD = {
 }
 
 
-def tree(name, transform, expect, frame="icrs", attrs="{}", note=""):
+def tree(name, transform, expect, frame="icrs", attrs="{}", note="",
+         readout=True):
     lon_ucd, lat_ucd = FRAME_UCD.get(frame, ("pos.eq.ra", "pos.eq.dec"))
     meta = {"primitive": name, "expect_at": [PX, PY],
             "expect_lonlat": [round(expect[0], 9), round(expect[1], 9)],
             "expect_sky": frame}
     if note:
         meta["note"] = note
+    if not readout:
+        meta["expect_readout"] = "no"
     return """asdf_library: !core/software-1.0.0 {{name: make_gwcs_transform_fixtures, version: '1.0'}}
 meta: {meta}
 data: !core/ndarray-1.1.0
@@ -205,6 +208,46 @@ TRANSFORMS = [
 ]
 
 
+def dup2():
+    """remap_axes that duplicates (x,y) into (x,y,x,y).
+
+    The 2-in/1-out primitives -- polynomial, ortho_polynomial, planar2d --
+    each need both pixel axes, so two of them concatenated want four inputs.
+    ReadRemapAxes takes `mapping' (one entry per output) and `n_inputs'.
+    """
+    return """!transform/remap_axes-1.5.0
+        mapping: [0, 1, 0, 1]
+        n_inputs: 2"""
+
+
+def ndarr(rows, ind):
+    """An inline 2-D float64 ndarray at the given indent."""
+    pad = " " * ind
+    body = "\n".join("%s- [%s]" % (pad, ", ".join(fnum(v) for v in r))
+                      for r in rows)
+    return ("!core/ndarray-1.1.0\n%sdata:\n%s\n%sdatatype: float64\n"
+            "%sbyteorder: little\n%sshape: [%d, %d]"
+            % (pad, body, pad, pad, pad, len(rows), len(rows[0])))
+
+
+def poly(tag, coeffs, ind, extra=""):
+    """A polynomial / ortho_polynomial node with an inline coefficient matrix."""
+    pad = " " * ind
+    return "!transform/%s\n%scoefficients: %s%s" % (
+        tag, pad, ndarr(coeffs, ind + 2), extra)
+
+
+def planar(intercept, sx, sy):
+    return ("!transform/planar2d-1.0.0 {intercept: %s, slope_x: %s, slope_y: %s}"
+            % (fnum(intercept), fnum(sx), fnum(sy)))
+
+
+def compose2(a, b, ind=6):
+    pad = " " * ind
+    return "!transform/compose-1.4.0\n%sforward:\n%s- %s\n%s- %s" % (
+        pad, pad, a, pad, b)
+
+
 def rot3d_expect(lon, lat, phi, theta, psi):
     """What rotate3d native2celestial does, per ReadRotate3d: a FitsChan with
     CRVAL1=phi, CRVAL2=theta, LONPOLE=psi -- i.e. the native pole lands at
@@ -249,6 +292,122 @@ def main():
     #   ALTAZ            -> location (an earthlocation) and obstime
     # ICRS, GALACTIC and SUPERGALACTIC need nothing, which is exactly why
     # those three worked with an empty frame_attributes and the rest did not.
+    # ---- the 2-in/1-out family, via a duplicating remap_axes -------------
+    # planar2d is intercept + slope_x*x + slope_y*y.
+    pa, pb = (1.0, 2.0, 3.0), (-2.0, 0.5, 1.0)
+    exp = (pa[0] + pa[1] * PX + pa[2] * PY, pb[0] + pb[1] * PX + pb[2] * PY)
+    tr = compose2(dup2(), cat(planar(*pa), planar(*pb), ind=8))
+    sz = write_asdf(os.path.join(OUTDIR, "planar2d.asdf"),
+                    tree("planar2d", tr, exp,
+                         note="2-in/1-out, so a duplicating remap_axes feeds two"),
+                    payload)
+    made.append(("transform", "planar2d", sz, exp))
+
+    # polynomial: sum c[i][j] * x**i * y**j, row index on x.
+    ca = [[1.0, 2.0], [3.0, 0.0]]
+    cb = [[0.0, 1.0], [1.0, 0.0]]
+
+    def pv(c):
+        return sum(c[i][j] * PX ** i * PY ** j
+                   for i in range(len(c)) for j in range(len(c[0])))
+
+    exp = (pv(ca), pv(cb))
+    tr = compose2(dup2(), cat(poly("polynomial-1.3.0", ca, 10),
+                              poly("polynomial-1.3.0", cb, 10), ind=8))
+    sz = write_asdf(os.path.join(OUTDIR, "polynomial.asdf"),
+                    tree("polynomial", tr, exp,
+                         note="row index is the x power; 2-in/1-out like planar2d"),
+                    payload)
+    made.append(("transform", "polynomial", sz, exp))
+
+    # ortho_polynomial: same coefficients, Chebyshev basis. Degree 1 on
+    # purpose -- T0 = 1 and T1(t) = t, so the expected value is the same
+    # arithmetic as the plain polynomial and this isolates the tag and
+    # polynomial_type handling rather than the basis evaluation.
+    dom = "\n          domain:\n          - [-1.0, 1.0]\n          - [-1.0, 1.0]"
+    win = "\n          window:\n          - [-1.0, 1.0]\n          - [-1.0, 1.0]"
+    ortho_extra = "\n          polynomial_type: chebyshev" + dom + win
+    tr = compose2(dup2(),
+                  cat(poly("ortho_polynomial-1.0.0", ca, 10, ortho_extra),
+                      poly("ortho_polynomial-1.0.0", cb, 10, ortho_extra), ind=8))
+    sz = write_asdf(os.path.join(OUTDIR, "ortho_polynomial.asdf"),
+                    tree("ortho_polynomial", tr, exp,
+                         note="chebyshev at degree 1, so T0=1 and T1(t)=t and the "
+                              "arithmetic matches plain polynomial. AST builds the "
+                              "WCS (has wcs wcs = 1) but gives the Chebyshev no "
+                              "inverse, and DS9 cannot produce a readout without "
+                              "one - which is why real GWCS files carry explicit "
+                              "`inverse:' blocks for their polynomials, as the "
+                              "Roman distortion does. Plain polynomial escapes "
+                              "this because AST inverts a degree-1 one itself.",
+                         readout=False),
+                    payload)
+    made.append(("transform", "ortho_polynomial", sz, exp))
+
+    # ---- divide: scale / constant, so the quotient stays linear ---------
+    def div(fac, const):
+        return ("!transform/divide-1.4.0\n"
+                "        forward:\n"
+                "        - !transform/scale-1.4.0 {factor: %s}\n"
+                "        - !transform/constant-1.6.0 {value: %s, dimensions: 1}"
+                % (fnum(fac), fnum(const)))
+
+    exp = (PX * 10.0 / 2.0, PY * 6.0 / 3.0)
+    tr = cat(div(10.0, 2.0), div(6.0, 3.0))
+    sz = write_asdf(os.path.join(OUTDIR, "divide.asdf"),
+                    tree("divide", tr, exp,
+                         note="scale/constant keeps the quotient linear; also "
+                              "exercises `constant'"),
+                    payload)
+    made.append(("transform", "divide", sz, exp))
+
+    # ---- fix_inputs: pin axis 1 of a planar2d, leaving 1-in/1-out -------
+    def fixin(intercept, sx, sy, yval):
+        return ("!transform/fix_inputs-1.2.0\n"
+                "        forward:\n"
+                "        - %s\n"
+                "        - keys: [1]\n"
+                "          values: [%s]"
+                % (planar(intercept, sx, sy), fnum(yval)))
+
+    fa, fb = (1.0, 2.0, 3.0, 5.0), (0.0, 1.0, 2.0, 4.0)
+    exp = (fa[0] + fa[1] * PX + fa[2] * fa[3],
+           fb[0] + fb[1] * PY + fb[2] * fb[3])
+    tr = cat(fixin(*fa), fixin(*fb))
+    sz = write_asdf(os.path.join(OUTDIR, "fix_inputs.asdf"),
+                    tree("fix_inputs", tr, exp,
+                         note="pins axis 1 of a planar2d, so each half is 1-in/1-out"),
+                    payload)
+    made.append(("transform", "fix_inputs", sz, exp))
+
+    # ---- spherical_cartesian: 2->3 then 3->2, i.e. a round trip ---------
+    tr = compose2("!<tag:stsci.edu:gwcs/spherical_cartesian-1.3.0> "
+                  "{transform_type: spherical_to_cartesian}",
+                  "!<tag:stsci.edu:gwcs/spherical_cartesian-1.3.0> "
+                  "{transform_type: cartesian_to_spherical}")
+    sz = write_asdf(os.path.join(OUTDIR, "spherical_cartesian.asdf"),
+                    tree("spherical_cartesian", tr, (PX, PY),
+                         note="both directions composed, so the result must be the "
+                              "identity - which is what makes it checkable"),
+                    payload)
+    made.append(("transform", "spherical_cartesian", sz, (PX, PY)))
+
+    # ---- rotate_sequence_3d, spherical flavour: 2-in/2-out directly -----
+    tr = ("!transform/rotate_sequence_3d-1.3.0\n"
+          "      angles: [90.0]\n"
+          "      axes_order: z\n"
+          "      rotation_type: spherical")
+    # A +90 z rotation moves longitude by -90 here; the sign is AST's, and is
+    # recorded from measurement rather than assumed.
+    exp = (norm_lon(PX - 90.0), PY)
+    sz = write_asdf(os.path.join(OUTDIR, "rotate_sequence_3d.asdf"),
+                    tree("rotate_sequence_3d", tr, exp,
+                         note="rotation_type spherical is 2-in/2-out, so no "
+                              "cartesian plumbing needed; +90 about z shifts "
+                              "longitude by -90"),
+                    payload)
+    made.append(("transform", "rotate_sequence_3d", sz, exp))
+
     # GetTime() accepts either a bare string or a tagged Time object, but it
     # validates `format' against a short list -- iso, byear, jyear, jd, mjd --
     # and errors on anything else. astropy's own spellings (jyear_str, isot)

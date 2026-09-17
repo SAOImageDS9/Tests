@@ -295,15 +295,39 @@ meta: {"primitive": "affine", "expect_at": [10.0, 20.0],
        "expect_lonlat": [21.0, 58.0], "expect_sky": "icrs"}
 ```
 
-**16 of 19 verified exactly** — 0.0000″ for everything but `rotate2d` and
+**22 of 26 verified exactly** — 0.0000″ for everything but `rotate2d` and
 `rotate3d`, which come in at 0.0002″ (print precision, not error).
 
 | group | primitive | state |
 |---|---|---|
-| transform | identity, shift, scale, linear1d, multiplyscale, affine, rotate2d, remap_axes, concatenate, compose, rotate3d | **verified** |
-| frames | icrs, galactic, fk5, fk4, ecliptic | **verified** — identity transform, so lon/lat must equal the pixel when read in the frame's own system |
+| transform | identity, shift, scale, linear1d, multiplyscale, affine, rotate2d, remap_axes, concatenate, compose, rotate3d, planar2d, polynomial, divide, fix_inputs, spherical_cartesian, rotate_sequence_3d | **verified** (17) |
+| transform | ortho_polynomial | builds a WCS (`has wcs wcs` = 1) but yields no readout — see below |
+| frames | icrs, galactic, fk5, fk4, ecliptic | **verified** — identity transform, so lon/lat must equal the pixel in the frame's own system |
 | frames | fk4noeterms, supergalactic | load and convert correctly, but DS9 has no display system for either, so only the ICRS conversion was checked |
-| frames | altaz | **not working** — see below |
+| frames | altaz | **not working** (`has wcs wcs` = 0) — see below |
+
+The 2-in/1-out primitives — `polynomial`, `ortho_polynomial`, `planar2d` —
+each need both pixel axes, so two of them concatenated want four inputs. A
+`remap_axes` with `mapping: [0, 1, 0, 1]` duplicates `(x,y)` into
+`(x,y,x,y)` to feed them. `divide` is `scale / constant`, chosen so the
+quotient stays linear and checkable (and it exercises `constant` too).
+`fix_inputs` pins axis 1 of a `planar2d`, leaving 1-in/1-out.
+`spherical_cartesian` composes both directions, 2→3→2, so the result must be
+the identity — which is what makes it verifiable at all.
+
+Two conventions were settled by measurement rather than assumed, and are
+recorded in the generator: `polynomial`'s coefficient matrix has the **row
+index on x** (`sum c[i][j] x**i y**j`), and a **+90° `rotate_sequence_3d`
+about z shifts longitude by −90°**.
+
+`ortho_polynomial` is the interesting near-miss. AST builds the WCS, but
+gives the Chebyshev no inverse, and DS9 produces no readout without one.
+Plain `polynomial` escapes this because AST inverts a degree-1 one itself.
+This also explains something visible in the real Roman WCS: its distortion
+polynomials carry large explicit `inverse:` blocks. A faithful fixture would
+supply one too; this one deliberately does not, and records
+`expect_readout: no` in its own metadata so the absence is a stated fact
+rather than a silent failure.
 
 `shift`, `scale`, `linear1d` and `multiplyscale` are 1-in/1-out, so a 2-D WCS
 has to pair them with `concatenate`; that is noted in each fixture rather than
