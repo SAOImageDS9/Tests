@@ -215,36 +215,52 @@ matters — it is what parses them.
 python3 asdf/make_gwcs_fixtures.py
 ```
 
-**Status — 7 of 27 are verified; the rest are not, and deliberately have no
-baselines yet.** `asdf.sh` will report them as `NO BASELINE`, which is the
-correct signal: they exist and load, but their WCS is not blessed.
+**Status — 25 of 27 verified against their twin.**
 
 | group | state |
 |---|---|
-| gnomonic, airy, stereographic, zenithal_equal_area, zenithal_equidistant, slant_orthographic, slant_zenithal_perspective | **verified** — agree with their twin to 0.0266–0.0269″ |
-| conic_×4, cylindrical_×2, mercator, plate_carree, hammer_aitoff, molleweide, parabolic, sanson_flamsteed, polyconic, bonne_equal_area, 3 quad-cubes | wrong by ~84° — see below |
-| zenithal_perspective | wrong by ~6500″, looks like an AST bug |
-| healpix, healpix_polar | build no FrameSet at all, undiagnosed |
+| all 25 projections with a 1904-66 twin | **verified** — agree to 0.0265–0.0271″ |
+| `healpix_polar` | loads, but **no XPH image exists** in the 1904-66 set, so it borrows HPX's header for parameters and has nothing to be checked against. Marked `verify_against: none` in its own metadata |
+| `zenithal_perspective` | out by ~6500″ with correct parameters — an AST bug, see below |
 
-The residual on the verified seven is **constant** at ~0.027″, and that is what
+The residual on the verified 25 is **constant** at ~0.027″, and that is what
 identifies it: it is the FK5 J2000 → ICRS frame bias, since the 1904-66 files
 are `EQUINOX 2000` while these fixtures declare ICRS. A projection error would
-not be identical across seven different projections.
+not be identical across 25 different projections.
 
-The ~84° group fails for a structural reason, not a parameter slip. FITS puts
-the fiducial point of a *zenithal* projection at the native pole,
-(φ₀,θ₀) = (0°,90°), but at the native *equator*, (0°,0°), for conics,
-cylindricals, pseudo-cylindricals and the quad-cubes. A single
-`rotate3d(CRVAL1, CRVAL2, LONPOLE)` is the correct native→celestial rotation
-only in the first case, so those need the θ₀=0 construction instead.
+Each fixture carries the twin's **own pixel data**, copied byte for byte
+(both sides are big-endian float32). So a readout from the fixture and from
+the FITS file can be compared directly, and `asdf.sh`'s pixel samples mean
+something rather than being self-referential.
 
-`zenithal_perspective` is separate and more interesting: its parameters are
-right, but `yamlchan.c` maps it onto `AST__SZP` with `pv1=mu, pv2=gamma`.
-AZP and SZP are different projections whose second and third parameters mean
-different things, so this looks like a genuine AST bug and a candidate to
-report upstream.
+### The θ₀ construction, which is the whole difficulty
 
-Two things this exercise turned up that are worth knowing independently of the
+AST's `rotate3d` with `native2celestial` is handed φ/θ/ψ and feeds them to a
+FitsChan as CRVAL1/CRVAL2/LONPOLE *with a zenithal CTYPE*. So what it actually
+wants is the celestial position of the **native pole** — which coincides with
+CRVAL only when the projection's fiducial point is at the native pole,
+(φ₀,θ₀) = (0°,90°). That holds for the zenithal family and nothing else:
+conics sit at (0°,θ_a), and cylindricals, pseudo-cylindricals, quad-cubes,
+Bonne, polyconic and HEALPix all sit on the native *equator*, (0°,0°).
+
+Passing CRVAL regardless is what put 18 of these out by ~84°. Every file in
+the set has LONPOLE − φ₀ = 180°, which collapses Paper II's general expression
+to
+
+    sin δ₀ = −cos(θ₀ + δ_p)   ⟹   δ_p = acos(−sin δ₀) − θ₀
+
+and that reduces to δ_p = CRVAL2 when θ₀ = 90°, so one formula covers both
+families. α_p is formally degenerate here because δ₀ = −90° puts the fiducial
+on the celestial pole where α₀ means nothing; FITS fixes it by convention and
+CRVAL1 is the value that reproduces the twin (the alternative is out by 53°).
+
+`zenithal_perspective` is separate and genuinely broken upstream: its
+parameters are right, but `yamlchan.c` maps it onto `AST__SZP` with
+`pv1=mu, pv2=gamma`. AZP and SZP are different projections whose second and
+third parameters mean different things (SZP's are φ_c/θ_c), so this is an AST
+bug rather than anything these fixtures can work around.
+
+Two things this exercise turned upTwo things this exercise turned up that are worth knowing independently of the
 fixtures:
 
 - **`axis_physical_types` is effectively mandatory.** It reads like metadata,
@@ -257,6 +273,11 @@ fixtures:
   convention difference suggests. The identity fixture reads sky (4,4) at
   image (4,4). So the shift offset here is `-CRPIX` exactly; `-(CRPIX-1)`
   moves everything one pixel, which at this plate scale is 240″.
+- **Both HEALPix branches in AST were dead code.** `ReadSkyProjection()` has
+  handlers for `/healpix-` and `/healpix_polar-`, but `IsASkyProjection()` ORs
+  six family recognizers and HEALPix is in none of them, so neither tag was
+  ever recognized as a sky projection and both loaded with no WCS. Fixed
+  locally in `ast/src/yamlchan.c`; another candidate to send upstream.
 
 ## Running them
 

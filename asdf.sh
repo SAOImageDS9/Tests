@@ -42,6 +42,8 @@ probe () {
     set -- $size
     w=$1
     h=$2
+    cx=""
+    cy=""
     if [ "$w" -gt 0 ] 2>/dev/null && [ "$h" -gt 0 ] 2>/dev/null; then
 	cx=`expr $w / 2`
 	cy=`expr $h / 2`
@@ -53,13 +55,24 @@ probe () {
 	echo "value none"
     fi
 
-    # Most fixtures carry no WCS; a real Roman product does, and then this
-    # is the single most valuable number in the file.
-    wcs=`xpaget DS9Test crosshair wcs icrs degrees 2>/dev/null`
-    if [ -z "`echo $wcs`" ]; then
-	echo "wcs none"
+    # Most fixtures carry no WCS; a real Roman product does, and the gwcs/
+    # ones exist precisely to exercise it, so this is often the most valuable
+    # line in the file.
+    #
+    # The crosshair has to be positioned explicitly first. `xpaget data' does
+    # not move it, so reading the crosshair straight after those samples
+    # reports wherever it was last left -- which made this line depend on
+    # whatever ran before, and therefore not reproducible.
+    if [ -n "$cx" ]; then
+	xpaset -p DS9Test crosshair $cx $cy image
+	wcs=`xpaget DS9Test crosshair wcs icrs degrees 2>/dev/null`
+	if [ -z "`echo $wcs`" ]; then
+	    echo "wcs $cx $cy none"
+	else
+	    echo "wcs $cx $cy $wcs"
+	fi
     else
-	echo "wcs $wcs"
+	echo "wcs none"
     fi
 }
 

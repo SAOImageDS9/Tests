@@ -1,0 +1,7 @@
+size 192 192
+bitpix -32
+blank none
+value 1 1 nan
+value 96 96 0.985408
+value 192 192 nan
+wcs 96 96 284.8491374 -66.3479319

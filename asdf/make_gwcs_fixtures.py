@@ -21,6 +21,7 @@ writer would not let us choose.
 """
 
 import glob
+import math
 import os
 import struct
 import sys
@@ -28,39 +29,31 @@ import sys
 # ---------------------------------------------------------------------------
 # STATUS, measured against the FITS twin in DS9 (see README "GWCS primitives")
 #
-#   VERIFIED (7)  the zenithal family: gnomonic, airy, stereographic,
-#                 zenithal_equal_area, zenithal_equidistant,
-#                 slant_orthographic, slant_zenithal_perspective.
-#                 All agree with their 1904-66 twin to 0.0266-0.0269 arcsec.
-#                 That residual is constant across all seven, which is what
-#                 identifies it: it is the FK5 J2000 -> ICRS frame bias (the
-#                 FITS files are EQUINOX 2000, these fixtures declare ICRS),
-#                 not a projection error.
+#   VERIFIED (25 of 27)  every projection with a 1904-66 twin agrees with it to
+#                 0.0265-0.0271 arcsec.  That residual is constant across all
+#                 25, which is what identifies it: it is the FK5 J2000 -> ICRS
+#                 frame bias (the FITS files are EQUINOX 2000, these fixtures
+#                 declare ICRS), not a projection error.
 #
-#   NOT YET (18)  the non-zenithal families -- conic_*, cylindrical_*,
-#                 mercator, plate_carree, hammer_aitoff, molleweide,
-#                 parabolic, sanson_flamsteed, polyconic, bonne_equal_area,
-#                 and the three quad-cubes -- are all out by ~84 degrees.
-#                 The cause is structural, not a parameter slip: FITS puts the
-#                 fiducial point of a zenithal projection at the native pole
-#                 (phi0,theta0)=(0,90), but at the native *equator* (0,0) for
-#                 all of these. A single rotate3d(CRVAL1,CRVAL2,LONPOLE) is
-#                 only the correct native->celestial rotation in the first
-#                 case, so these need the theta0=0 construction instead.
-#                 Their fixtures are still written -- they are valid ASDF and
-#                 do exercise the tag parsing -- but their WCS is wrong, so
-#                 they must not be given asdf.sh baselines yet.
+#   healpix_polar No XPH image exists in the 1904-66 set, so this one borrows
+#                 HPX's header for its parameters and has no reference to be
+#                 checked against -- it is marked `verify_against: none'.  It
+#                 loads and produces a WCS; that is all that is claimed.
 #
-#   AZP (1)       zenithal_perspective is out by ~6500 arcsec even though its
-#                 parameters are right. yamlchan.c maps it to AST__SZP with
-#                 pv1=mu, pv2=gamma, but AZP and SZP are different
-#                 projections with different parameter meanings (SZP's second
-#                 and third are phi_c/theta_c). This looks like an AST bug
-#                 rather than anything in this tree, and is a candidate to
-#                 report upstream.
+#   zenithal_perspective  Out by ~6500 arcsec with demonstrably correct
+#                 parameters.  yamlchan.c maps it to AST__SZP with pv1=mu,
+#                 pv2=gamma, but AZP and SZP are different projections whose
+#                 second and third parameters mean different things (SZP's are
+#                 phi_c/theta_c).  An AST bug, not something these fixtures can
+#                 work around, and a candidate to report upstream.
 #
-#   HEALPIX (2)   healpix and healpix_polar fail to build a FrameSet at all.
-#                 Not yet diagnosed.
+# Getting here needed two fixes outside this script, both recorded in the
+# project's TODO.md:
+#   - ds9/library/asdf.tcl only looked for a `wcs' key at Roman's indents, so
+#     a flat tree like these loaded its pixels and silently got no WCS.
+#   - ast/src/yamlchan.c's IsASkyProjection() omitted both HEALPix variants,
+#     making the /healpix- and /healpix_polar- branches of ReadSkyProjection()
+#     unreachable dead code.
 # ---------------------------------------------------------------------------
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -101,6 +94,51 @@ PROJ = {
     "QSC": ("quad_spherical_cube",        "1.2.0", {}),
     "TSC": ("tangential_spherical_cube",  "1.2.0", {}),
 }
+
+# The native coordinates of each projection's fiducial point.  FITS-WCS
+# Paper II puts it at the native *pole* for the zenithal projections,
+# (phi0,theta0) = (0,90), but on the native *equator*, (0,0), for the
+# cylindricals, pseudo-cylindricals, quad-cubes, Bonne, polyconic and HEALPix;
+# and at (0,theta_a) for the conics, theta_a being the sigma parameter.
+#
+# This is the whole reason a single rotate3d(CRVAL1,CRVAL2,LONPOLE) is not
+# enough: AST's rotate3d wants the celestial coordinates of the *native pole*,
+# which only coincide with CRVAL when theta0 = 90.
+THETA0 = {
+    "gnomonic": 90.0, "airy": 90.0, "slant_orthographic": 90.0,
+    "slant_zenithal_perspective": 90.0, "stereographic": 90.0,
+    "zenithal_equal_area": 90.0, "zenithal_equidistant": 90.0,
+    "zenithal_perspective": 90.0,
+}
+# everything not listed sits on the native equator, except the conics, which
+# take theta0 from their own sigma parameter (handled in build()).
+CONICS = ("conic_equal_area", "conic_equidistant", "conic_orthomorphic",
+          "conic_perspective")
+
+
+def native_pole(crval, lonpole, theta0):
+    """Celestial (alpha_p, delta_p) of the native pole.
+
+    Every file in the 1904-66 set has LONPOLE - phi0 = 180, which collapses
+    Paper II's general expression to cos(theta0 + delta_p) = -sin(delta0):
+
+        sin(delta0) = sin(theta0) sin(delta_p)
+                      + cos(theta0) cos(delta_p) cos(phi0 - LONPOLE)
+                    = -cos(theta0 + delta_p)
+
+    so delta_p = acos(-sin delta0) - theta0.  That reduces to delta_p = CRVAL2
+    when theta0 = 90, which is exactly the zenithal case that already worked,
+    so the one formula covers both families.
+
+    alpha_p is formally degenerate here because delta0 = -90 puts the fiducial
+    on the celestial pole, where alpha0 means nothing; FITS resolves it by
+    convention and CRVAL1 is the value that reproduces the twin (checked
+    against the alternative, which is out by 53 degrees).
+    """
+    a0, d0 = crval
+    dp = math.degrees(math.acos(max(-1.0, min(1.0, -math.sin(math.radians(d0))))))
+    return a0, dp - theta0
+
 
 # HEALPix takes H and X, which the 1904-66 HPX file leaves to the defaults.
 # yamlchan.c defaults them to 4 and 3; name them explicitly so the fixture
@@ -167,7 +205,7 @@ def fnum(v):
     return s if ("." in s or "e" in s or "E" in s) else s + ".0"
 
 
-def gwcs_tree(nx, ny, proj, ver, params, crpix, cdelt, crval, lonpole):
+def gwcs_tree(nx, ny, proj, ver, params, crpix, cdelt, crval, lonpole, theta0):
     """A complete GWCS: pixel -> shift -> affine -> projection -> rotate3d -> icrs.
 
     The shift offset is -crpix, with no 1-based/0-based correction. That is
@@ -181,8 +219,10 @@ def gwcs_tree(nx, ny, proj, ver, params, crpix, cdelt, crval, lonpole):
     240 arcsec.
 
     rotate3d with direction native2celestial is handed phi/theta/psi, which
-    ReadRotate3d() feeds to a FitsChan as CRVAL1/CRVAL2/LONPOLE -- so the FITS
-    values go straight through with no conversion.
+    ReadRotate3d() feeds to a FitsChan as CRVAL1/CRVAL2/LONPOLE with a zenithal
+    CTYPE -- so what it really wants is the celestial position of the *native
+    pole*, not CRVAL.  For a zenithal projection those are the same point; for
+    everything else they are not, which is what native_pole() computes.
 
     Both frames must carry axis_physical_types.  It looks optional -- gwcs
     treats it as metadata and yamlchan.c reads it with a not-required flag --
@@ -197,9 +237,10 @@ def gwcs_tree(nx, ny, proj, ver, params, crpix, cdelt, crval, lonpole):
 meta:
   projection: {proj}
   source_fits_file: {twin}
+  verify_against: {verify}
 data: !core/ndarray-1.1.0
   source: 0
-  datatype: uint8
+  datatype: float32
   byteorder: big
   shape: [{ny}, {nx}]
 wcs: !<tag:stsci.edu:gwcs/wcs-1.4.0>
@@ -249,12 +290,33 @@ wcs: !<tag:stsci.edu:gwcs/wcs-1.4.0>
     transform: null
 """.format(proj=proj, ver=ver, plist=plist, nx=nx, ny=ny,
            twin=os.path.basename(gwcs_tree.twin),
+           verify=(os.path.basename(gwcs_tree.twin) if gwcs_tree.verify else "none"),
            sx=fnum(-crpix[0]), sy=fnum(-crpix[1]),
            cd1=fnum(cdelt[0]), cd2=fnum(cdelt[1]),
-           phi=fnum(crval[0]), theta=fnum(crval[1]), psi=fnum(lonpole))
+           phi=fnum(native_pole(crval, lonpole, theta0)[0]),
+           theta=fnum(native_pole(crval, lonpole, theta0)[1]),
+           psi=fnum(lonpole))
+
+
+def fits_data(path, nx, ny):
+    """The twin's data array, verbatim.  BITPIX -32 big-endian both sides."""
+    want = nx * ny * 4
+    with open(path, "rb") as fh:
+        while True:
+            blk = fh.read(2880)
+            if not blk:
+                raise EOFError(path)
+            if any(blk[i:i + 8].strip() == b"END" for i in range(0, 2880, 80)):
+                break
+        data = fh.read(want)
+    if len(data) != want:
+        raise EOFError("%s: got %d of %d data bytes" % (path, len(data), want))
+    return data
 
 
 def build(code, proj, ver, pmap, twin_code=None):
+    # twin_code means the parameters were borrowed from another projection's
+    # header, so that file is NOT a reference to check the result against.
     twin = os.path.join(WCSDIR, "1904-66_%s.fits" % (twin_code or code))
     if not os.path.exists(twin):
         return None
@@ -269,18 +331,26 @@ def build(code, proj, ver, pmap, twin_code=None):
         else:
             params[name] = num(hdr, card)
 
+    theta0 = THETA0.get(proj, 0.0)
+    if proj in CONICS:
+        theta0 = params["sigma"]
+
     gwcs_tree.twin = twin
+    gwcs_tree.verify = (twin_code is None)
     body = gwcs_tree(
         nx, ny, proj, ver, params,
         (num(hdr, "CRPIX1"), num(hdr, "CRPIX2")),
         (num(hdr, "CDELT1"), num(hdr, "CDELT2")),
         (num(hdr, "CRVAL1"), num(hdr, "CRVAL2")),
         num(hdr, "LONPOLE", 0.0),
+        theta0,
     )
-    # A recognisable ramp rather than the real pixels: these fixtures are
-    # about the WCS, and a deterministic pattern keeps the file small and the
-    # baseline stable.
-    payload = bytes(((x * 7 + y * 13) % 251 for y in range(ny) for x in range(nx)))
+    # The twin's own pixels, copied byte for byte.  Synthesising a pattern
+    # would be smaller, but sharing the data means a readout from the fixture
+    # and from the FITS file can be compared directly -- which is the point of
+    # pairing them, and makes asdf.sh's pixel samples meaningful rather than
+    # self-referential.  Both are big-endian float32, so this is a copy.
+    payload = fits_data(twin, nx, ny)
     out = os.path.join(OUTDIR, "%s.asdf" % proj)
     size = write_asdf(out, body, payload)
     return proj, code, size, params
