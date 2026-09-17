@@ -1,6 +1,6 @@
 # ASDF FITS test suite (Phase 5 fixtures)
 
-`fixtures/` holds 84 small ASDF files (21 source images x 4 block-compression
+`fixtures/` holds 108 small ASDF files (27 source images x 4 block-compression
 codecs), converted from this test suite's own sample FITS images (`../fits/`
 — read-only source, nothing was written back into it). Built for the
 `SAOImageDS9/asdf_format` project's Phase 5 "generalize beyond Roman's fixed
@@ -13,10 +13,13 @@ to serve (those documents live in the `asdf_format` checkout, not here).
 ```
 fixtures/
   none/   char.asdf, char_blank.asdf, ..., short_bscale.asdf   (uncompressed)
-  zlib/   same 21 files, zlib-compressed blocks
-  bzp2/   same 21 files, bzip2-compressed blocks
-  lz4/    same 21 files, lz4-compressed blocks
+  zlib/   same 27 files, zlib-compressed blocks
+  bzp2/   same 27 files, bzip2-compressed blocks
+  lz4/    same 27 files, lz4-compressed blocks
 ```
+
+21 come from `convert_fits_to_asdf.py`; the 6 `*_blank_scalar` files come
+from `make_scalar_mask_fixtures.py` (see "Scalar masks" below).
 
 Each `.asdf` file has a flat, non-Roman tree — deliberately **not** nested
 under a top-level `roman:` mapping the way the real Roman products Phases
@@ -115,6 +118,62 @@ depending on whether the source FITS file has a `BLANK` keyword:
 deliberately excluded — a binary table and a HEALPix pixelization aren't
 plain image arrays, out of scope for the `core/ndarray`-only reader the
 `asdf_format` project builds.
+
+## Scalar masks
+
+`core/ndarray`'s `mask` is `anyOf` **a scalar number**, a `complex-1.0.0`, or
+a `bool8` ndarray — quoting the schema, "If a scalar number, that number is
+used to represent missing values. If an ndarray, the given array provides a
+mask, where non-zero values represent missing values in this array. The mask
+array must be broadcastable to the dimensions of this array." The scalar form
+is therefore the FITS `BLANK` convention exactly, and it is a documented
+example in every schema version (`ndarray-1.0.0`/`1.1.0`/`1.2.0`) — in each
+case as `mask: -999` on **`float64`** data, so its headline use is floating
+point rather than integer.
+
+The `_blank` files above use the ndarray form. The 6 `*_blank_scalar` files
+use the scalar form:
+
+| file | data | scalar mask | what it exercises |
+|---|---|---|---|
+| `char_blank_scalar` | `uint8` | 128 | must render identically to `char_blank.fits` |
+| `short_blank_scalar` | `>i2` | 256 | ditto `short_blank.fits` |
+| `int_blank_scalar` | `>i4` | 256 | ditto `int_blank.fits` |
+| `long_blank_scalar` | `>i8` | 256 | ditto `long_blank.fits` |
+| `float_blank_scalar` | `>f4` | 255.0 | scalar mask on float data (the schema's own example case) |
+| `double_blank_scalar` | `>f8` | 255.0 | ditto, float64 |
+
+The four integer ones deliberately reuse the **source FITS file's own
+`BLANK`**, so a correct reader must render them identically to that FITS
+file — which makes the comparison unambiguous. The float sentinel is picked
+as a value that genuinely occurs in the data (255.0, 256 pixels), so the
+fixture actually masks something; the generator asserts that rather than
+assuming it.
+
+These need a separate generator because **asdf's Python writer cannot emit a
+scalar mask**: its ndarray converter does `result["mask"] = data.mask`
+unconditionally, so a numpy masked array always serializes as a boolean
+array. asdf *reads* the scalar form fine
+(`NDArrayType._apply_mask` -> `ma.masked_values`), it simply never writes it.
+Files carrying one come from other writers, which is exactly why a reader
+needs testing against them.
+
+So `make_scalar_mask_fixtures.py` builds each output by **re-treeing an
+existing fixture**: the data block is copied over byte for byte and only the
+YAML tree is rewritten and the block index recomputed. That covers all four
+codecs — **including `lz4`, with no compressor needed** — and guarantees the
+pixel bytes are identical to the sibling fixture.
+
+```
+python3 make_scalar_mask_fixtures.py
+```
+
+Every output is read back with `asdf.open()` and checked against the original
+FITS for dtype preservation, exact mask positions, and unmasked pixel
+equality, 24/24, before being treated as done. One wrinkle worth knowing if
+you write similar checks: `asdf.open()` returns a lazy `NDArrayType`, and the
+mask is applied only when it is materialized — a validator has to slice it
+(`af["data"][:]`) or it will wrongly conclude there is no mask.
 
 ## Compression codecs
 
