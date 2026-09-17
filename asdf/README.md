@@ -279,6 +279,62 @@ fixtures:
   ever recognized as a sky projection and both loaded with no WCS. Fixed
   locally in `ast/src/yamlchan.c`; another candidate to send upstream.
 
+## GWCS transforms and frames (`transform/`, `frames/`)
+
+`make_gwcs_transform_fixtures.py` covers the other half of what
+`yamlchan.c` implements — the transforms, the combinators that glue them
+together, and the celestial reference frames. These cannot be paired with a
+1904-66 file (there is no FITS image whose WCS is "rotate2d by 30°"), so
+instead each fixture maps pixel coordinates **straight to lon/lat with no
+projection**, which makes the answer a closed-form calculation. Each fixture
+carries its own expected value in its `meta` block, so the truth travels with
+the file rather than living in a table that could drift:
+
+```yaml
+meta: {"primitive": "affine", "expect_at": [10.0, 20.0],
+       "expect_lonlat": [21.0, 58.0], "expect_sky": "icrs"}
+```
+
+**13 of 19 verified exactly** — 0.0000″ for everything but `rotate2d` and
+`rotate3d`, which come in at 0.0002″ (print precision, not error).
+
+| group | primitive | state |
+|---|---|---|
+| transform | identity, shift, scale, linear1d, multiplyscale, affine, rotate2d, remap_axes, concatenate, compose, rotate3d | **verified** |
+| frames | icrs, galactic | **verified** — identity transform, so lon/lat must equal the pixel |
+| frames | supergalactic | loads and converts correctly, but DS9 has no supergalactic display system to read it back in, so only the ICRS conversion was checked |
+| frames | fk4, fk4noeterms, fk5, ecliptic, altaz | **not working** — see below |
+
+`shift`, `scale`, `linear1d` and `multiplyscale` are 1-in/1-out, so a 2-D WCS
+has to pair them with `concatenate`; that is noted in each fixture rather than
+glossed over. `concatenate` and `compose` get their own fixtures using
+*different* children, so they test the combinator rather than the pair.
+
+The five failing frames are a fixture problem, not a reader one.
+`yamlchan.c` requires specific `frame_attributes` per frame — FK4 and
+FK4NOETERMS want `obstime` *and* `equinox`, FK5 and ECLIPTIC want `equinox`,
+ALTAZ wants `location` *and* `obstime` — which is exactly why ICRS, GALACTIC
+and SUPERGALACTIC (which need none) worked immediately. The fixtures now
+supply them as `!time/time-1.1.0` and `earthlocation` objects, but AST still
+declines, so the serialization of those two object types is not right yet.
+That is the open item here.
+
+### Three AST bugs this turned up
+
+None of these are in DS9, and all three are recorded in the project's
+`TODO.md` as upstream candidates:
+
+1. **Both HEALPix projections were dead code.** `ReadSkyProjection()` has
+   handlers for them, but `IsASkyProjection()` ORs six family recognizers and
+   HEALPix is in none, so neither tag was ever recognized. Fixed locally.
+2. **`ReadLinear1d()` built its WinMap from an uninitialized variable.** It
+   assigned `outa` twice — the second store overwriting the correct one — and
+   never assigned `outb` at all. The resulting mapping was arbitrary and not
+   even reproducible. Fixed locally; `linear1d` then lands exactly.
+3. **`zenithal_perspective` is mapped to the wrong projection** (`AST__SZP`,
+   whose 2nd/3rd parameters mean something other than AZP's). Not fixed — it
+   needs an upstream decision, since AST does have an `AST__AZP`.
+
 ## Running them
 
 `../asdf.sh` drives these through DS9, and is wired into `../io.sh` along with the
