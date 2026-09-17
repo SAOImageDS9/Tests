@@ -195,6 +195,69 @@ write, so it's excluded here):
   byte 0 and the block header's `used` field is the whole compressed
   length.
 
+## GWCS primitives (`gwcs/`)
+
+The 108 fixtures above are about the *container* — codecs, dtypes, masks. They
+say nothing about the WCS: they have none, and every real Roman file uses the
+same projection (TAN), so until now exactly one of the sky projections
+`ast/src/yamlchan.c` implements was ever exercised.
+
+`make_gwcs_fixtures.py` writes one fixture per projection into `gwcs/`, built
+from the matching file in `../wcs/` — the Calabretta & Greisen 1904-66 set,
+which is one FITS image per projection code over the same field. That choice
+buys two things: the parameters are the canonical ones rather than invented,
+and DS9 can read the FITS twin, so each fixture has an independent reference
+instead of only "it loaded". The parameter names come from
+`ReadSkyProjection()` in `yamlchan.c`, which is the only authority that
+matters — it is what parses them.
+
+```
+python3 asdf/make_gwcs_fixtures.py
+```
+
+**Status — 7 of 27 are verified; the rest are not, and deliberately have no
+baselines yet.** `asdf.sh` will report them as `NO BASELINE`, which is the
+correct signal: they exist and load, but their WCS is not blessed.
+
+| group | state |
+|---|---|
+| gnomonic, airy, stereographic, zenithal_equal_area, zenithal_equidistant, slant_orthographic, slant_zenithal_perspective | **verified** — agree with their twin to 0.0266–0.0269″ |
+| conic_×4, cylindrical_×2, mercator, plate_carree, hammer_aitoff, molleweide, parabolic, sanson_flamsteed, polyconic, bonne_equal_area, 3 quad-cubes | wrong by ~84° — see below |
+| zenithal_perspective | wrong by ~6500″, looks like an AST bug |
+| healpix, healpix_polar | build no FrameSet at all, undiagnosed |
+
+The residual on the verified seven is **constant** at ~0.027″, and that is what
+identifies it: it is the FK5 J2000 → ICRS frame bias, since the 1904-66 files
+are `EQUINOX 2000` while these fixtures declare ICRS. A projection error would
+not be identical across seven different projections.
+
+The ~84° group fails for a structural reason, not a parameter slip. FITS puts
+the fiducial point of a *zenithal* projection at the native pole,
+(φ₀,θ₀) = (0°,90°), but at the native *equator*, (0°,0°), for conics,
+cylindricals, pseudo-cylindricals and the quad-cubes. A single
+`rotate3d(CRVAL1, CRVAL2, LONPOLE)` is the correct native→celestial rotation
+only in the first case, so those need the θ₀=0 construction instead.
+
+`zenithal_perspective` is separate and more interesting: its parameters are
+right, but `yamlchan.c` maps it onto `AST__SZP` with `pv1=mu, pv2=gamma`.
+AZP and SZP are different projections whose second and third parameters mean
+different things, so this looks like a genuine AST bug and a candidate to
+report upstream.
+
+Two things this exercise turned up that are worth knowing independently of the
+fixtures:
+
+- **`axis_physical_types` is effectively mandatory.** It reads like metadata,
+  and `yamlchan.c` fetches it with a not-required flag, but without it on both
+  frames AST builds no FrameSet and the file loads its pixels with no WCS and
+  no error. Found by bisection — a fixture containing nothing but
+  `transform: identity` failed until those two lines were added.
+- **DS9 feeds its image coordinate straight into the GWCS**, with no
+  1-based/0-based correction, which is the opposite of what the FITS↔gwcs
+  convention difference suggests. The identity fixture reads sky (4,4) at
+  image (4,4). So the shift offset here is `-CRPIX` exactly; `-(CRPIX-1)`
+  moves everything one pixel, which at this plate scale is 240″.
+
 ## Running them
 
 `../asdf.sh` drives these through DS9, and is wired into `../io.sh` along with the
