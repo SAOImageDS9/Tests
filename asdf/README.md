@@ -216,18 +216,28 @@ matters — it is what parses them.
 python3 asdf/make_gwcs_fixtures.py
 ```
 
-**Status — 25 of 27 verified against their twin.**
+**Status — 26 of 27 verified against their twin.**
 
 | group | state |
 |---|---|
-| all 25 projections with a 1904-66 twin | **verified** — agree to 0.0265–0.0271″ |
+| all 26 projections with a 1904-66 twin | **verified** — agree to 0.0250–0.0271″ |
 | `healpix_polar` | loads, but **no XPH image exists** in the 1904-66 set, so it borrows HPX's header for parameters and has nothing to be checked against. Marked `verify_against: none` in its own metadata |
-| `zenithal_perspective` | out by ~6500″ with correct parameters — an AST bug, see below |
 
-The residual on the verified 25 is **constant** at ~0.027″, and that is what
+The residual on the verified 26 is **constant** at ~0.027″, and that is what
 identifies it: it is the FK5 J2000 → ICRS frame bias, since the 1904-66 files
 are `EQUINOX 2000` while these fixtures declare ICRS. A projection error would
-not be identical across 25 different projections.
+not be identical across 26 different projections.
+
+`zenithal_perspective` was the last one to join them, and for a while it was
+the odd one out at 4195″ (1.17°) from its twin with demonstrably correct
+parameters. The cause was in AST: ASDF's zenithal_perspective is the FITS
+**AZP** projection, its `mu` and `gamma` being AZP's PV2_1 and PV2_2, but
+`ReadSkyProjection()` sent it to `AST__SZP`, whose 2nd and 3rd parameters are
+phi_c and theta_c — so gamma arrived as phi_c. The writer had the matching
+half: two `type == AST__SZP` branches, the second of them unreachable, so
+`AST__AZP` was never wired up in either direction. One token in each place.
+Fixed in the project's vendored `ast/` and sent upstream; it now sits at
+0.0250″, the same frame bias as every other projection here.
 
 Each fixture carries the twin's **own pixel data**, copied byte for byte
 (both sides are big-endian float32). So a readout from the fixture and from

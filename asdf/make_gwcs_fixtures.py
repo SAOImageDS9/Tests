@@ -40,12 +40,17 @@ import sys
 #                 checked against -- it is marked `verify_against: none'.  It
 #                 loads and produces a WCS; that is all that is claimed.
 #
-#   zenithal_perspective  Out by ~6500 arcsec with demonstrably correct
-#                 parameters.  yamlchan.c maps it to AST__SZP with pv1=mu,
-#                 pv2=gamma, but AZP and SZP are different projections whose
-#                 second and third parameters mean different things (SZP's are
-#                 phi_c/theta_c).  An AST bug, not something these fixtures can
-#                 work around, and a candidate to report upstream.
+#   zenithal_perspective  Was out by 4195 arcsec (1.17 deg) with demonstrably
+#                 correct parameters, which turned out to be an AST bug rather
+#                 than anything these fixtures could work around: yamlchan.c
+#                 mapped it to AST__SZP with pv1=mu, pv2=gamma, but those are
+#                 AZP's PV2_1/PV2_2 while SZP's 2nd and 3rd parameters are
+#                 phi_c/theta_c, so gamma arrived as phi_c.  AST__AZP was never
+#                 wired up in either direction -- the writer had two
+#                 `type == AST__SZP' branches, the second unreachable.  Fixed
+#                 in the project's vendored ast/ and sent upstream; this
+#                 fixture now agrees with its twin to 0.0250 arcsec, the same
+#                 frame bias as the rest.
 #
 # Getting here needed two fixes outside this script, both recorded in the
 # project's TODO.md:
