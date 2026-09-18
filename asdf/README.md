@@ -295,8 +295,9 @@ meta: {"primitive": "affine", "expect_at": [10.0, 20.0],
        "expect_lonlat": [21.0, 58.0], "expect_sky": "icrs"}
 ```
 
-**22 of 26 verified exactly** — 0.0000″ for everything but `rotate2d` and
-`rotate3d`, which come in at 0.0002″ (print precision, not error).
+**23 of 26 verified exactly** — 0.0000″ for everything but `rotate2d` and
+`rotate3d`, which come in at 0.0002″ (print precision, not error). `altaz`
+joined them once the AST bug that had blocked it was found; see below.
 
 | group | primitive | state |
 |---|---|---|
@@ -304,7 +305,7 @@ meta: {"primitive": "affine", "expect_at": [10.0, 20.0],
 | transform | ortho_polynomial | builds a WCS (`has wcs wcs` = 1) but yields no readout — see below |
 | frames | icrs, galactic, fk5, fk4, ecliptic | **verified** — identity transform, so lon/lat must equal the pixel in the frame's own system |
 | frames | fk4noeterms, supergalactic | load and convert correctly, but DS9 has no display system for either, so only the ICRS conversion was checked |
-| frames | altaz | **not working** (`has wcs wcs` = 0) — see below |
+| frames | altaz | **verified** to 2.8″ against astropy's own AzEl→ICRS, but read out in radians — see below |
 
 The 2-in/1-out primitives — `polynomial`, `ortho_polynomial`, `planar2d` —
 each need both pixel axes, so two of them concatenated want four inputs. A
@@ -334,20 +335,36 @@ has to pair them with `concatenate`; that is noted in each fixture rather than
 glossed over. `concatenate` and `compose` get their own fixtures using
 *different* children, so they test the combinator rather than the pair.
 
-`altaz` is the one frame still failing, and it is the least consequential: an
-AzEl WCS is not something a Roman product contains, and DS9 has no azel
-display system to read one back in. AZEL needs both `location` (an
-`earthlocation` carrying x/y/z Quantities in metres) and `obstime`, and
-something in that serialization is still wrong — it builds no FrameSet.
-What is already ruled out: `GetQuantity()` reads `unit` with `Get0C`, so the
-unit must be a plain string rather than a tagged `!unit/unit-1.0.0` scalar
-(the fixture now does that); and although
-`MAKE_TEST(EarthLocation, astropy/coordinates/earthlocation, 1, 0)` builds
-the odd expected class `astropy/coordinates/earthlocation/EarthLocation`,
-that still prefix-matches the real tag, because `strncasecmp` compares only
-up to the version dash.
+`altaz` was the last frame to work, and the reason it resisted is worth
+recording, because the fixture was never at fault. `IsA()` dispatches on a
+class prefix, and its branch tested
+`strncmp( km_class, "astropy/coordinates/earthlocation/", 34 )` — **with a
+trailing slash**. Astropy writes an EarthLocation as
+`astropy/coordinates/earthlocation-1.2.0`, with no class component at all, so
+that branch could never be entered and `IsAEarthLocation()` was dead code.
+Comparing 33 characters instead fixes it, and the fixture then reads.
 
-The other four were fixed by two things. First, `yamlchan.c` validates a
+Two things made this expensive to find. The error named the *frame*
+(`Property 'location' ... is not of the required class 'earthlocation'`),
+which sends you to the serialization of the location rather than to the code
+deciding whether to look at it. And the obvious suspect was innocent:
+`MAKE_TEST(EarthLocation, astropy/coordinates/earthlocation, 1, 0)` builds the
+odd-looking class `astropy/coordinates/earthlocation/EarthLocation`, but that
+*does* prefix-match the real tag, because `strncasecmp` compares only up to
+the version dash. The caller was wrong, not the test.
+
+It now converts correctly: for the fixture's site and epoch, AzEl (16°,16°)
+is ICRS 268.061422 +38.675185 by astropy's own reckoning, and DS9 gives
+268.062201 +38.675213 — 2.8″ in RA, 0.1″ in Dec, which is the expected
+AST-vs-astropy level for an AzEl conversion (refraction, UT1 and polar-motion
+defaults differ). The baseline records the readout as `4.678568 0.6750098`
+because DS9 prints it in **radians** despite `degrees` being asked for: there
+is no azel display system, so the SkyFrame's format is never set. That is
+left alone, since an AzEl WCS is not something a Roman product contains — and
+note astropy cannot serialize an AltAz frame to ASDF at all, so this fixture
+is necessarily synthetic.
+
+The other four equatorial/ecliptic frames were fixed by two things. First, `yamlchan.c` validates a
 Time's `format` against a short list — `iso`, `byear`, `jyear`, `jd`, `mjd`
 — and errors on anything else, so astropy's own spellings (`jyear_str`,
 `isot`) are rejected. Second, and more interesting, they were then
