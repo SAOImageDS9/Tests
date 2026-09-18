@@ -1,5 +1,7 @@
 set {} frame new
 set {} asdf asdf/fixtures/none/float.asdf
+set {} asdf mask asdf/fixtures/none/float.asdf
+set {} mask clear
 set {} frame delete
 
 set {} asdf new asdf/fixtures/none/float.asdf

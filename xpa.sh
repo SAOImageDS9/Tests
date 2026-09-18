@@ -254,6 +254,8 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test asdf asdf/fixtures/none/float.asdf
+xpaset -p DS9Test asdf mask asdf/fixtures/none/float.asdf
+xpaset -p DS9Test mask clear
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test asdf new asdf/fixtures/none/float.asdf
 xpaset -p DS9Test frame delete

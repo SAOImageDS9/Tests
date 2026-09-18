@@ -166,6 +166,7 @@ if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
 testit "-frame new"
 testit "-asdf asdf/fixtures/none/float.asdf"
+testit "-asdf -mask asdf/fixtures/none/float.asdf -nomask"
 testit "-frame delete"
 
 doit
