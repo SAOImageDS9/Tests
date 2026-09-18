@@ -184,6 +184,35 @@ def main():
                                          float(plane[0, N // 2 - 1, N // 2 - 1]),
                                          float(plane[0, N - 1, N - 1])]}))
 
+    # A cube of *several* planes, which is a different code path from the
+    # single-plane one above and not covered by it: DS9 presents a cube as
+    # a chain of one-plane images, so depth > 1 is what asks the reader for
+    # a next-slice object at all (Context::load, FitsAsdfNext). Depth 1
+    # never does, and passed throughout a version where depth > 1 crashed
+    # outright. Each plane is offset by 10000 so a plane read from the
+    # wrong offset is obvious rather than subtle, and the offsets stay
+    # inside int16.
+    #
+    # Handmade, unlike int16_plane1: what is being pinned here is the
+    # reader's plane arithmetic, and a hand-written block makes the byte
+    # layout of the planes explicit rather than trusting the library to
+    # have laid them out the way the test assumes.
+    cube = np.stack([parent(">i2") + 10000 * zz for zz in range(3)])
+    made.append(write_raw(
+        "int16_cube3",
+        ["source: 0", "datatype: int16", "byteorder: big",
+         "shape: [3, %d, %d]" % (N, N)],
+        cube.astype(">i2").tobytes(),
+        "shape [3, 64, 64] -- a rank-3 cube of three planes, each offset "
+        "from the last by 10000, so a slice read at the wrong plane offset "
+        "shows up as a value 10000 out",
+        {"expect_load": "yes",
+         "expect_values": [float(cube[0, 0, 0]),
+                           float(cube[0, N // 2 - 1, N // 2 - 1]),
+                           float(cube[0, N - 1, N - 1])],
+         "expect_planes": [float(cube[zz, N // 2 - 1, N // 2 - 1])
+                           for zz in range(3)]}))
+
     # --- 3b. dtypes ---------------------------------------------------
     # uint16 -> bitpix -16, fitsy's private unsigned-short code. Values
     # above 32767 so a signed read would show negatives.
