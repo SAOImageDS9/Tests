@@ -1,0 +1,7 @@
+size 64 64
+bitpix 64
+blank none
+value 1 1 2147483648
+value 32 32 2147485663
+value 64 64 2147487743
+wcs 32 32 none

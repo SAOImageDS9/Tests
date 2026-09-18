@@ -16,6 +16,7 @@ fixtures/
   zlib/   same 27 files, zlib-compressed blocks
   bzp2/   same 27 files, bzip2-compressed blocks
   lz4/    same 27 files, lz4-compressed blocks
+arrays/   24 atypical ndarray descriptions (uncompressed)
 ```
 
 21 come from `convert_fits_to_asdf.py`; the 6 `*_blank_scalar` files come
@@ -395,6 +396,86 @@ None of these are in DS9, and all three are recorded in the project's
    whose 2nd/3rd parameters mean something other than AZP's). Not fixed — it
    needs an upstream decision, since AST does have an `AST__AZP`.
 
+## Atypical ndarray descriptions (`arrays/`)
+
+`fixtures/` varies the **codec** over a fixed set of ordinary C-contiguous,
+big-endian arrays. `arrays/` varies the other axis: the ways `core/ndarray`
+can describe an array that is not that. 24 files from
+`make_ndarray_fixtures.py`, all uncompressed, all 64x64 where 2-D, and only
+two types — int16 and float32 — since the point is the *description*, not the
+type.
+
+Most are written by the asdf library itself, so they are exactly what the
+ecosystem emits rather than something hand-rolled to look plausible. That
+matters most for the views: give asdf a non-contiguous numpy view and it
+writes the **whole parent array** as the block and describes the view with
+`strides`/`offset`. A 64x64 int16 parent is 8192 bytes on disk whether the
+view is `[64, 64]` or `[32, 64]`, so the block's bytes are *not* the array,
+and handing them to the loader would render the wrong pixels with no
+complaint. That is the whole reason `asdf.tcl` refuses them.
+
+| group | fixtures | expected |
+|---|---|---|
+| byte order | `int16_big`, `int16_little`, `float32_big`, `float32_little` | **load**, and the pair of each type must probe *identically* |
+| offset | `int16_offset`, `float32_offset` (`a[8:]`, offset with no strides) | refused |
+| offset | `int16_offset_zero` (`offset: 0` written out) | **loads** — a zero offset is just the default spelled out |
+| strides | `int16_strides_skip`, `float32_strides_skip` (`a[::2]`) | refused |
+| strides | `int16_strides_fortran` (column-major) | refused |
+| strides | `int16_strides_slice` (`a[8:40, 8:40]` — offset *and* strides, the schema's own example) | refused |
+| strides | `int16_strides_negative`, `..._negative_both` (`a[::-1]`) | refused |
+| shape | `int16_rank0` (shape `[]`), `int16_rank1` (`[100]`) | refused |
+| shape | `int16_plane1` (`[1, 64, 64]`) | **loads** as a one-plane cube |
+| dtype | `uint16` | **loads** at bitpix **-16** |
+| dtype | `uint32`, `float16` | **load**, widened to 64 and -32 |
+| dtype | `int8`, `uint64`, `complex64`, `struct2d` | refused |
+| malformed | `int16_no_byteorder` | loads, pixels byte-swapped — see below |
+
+**All 24 behave as documented.** The three dtype rows worth having are
+`uint16`, `uint32` and `float16`: `asdf.tcl`'s mapping table claims -16 for
+the first and lossless widening for the other two, all three occur on real
+Roman arrays (`dq` is uint32, `err`/`var_poisson` are float16), and until now
+nothing exercised any of them — `uint32` and `float16` are also the only path
+through `asdfconvert`'s widening in C. Their values are chosen so a misread
+cannot hide: uint16 holds values above 32767 (a signed read would go
+negative), uint32 above 2^31 (a signed-32 read would wrap), and float16
+carries its own maximum, 65504, exactly. All read correctly.
+
+Every refusal names its reason, and the compound cases name both parts:
+
+```
+ASDF: unsupported ndarray view data (strides, offset)
+ASDF: unsupported ndarray datatype uint64
+ASDF: unsupported ndarray rank data [100]
+```
+
+`struct2d` is the one that was genuinely in doubt. A structured (record)
+dtype writes `datatype` as a multi-line YAML **list** of named fields, each
+entry carrying its own `datatype:` and `byteorder:` — so a field parser
+scanning the node body line by line could pick up `datatype: float32` from a
+nested entry and load the record array as float32, which would be wrong
+pixels rather than an error. It does not: the array is refused. The message
+names no type (`unsupported ndarray datatype` with nothing after it), because
+the scalar value is empty when the list is on the following lines, which is
+cosmetic rather than wrong.
+
+`int16_rank0` is refused as `ambiguous or unknown array` rather than by rank,
+because `AsdfEnumFlush` drops a node whose shape is empty before anything
+else sees it, so the path is never enumerated at all.
+
+**`int16_no_byteorder` is the one result worth a second look**, and it is the
+only hand-written fixture besides `int16_offset_zero` (asdf will not emit
+either: it omits a zero offset, and the ndarray schema's `dependencies` make
+`shape`, `datatype` and `byteorder` all mandatory whenever `source` is
+present, so a block-backed array without byteorder cannot legally exist).
+`asdf.tcl` defaults to little-endian when the field is absent, so this
+big-endian payload loads with **every pixel byte-swapped**: 2015 reads as
+-8441 and 4095 as -241, which is exactly `0x07DF` -> `0xDF07` and `0x0FFF` ->
+`0xFF0F` read as signed. Defensible for an inline `data:` array, where no
+byteorder is needed; for a `source:`-backed one it can only mean a malformed
+file, and refusing would be safer than guessing. Left as-is, since that is a
+behaviour decision rather than a defect — the fixture pins what currently
+happens.
+
 ## Running them
 
 `../asdf.sh` drives these through DS9, and is wired into `../io.sh` along with the
@@ -458,6 +539,7 @@ the file if a real Roman product is dropped in.
 pip install asdf   # installs into user site-packages; no conda env needed
 python3 Tests/asdf/convert_fits_to_asdf.py    # from this repo's root, or
 cd Tests/asdf && python3 convert_fits_to_asdf.py   # from here directly
+python3 Tests/asdf/make_ndarray_fixtures.py   # the arrays/ family
 ```
 
 Requires `astropy`, `asdf`, and `numpy` (also used by the sibling
