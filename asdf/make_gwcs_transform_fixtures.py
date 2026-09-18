@@ -362,6 +362,17 @@ def main():
     made.append(("transform", "divide", sz, exp))
 
     # ---- fix_inputs: pin axis 1 of a planar2d, leaving 1-in/1-out -------
+    #
+    # Deliberately only ONE fix_inputs here, paired with a plain scale,
+    # where the obvious thing is to use one on each half of the concatenate.
+    # Two of them trips a heap overread in AST (winmap.c's MapMerge, see
+    # TODO.md's AST bug 11) whose effect differs by platform: on macOS the
+    # bytes past the array happened to let the WCS build, and on Linux the
+    # same file fails with a CmpMap dimension mismatch. A fixture whose
+    # answer depends on what follows a buffer in memory is worse than no
+    # fixture, so this uses the shape that is clean under AddressSanitizer.
+    # One fix_inputs exercises the primitive just as well; the second only
+    # ever duplicated it.
     def fixin(intercept, sx, sy, yval):
         return ("!transform/fix_inputs-1.2.0\n"
                 "        forward:\n"
@@ -370,13 +381,17 @@ def main():
                 "          values: [%s]"
                 % (planar(intercept, sx, sy), fnum(yval)))
 
-    fa, fb = (1.0, 2.0, 3.0, 5.0), (0.0, 1.0, 2.0, 4.0)
-    exp = (fa[0] + fa[1] * PX + fa[2] * fa[3],
-           fb[0] + fb[1] * PY + fb[2] * fb[3])
-    tr = cat(fixin(*fa), fixin(*fb))
+    fa = (1.0, 2.0, 3.0, 5.0)
+    exp = (fa[0] + fa[1] * PX + fa[2] * fa[3], PY)
+    tr = cat(fixin(*fa), "!transform/scale-1.4.0 {factor: 1.0}")
     sz = write_asdf(os.path.join(OUTDIR, "fix_inputs.asdf"),
                     tree("fix_inputs", tr, exp,
-                         note="pins axis 1 of a planar2d, so each half is 1-in/1-out"),
+                         note="pins axis 1 of a planar2d, leaving it 1-in/1-out, "
+                              "and concatenates that with a unit scale so the "
+                              "other axis passes through. Only one fix_inputs on "
+                              "purpose: two of them trip an AST heap overread "
+                              "whose result differs between macOS and Linux "
+                              "(TODO.md AST bug 11)"),
                     payload)
     made.append(("transform", "fix_inputs", sz, exp))
 

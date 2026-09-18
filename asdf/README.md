@@ -313,7 +313,22 @@ each need both pixel axes, so two of them concatenated want four inputs. A
 `remap_axes` with `mapping: [0, 1, 0, 1]` duplicates `(x,y)` into
 `(x,y,x,y)` to feed them. `divide` is `scale / constant`, chosen so the
 quotient stays linear and checkable (and it exercises `constant` too).
-`fix_inputs` pins axis 1 of a `planar2d`, leaving 1-in/1-out.
+`fix_inputs` pins axis 1 of a `planar2d`, leaving 1-in/1-out, and is
+concatenated with a **unit scale** rather than with a second `fix_inputs`.
+That asymmetry is deliberate. Two `fix_inputs` in one concatenate put two
+2-in/1-out `planar2d`s into a parallel CmpMap, which trips a heap overread in
+AST's `winmap.c` MapMerge (the project's `TODO.md`, AST bug 11): it reads one
+element past the WinMap's scale/zero arrays, and what follows them in memory
+decides the outcome. On macOS the WCS built and DS9 warned "the WCS has no
+defined inverse"; on Linux the identical file failed with a CmpMap dimension
+mismatch. A fixture whose answer depends on adjacent heap is worse than no
+fixture, so this one uses the shape that is clean under AddressSanitizer.
+One `fix_inputs` exercises the primitive just as well -- the second only
+duplicated it.
+
+The "no defined inverse" warning is still expected and still correct:
+`fix_inputs` throws an input away, so no inverse can exist. It is the Linux
+error, not the warning, that was the bug.
 `spherical_cartesian` composes both directions, 2→3→2, so the result must be
 the identity — which is what makes it verifiable at all.
 
