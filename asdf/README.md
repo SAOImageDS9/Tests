@@ -321,20 +321,32 @@ joined them once the AST bug that had blocked it was found; see below.
 The 2-in/1-out primitives — `polynomial`, `ortho_polynomial`, `planar2d` —
 each need both pixel axes, so two of them concatenated want four inputs. A
 `remap_axes` with `mapping: [0, 1, 0, 1]` duplicates `(x,y)` into
-`(x,y,x,y)` to feed them. `divide` is `scale / constant`, chosen so the
+`(x,y,x,y)` to feed them. **`planar2d` is the exception**: it pairs one
+planar2d with a unit scale, fed by `mapping: [0, 1, 1]`, because two
+planar2ds in a parallel CmpMap trip the AST overread described under
+`fix_inputs` below. `polynomial` and `ortho_polynomial` keep the symmetric
+form safely — they become PolyMaps, so no WinMap is involved. `divide` is `scale / constant`, chosen so the
 quotient stays linear and checkable (and it exercises `constant` too).
 `fix_inputs` pins axis 1 of a `planar2d`, leaving 1-in/1-out, and is
 concatenated with a **unit scale** rather than with a second `fix_inputs`.
-That asymmetry is deliberate. Two `fix_inputs` in one concatenate put two
-2-in/1-out `planar2d`s into a parallel CmpMap, which trips a heap overread in
-AST's `winmap.c` MapMerge (the project's `TODO.md`, AST bug 11): it reads one
-element past the WinMap's scale/zero arrays, and what follows them in memory
-decides the outcome. On macOS the WCS built and DS9 warned "the WCS has no
-defined inverse"; on Linux the identical file failed with a CmpMap dimension
-mismatch. A fixture whose answer depends on adjacent heap is worse than no
-fixture, so this one uses the shape that is clean under AddressSanitizer.
-One `fix_inputs` exercises the primitive just as well -- the second only
-duplicated it.
+That asymmetry is deliberate, and it is the same reason `planar2d` above is
+asymmetric. **Two `planar2d`s in a parallel CmpMap** trip a heap overread in
+AST's `winmap.c` MapMerge (the project's `TODO.md`, AST bug 11): each
+planar2d becomes `CmpMap(MatrixMap(2->1), ShiftMap(1))`, two of those in
+parallel leave a one-axis WinMap beside a parallel CmpMap of two 2-in/1-out
+MatrixMaps, and the split of the WinMap's scale/zero arrays then reads one
+element past their end. What follows them in memory decides the outcome: on
+macOS the WCS built and DS9 warned "the WCS has no defined inverse"; on Linux
+the identical file failed with a CmpMap dimension mismatch. A fixture whose
+answer depends on adjacent heap is worse than no fixture, so both use shapes
+that are clean under AddressSanitizer, and one of each primitive exercises it
+just as well.
+
+**All 185 fixtures were swept under an AddressSanitizer build** of AST to
+find every one affected, rather than waiting to trip over them: `fix_inputs`
+and `planar2d` were the only two, and the sweep now reports 0 of 185. Worth
+re-running after adding any fixture that combines 2-in/1-out transforms —
+`yamlchan_probe` built against a sanitized libast is all it takes.
 
 The "no defined inverse" warning is still expected and still correct:
 `fix_inputs` throws an input away, so no inverse can exist. It is the Linux

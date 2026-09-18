@@ -220,6 +220,18 @@ def dup2():
         n_inputs: 2"""
 
 
+def dup_y():
+    """remap_axes that sends (x, y) to (x, y, y).
+
+    For pairing ONE 2-in/1-out primitive with a 1-in/1-out one, where dup2's
+    four outputs would be one too many. Used by planar2d -- see the note
+    there for why it is not simply two planar2ds.
+    """
+    return """!transform/remap_axes-1.5.0
+        mapping: [0, 1, 1]
+        n_inputs: 2"""
+
+
 def ndarr(rows, ind):
     """An inline 2-D float64 ndarray at the given indent."""
     pad = " " * ind
@@ -294,12 +306,33 @@ def main():
     # those three worked with an empty frame_attributes and the rest did not.
     # ---- the 2-in/1-out family, via a duplicating remap_axes -------------
     # planar2d is intercept + slope_x*x + slope_y*y.
-    pa, pb = (1.0, 2.0, 3.0), (-2.0, 0.5, 1.0)
-    exp = (pa[0] + pa[1] * PX + pa[2] * PY, pb[0] + pb[1] * PX + pb[2] * PY)
-    tr = compose2(dup2(), cat(planar(*pa), planar(*pb), ind=8))
+    #
+    # ONE planar2d, paired with a unit scale for the other axis, where the
+    # obvious thing is two of them. Two planar2ds in a parallel CmpMap trip a
+    # heap overread in AST (winmap.c's MapMerge -- the project's TODO.md, AST
+    # bug 11), and what follows the buffer decides the outcome: on macOS the
+    # WCS built and DS9 only warned about the missing inverse, while on Linux
+    # the identical file failed with a CmpMap dimension mismatch. Each
+    # planar2d becomes CmpMap(MatrixMap(2->1), ShiftMap(1)), and it is two of
+    # those in parallel that leaves a one-axis WinMap beside a parallel CmpMap
+    # of two 2-in/1-out MatrixMaps. One planar2d is clean under
+    # AddressSanitizer, and tests the primitive just as well.
+    #
+    # An ASan sweep of all 185 fixtures found this was the only other one
+    # affected after fix_inputs was rebuilt for the same reason; polynomial
+    # and ortho_polynomial escape it because they become PolyMaps, with no
+    # WinMap involved.
+    pa = (1.0, 2.0, 3.0)
+    exp = (pa[0] + pa[1] * PX + pa[2] * PY, PY)
+    tr = compose2(dup_y(),
+                  cat(planar(*pa), "!transform/scale-1.4.0 {factor: 1.0}",
+                      ind=8))
     sz = write_asdf(os.path.join(OUTDIR, "planar2d.asdf"),
                     tree("planar2d", tr, exp,
-                         note="2-in/1-out, so a duplicating remap_axes feeds two"),
+                         note="one planar2d (2-in/1-out) with a unit scale for "
+                              "the other axis; two planar2ds in parallel trip "
+                              "an AST heap overread whose result differs "
+                              "between macOS and Linux (TODO.md AST bug 11)"),
                     payload)
     made.append(("transform", "planar2d", sz, exp))
 
