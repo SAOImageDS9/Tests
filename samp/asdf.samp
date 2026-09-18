@@ -7,5 +7,10 @@ set {} frame delete
 set {} asdf new asdf/fixtures/none/float.asdf
 set {} frame delete
 
+set {} frame new rgb
+set {} rgb channel red
+set {} asdf asdf/fixtures/none/float.asdf
+set {} frame delete
+
 set {} single
 set {} raise

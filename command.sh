@@ -169,6 +169,36 @@ testit "-asdf asdf/fixtures/none/float.asdf"
 testit "-asdf -mask asdf/fixtures/none/float.asdf -nomask"
 testit "-frame delete"
 
+# One per frame type: each has its own command-line loader, and only the
+# base one used to know about asdf, so a filename silently fell through
+# the others' switch with no load and no error.
+testit "-frame new rgb"
+testit "-rgb channel red"
+testit "-asdf asdf/fixtures/none/float.asdf"
+testit "-rgb channel green"
+testit "-asdf asdf/fixtures/none/short.asdf"
+testit "-rgb channel blue"
+testit "-asdf asdf/fixtures/none/char.asdf"
+testit "-frame delete"
+
+testit "-frame new hls"
+testit "-hls channel hue"
+testit "-asdf asdf/fixtures/none/float.asdf"
+testit "-frame delete"
+
+testit "-frame new hsv"
+testit "-hsv channel value"
+testit "-asdf asdf/fixtures/none/float.asdf"
+testit "-frame delete"
+
+testit "-3d"
+testit "-asdf asdf/fixtures/none/float.asdf"
+testit "-frame delete"
+
+testit "-multicolor"
+testit "-asdf asdf/fixtures/none/float.asdf"
+testit "-frame delete"
+
 doit
 fi
 
