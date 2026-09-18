@@ -186,9 +186,9 @@ compression an already-read block had" and isn't meaningful for a fresh
 write, so it's excluded here):
 
 - **`none`** — uncompressed, raw block.
-- **`zlib`** — already supported by `ds9/library/asdf.tcl`'s `AsdfReadBlock`.
-- **`lz4`** — already supported (via the `tclasdf` extension's
-  `asdflz4decompress`, per Phase 0/2).
+- **`zlib`** — supported, via zlib's `uncompress` in `fitsy/asdf.C`.
+- **`lz4`** — supported, per Phase 0/2. asdf frames an lz4 block as
+  length-prefixed chunks, which `asdfLz4` in `fitsy/asdf.C` loops over.
 - **`bzp2`** (bzip2) — supported as of Phase 5, and these fixtures are what
   it was built against. Unlike lz4 (which has no stream format, so asdf
   frames it as length-prefixed chunks), a bzp2 block payload is a single
