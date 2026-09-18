@@ -275,10 +275,15 @@ def main():
         payload,
         "byteorder omitted. DELIBERATELY INVALID: the ndarray schema's "
         "`dependencies' make shape, datatype and byteorder all mandatory "
-        "when `source' is present, so no real file looks like this. It pins "
-        "asdf.tcl's defensive default of little-endian, which for this "
-        "big-endian payload means the pixels are expected to read swapped",
-        {"expect_load": "yes", "expect_byteorder_default": "little"}))
+        "when `source' is present, so no real file looks like this -- which "
+        "is exactly why it must be refused rather than guessed at. It used "
+        "to load, defaulting to little-endian, which byte-swapped every "
+        "pixel of this big-endian payload silently (2015 read as -8441). Now "
+        "refused with `ndarray has no byteorder'",
+        {"expect_load": "no",
+         "expect_reason": "byteorder is mandatory alongside source, so its "
+                          "absence means a malformed file, and guessing an "
+                          "order silently swaps every pixel"}))
 
     print("%d fixtures in %s" % (len(made), OUTDIR))
     for p in sorted(made):

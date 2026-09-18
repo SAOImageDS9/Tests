@@ -428,9 +428,9 @@ complaint. That is the whole reason `asdf.tcl` refuses them.
 | dtype | `uint16` | **loads** at bitpix **-16** |
 | dtype | `uint32`, `float16` | **load**, widened to 64 and -32 |
 | dtype | `int8`, `uint64`, `complex64`, `struct2d` | refused |
-| malformed | `int16_no_byteorder` | loads, pixels byte-swapped — see below |
+| malformed | `int16_no_byteorder` | refused — see below |
 
-**All 24 behave as documented.** The three dtype rows worth having are
+**All 24 behave as documented**, one of them only after the reader was changed to suit it (`int16_no_byteorder`, below). The three dtype rows worth having are
 `uint16`, `uint32` and `float16`: `asdf.tcl`'s mapping table claims -16 for
 the first and lossless widening for the other two, all three occur on real
 Roman arrays (`dq` is uint32, `err`/`var_poisson` are float16), and until now
@@ -462,19 +462,28 @@ cosmetic rather than wrong.
 because `AsdfEnumFlush` drops a node whose shape is empty before anything
 else sees it, so the path is never enumerated at all.
 
-**`int16_no_byteorder` is the one result worth a second look**, and it is the
-only hand-written fixture besides `int16_offset_zero` (asdf will not emit
-either: it omits a zero offset, and the ndarray schema's `dependencies` make
-`shape`, `datatype` and `byteorder` all mandatory whenever `source` is
-present, so a block-backed array without byteorder cannot legally exist).
-`asdf.tcl` defaults to little-endian when the field is absent, so this
-big-endian payload loads with **every pixel byte-swapped**: 2015 reads as
--8441 and 4095 as -241, which is exactly `0x07DF` -> `0xDF07` and `0x0FFF` ->
-`0xFF0F` read as signed. Defensible for an inline `data:` array, where no
-byteorder is needed; for a `source:`-backed one it can only mean a malformed
-file, and refusing would be safer than guessing. Left as-is, since that is a
-behaviour decision rather than a defect — the fixture pins what currently
-happens.
+**`int16_no_byteorder` is the one that changed the reader.** It is one of the
+two hand-written fixtures here, along with `int16_offset_zero`; asdf will
+emit neither, since it omits a zero offset, and the ndarray schema's
+`dependencies` make `shape`, `datatype` and `byteorder` all mandatory
+whenever `source` is present, so a block-backed array without byteorder
+cannot legally exist.
+
+It used to load. `asdf.tcl` defaulted to little-endian when the field was
+absent, so this big-endian payload came in with **every pixel byte-swapped**
+and nothing said so: 2015 read as -8441 and 4095 as -241, which is exactly
+`0x07DF` -> `0xDF07` and `0x0FFF` -> `0xFF0F` taken as signed. The default
+looked harmless because an inline `data:` array genuinely needs no
+byteorder — but the enumerator never sees an inline array (it requires
+`source`), so the default only ever applied where the field is mandatory,
+which means only to malformed files. It now refuses:
+
+```
+ASDF: ndarray has no byteorder data
+```
+
+The fixture is what makes that a test rather than a claim, and it is why the
+file is worth keeping even though no valid file looks like it.
 
 ## Running them
 
