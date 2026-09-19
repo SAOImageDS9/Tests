@@ -165,6 +165,88 @@ done
 echo "PASSED"
 fi
 
+# Mask layers, which the per-file probe above cannot cover: a mask is a
+# *second* load into a frame that already holds an image, so what has to be
+# checked is that the first load survives the second. Both of these were
+# real regressions - an ASDF mask replaced the frame's WCS with its own,
+# and replaced the cached YAML tree the header viewer shows - and neither
+# is visible in a single-file probe or in a rendered-image comparison,
+# because the frame goes on reporting the image as its file either way.
+if [ "$mode" = "mask" -o -z "$mode" ]; then
+echo "Testing Mask Layers"
+
+StartDS9
+
+mpassed=0
+mfailed=0
+
+check () {
+    # check <label> <expected> <actual>
+    if [ "$2" = "$3" ]; then
+	echo "  PASSED $1"
+	mpassed=`expr $mpassed + 1`
+    else
+	echo "  FAILED $1"
+	echo "    expected: $2"
+	echo "    actual:   $3"
+	mfailed=`expr $mfailed + 1`
+    fi
+}
+
+# An ASDF image, then a mask from a *different* ASDF file whose own WCS is
+# on the same 192x192 grid -- so the grid check cannot reject it and the
+# only thing stopping it replacing the image's WCS is the layer test.
+xpaset -p DS9Test frame new
+xpaset -p DS9Test asdf $where/gwcs/gnomonic.asdf
+xpaset -p DS9Test crosshair 96 96 image
+before=`xpaget DS9Test crosshair wcs icrs degrees`
+
+xpaset -p DS9Test asdf mask $where/gwcs/zenithal_equal_area.asdf
+xpaset -p DS9Test crosshair 96 96 image
+check "asdf mask leaves the image WCS alone" \
+    "$before" "`xpaget DS9Test crosshair wcs icrs degrees`"
+
+# The header viewer reads this, so it has to still be the image's file.
+#
+# Two things about getting a value back out: `xpaset tcl' returns nothing,
+# so it has to go through a file; and it evaluates what it receives a line
+# at a time, so a ';'-separated one-liner fails with "wrong # args" -- the
+# script has to be newline separated.
+tmp=`mktemp`
+probe_tcl () {
+    printf 'set ch [open %s w]\nputs $ch [%s]\nclose $ch\n' "$tmp" "$1" \
+	| xpaset DS9Test tcl
+    cat $tmp
+}
+check "asdf mask leaves the cached tree alone" \
+    "gnomonic.asdf" \
+    "`probe_tcl 'file tail $asdf(file,$current(frame))'`"
+
+check "the mask is actually applied" "nonzero" "`xpaget DS9Test mask mark`"
+xpaset -p DS9Test mask clear
+xpaset -p DS9Test frame delete
+
+# A FITS image with an ASDF mask must keep its FITS header -- caching the
+# mask's tree here would make the Header command show YAML for a FITS file.
+xpaset -p DS9Test frame new
+xpaset -p DS9Test fits fits/float.fits
+xpaset -p DS9Test asdf mask $where/fixtures/none/float.asdf
+check "asdf mask on a FITS image caches no tree" "0" \
+    "`probe_tcl 'AsdfHasTree $current(frame)'`"
+xpaset -p DS9Test mask clear
+xpaset -p DS9Test frame delete
+
+rm -f $tmp
+xpaset -p DS9Test quit
+
+echo "$mpassed passed, $mfailed failed"
+if [ "$mfailed" = "0" ]; then
+    echo "PASSED"
+else
+    echo "FAILED"
+fi
+fi
+
 # XPA, with baseline comparison
 if [ "$mode" = "xpa" -o "$mode" = "$save" -o -z "$mode" ]; then
 if [ "$mode" = "$save" ]; then
