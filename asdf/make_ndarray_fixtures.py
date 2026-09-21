@@ -87,7 +87,7 @@ def block(payload):
     return b"\xd3BLK" + struct.pack(">H", 48) + hdr + payload
 
 
-def write_raw(name, fields, payload, note, expect=None):
+def write_raw(name, fields, payload, note, expect=None, key="data"):
     """One fixture with a hand-written ndarray node.
 
     Only for the two shapes asdf will not emit. Mirrors the block+index
@@ -106,7 +106,7 @@ def write_raw(name, fields, payload, note, expect=None):
             "asdf_library: !core/software-1.0.0 "
             "{name: make_ndarray_fixtures, version: '1.0'}\n"
             + "meta: " + json.dumps(meta) + "\n"
-            + "data: !core/ndarray-1.1.0\n" + body + "...\n")
+            + key + ": !core/ndarray-1.1.0\n" + body + "...\n")
     idx = ("#ASDF BLOCK INDEX\n%YAML 1.1\n---\n- "
            + str(len(tree.encode())) + "\n...\n")
     path = os.path.join(OUTDIR, name + ".asdf")
@@ -212,6 +212,25 @@ def main():
                            float(cube[0, N - 1, N - 1])],
          "expect_planes": [float(cube[zz, N // 2 - 1, N // 2 - 1])
                            for zz in range(3)]}))
+
+    # A one-array file whose array is not called `data' and is not under
+    # roman/. It must load from the command line with no ":path" suffix:
+    # AsdfPathDialog always took the single loadable array, but the
+    # command line only looked for `data' and refused the same file with
+    # "ambiguous or unknown array data" -- a GUI/CLI split, the same shape
+    # of bug as the one in CommandLineLoad. Handmade because asdf names the
+    # top-level key after the dict key, and the point is that name.
+    made.append(write_raw(
+        "named_picture",
+        ["source: 0", "datatype: int16", "byteorder: big",
+         "shape: [%d, %d]" % (N, N)],
+        parent(">i2").tobytes(),
+        "the file's only array is called `picture', not `data'. It must "
+        "still load with no :path given",
+        {"expect_load": "yes",
+         "expect_values": [0.0, float(parent(">i2")[N // 2 - 1, N // 2 - 1]),
+                           float(parent(">i2")[N - 1, N - 1])]},
+        key="picture"))
 
     # --- 3b. dtypes ---------------------------------------------------
     # uint16 -> bitpix -16, fitsy's private unsigned-short code. Values
