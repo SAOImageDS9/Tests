@@ -7,6 +7,8 @@ samp.sh
 regions.sh
 regions3d.sh
 ciaoregs.sh
+pixmask.sh
+composites.sh
 
 parse.sh
 crop.sh
