@@ -1,0 +1,4 @@
+# Region file format: DS9 version 4.1
+global color=green select=1 edit=1 move=1 delete=1 include=1 source=1
+image
+box(20,20,30,20,0)
