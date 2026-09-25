@@ -279,11 +279,19 @@ fixtures:
   frames AST builds no FrameSet and the file loads its pixels with no WCS and
   no error. Found by bisection — a fixture containing nothing but
   `transform: identity` failed until those two lines were added.
-- **DS9 feeds its image coordinate straight into the GWCS**, with no
-  1-based/0-based correction, which is the opposite of what the FITS↔gwcs
-  convention difference suggests. The identity fixture reads sky (4,4) at
-  image (4,4). So the shift offset here is `-CRPIX` exactly; `-(CRPIX-1)`
-  moves everything one pixel, which at this plate scale is 240″.
+- **GWCS pixel coordinates are 0-based; DS9's image coordinates are 1-based**,
+  so the shift offset here is `-(CRPIX-1)`, and `-CRPIX` moves everything one
+  pixel — at this plate scale, 240″. DS9 bridges the two by adding a Frame
+  one pixel off the GWCS detector Frame and making it the base
+  (`FitsImage::yaml2ast`), so the identity fixture reads sky (3,3) at image
+  (4,4).
+
+  These fixtures said the opposite until 2026-09-25, and so did DS9: it fed
+  its 1-based coordinate straight in, and the fixtures used `-CRPIX` to
+  cancel that out. Two errors agreeing is why the suite stayed green — the
+  Roman team found it on an L2 `*_cal.asdf`, whose GWCS is honest and so came
+  out a pixel off. The L3 coadds were unaffected because they reach DS9 as
+  FITS cards, where the `CRPIX+1` was already being applied.
 - **Both HEALPix branches in AST were dead code.** `ReadSkyProjection()` has
   handlers for `/healpix-` and `/healpix_polar-`, but `IsASkyProjection()` ORs
   six family recognizers and HEALPix is in none of them, so neither tag was

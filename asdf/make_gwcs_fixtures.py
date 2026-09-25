@@ -213,15 +213,22 @@ def fnum(v):
 def gwcs_tree(nx, ny, proj, ver, params, crpix, cdelt, crval, lonpole, theta0):
     """A complete GWCS: pixel -> shift -> affine -> projection -> rotate3d -> icrs.
 
-    The shift offset is -crpix, with no 1-based/0-based correction. That is
-    worth stating because it is the opposite of what the FITS/gwcs convention
-    difference suggests: DS9 feeds its own image coordinate straight into the
-    AST FrameSet built from the GWCS, with no adjustment. Verified with an
-    identity-transform fixture, which reads sky (4,4) at image (4,4). So for
-    these fixtures to agree with a FITS twin computing cdelt*(X - CRPIX) at
-    the same DS9 coordinate X, the offset has to be -CRPIX exactly. Using
-    -(crpix-1) moves everything by one pixel, which at this plate scale is
-    240 arcsec.
+    The shift offset is -(crpix-1), which is the 1-based FITS CRPIX written
+    in the 0-based convention a GWCS pixel frame uses. FITS computes
+    cdelt*(X - CRPIX) for a 1-based X; a GWCS is handed X-1, so its own
+    offset has to be -(CRPIX-1) for the two to describe the same sky at the
+    same pixel.
+
+    This file used to emit -CRPIX, to match a DS9 that fed its 1-based image
+    coordinate straight into the GWCS transform. That was DS9's bug, not a
+    convention: the identity fixture "reading sky (4,4) at image (4,4)" was
+    confirming the bug rather than the fixtures. DS9 now adds a Frame one
+    pixel off the GWCS detector Frame and makes it the base
+    (FitsImage::yaml2ast), so an identity GWCS reads sky (3,3) at image
+    (4,4), and these fixtures have to be honest 0-based GWCS like anything
+    astropy would write. Getting this wrong moves everything by one pixel,
+    which at this plate scale is 240 arcsec -- large enough that the
+    FITS-twin comparison below catches it immediately.
 
     rotate3d with direction native2celestial is handed phi/theta/psi, which
     ReadRotate3d() feeds to a FitsChan as CRVAL1/CRVAL2/LONPOLE with a zenithal
@@ -296,7 +303,7 @@ wcs: !<tag:stsci.edu:gwcs/wcs-1.4.0>
 """.format(proj=proj, ver=ver, plist=plist, nx=nx, ny=ny,
            twin=os.path.basename(gwcs_tree.twin),
            verify=(os.path.basename(gwcs_tree.twin) if gwcs_tree.verify else "none"),
-           sx=fnum(-crpix[0]), sy=fnum(-crpix[1]),
+           sx=fnum(-(crpix[0]-1)), sy=fnum(-(crpix[1]-1)),
            cd1=fnum(cdelt[0]), cd2=fnum(cdelt[1]),
            phi=fnum(native_pole(crval, lonpole, theta0)[0]),
            theta=fnum(native_pole(crval, lonpole, theta0)[1]),
