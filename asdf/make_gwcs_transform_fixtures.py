@@ -160,10 +160,14 @@ TRANSFORMS = [
                   "!transform/scale-1.4.0 {factor: 3.0}"),
      (PX * 2.0, PY * 3.0), PAIRED),
 
-    # NB `offset', not astropy's `intercept': ReadLinear1d reads slope and
-    # offset, and a wrong key name fails as "no WCS" rather than as an error.
-    ("linear1d", cat("!transform/linear1d-1.0.0 {slope: 2.0, offset: 1.0}",
-                     "!transform/linear1d-1.0.0 {slope: 0.5, offset: -2.0}"),
+    # `intercept', the name the ASDF schema and astropy use. This fixture said
+    # `offset' until AST 9.5.0, because ReadLinear1d read that instead -- the
+    # fixture was written to AST's bug rather than to the schema. Upstream
+    # fixed the property name (fba5eec8, in PR #88), so `offset' now reads as
+    # a missing intercept and the whole WCS fails with "no WCS" rather than an
+    # error naming the property.
+    ("linear1d", cat("!transform/linear1d-1.0.0 {slope: 2.0, intercept: 1.0}",
+                     "!transform/linear1d-1.0.0 {slope: 0.5, intercept: -2.0}"),
      (PX * 2.0 + 1.0, PY * 0.5 - 2.0), PAIRED),
 
     ("multiplyscale", cat("!transform/multiplyscale-1.0.0 {factor: 1.5}",
