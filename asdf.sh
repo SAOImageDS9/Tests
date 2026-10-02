@@ -153,6 +153,18 @@ echo "`echo "$files" | wc -l | tr -d ' '` files under $where/"
 if [ "$mode" = "command" -o -z "$mode" ]; then
 echo "Testing Command Line File"
 
+# `-exit' ends each run, but a file that wedges ds9 would otherwise stall the
+# whole phase with no way to tell which one did it. Bound each launch where
+# `timeout' is available, and run bare where it is not: this phase reports
+# PASSED unconditionally, so hardwiring `timeout' would turn its absence into
+# 193 "command not found" failures followed by a cheerful PASSED.
+if command -v timeout > /dev/null 2>&1; then
+    tmout="timeout 10s"
+else
+    tmout=
+    echo " (no timeout command; a wedged ds9 will stall this phase)"
+fi
+
 for f in $files
 do
     echo " ${f#$where/}"
@@ -160,7 +172,7 @@ do
     if [ $slow = "1" ]; then
 	opt="$opt -sleep 1"
     fi
-    ds9 -title DS9Test $opt -exit
+    $tmout ds9 -title DS9Test $opt -exit
 done
 echo "PASSED"
 fi
