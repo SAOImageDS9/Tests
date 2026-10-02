@@ -8,6 +8,7 @@ regions.sh
 regions3d.sh
 ciaoregs.sh
 pixmask.sh
+moc.sh
 composites.sh
 
 parse.sh
