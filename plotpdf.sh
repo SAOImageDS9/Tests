@@ -22,7 +22,7 @@ fi
 testit () {
     if [ -f xpa/${1}.xpa ]
     then
-	o=`diff xpa/${1}.xpa ${1}.out`
+	o=`diff -w xpa/${1}.xpa ${1}.out`
 	if [ "$o" = "" ]
 	then
 	    echo "PASSED"

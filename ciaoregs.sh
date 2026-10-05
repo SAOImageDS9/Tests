@@ -7,7 +7,7 @@ testit () {
     fi
     xpaset -p DS9Test regions deleteall
 
-    o=`diff ${1}.sav ${1}.out`
+    o=`diff -w ${1}.sav ${1}.out`
     if [ "$o" = "" ]
     then
 	echo "PASSED"

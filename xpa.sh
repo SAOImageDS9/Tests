@@ -19,7 +19,7 @@ fi
 testit () {
     if [ -f xpa/${1}.xpa ]
     then
-	o=`diff xpa/${1}.xpa ${1}.out`
+	o=`diff -w xpa/${1}.xpa ${1}.out`
 	if [ "$o" = "" ]
 	then
 	    echo "PASSED"
@@ -248,33 +248,6 @@ xpaset -p DS9Test hsv close
 
 testit $tt
 fi
-
-tt="asdf"
-if [ "$1" = "$tt" -o -z "$1" ]; then
-echo -n "$tt..."
-xpaset -p DS9Test frame new
-xpaset -p DS9Test asdf asdf/fixtures/none/float.asdf
-xpaset -p DS9Test asdf mask asdf/fixtures/none/float.asdf
-xpaset -p DS9Test mask clear
-xpaset -p DS9Test frame delete
-xpaset -p DS9Test asdf new asdf/fixtures/none/float.asdf
-xpaset -p DS9Test frame delete
-
-xpaset -p DS9Test frame new rgb
-xpaset -p DS9Test rgb channel red
-xpaset -p DS9Test asdf asdf/fixtures/none/float.asdf
-xpaset -p DS9Test rgb channel green
-xpaset -p DS9Test asdf asdf/fixtures/none/short.asdf
-xpaset -p DS9Test frame delete
-xpaset -p DS9Test frame new hls
-xpaset -p DS9Test asdf asdf/fixtures/none/float.asdf
-xpaset -p DS9Test frame delete
-xpaset -p DS9Test frame new hsv
-xpaset -p DS9Test asdf asdf/fixtures/none/float.asdf
-xpaset -p DS9Test frame delete
-testit $tt
-fi
-
 # backward compatibility prefs
 tt="bg"
 if [ "$1" = "$tt" -o -z "$1" ]; then

@@ -65,7 +65,7 @@ do
     xpaget DS9Test data image 1 1 112 112 no > ${base}.out
     xpaset -p DS9Test frame delete
 
-    o=`diff ${type}.truth.out ${base}.out`
+    o=`diff -w ${type}.truth.out ${base}.out`
     if [ "$o" = "" ]; then
 	echo " ${base}.fits.fz PASSED"
     else

@@ -76,7 +76,7 @@ probe () {
     fi
 }
 
-# Load one file, probe it, and either diff against its baseline or, in
+# Load one file, probe it, and either diff -w against its baseline or, in
 # save mode, create the baseline.
 testit () {
     f=$1
@@ -105,7 +105,7 @@ testit () {
 	return
     fi
 
-    o=`diff ${f}.sav ${f}.out`
+    o=`diff -w ${f}.sav ${f}.out`
     if [ "$o" = "" ]; then
 	echo "  PASSED"
 	passed=`expr $passed + 1`

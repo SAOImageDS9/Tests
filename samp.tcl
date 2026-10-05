@@ -2,13 +2,13 @@
 #  Smithsonian Astrophysical Observatory, Cambridge, MA, USA
 #  For conditions of distribution and use, see copyright notice in "copyright"
 
-source /Users/kjg/DS9/SAOImageDS9/ds9/library/xmlrpc.tcl
-source /Users/kjg/DS9/SAOImageDS9/ds9/library/sampclient.tcl
-source /Users/kjg/DS9/SAOImageDS9/ds9/library/utilshare.tcl
+source /home/kglot/SAOImageDS9/ds9/library/xmlrpc.tcl
+source /home/kglot/SAOImageDS9/ds9/library/sampclient.tcl
+source /home/kglot/SAOImageDS9/ds9/library/utilshare.tcl
 
-source /Users/kjg/DS9/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
-source /Users/kjg/DS9/SAOImageDS9/ds9/parsers/xmlrpcparser.tab.tcl
-source /Users/kjg/DS9/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
+source /home/kglot/SAOImageDS9/ds9/parsers/xmlrpclex.tcl
+source /home/kglot/SAOImageDS9/ds9/parsers/xmlrpcparser.tab.tcl
+source /home/kglot/SAOImageDS9/ds9/parsers/xmlrpcparser.tcl
 
 proc SAMPConnect {} {
     global debug

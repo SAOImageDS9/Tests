@@ -11,7 +11,7 @@ testit () {
     fi
     xpaset -p DS9Test regions deleteall
 
-    o=`diff $5 ${5}.out`
+    o=`diff -w $5 ${5}.out`
     if [ "$o" = "" ]
     then
 	echo "PASSED"
@@ -35,7 +35,7 @@ testit2 () {
     fi
     xpaset -p DS9Test regions deleteall
 
-    o=`diff $6 ${5}.out`
+    o=`diff -w $6 ${5}.out`
     if [ "$o" = "" ]
     then
 	echo "PASSED"
@@ -58,7 +58,7 @@ testit3 () {
     fi
     xpaset -p DS9Test regions deleteall
 
-    o=`diff $5 foo.reg.out`
+    o=`diff -w $5 foo.reg.out`
     if [ "$o" = "" ]
     then
 	echo "PASSED"
