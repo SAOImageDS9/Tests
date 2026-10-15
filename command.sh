@@ -1124,6 +1124,25 @@ testit "-header close 1"
 doit
 fi
 
+tt="healpix"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+# all-sky projections and options for HEALPix tables (proj=, lon0=)
+testit "-frame new"
+testit "-fits 'fits/hpxproj/ring64_gal.fits[proj=ait]'"
+testit "-fits 'fits/hpxproj/ring64_gal.fits[proj=mol,lon0=180]'"
+testit "-fits 'fits/hpxproj/ring64_equ.fits[proj=car,lon0=-60.5]'"
+testit "-fits 'fits/hpxproj/ring64_gal.fits[1,proj=sfl]'"
+testit "-fits 'fits/hpxproj/ring64_ecl.fits[proj=gls]'"
+testit "-fits 'fits/hpxproj/nested64_gal.fits[proj=par]'"
+testit "-fits 'fits/hpxproj/ring64_unk.fits[proj=cea]'"
+testit "-fits 'fits/hpxproj/ring64_gal.fits[proj=hpx]'"
+testit "-fits 'fits/hpxproj/ring64_gal.fits[1,layout=north]'"
+testit "-frame delete"
+
+doit
+fi
+
 tt="height"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"

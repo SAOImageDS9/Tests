@@ -1,0 +1,16 @@
+set {} frame new
+set {} fits fits/hpxproj/ring64_gal.fits[proj=ait]
+get fits size
+set {} fits fits/hpxproj/ring64_gal.fits[proj=mol,lon0=180]
+set {} fits fits/hpxproj/ring64_equ.fits[proj=car,lon0=-60.5]
+set {} fits fits/hpxproj/ring64_gal.fits[1,proj=sfl]
+set {} fits fits/hpxproj/ring64_ecl.fits[proj=gls]
+set {} fits fits/hpxproj/nested64_gal.fits[proj=par]
+set {} fits fits/hpxproj/ring64_unk.fits[proj=cea]
+set {} fits fits/hpxproj/ring64_gal.fits[proj=hpx]
+set {} fits fits/hpxproj/ring64_gal.fits[1,layout=north]
+get fits size
+set {} frame delete
+
+set {} single
+set {} raise

@@ -1770,6 +1770,29 @@ xpaset -p DS9Test header close 1
 testit $tt
 fi
 
+tt="healpix"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+echo -n "$tt..."
+# all-sky projections and options for HEALPix tables (proj=, lon0=)
+for f in "fits/hpxproj/ring64_gal.fits[proj=ait]" \
+	 "fits/hpxproj/ring64_gal.fits[proj=mol,lon0=180]" \
+	 "fits/hpxproj/ring64_equ.fits[proj=car,lon0=-60.5]" \
+	 "fits/hpxproj/ring64_gal.fits[1,proj=sfl]" \
+	 "fits/hpxproj/ring64_ecl.fits[proj=gls]" \
+	 "fits/hpxproj/nested64_gal.fits[proj=par]" \
+	 "fits/hpxproj/ring64_unk.fits[proj=cea]" \
+	 "fits/hpxproj/ring64_gal.fits[proj=hpx]" \
+	 "fits/hpxproj/ring64_gal.fits[1,layout=north]"
+do
+    xpaset -p DS9Test frame new
+    xpaset -p DS9Test fits "$f"
+    xpaget DS9Test fits size >> ${tt}.out
+    xpaset -p DS9Test frame delete
+done
+
+testit $tt
+fi
+
 tt="height"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 echo -n "$tt..."
