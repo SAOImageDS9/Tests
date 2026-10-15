@@ -28,11 +28,16 @@ StartDS9 () {
 #  - layout= and quad= are ignored when a projection is requested
 #  - lon0= takes integers and reals and sets CRVAL1; proj= is
 #    case-insensitive; an unknown proj= fails to load
+#  - [ext,hpx] (e.g. [1,proj=ait]) applies the options
+#  - AIT/MOL with a grid and seam-crossing regions render byte-identically
+#    to the same image reloaded as an ordinary FITS file
 #  - every resampled image is saved with "save fits" and compared against
 #    reproject.reproject_from_healpix(order='nearest-neighbor') on the
-#    same header (hpxproj/compare.py): every pixel where ds9 has a value
-#    must be exactly equal. Covers a full-sky RING map, a partial
-#    (INDXSCHM=EXPLICIT) NESTED map and a NUNIQ MOC.
+#    same header (hpxproj/compare.py): ds9 must keep the sky system and
+#    every pixel where ds9 has a value must be exactly equal. Covers
+#    full-sky RING and NESTED maps, COORDSYS G / C / E / absent, a
+#    partial (INDXSCHM=EXPLICIT) NESTED map and a NUNIQ MOC. The nside=64
+#    fixtures in fits/hpxproj come from hpxproj/make_fixtures.py.
 #  - full-sky images are blank exactly outside the projection boundary
 #    (hpxproj/boundary.py)
 #
@@ -46,6 +51,7 @@ echo "*** hpxproj.sh ***"
 wmap=fits/wmap_ring.fits
 partial=fits/healpix_partial.fits
 moc=fits/ChandraMOC10_nograting.fits
+fixtures=fits/hpxproj
 HPXPY=${HPXPY:-$HOME/miniforge/envs/hpxtest/bin/python}
 tmp=`mktemp -d`
 fail=0
@@ -109,6 +115,54 @@ xpaset -p DS9Test save fits ${tmp}/partial_AIT.fits
 check "moc MOL lon0=0" "`load "${moc}[proj=mol]"`" "5664 2834"
 xpaset -p DS9Test save fits ${tmp}/moc_MOL.fits
 
+# Generated nside=64 fixtures (hpxproj/make_fixtures.py): the same map
+# labelled G / C / E / no COORDSYS, and a NESTED copy. nside=64 ->
+# AIT/MOL 356x180.
+for f in ${fixtures}/ring64_gal ${fixtures}/ring64_equ \
+	 ${fixtures}/ring64_ecl ${fixtures}/ring64_unk ${fixtures}/nested64_gal
+do
+    b=`basename $f`
+    check "$b AIT lon0=120" "`load "${f}.fits[proj=ait,lon0=120]"`" "356 180"
+    xpaset -p DS9Test save fits ${tmp}/fix_${b}_AIT.fits
+    check "$b MOL lon0=-90" "`load "${f}.fits[proj=mol,lon0=-90]"`" "356 180"
+    xpaset -p DS9Test save fits ${tmp}/fix_${b}_MOL.fits
+done
+
+# [ext,hpx] form: the options after the extension used to be ignored
+# (grammar rule used the bracketed hpxs instead of hpxsb)
+check "[1,proj=ait]" "`load "${fixtures}/ring64_gal.fits[1,proj=ait]"`" "356 180"
+check "[1,layout=north]" "`load "${fixtures}/ring64_gal.fits[1,layout=north]"`" "256 256"
+
+# Display parity: a resampled image must render exactly like the same
+# image saved with "save fits" and reloaded as an ordinary FITS file,
+# with a galactic grid and regions straddling the +/-180 seam.
+# render FILE LON0 PNG
+render () {
+    load "$1" > /dev/null
+    xpaset -p DS9Test zoom to fit
+    xpaset -p DS9Test scale log
+    xpaset -p DS9Test scale minmax
+    xpaset -p DS9Test grid yes
+    xpaset -p DS9Test grid system wcs
+    xpaset -p DS9Test grid sky galactic
+    s=$(( ($2 + 180) % 360 ))
+    echo "galactic; circle($((s-2)),20,8); box($s,-50,30,15,0); polygon($((s-10)),0,$((s+10)),0,$((s+10)),10,$((s-10)),10)" | \
+	xpaset DS9Test regions
+    xpaset -p DS9Test saveimage png $3
+    xpaset -p DS9Test grid no
+}
+for pl in "ait 0" "mol 180"
+do
+    set -- $pl
+    load "${wmap}[system=galactic,proj=$1,lon0=$2]" > /dev/null
+    xpaset -p DS9Test save fits ${tmp}/parity_$1.fits
+    render "${wmap}[system=galactic,proj=$1,lon0=$2]" $2 ${tmp}/parity_$1_hpx.png
+    render "${tmp}/parity_$1.fits" $2 ${tmp}/parity_$1_plain.png
+    check "$1 renders like plain FITS" \
+	"`shasum -a 256 < ${tmp}/parity_$1_hpx.png | cut -c1-16`" \
+	"`shasum -a 256 < ${tmp}/parity_$1_plain.png | cut -c1-16`"
+done
+
 xpaset -p DS9Test frame delete all
 xpaset -p DS9Test quit
 
@@ -117,8 +171,16 @@ if [ -x "${HPXPY}" ] && "${HPXPY}" -c 'import numpy, astropy, healpy, reproject'
     "${HPXPY}" -I hpxproj/compare.py ${wmap} galactic ${tmp}/wmap_*.fits || fail=1
     "${HPXPY}" -I hpxproj/compare.py ${partial} header ${tmp}/partial_AIT.fits || fail=1
     "${HPXPY}" -I hpxproj/compare.py ${moc} header ${tmp}/moc_MOL.fits || fail=1
+    for f in ${fixtures}/ring64_gal ${fixtures}/ring64_equ \
+	     ${fixtures}/ring64_ecl ${fixtures}/ring64_unk ${fixtures}/nested64_gal
+    do
+	b=`basename $f`
+	"${HPXPY}" -I hpxproj/compare.py ${f}.fits header \
+	    ${tmp}/fix_${b}_AIT.fits ${tmp}/fix_${b}_MOL.fits || fail=1
+    done
     echo " projection boundary"
-    "${HPXPY}" -I hpxproj/boundary.py ${tmp}/wmap_*.fits ${tmp}/moc_MOL.fits || fail=1
+    "${HPXPY}" -I hpxproj/boundary.py ${tmp}/wmap_*.fits ${tmp}/moc_MOL.fits \
+	${tmp}/fix_*.fits || fail=1
 else
     echo " numeric checks SKIPPED: no python with numpy/astropy/healpy/reproject at ${HPXPY}"
 fi
