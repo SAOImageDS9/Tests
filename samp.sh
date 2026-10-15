@@ -103,6 +103,7 @@ doit "$1" gif
 doit "$1" graph
 doit "$1" grid
 doit "$1" header
+doit "$1" healpix
 doit "$1" height
 doit "$1" hls
 doit "$1" hlsarray
