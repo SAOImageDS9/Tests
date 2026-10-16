@@ -31,9 +31,10 @@ StartDS9 () {
 #  - [ext,hpx] (e.g. [1,proj=ait]) applies the options
 #  - zenithal (TAN SIN STG ARC ZEA) and conic (COP COE COD COO BON)
 #    windows: sizes from lon0/lat0/fov, invalid lat0 fails to load;
-#    windows are capped at 4096 px per axis (coarser pixels), and follow
-#    the zoom (finer pixels down to HEALPix's when zooming in, coarser and
-#    wider when zooming out, on-screen scale unchanged)
+#    windows start display-sized (HEALPix pixels, twice the frame) and
+#    follow the zoom (finer pixels down to HEALPix's when zooming in,
+#    coarser and wider when zooming out, on-screen scale unchanged); zoom
+#    to fit shows the whole fov
 #  - recentring a window ($frame update fits center [lon lat]) moves the
 #    centre, keeps the size, keeps a conic's reference latitude, and is
 #    refused for all-sky images; recentred images are compared too
@@ -104,6 +105,11 @@ crval1 () {
 
 StartDS9
 
+# Window sizes depend on the frame size (a window starts at twice the
+# frame), so fix it.
+xpaset -p DS9Test width 800
+xpaset -p DS9Test height 600
+
 # nside=256 -> HPX 1280x1280; AIT/MOL 1418x710; CAR/SFL/PAR 1574x788;
 # CEA 1574x504 (resampled sizes are always rounded up to even)
 check "default HPX" "`load "${wmap}"`" "1280 1280"
@@ -139,25 +145,29 @@ TAN proj=tan 504 504
 TANpole proj=tan,lon0=45,lat0=90,fov=40 186 186
 SIN proj=sin,lat0=60 504 504
 STG proj=stg,lon0=120,lat0=-30 1004 1004
-ARC proj=arc,lat0=30 1574 1574
+ARC proj=arc,lat0=30 1574 1104
 ZEA proj=zea,lat0=-90 1004 1004
-COE proj=coe 1574 1574
-COD proj=cod,lon0=90,lat0=-30 1574 1574
+COE proj=coe 1574 1104
+COD proj=cod,lon0=90,lat0=-30 1574 1104
 COO proj=coo,lat0=30,fov=200 876 876
 COP proj=cop,fov=150 658 658
-BON proj=bon,lat0=45 1574 1574
+BON proj=bon,lat0=45 1574 1104
 LIST
 load "${moc}[proj=tan,lon0=45,lat0=90,fov=40]" > /dev/null
 xpaset -p DS9Test save fits ${tmp}/moc_TANpole.fits
-# windows are capped at 4096 px per axis by coarsening the pixels: the
-# MOC (nside 1024) as a full-sky ARC would be ~6300^2
-check "window size cap" "`load "${moc}[proj=arc,fov=360]"`" "4094 4094"
+# windows are display-sized: they start at HEALPix pixels (0.0573 deg at
+# nside 1024) and twice the frame, within the fov (the MOC as a full-sky
+# ARC would be ~6300^2 at that resolution; HPX_WINDOW_MAX still caps it)
+check "initial window: twice the frame" "`load "${moc}[proj=arc,fov=360]"`" "1600 1104"
 xpaset -p DS9Test save fits ${tmp}/moc_ARCcap.fits
-check "window size cap: HISTORY" \
-    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -c 'coarser than the HEALPix'`" "1"
+check "initial window: HEALPix pixels" \
+    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep '^CDELT2 ' | sed 's/^CDELT2 *= *//;s/ .*//' | awk '{printf "%.5f", $1}'`" "0.05726"
+check "initial window: no coarsening" \
+    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -c 'coarser than the HEALPix'`" "0"
 # windows follow the zoom: pixels as fine as a screen pixel (down to the
-# HEALPix pixel, 0.0573 deg at nside 1024), twice the visible area, and
-# the on-screen scale (deg per screen pixel = CDELT / zoom) unchanged
+# HEALPix pixel), twice the visible area, and the on-screen scale (deg
+# per screen pixel = CDELT / zoom) unchanged; zoom to fit shows the
+# whole fov
 # key FITSFILE KEY -> value
 key () {
     head -c 28800 "$1" | fold -w 80 | grep "^$2 " | head -1 | sed "s/^$2 *= *//;s/ *\/.*\$//"
@@ -170,14 +180,22 @@ scale () {
 }
 # same A B -> yes if A and B agree to 1e-6 (relative)
 same () { awk -v a=$1 -v b=$2 'BEGIN {d=a-b; if (d<0) d=-d; print (d <= 1e-6*(a<0?-a:a)) ? "yes" : "no: " a " " b}'; }
+xpaset -p DS9Test zoom to fit
 s0=`scale`
+fit0=`key ${tmp}/sc.fits CDELT2`
+check "zoom to fit: whole fov, coarse pixels" \
+    "`key ${tmp}/sc.fits CDELT2 | awk '{print ($1 > 0.3) ? "yes" : "no: " $1}'`" "yes"
 xpaset -p DS9Test zoom 4
 s1=`scale`
 check "zoom in: on-screen scale kept" "`same $s1 \`awk -v s=$s0 'BEGIN {printf "%.6g", s/4}'\``" "yes"
-check "zoom in: HEALPix resolution" \
-    "`key ${tmp}/sc.fits CDELT2 | awk '{printf "%.5f", $1}'`" "0.05726"
+f0=`key ${tmp}/sc.fits CDELT2`
+check "zoom in: finer pixels" \
+    "`awk -v a=$f0 -v b=$fit0 'BEGIN {print (a < b/2) ? "yes" : "no: " a " vs " b}'`" "yes"
+xpaset -p DS9Test zoom 8
+check "zoom in further: HEALPix resolution" \
+    "`scale > /dev/null; key ${tmp}/sc.fits CDELT2 | awk '{printf "%.5f", $1}'`" "0.05726"
 cp ${tmp}/sc.fits ${tmp}/moc_ARCzoom.fits
-xpaset -p DS9Test zoom 0.125
+xpaset -p DS9Test zoom 0.0625
 s2=`scale`
 check "zoom out: on-screen scale kept" "`same $s2 \`awk -v s=$s0 'BEGIN {printf "%.6g", s*2}'\``" "yes"
 cw=`printf 'set ch [open %s/fr.txt w]\nputs $ch [$ds9(canvas) itemcget $current(frame) -width]\nclose $ch\n' "${tmp}" | xpaset DS9Test tcl; cat ${tmp}/fr.txt`
