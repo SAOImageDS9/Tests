@@ -38,6 +38,8 @@ StartDS9 () {
 #    targets beyond the window and in another sky system, conics follow
 #    in longitude only, locked frames follow, scale limits from the
 #    whole map, and a recentred view renders like a fresh load
+#  - regions survive recentring (list, ids, selection), and ones the
+#    window can't place are parked and restored later
 #  - AIT/MOL with a grid and seam-crossing regions render byte-identically
 #    to the same image reloaded as an ordinary FITS file
 #  - every resampled image is saved with "save fits" and compared against
@@ -226,6 +228,47 @@ xpaset -p DS9Test pan to 200 -30 wcs galactic
 xpaset -p DS9Test frame next
 check "lock frame wcs: other window recentred" "`cv | cut -c1-12`" "200.00000005"
 xpaset -p DS9Test lock frame none
+
+# regions (step 3): remapped through the sky on recentre, keeping ids,
+# selection and properties; regions the window can't place (more than
+# 90 deg from a TAN centre) are parked and come back later
+# frv CMD -> the frame command's result
+frv () {
+    printf 'set ch [open %s/fr.txt w]\nif {[catch {$current(frame) %s} rr]} {puts $ch "ERR:$rr"} else {puts $ch $rr}\nclose $ch\n' \
+	"${tmp}" "$1" | xpaset DS9Test tcl
+    cat ${tmp}/fr.txt | tr -d '\n'
+}
+regs () {
+    xpaget DS9Test regions -format ds9 -system wcs -sky galactic \
+	-skyformat degrees | grep -v '^#\|^global\|^galactic'
+}
+load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
+cat <<REG | xpaset DS9Test regions
+galactic
+circle(20,5,2) # color=red text={c1} tag={t1}
+box(-10,8,4,2,30) # color=cyan
+polygon(5,-5,8,-5,8,-2) # color=yellow width=2
+ellipse(-15,-12,3,1.5,45) # color=magenta dash=1
+point(12,12) # point=diamond color=white
+circle(25,-10,1.5) # color=orange text={far}
+REG
+frv "marker 2 select" > /dev/null
+frv "marker 5 select" > /dev/null
+regs > ${tmp}/regs0.txt
+xpaset -p DS9Test pan to 40 10 wcs galactic
+check "regions: recentred" "`cv`" "40 10"
+check "regions: same list" "`regs | shasum | cut -c1-16`" \
+    "`shasum < ${tmp}/regs0.txt | cut -c1-16`"
+check "regions: ids kept" "`frv 'get marker id all'`" "1 2 3 4 5 6 "
+check "regions: selection kept" "`frv 'get marker select'`" "2 5 "
+xpaset -p DS9Test pan to 200 -30 wcs galactic
+check "regions: unplaceable ones parked" "`frv 'get marker id all'`" ""
+xpaset -p DS9Test pan to 0 0 wcs galactic
+check "regions: parked ones back" "`frv 'get marker id all'`" "1 2 3 4 5 6 "
+check "regions: back, same list" "`regs | shasum | cut -c1-16`" \
+    "`shasum < ${tmp}/regs0.txt | cut -c1-16`"
+check "regions: back, selection kept" "`frv 'get marker select'`" "2 5 "
+xpaset -p DS9Test regions delete all
 
 # render parity: recentred (with contours) vs a fresh load at that centre
 load "${wmap}[system=galactic,proj=tan,fov=20]" > /dev/null
