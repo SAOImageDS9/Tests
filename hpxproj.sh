@@ -29,6 +29,8 @@ StartDS9 () {
 #  - lon0= takes integers and reals and sets CRVAL1; proj= is
 #    case-insensitive; an unknown proj= fails to load
 #  - [ext,hpx] (e.g. [1,proj=ait]) applies the options
+#  - zenithal (TAN SIN STG ARC ZEA) and conic (COP COE COD COO BON)
+#    windows: sizes from lon0/lat0/fov, invalid lat0 fails to load
 #  - AIT/MOL with a grid and seam-crossing regions render byte-identically
 #    to the same image reloaded as an ordinary FITS file
 #  - every resampled image is saved with "save fits" and compared against
@@ -104,6 +106,32 @@ do
     xpaset -p DS9Test save fits ${tmp}/wmap_$1.fits
 done
 
+# zenithal and conic: centre lon0/lat0, size fov (angular diameter for
+# zenithals, plane width for conics); defaults fov TAN 90, SIN/STG 180,
+# ARC/ZEA 360, conics 360, conic lat0 45. The polar TAN case puts HPX
+# facet seams on the image diagonals (regression for exact .5 ties).
+while read name opts size
+do
+    check "wmap $name" "`load "${wmap}[system=galactic,$opts]"`" "$size"
+    xpaset -p DS9Test save fits ${tmp}/wmap_$name.fits
+done <<LIST
+TAN proj=tan 504 504
+TANpole proj=tan,lon0=45,lat0=90,fov=40 186 186
+SIN proj=sin,lat0=60 504 504
+STG proj=stg,lon0=120,lat0=-30 1004 1004
+ARC proj=arc,lat0=30 1574 1574
+ZEA proj=zea,lat0=-90 1004 1004
+COE proj=coe 1574 1574
+COD proj=cod,lon0=90,lat0=-30 1574 1574
+COO proj=coo,lat0=30,fov=200 876 876
+COP proj=cop,fov=150 658 658
+BON proj=bon,lat0=45 1574 1574
+LIST
+load "${moc}[proj=tan,lon0=45,lat0=90,fov=40]" > /dev/null
+xpaset -p DS9Test save fits ${tmp}/moc_TANpole.fits
+check "conic lat0=0 fails" "`load "${wmap}[proj=coe,lat0=0]"`" "0 0"
+check "lat0=95 fails" "`load "${wmap}[proj=tan,lat0=95]"`" "0 0"
+
 load "${partial}[proj=ait]" > /dev/null
 xpaset -p DS9Test save fits ${tmp}/partial_AIT.fits
 
@@ -170,7 +198,8 @@ if [ -x "${HPXPY}" ] && "${HPXPY}" -c 'import numpy, astropy, healpy, reproject'
     echo " compare with reproject_from_healpix"
     "${HPXPY}" -I hpxproj/compare.py ${wmap} galactic ${tmp}/wmap_*.fits || fail=1
     "${HPXPY}" -I hpxproj/compare.py ${partial} header ${tmp}/partial_AIT.fits || fail=1
-    "${HPXPY}" -I hpxproj/compare.py ${moc} header ${tmp}/moc_MOL.fits || fail=1
+    "${HPXPY}" -I hpxproj/compare.py ${moc} header ${tmp}/moc_MOL.fits \
+	${tmp}/moc_TANpole.fits || fail=1
     for f in ${fixtures}/ring64_gal ${fixtures}/ring64_equ \
 	     ${fixtures}/ring64_ecl ${fixtures}/ring64_unk ${fixtures}/nested64_gal
     do
@@ -179,7 +208,7 @@ if [ -x "${HPXPY}" ] && "${HPXPY}" -c 'import numpy, astropy, healpy, reproject'
 	    ${tmp}/fix_${b}_AIT.fits ${tmp}/fix_${b}_MOL.fits || fail=1
     done
     echo " projection boundary"
-    "${HPXPY}" -I hpxproj/boundary.py ${tmp}/wmap_*.fits ${tmp}/moc_MOL.fits \
+    "${HPXPY}" -I hpxproj/boundary.py ${tmp}/wmap_AIT.fits ${tmp}/wmap_MOL.fits ${tmp}/wmap_CAR.fits ${tmp}/wmap_SFL.fits ${tmp}/wmap_PAR.fits ${tmp}/wmap_CEA.fits ${tmp}/moc_MOL.fits \
 	${tmp}/fix_*.fits || fail=1
 else
     echo " numeric checks SKIPPED: no python with numpy/astropy/healpy/reproject at ${HPXPY}"
