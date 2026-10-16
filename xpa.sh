@@ -1782,6 +1782,9 @@ for f in "fits/hpxproj/ring64_gal.fits[proj=ait]" \
 	 "fits/hpxproj/nested64_gal.fits[proj=par]" \
 	 "fits/hpxproj/ring64_unk.fits[proj=cea]" \
 	 "fits/hpxproj/ring64_gal.fits[proj=hpx]" \
+	 "fits/hpxproj/ring64_gal.fits[proj=tan,lon0=83.6,lat0=22,fov=20]" \
+	 "fits/hpxproj/ring64_equ.fits[proj=zea,lat0=90]" \
+	 "fits/hpxproj/ring64_ecl.fits[proj=coe,lat0=30]" \
 	 "fits/hpxproj/ring64_gal.fits[1,layout=north]"
 do
     xpaset -p DS9Test frame new
