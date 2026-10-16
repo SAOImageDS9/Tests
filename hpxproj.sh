@@ -30,7 +30,8 @@ StartDS9 () {
 #    case-insensitive; an unknown proj= fails to load
 #  - [ext,hpx] (e.g. [1,proj=ait]) applies the options
 #  - zenithal (TAN SIN STG ARC ZEA) and conic (COP COE COD COO BON)
-#    windows: sizes from lon0/lat0/fov, invalid lat0 fails to load
+#    windows: sizes from lon0/lat0/fov, invalid lat0 fails to load;
+#    windows are capped at 4096 px per axis (coarser pixels)
 #  - recentring a window ($frame update fits center [lon lat]) moves the
 #    centre, keeps the size, keeps a conic's reference latitude, and is
 #    refused for all-sky images; recentred images are compared too
@@ -146,6 +147,12 @@ BON proj=bon,lat0=45 1574 1574
 LIST
 load "${moc}[proj=tan,lon0=45,lat0=90,fov=40]" > /dev/null
 xpaset -p DS9Test save fits ${tmp}/moc_TANpole.fits
+# windows are capped at 4096 px per axis by coarsening the pixels: the
+# MOC (nside 1024) as a full-sky ARC would be ~6300^2
+check "window size cap" "`load "${moc}[proj=arc,fov=360]"`" "4094 4094"
+xpaset -p DS9Test save fits ${tmp}/moc_ARCcap.fits
+check "window size cap: HISTORY" \
+    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -c 'Pixels coarsened'`" "1"
 # Recentring a zenithal/conic window keeps the HPX intermediate and
 # rebuilds the window around a new centre. Frame-level command for now,
 # reached through the tcl access point:
@@ -484,7 +491,7 @@ if [ -x "${HPXPY}" ] && "${HPXPY}" -c 'import numpy, astropy, healpy, reproject'
     "${HPXPY}" -I hpxproj/compare.py ${wmap} galactic ${tmp}/wmap_*.fits || fail=1
     "${HPXPY}" -I hpxproj/compare.py ${partial} header ${tmp}/partial_AIT.fits || fail=1
     "${HPXPY}" -I hpxproj/compare.py ${moc} header ${tmp}/moc_MOL.fits \
-	${tmp}/moc_TANpole.fits || fail=1
+	${tmp}/moc_TANpole.fits ${tmp}/moc_ARCcap.fits || fail=1
     for f in ${fixtures}/ring64_gal ${fixtures}/ring64_equ \
 	     ${fixtures}/ring64_ecl ${fixtures}/ring64_unk ${fixtures}/nested64_gal
     do
