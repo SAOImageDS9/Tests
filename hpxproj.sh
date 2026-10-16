@@ -31,6 +31,9 @@ StartDS9 () {
 #  - [ext,hpx] (e.g. [1,proj=ait]) applies the options
 #  - zenithal (TAN SIN STG ARC ZEA) and conic (COP COE COD COO BON)
 #    windows: sizes from lon0/lat0/fov, invalid lat0 fails to load
+#  - recentring a window ($frame update fits center [lon lat]) moves the
+#    centre, keeps the size, keeps a conic's reference latitude, and is
+#    refused for all-sky images; recentred images are compared too
 #  - AIT/MOL with a grid and seam-crossing regions render byte-identically
 #    to the same image reloaded as an ordinary FITS file
 #  - every resampled image is saved with "save fits" and compared against
@@ -129,6 +132,40 @@ BON proj=bon,lat0=45 1574 1574
 LIST
 load "${moc}[proj=tan,lon0=45,lat0=90,fov=40]" > /dev/null
 xpaset -p DS9Test save fits ${tmp}/moc_TANpole.fits
+# Recentring a zenithal/conic window keeps the HPX intermediate and
+# rebuilds the window around a new centre. Frame-level command for now,
+# reached through the tcl access point:
+#   $current(frame) update fits center          (on the current pan)
+#   $current(frame) update fits center lon lat  (map's own sky system)
+# fr CMD -> "OK" or "ERR: msg"
+fr () {
+    printf 'set ch [open %s/fr.txt w]\nif {[catch {$current(frame) %s} rr]} {puts $ch "ERR:$rr"} else {puts $ch OK}\nclose $ch\n' \
+	"${tmp}" "$1" | xpaset DS9Test tcl
+    cat ${tmp}/fr.txt
+}
+# crval2 FITSFILE -> "CRVAL1 CRVAL2" as written
+crval12 () {
+    echo "`crval1 $1` `head -c 28800 "$1" | fold -w 80 | grep '^CRVAL2 ' | head -1 | sed 's/^CRVAL2  = *//;s/ *\/.*$//'`"
+}
+
+load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
+check "recentre lon lat" "`fr 'update fits center 30 20'`" "OK"
+xpaset -p DS9Test save fits ${tmp}/wmap_recentre1.fits
+check "recentre lon lat CRVAL" "`crval12 ${tmp}/wmap_recentre1.fits`" "30 20"
+xpaset -p DS9Test pan to 45 10 wcs galactic
+check "recentre on pan" "`fr 'update fits center'`" "OK"
+xpaset -p DS9Test save fits ${tmp}/wmap_recentre2.fits
+check "recentre on pan CRVAL" "`crval12 ${tmp}/wmap_recentre2.fits`" "45 10"
+check "recentre size kept" "`xpaget DS9Test fits size | tr -d '\n'`" "292 292"
+load "${wmap}[system=galactic,proj=coe,lat0=30]" > /dev/null
+xpaset -p DS9Test pan to 100 30 wcs galactic
+check "recentre conic" "`fr 'update fits center'`" "OK"
+xpaset -p DS9Test save fits ${tmp}/wmap_recentre3.fits
+check "recentre conic keeps lat0" "`crval12 ${tmp}/wmap_recentre3.fits`" "100 30"
+load "${wmap}[system=galactic,proj=ait]" > /dev/null
+check "recentre AIT refused" "`fr 'update fits center 10 10'`" \
+    "ERR: not a HEALPix zenithal/conic window"
+
 check "conic lat0=0 fails" "`load "${wmap}[proj=coe,lat0=0]"`" "0 0"
 check "lat0=95 fails" "`load "${wmap}[proj=tan,lat0=95]"`" "0 0"
 
