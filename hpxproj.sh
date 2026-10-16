@@ -39,7 +39,12 @@ StartDS9 () {
 #    in longitude only, locked frames follow, scale limits from the
 #    whole map, and a recentred view renders like a fresh load
 #  - regions survive recentring (list, ids, selection), and ones the
-#    window can't place are parked and restored later
+#    window can't place are parked and restored later; deleting regions
+#    deletes their parked copies; regions created out of reach appear
+#    once the window gets there
+#  - catalog markers (local catalogs/cellout.fits on the MOC) keep their
+#    positions, ids, tags and table link through recentres and parking,
+#    and regenerating the catalog while parked gives one marker per row
 #  - aux contours (from a file) are remapped through the sky: a recentred
 #    view renders like a fresh load with the same file, and they come
 #    back after a far recentre
@@ -271,7 +276,87 @@ check "regions: parked ones back" "`frv 'get marker id all'`" "1 2 3 4 5 6 "
 check "regions: back, same list" "`regs | shasum | cut -c1-16`" \
     "`shasum < ${tmp}/regs0.txt | cut -c1-16`"
 check "regions: back, selection kept" "`frv 'get marker select'`" "2 5 "
+# deleting regions also deletes their parked copies (no zombies)
+xpaset -p DS9Test pan to 200 -30 wcs galactic
 xpaset -p DS9Test regions delete all
+xpaset -p DS9Test pan to 0 0 wcs galactic
+check "regions: delete all while parked" "`frv 'get marker id all'`" ""
+cat <<REG | xpaset DS9Test regions
+galactic
+circle(20,5,2) # tag={t1}
+box(-10,8,4,2,30)
+ellipse(-15,-12,3,1.5,45) # tag={t1}
+REG
+keep=`frv 'get marker id all' | awk '{print $2}'`
+xpaset -p DS9Test pan to 200 -30 wcs galactic
+frv "marker t1 delete" > /dev/null
+xpaset -p DS9Test pan to 0 0 wcs galactic
+check "regions: delete by tag while parked" "`frv 'get marker id all'`" "$keep "
+xpaset -p DS9Test regions delete all
+# a region created where the window can't place it is parked, and
+# appears once the window gets there
+xpaset -p DS9Test pan to 200 -30 wcs galactic
+echo 'galactic; circle(10,5,2) # text={late}' | xpaset DS9Test regions
+check "regions: created out of reach, parked" "`frv 'get marker id all'`" ""
+xpaset -p DS9Test pan to 0 0 wcs galactic
+check "regions: created out of reach, appears" \
+    "`regs | grep -c 'text={late}'`" "1"
+xpaset -p DS9Test regions delete all
+
+# catalogs (catalog layer): a local catalog on a TAN window of the MOC.
+# Its markers are remapped like regions, keep their ids and tags, and
+# keep the marker -> table row link (callbacks); markers parked at a far
+# centre come back with it, and regenerating the catalog while parked
+# leaves exactly one marker per row.
+# catfr CMD -> result of a Tcl command on the first catalog
+catv () {
+    printf 'set ch [open %s/fr.txt w]\nglobal icat\nset cc [lindex $icat(cats) 0]\nupvar #0 $cc var\nif {[catch {%s} rr]} {puts $ch "ERR:$rr"} else {puts $ch $rr}\nclose $ch\n' \
+	"${tmp}" "$1" | xpaset DS9Test tcl
+    cat ${tmp}/fr.txt | tr -d '\n'
+}
+catlist () {
+    printf 'set ch [open %s/fr.txt w]\nputs $ch [$current(frame) marker catalog list ds9 wcs fk5 degrees no]\nclose $ch\n' \
+	"${tmp}" | xpaset DS9Test tcl
+    grep -v '^#\|^global\|^fk5' ${tmp}/fr.txt
+}
+catn () { frv 'get marker catalog id all' | wc -w | tr -d ' '; }
+# catrow TAG -> table row selected after highliting the marker tagged TAG
+catrow () {
+    id=`frv "get marker catalog {$1} id"`
+    frv "marker catalog unhighlite all" > /dev/null
+    catv '$var(tbl) selection clear all' > /dev/null
+    frv "marker catalog $id highlite" > /dev/null
+    catv 'lindex [$var(tbl) curselection] 0'
+}
+load "${moc}[proj=tan,lon0=246.75,lat0=-24.54,fov=10]" > /dev/null
+xpaset -p DS9Test catalog import fits catfits/cellout.fits
+sleep 2
+check "catalog: markers" "`catn`" "118"
+catlist > ${tmp}/cat0.txt
+cid=`frv "get marker catalog {cattool.5} id"`
+check "catalog: marker -> table row" "`catrow cattool.5`" "5,1"
+xpaset -p DS9Test pan to 260 -20 wcs fk5
+check "catalog: recentred, same markers" "`catlist | shasum | cut -c1-16`" \
+    "`shasum < ${tmp}/cat0.txt | cut -c1-16`"
+check "catalog: recentred, id kept" "`frv "get marker catalog {cattool.5} id"`" "$cid"
+check "catalog: recentred, table link" "`catrow cattool.5`" "5,1"
+xpaset -p DS9Test pan to 66.75 24.54 wcs fk5
+check "catalog: far centre, parked" "`catn`" "0"
+xpaset -p DS9Test pan to 246.75 -24.54 wcs fk5
+check "catalog: back, same markers" "`catlist | shasum | cut -c1-16`" \
+    "`shasum < ${tmp}/cat0.txt | cut -c1-16`"
+check "catalog: back, id kept" "`frv "get marker catalog {cattool.5} id"`" "$cid"
+check "catalog: back, table link" "`catrow cattool.5`" "5,1"
+xpaset -p DS9Test pan to 66.75 24.54 wcs fk5
+xpaset -p DS9Test catalog symbol color red
+sleep 1
+xpaset -p DS9Test pan to 246.75 -24.54 wcs fk5
+check "catalog: regenerated while parked, one per row" "`catn`" "118"
+check "catalog: regenerated while parked, same markers" \
+    "`catlist | sed 's/ color=red//' | shasum | cut -c1-16`" \
+    "`shasum < ${tmp}/cat0.txt | cut -c1-16`"
+check "catalog: regenerated while parked, table link" "`catrow cattool.5`" "5,1"
+xpaset -p DS9Test catalog close
 
 # aux contours (loaded from a file) go through the sky too: recentred
 # they render like a fresh load at that centre with the same file, and
