@@ -31,7 +31,9 @@ StartDS9 () {
 #  - [ext,hpx] (e.g. [1,proj=ait]) applies the options
 #  - zenithal (TAN SIN STG ARC ZEA) and conic (COP COE COD COO BON)
 #    windows: sizes from lon0/lat0/fov, invalid lat0 fails to load;
-#    windows are capped at 4096 px per axis (coarser pixels)
+#    windows are capped at 4096 px per axis (coarser pixels), and follow
+#    the zoom (finer pixels down to HEALPix's when zooming in, coarser and
+#    wider when zooming out, on-screen scale unchanged)
 #  - recentring a window ($frame update fits center [lon lat]) moves the
 #    centre, keeps the size, keeps a conic's reference latitude, and is
 #    refused for all-sky images; recentred images are compared too
@@ -152,7 +154,36 @@ xpaset -p DS9Test save fits ${tmp}/moc_TANpole.fits
 check "window size cap" "`load "${moc}[proj=arc,fov=360]"`" "4094 4094"
 xpaset -p DS9Test save fits ${tmp}/moc_ARCcap.fits
 check "window size cap: HISTORY" \
-    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -c 'Pixels coarsened'`" "1"
+    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -c 'coarser than the HEALPix'`" "1"
+# windows follow the zoom: pixels as fine as a screen pixel (down to the
+# HEALPix pixel, 0.0573 deg at nside 1024), twice the visible area, and
+# the on-screen scale (deg per screen pixel = CDELT / zoom) unchanged
+# key FITSFILE KEY -> value
+key () {
+    head -c 28800 "$1" | fold -w 80 | grep "^$2 " | head -1 | sed "s/^$2 *= *//;s/ *\/.*\$//"
+}
+# scale -> deg per screen pixel of the current frame
+scale () {
+    xpaset -p DS9Test save fits ${tmp}/sc.fits
+    z=`xpaget DS9Test zoom | awk '{print $1}'`
+    awk -v c="\`key ${tmp}/sc.fits CDELT2\`" -v z=$z 'BEGIN {printf "%.6g", c/z}'
+}
+# same A B -> yes if A and B agree to 1e-6 (relative)
+same () { awk -v a=$1 -v b=$2 'BEGIN {d=a-b; if (d<0) d=-d; print (d <= 1e-6*(a<0?-a:a)) ? "yes" : "no: " a " " b}'; }
+s0=`scale`
+xpaset -p DS9Test zoom 4
+s1=`scale`
+check "zoom in: on-screen scale kept" "`same $s1 \`awk -v s=$s0 'BEGIN {printf "%.6g", s/4}'\``" "yes"
+check "zoom in: HEALPix resolution" \
+    "`key ${tmp}/sc.fits CDELT2 | awk '{printf "%.5f", $1}'`" "0.05726"
+cp ${tmp}/sc.fits ${tmp}/moc_ARCzoom.fits
+xpaset -p DS9Test zoom 0.125
+s2=`scale`
+check "zoom out: on-screen scale kept" "`same $s2 \`awk -v s=$s0 'BEGIN {printf "%.6g", s*2}'\``" "yes"
+cw=`printf 'set ch [open %s/fr.txt w]\nputs $ch [$ds9(canvas) itemcget $current(frame) -width]\nclose $ch\n' "${tmp}" | xpaset DS9Test tcl; cat ${tmp}/fr.txt`
+check "zoom out: window <= 2x the frame" \
+    "`awk -v n=\`key ${tmp}/sc.fits NAXIS1\` -v w=$cw 'BEGIN {print (n <= 2*w+4) ? "yes" : "no: " n " " w}'`" "yes"
+xpaset -p DS9Test zoom to 1
 # Recentring a zenithal/conic window keeps the HPX intermediate and
 # rebuilds the window around a new centre. Frame-level command for now,
 # reached through the tcl access point:
@@ -227,11 +258,24 @@ check "pan beyond TAN reach" "`cv`" "200 -30"
 xpaset -p DS9Test pan to 300 -60 wcs fk5
 check "pan in fk5" "`xpaget DS9Test pan wcs fk5 degrees | tr -d '\n'`" \
     "300.0000000 -60.0000000"
+# a conic window showing its whole projection plane has nothing to gain
+# from a rebuild; zoomed in, its meridian follows the pan (reference
+# latitude kept) and the window slides across the plane to the pan point
 load "${wmap}[system=galactic,proj=coe,lat0=30,fov=150]" > /dev/null
 xpaset -p DS9Test pan to 150 45 wcs galactic
-check "conic pan: meridian only" "`cv`" "150 30"
-check "conic pan: pan kept" "`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'`" \
-    "150.0000000 45.0000000"
+check "conic pan, whole plane shown: no rebuild" "`cv`" "0 30"
+check "conic pan, whole plane shown: pan kept" \
+    "`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'`" "150.0000000 45.0000000"
+# zoomed in on a window that started coarse (the MOC's 360 deg conic is
+# capped): the window no longer shows the whole plane
+load "${moc}[proj=coe,lat0=30]" > /dev/null
+xpaset -p DS9Test zoom to 4
+xpaset -p DS9Test pan to 150 45 wcs fk5
+check "conic pan, zoomed in: meridian only" \
+    "`cv | awk '{printf "%.4f %.4f", $1, $2}'`" "150.0000 30.0000"
+check "conic pan, zoomed in: pan kept" \
+    "`xpaget DS9Test pan wcs fk5 degrees | tr -d '\n'`" "150.0000000 45.0000000"
+xpaset -p DS9Test zoom to 1
 
 # locked frames: the second window follows
 load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
@@ -491,7 +535,7 @@ if [ -x "${HPXPY}" ] && "${HPXPY}" -c 'import numpy, astropy, healpy, reproject'
     "${HPXPY}" -I hpxproj/compare.py ${wmap} galactic ${tmp}/wmap_*.fits || fail=1
     "${HPXPY}" -I hpxproj/compare.py ${partial} header ${tmp}/partial_AIT.fits || fail=1
     "${HPXPY}" -I hpxproj/compare.py ${moc} header ${tmp}/moc_MOL.fits \
-	${tmp}/moc_TANpole.fits ${tmp}/moc_ARCcap.fits || fail=1
+	${tmp}/moc_TANpole.fits ${tmp}/moc_ARCcap.fits ${tmp}/moc_ARCzoom.fits || fail=1
     for f in ${fixtures}/ring64_gal ${fixtures}/ring64_equ \
 	     ${fixtures}/ring64_ecl ${fixtures}/ring64_unk ${fixtures}/nested64_gal
     do
