@@ -40,6 +40,9 @@ StartDS9 () {
 #    whole map, and a recentred view renders like a fresh load
 #  - regions survive recentring (list, ids, selection), and ones the
 #    window can't place are parked and restored later
+#  - aux contours (from a file) are remapped through the sky: a recentred
+#    view renders like a fresh load with the same file, and they come
+#    back after a far recentre
 #  - AIT/MOL with a grid and seam-crossing regions render byte-identically
 #    to the same image reloaded as an ordinary FITS file
 #  - every resampled image is saved with "save fits" and compared against
@@ -269,6 +272,43 @@ check "regions: back, same list" "`regs | shasum | cut -c1-16`" \
     "`shasum < ${tmp}/regs0.txt | cut -c1-16`"
 check "regions: back, selection kept" "`frv 'get marker select'`" "2 5 "
 xpaset -p DS9Test regions delete all
+
+# aux contours (loaded from a file) go through the sky too: recentred
+# they render like a fresh load at that centre with the same file, and
+# after a far recentre (all of them off the window) they come back
+# shot NAME LON LAT -> sha of a render panned to lon lat
+shot () {
+    xpaset -p DS9Test pan to $2 $3 wcs galactic
+    xpaset -p DS9Test zoom to 2
+    xpaset -p DS9Test saveimage png ${tmp}/$1.png
+    shasum -a 256 < ${tmp}/$1.png | cut -c1-16
+}
+aw="${wmap}[system=galactic,proj=tan,fov=40"
+load "$aw]" > /dev/null
+xpaset -p DS9Test scale log
+xpaset -p DS9Test contour smooth 4
+xpaset -p DS9Test contour nlevels 3
+xpaset -p DS9Test contour yes
+xpaset -p DS9Test contour save ${tmp}/aux.ctr wcs galactic
+xpaset -p DS9Test contour no
+xpaset -p DS9Test contour load ${tmp}/aux.ctr
+aux0=`shot aux0 0 0`
+check "aux contours: recentre" "`fr 'update fits center 10 5'`" "OK"
+auxr=`shot auxr 10 5`
+load "$aw,lon0=10,lat0=5]" > /dev/null
+xpaset -p DS9Test scale log
+xpaset -p DS9Test contour load ${tmp}/aux.ctr
+check "aux contours: recentred renders like a fresh load" "$auxr" "`shot auxf 10 5`"
+load "$aw]" > /dev/null
+xpaset -p DS9Test scale log
+xpaset -p DS9Test contour load ${tmp}/aux.ctr
+xpaset -p DS9Test pan to 200 -30 wcs galactic
+check "aux contours: back after a far recentre" "`shot auxb 0 0`" "$aux0"
+xpaset -p DS9Test contour clear
+xpaset -p DS9Test contour smooth 1
+xpaset -p DS9Test contour nlevels 5
+xpaset -p DS9Test scale linear
+xpaset -p DS9Test zoom to 1
 
 # render parity: recentred (with contours) vs a fresh load at that centre
 load "${wmap}[system=galactic,proj=tan,fov=20]" > /dev/null
