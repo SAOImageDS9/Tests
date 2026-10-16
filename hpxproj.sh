@@ -34,6 +34,10 @@ StartDS9 () {
 #  - recentring a window ($frame update fits center [lon lat]) moves the
 #    centre, keeps the size, keeps a conic's reference latitude, and is
 #    refused for all-sky images; recentred images are compared too
+#  - live recentring after pans: threshold, pan/crosshair kept, pan to
+#    targets beyond the window and in another sky system, conics follow
+#    in longitude only, locked frames follow, scale limits from the
+#    whole map, and a recentred view renders like a fresh load
 #  - AIT/MOL with a grid and seam-crossing regions render byte-identically
 #    to the same image reloaded as an ordinary FITS file
 #  - every resampled image is saved with "save fits" and compared against
@@ -165,6 +169,82 @@ check "recentre conic keeps lat0" "`crval12 ${tmp}/wmap_recentre3.fits`" "100 30
 load "${wmap}[system=galactic,proj=ait]" > /dev/null
 check "recentre AIT refused" "`fr 'update fits center 10 10'`" \
     "ERR: not a HEALPix zenithal/conic window"
+
+# Live recentring (step 2): after a pan (not during a drag) a window is
+# rebuilt once the pan point is more than 1/4 of the window from its
+# centre; the pan and crosshair keep their sky positions, contours are
+# regenerated, a "pan to" a sky position goes straight there even if it
+# is outside the window, and scale limits come from the whole map.
+# cv -> "CRVAL1 CRVAL2" of the current frame, saved to $tmp/cv.fits
+cv () {
+    xpaset -p DS9Test save fits ${tmp}/cv.fits
+    crval12 ${tmp}/cv.fits
+}
+# lim -> scale limits, minmax then zscale
+lim () {
+    xpaset -p DS9Test scale mode minmax
+    l1=`xpaget DS9Test scale limits | tr -d '\n'`
+    xpaset -p DS9Test scale mode zscale
+    l2=`xpaget DS9Test scale limits | tr -d '\n'`
+    xpaset -p DS9Test scale mode minmax
+    echo "$l1 / $l2"
+}
+load "${wmap}[system=galactic]" > /dev/null
+hpxlim=`lim`
+load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
+check "window scale = whole map" "`lim`" "$hpxlim"
+xpaset -p DS9Test mode crosshair
+xpaset -p DS9Test crosshair 20 5 wcs galactic
+xpaset -p DS9Test mode none
+xpaset -p DS9Test pan to 10 0 wcs galactic
+check "short pan: no recentre" "`cv`" "0 0"
+xpaset -p DS9Test pan to 40 10 wcs galactic
+check "long pan: recentred" "`cv`" "40 10"
+check "long pan: pan kept" "`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'`" \
+    "40.0000000 10.0000000"
+check "long pan: crosshair kept" \
+    "`xpaget DS9Test crosshair wcs galactic degrees | tr -d '\n'`" "20.0000000 5.0000000"
+check "recentred: scale unchanged" "`lim`" "$hpxlim"
+xpaset -p DS9Test pan to 200 -30 wcs galactic
+check "pan beyond TAN reach" "`cv`" "200 -30"
+xpaset -p DS9Test pan to 300 -60 wcs fk5
+check "pan in fk5" "`xpaget DS9Test pan wcs fk5 degrees | tr -d '\n'`" \
+    "300.0000000 -60.0000000"
+load "${wmap}[system=galactic,proj=coe,lat0=30,fov=150]" > /dev/null
+xpaset -p DS9Test pan to 150 45 wcs galactic
+check "conic pan: meridian only" "`cv`" "150 30"
+check "conic pan: pan kept" "`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'`" \
+    "150.0000000 45.0000000"
+
+# locked frames: the second window follows
+load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
+xpaset -p DS9Test frame new
+xpaset -p DS9Test fits "${wmap}[system=galactic,proj=sin,fov=90]"
+xpaset -p DS9Test lock frame wcs
+xpaset -p DS9Test frame first
+xpaset -p DS9Test pan to 200 -30 wcs galactic
+xpaset -p DS9Test frame next
+check "lock frame wcs: other window recentred" "`cv | cut -c1-12`" "200.00000005"
+xpaset -p DS9Test lock frame none
+
+# render parity: recentred (with contours) vs a fresh load at that centre
+load "${wmap}[system=galactic,proj=tan,fov=20]" > /dev/null
+xpaset -p DS9Test scale log
+xpaset -p DS9Test contour yes
+xpaset -p DS9Test pan to 40 10 wcs galactic
+xpaset -p DS9Test zoom to 2
+xpaset -p DS9Test saveimage png ${tmp}/recentred.png
+load "${wmap}[system=galactic,proj=tan,fov=20,lon0=40,lat0=10]" > /dev/null
+xpaset -p DS9Test contour yes
+xpaset -p DS9Test pan to 40 10 wcs galactic
+xpaset -p DS9Test zoom to 2
+xpaset -p DS9Test saveimage png ${tmp}/fresh.png
+check "recentred renders like a fresh load (contours)" \
+    "`shasum -a 256 < ${tmp}/recentred.png | cut -c1-16`" \
+    "`shasum -a 256 < ${tmp}/fresh.png | cut -c1-16`"
+xpaset -p DS9Test contour no
+xpaset -p DS9Test scale linear
+xpaset -p DS9Test zoom to 1
 
 check "conic lat0=0 fails" "`load "${wmap}[proj=coe,lat0=0]"`" "0 0"
 check "lat0=95 fails" "`load "${wmap}[proj=tan,lat0=95]"`" "0 0"
