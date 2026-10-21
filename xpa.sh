@@ -2994,6 +2994,15 @@ echo -n " mode..."
 xpaset -p DS9Test plot line plot/xy.dat xy
 xpaget DS9Test plot mode >> ${tt}.out
 xpaset -p DS9Test plot mode pointer
+xpaset -p DS9Test plot mode selectbox
+xpaget DS9Test plot mode >> ${tt}.out
+xpaset -p DS9Test plot mode selectcircle
+xpaget DS9Test plot mode >> ${tt}.out
+xpaset -p DS9Test plot mode selectpolygon
+xpaget DS9Test plot mode >> ${tt}.out
+xpaset -p DS9Test plot mode selectfreehand
+xpaget DS9Test plot mode >> ${tt}.out
+xpaset -p DS9Test plot mode pointer
 xpaset -p DS9Test plot theme no
 sleep $delay
 xpaset -p DS9Test plot close

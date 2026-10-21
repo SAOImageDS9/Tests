@@ -148,6 +148,15 @@ set {} plot close
 set {} plot line plot/xy.dat xy
 get plot mode
 set {} plot mode pointer
+set {} plot mode selectbox
+get plot mode
+set {} plot mode selectcircle
+get plot mode
+set {} plot mode selectpolygon
+get plot mode
+set {} plot mode selectfreehand
+get plot mode
+set {} plot mode pointer
 set {} plot theme no
 set {} sleep .5
 set {} plot close

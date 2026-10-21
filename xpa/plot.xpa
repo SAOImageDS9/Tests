@@ -1,5 +1,9 @@
 ap foo
 zoom
+selectbox
+selectcircle
+selectpolygon
+selectfreehand
 yes
 no
 no
