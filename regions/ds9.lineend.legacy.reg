@@ -1,0 +1,11 @@
+# Region file format: DS9 version 4.1
+global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
+image
+line(400,600,500,600) # line=0 0
+line(400,580,500,580) # line=1 1
+line(400,560,500,560) # line=2 0
+line(400,540,500,540) # line=0 -1
+# vector(520,540,60,30) vector=0
+# vector(520,500,60,0) vector=5
+# compass(600,450,40) compass=physical {N} {E} 1 1
+# compass(450,450,40) compass=image {N} {E} 0 3

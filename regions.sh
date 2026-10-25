@@ -170,6 +170,19 @@ xpaset -p DS9Test fits fits/img.fits
 testit ds9 wcs fk5 degrees regions/ds9.composite.reg
 fi
 
+if [ "$1" = "lineend" -o -z "$1" ]; then
+echo
+echo "Testing DS9 Line Endings..."
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
+
+testit ds9 image fk5 degrees regions/ds9.lineend.image.reg
+testit ds9 wcs fk5 degrees regions/ds9.lineend.fk5.reg
+testit xml image fk5 degrees regions/xml.lineend.image.reg
+# legacy integer values: any non zero value is an arrow, saved as 1
+testit2 ds9 image fk5 degrees regions/ds9.lineend.legacy.reg regions/ds9.lineend.legacy.norm.reg
+fi
+
 if [ "$1" = "mosaic" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Mosaic Format..."
