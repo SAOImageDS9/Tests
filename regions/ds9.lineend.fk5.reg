@@ -1,0 +1,15 @@
+# Region file format: DS9 version 4.1
+global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
+fk5
+line(202.4695074,47.2019165,202.4635439,47.1981891) # line=0 1 text={None Arrow}
+line(202.4706046,47.2011061,202.4646411,47.1973787) # line=openarrow chevron text={OpenArrow Chevron}
+line(202.4717017,47.2002957,202.4657382,47.1965684) # line=circle opencircle text={Circle OpenCircle}
+line(202.4727988,47.1994853,202.4668353,47.1957580) # line=box openbox text={Box OpenBox}
+line(202.4738959,47.1986748,202.4679324,47.1949476) # line=triangle opentriangle text={Triangle OpenTriangle}
+line(202.4749929,47.1978644,202.4690295,47.1941373) # line=bar 1 text={Bar Arrow}
+line(202.4623513,47.1974436,202.4563888,47.1937158) # line=chevron chevron color=cyan dash=1
+line(202.4634485,47.1966332,202.4574860,47.1929055) # line=opencircle openbox color=red width=3
+# vector(202.4656428,47.1950125,11.892",347.39831) vector=opentriangle color=magenta text={Vector}
+# vector(202.4678369,47.1933918,11.892",317.39831) vector=bar color=magenta
+# compass(202.4658094,47.1883839,7.928") compass=physical {N} {E} circle openarrow text={Compass}
+# compass(202.4747536,47.1939748,7.928") compass=image {N} {E} 0 bar
