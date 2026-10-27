@@ -4175,6 +4175,15 @@ xpaset -p DS9Test tile column
 xpaset -p DS9Test tile grid
 xpaset -p DS9Test tile grid mode automatic
 xpaset -p DS9Test tile grid direction x
+xpaset -p DS9Test tile grid mode span
+xpaset -p DS9Test tile grid span size 3 2
+xpaset -p DS9Test tile grid span 1 1 2 2
+xpaget DS9Test tile grid mode >> ${tt}.out
+xpaget DS9Test tile grid span size >> ${tt}.out
+xpaget DS9Test tile grid span >> ${tt}.out
+xpaset -p DS9Test tile grid span none
+xpaget DS9Test tile grid span >> ${tt}.out
+xpaset -p DS9Test tile grid mode automatic
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 

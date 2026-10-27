@@ -11,6 +11,15 @@ set {} tile column
 set {} tile grid
 set {} tile grid mode automatic
 set {} tile grid direction x
+set {} tile grid mode span
+set {} tile grid span size 3 2
+set {} tile grid span 1 1 2 2
+get tile grid mode
+get tile grid span size
+get tile grid span
+set {} tile grid span none
+get tile grid span
+set {} tile grid mode automatic
 set {} frame delete
 set {} frame delete
 
