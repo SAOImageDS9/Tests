@@ -1,6 +1,6 @@
 StartDS9 () {
     if [ `xpaaccess DS9Test` = no ]; then
-	timeout 2m ds9 -title DS9Test &
+	timeout 120s ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 10 ]
@@ -131,7 +131,7 @@ xpaset -p DS9Test quit
 # verifies the shared alignment math).
 echo " -mask smoke test"
 rm -f moc_mask_smoke.png
-timeout 1m ds9 -title DS9Test ${where}/acisf00635N005.fits -scale log -scale limits 0 20 -mask ${mocfile} -mask transparency 40 -saveimage png moc_mask_smoke.png -exit
+timeout 60s ds9 -title DS9Test ${where}/acisf00635N005.fits -scale log -scale limits 0 20 -mask ${mocfile} -mask transparency 40 -saveimage png moc_mask_smoke.png -exit
 if [ -s moc_mask_smoke.png ]; then
     echo " -mask smoke test PASSED"
 else
