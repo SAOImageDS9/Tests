@@ -1,6 +1,6 @@
 printf "\nPDF Tests"
 
-title=ZAPHOD
+title=DS9Test
 
 printf "\nStarting DS9..."
 if [ `xpaaccess ${title}` = no ]; then

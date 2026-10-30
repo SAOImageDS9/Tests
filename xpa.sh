@@ -16,6 +16,10 @@ if [ `xpaaccess DS9Test` = no ]; then
     done
 fi
 
+echo 'set ::ihttp(timeout) 20000' | xpaset DS9Test tcl
+
+
+
 testit () {
     if [ -f xpa/${1}.xpa ]
     then

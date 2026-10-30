@@ -1,7 +1,7 @@
-#io.sh
+io.sh
 
-#xpa.sh
-#command.sh
+xpa.sh
+command.sh
 #samp.sh
 
 regions.sh
