@@ -431,6 +431,13 @@ testit "-cmap lock no"
 testit "-cmap tag load aux/ds9.tag"
 testit "-cmap tag save foo.tag"
 testit "-cmap tag delete"
+testit "-cmap favorite clear"
+testit "-cmap favorite add Heat"
+testit "-cmap favorite add viridis"
+testit "-cmap favorite add ds9"
+testit "-cmap favorite delete VIRIDIS"
+# don't leave favorites behind, they are reloaded by every later test
+testit "-cmap favorite clear"
 testit "-cmap Grey"
 testit "-cmap close"
 

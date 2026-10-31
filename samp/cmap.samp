@@ -16,6 +16,14 @@ set {} cmap value 5 .2
 set {} cmap tag load aux/ds9.tag
 set {} cmap tag save foo.tag
 set {} cmap tag delete
+set {} cmap favorite clear
+set {} cmap favorite add Heat
+set {} cmap favorite add viridis
+set {} cmap favorite add ds9
+set {} cmap favorite delete VIRIDIS
+get cmap favorite
+set {} cmap favorite clear
+get cmap favorite
 # backward compatibility
 set {} cmap match
 # backward compatibility

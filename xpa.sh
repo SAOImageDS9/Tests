@@ -531,6 +531,14 @@ xpaset -p DS9Test cmap lock no
 xpaset -p DS9Test cmap tag load aux/ds9.tag
 xpaset -p DS9Test cmap tag save foo.tag
 xpaset -p DS9Test cmap tag delete
+xpaset -p DS9Test cmap favorite clear
+xpaset -p DS9Test cmap favorite add Heat
+xpaset -p DS9Test cmap favorite add viridis
+xpaset -p DS9Test cmap favorite add ds9
+xpaset -p DS9Test cmap favorite delete VIRIDIS
+xpaget DS9Test cmap favorite >> ${tt}.out
+xpaset -p DS9Test cmap favorite clear
+xpaget DS9Test cmap favorite >> ${tt}.out
 xpaset -p DS9Test cmap Grey
 xpaset -p DS9Test cmap close
 
