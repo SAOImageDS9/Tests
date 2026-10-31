@@ -708,6 +708,14 @@ xpaset -p DS9Test contour mode zscale
 xpaset -p DS9Test contour scope local
 xpaset -p DS9Test contour limits 1 100
 xpaset -p DS9Test contour levels 1 10 100 1000
+# per level styles
+xpaset -p DS9Test contour style 1 red 2
+xpaset -p DS9Test contour style 2 cyan 1 yes 4 2
+xpaset -p DS9Test contour style 3 {color=yellow dash=yes}
+xpaget DS9Test contour style >> ${tt}.out
+xpaset -p DS9Test contour style 1 clear
+xpaget DS9Test contour style >> ${tt}.out
+xpaset -p DS9Test contour style clear
 
 xpaset -p DS9Test contour clear
 xpaset -p DS9Test contour close

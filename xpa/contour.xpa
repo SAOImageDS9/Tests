@@ -15,3 +15,8 @@ local
 49.3632
 66.151
 
+1 color=red width=2
+2 color=cyan width=1 dash=yes dashlist=4 2
+3 color=yellow dash=yes
+2 color=cyan width=1 dash=yes dashlist=4 2
+3 color=yellow dash=yes

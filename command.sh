@@ -570,6 +570,12 @@ testit "-contour mode zscale"
 testit "-contour scope local"
 testit "-contour limits 1 100"
 testit "-contour levels 1 10 100 1000"
+# per level styles
+testit "-contour style 1 red 2"
+testit "-contour style 2 cyan 1 yes 4 2"
+testit "-contour style 3 'color=yellow dash=yes'"
+testit "-contour style 1 clear"
+testit "-contour style clear"
 
 testit "-contour clear"
 testit "-contour close"

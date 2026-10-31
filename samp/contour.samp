@@ -73,6 +73,13 @@ set {} contour mode zscale
 set {} contour scope local
 set {} contour limits 1 100
 set {} contour levels 1 10 100 1000
+# per level styles
+set {} contour style 1 red 2
+set {} contour style 2 cyan 1 yes 4 2
+set {} contour style 3 {color=yellow dash=yes}
+get contour style
+set {} contour style 1 clear
+set {} contour style clear
 
 set {} contour clear
 set {} contour close
