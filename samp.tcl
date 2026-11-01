@@ -94,6 +94,7 @@ proc SAMPSendDS9 {proc mtype url cmd id} {
     }
 
     set samp(msgtag) {}
+    incr samp(msgcnt)
 
     # quotes are really needed
     set map2(cmd) "string \"$cmd\""
@@ -115,7 +116,7 @@ proc SAMPSendDS9 {proc mtype url cmd id} {
 	    set params [list params [list $param1 $param2]]
 	}
 	samp.hub.call {
-	    set samp(msgtag) "foo"
+	    set samp(msgtag) "foo$samp(msgcnt)"
 
 	    set param2 [list param [list value [list string $id]]]
 	    set param3 [list param [list value [list string $samp(msgtag)]]]
@@ -123,7 +124,7 @@ proc SAMPSendDS9 {proc mtype url cmd id} {
 	    set params [list params [list $param1 $param2 $param3 $param4]]
 	}
 	samp.hub.callAll {
-	    set samp(msgtag) "foo"
+	    set samp(msgtag) "foo$samp(msgcnt)"
 
 	    set param2 [list param [list value [list string $samp(msgtag)]]]
 	    set param3 [list param [list value [list struct $m1]]]
@@ -154,6 +155,93 @@ proc ParserError {msg yycnt yy_current_buffer index_} {
     exit
 }
 
+# Watchdog
+# every wait in the samp client (xmlrpc reply, samp.hub.call response)
+# is a vwait, so on timeout release the pending waits and move on
+
+proc WatchdogStart {what} {
+    global watchdog
+
+    WatchdogStop
+    set watchdog(what) $what
+    set watchdog(id) [after [expr $watchdog(timeout)*1000] WatchdogExpired]
+}
+
+proc WatchdogStop {} {
+    global watchdog
+
+    if {[info exists watchdog(id)]} {
+	after cancel $watchdog(id)
+	unset watchdog(id)
+    }
+    # still set means the command finished in time
+    if {[info exists watchdog(what)]} {
+	unset watchdog(what)
+	set watchdog(streak) 0
+    }
+}
+
+# consecutive timeouts carry over between runs via a file
+proc WatchdogLoadStreak {} {
+    global watchdog
+    global env
+
+    if {[info exists env(SAMP_STREAK_FILE)] && \
+	    ![catch {open $env(SAMP_STREAK_FILE)} ch]} {
+	set nn [string trim [read $ch]]
+	close $ch
+	if {[string is integer -strict $nn]} {
+	    set watchdog(streak) $nn
+	}
+    }
+}
+
+proc WatchdogSaveStreak {} {
+    global watchdog
+    global env
+
+    if {[info exists env(SAMP_STREAK_FILE)] && \
+	    ![catch {open $env(SAMP_STREAK_FILE) w} ch]} {
+	puts $ch $watchdog(streak)
+	close $ch
+    }
+}
+
+proc WatchdogExpired {} {
+    global watchdog
+    global xmlrpc
+    global samp
+
+    if {[info exists watchdog(what)]} {
+	puts stderr "\nSAMP-Test: TIMEOUT after $watchdog(timeout)s: $watchdog(what)"
+	unset watchdog(what)
+	incr watchdog(count)
+	incr watchdog(streak)
+
+	# ds9 is likely wedged, stop wasting time
+	if {$watchdog(streak) >= $watchdog(max)} {
+	    puts stderr "SAMP-Test: giving up after $watchdog(streak) consecutive timeouts"
+	    WatchdogSaveStreak
+	    exit 125
+	}
+    }
+
+    # release xmlrpcCall (a value <= 0 means failure)
+    foreach vv [array names xmlrpc done,*] {
+	if {$xmlrpc($vv) == 0} {
+	    set xmlrpc($vv) -1
+	}
+    }
+    # release SAMPSend waiting on a call response
+    if {[info exists samp]} {
+	set samp(msgtag) {}
+    }
+
+    # releasing one wait may lead into another, keep at it until
+    # the command returns and WatchdogStop cancels us
+    set watchdog(id) [after 100 WatchdogExpired]
+}
+
 proc prompt {proc block cmd id} {
     global samp
 
@@ -167,6 +255,10 @@ proc prompt {proc block cmd id} {
 	puts -nonewline stderr "$cmd> "
     }
 
+    # blank lines don't count toward (or reset) the timeout streak
+    if {$item != {}} {
+	WatchdogStart $cmd
+    }
     switch -- $item {
 	con -
 	connect {SAMPConnect}
@@ -216,6 +308,7 @@ proc prompt {proc block cmd id} {
 	    puts -nonewline "Unknown command: $cmd"
 	}
     }
+    WatchdogStop
 
     after 50
     puts {}
@@ -266,6 +359,12 @@ set block 0
 set name DS9Test
 set id {}
 set proc samp.hub.call
+# seconds
+set watchdog(timeout) 20
+set watchdog(count) 0
+set watchdog(streak) 0
+set watchdog(max) 3
+WatchdogLoadStreak
 
 foreach arg $argv {
     switch $arg {
@@ -286,7 +385,13 @@ foreach arg $argv {
    }
 }
 
+# nothing to move on to if we can't connect
+set connectid [after [expr $watchdog(timeout)*1000] {
+    puts stderr "SAMP-Test: TIMEOUT after $watchdog(timeout)s: connect"
+    exit 124
+}]
 SAMPConnect
+after cancel $connectid
 
 foreach cc $samp(clients) {
     if {$samp($cc,name) == $name} {
@@ -306,6 +411,10 @@ if {$block} {
 	if {[gets stdin cmd] == -1} {
 	    if {[info exists samp]} {
 		SAMPDisconnect
+	    }
+	    WatchdogSaveStreak
+	    if {$watchdog(count)} {
+		exit 124
 	    }
 	    exit
 	}

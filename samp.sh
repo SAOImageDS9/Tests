@@ -15,6 +15,7 @@ startit () {
       then
           break
       fi
+      i=`expr $i + 1`
     done
 
 
@@ -24,6 +25,22 @@ testit () {
     echo
     echo "Testing $1"
     tclsh samp.tcl $debug block $msg < samp/${1}.samp
+    case $? in
+	124)
+	    echo "FAILED: $1 had timeouts"
+	    failed="$failed $1"
+	    return
+	    ;;
+	125)
+	    # too many consecutive timeouts, ds9 is likely wedged, so
+	    # stop here and leave it running for inspection
+	    echo "FAILED: $1 had timeouts, giving up"
+	    echo "Timeouts in:$failed $1"
+	    echo "stop ds9 with: xpaset -p DS9Test exit"
+	    rm -f $SAMP_STREAK_FILE
+	    exit 1
+	    ;;
+    esac
     echo "PASSED"
 }
 
@@ -62,6 +79,11 @@ case $1 in
     shift
     ;;
 esac
+
+# consecutive timeout count, shared across samp.tcl runs
+SAMP_STREAK_FILE=foo.streak
+export SAMP_STREAK_FILE
+rm -f $SAMP_STREAK_FILE
 
 startit
 
@@ -205,3 +227,9 @@ doit "$1" backup
 doit "$1" exit
 
 rm -rf foo.*
+
+if [ -n "$failed" ]; then
+    echo
+    echo "Timeouts in:$failed"
+    exit 1
+fi
