@@ -133,6 +133,25 @@ t '$::current(frame) contour style clear'
 rm -rf $O/u.bck $O/u.bck.dir; $X -p $D backup $O/u.bck
 eq "unstyled backup has no style lines" "$(grep -c 'contour style' $O/u.bck)" "0"
 
+echo "== invalid update keeps the previous style"
+$X -p $D contour style clear
+$X -p $D contour style 0 red 3
+r=$($X -p $D contour style 0 notacolor 2>&1)
+has "invalid style rejected" "$r" "Invalid contour level style"
+eq "frame keeps the previous style" "$(tval '$::current(frame) get contour style')" "{0 red 3 -1 0 0}"
+eq "table keeps the previous style" "$(tval 'lindex [ContourTableRead] 1 0')" "color=red width=3"
+
+echo "== backup/restore with contours off"
+$X -p $D contour no
+$X -p $D contour style 1 cyan 2
+rm -rf $O/off.bck $O/off.bck.dir; $X -p $D backup $O/off.bck
+has "contours-off backup has styles" "$(grep 'contour style 1' $O/off.bck)" "contour style 1 cyan 2"
+$X -p $D contour style clear
+$X -p $D restore $O/off.bck
+eq "contours-off restore keeps styles" "$($G $D contour style | tr '\n' ';')" "0 color=red width=3;1 color=cyan width=2;"
+$X -p $D contour yes
+eq "restored styles used when contours turn on" "$(tval '$::current(frame) get contour style')" "{0 red 3 -1 0 0} {1 cyan 2 -1 0 0}"
+
 echo "== 3D cube, LOCAL scope slice change"
 launch $CUBE -cube 1 -contour yes -contour scope local -contour nlevels 4 \
     -contour style 0 red -contour style 1 cyan -contour style 2 magenta -contour style 3 yellow
@@ -209,6 +228,10 @@ $X -p $D contour style 0 red 3
 eq "style reaches the frame with contours off" "$(tval '$::current(frame) get contour style')" "{0 red 3 -1 0 0}"
 $X -p $D rgb channel green; $X -p $D rgb channel red
 eq "style survives switching away and back" "$(tval 'lindex [ContourTableRead] 1 0')" "color=red width=3"
+rm -rf $O/rgboff.bck $O/rgboff.bck.dir; $X -p $D backup $O/rgboff.bck
+$X -p $D contour style clear
+$X -p $D restore $O/rgboff.bck
+eq "contours-off RGB restore keeps styles" "$(tval '$::current(frame) get contour style')" "{0 red 3 -1 0 0}"
 $X -p $D contour yes
 eq "style used when contours turn on" "$(tval '$::current(frame) get contour style')" "{0 red 3 -1 0 0}"
 
