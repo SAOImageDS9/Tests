@@ -24,7 +24,15 @@ startit () {
 testit () {
     echo
     echo "Testing $1"
+    # native windows ds9 writes its .samp lockfile under USERPROFILE;
+    # under cygwin, point the test client's HOME there so it finds the
+    # hub. subshell keeps HOME change local and preserves exit status
+    (
+    case `uname -s` in
+	CYGWIN*) HOME="$(cygpath "$USERPROFILE")"; export HOME ;;
+    esac
     tclsh samp.tcl $debug block $msg < samp/${1}.samp
+    )
     case $? in
 	124)
 	    echo "FAILED: $1 had timeouts"
