@@ -44,6 +44,19 @@ testit () {
     xpaset -p DS9Test raise
 }
 
+# each test section starts from a clean slate with just fits/img.fits
+# loaded, so a failure in one section can not leave the wrong (or no)
+# frames behind for the next one
+starttest () {
+    xpaset -p DS9Test frame delete all
+    xpaset -p DS9Test frame new
+    xpaset -p DS9Test fits fits/img.fits
+}
+
+endtest () {
+    xpaset -p DS9Test frame delete all
+}
+
 echo
 echo "*** xpa.sh ***"
 
@@ -70,10 +83,10 @@ fi
 
 rm -f *.out
 xpaset -p DS9Test scale zscale
-xpaset -p DS9Test fits fits/img.fits
 
 tt="2mass"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test 2mass open
 xpaset -p DS9Test 2mass close
@@ -107,11 +120,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="3d"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test 3d open
 xpaset -p DS9Test 3d close
@@ -167,29 +182,35 @@ xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test 3d close
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="about"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test about > /dev/null
 
+endtest
 testit $tt
 fi
 
 tt="align"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test align >> ${tt}.out
 xpaset -p DS9Test align
 xpaset -p DS9Test frame reset
 
+endtest
 testit $tt
 fi
 
 tt="analysis"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test analysis clear
 xpaset -p DS9Test analysis analysis/analysis.ans
@@ -213,11 +234,13 @@ xpaset -p DS9Test analysis clear
 xpaset -p DS9Test analysis text {This is text}
 cat analysis/analysis.txt | xpaset DS9Test analysis text
 
+endtest
 testit $tt
 fi
 
 tt="array"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test array array/float_big.arr[dim=256,bitpix=-32,endian=big]
@@ -250,22 +273,26 @@ cat hsv/hsv.arr | xpaset DS9Test array new hsv -[xdim=1389,ydim=1387,bitpix=-64,
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test hsv close
 
+endtest
 testit $tt
 fi
 # backward compatibility prefs
 tt="bg"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/background..."
 xpaget DS9Test background >> ${tt}.out
 xpaget DS9Test bg >> ${tt}.out
 xpaset -p DS9Test background red
 xpaset -p DS9Test background white
 
+endtest
 testit $tt
 fi
 
 tt="bookmark"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test bookmark clear
 xpaset -p DS9Test bookmark add
@@ -283,11 +310,13 @@ xpaget DS9Test bookmark 1 > /dev/null
 xpaset -p DS9Test bookmark goto 1
 xpaset -p DS9Test bookmark clear
 
+endtest
 testit $tt
 fi
 
 tt="bin"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test fits new fits/table.fits
 xpaset -p DS9Test single
@@ -322,11 +351,13 @@ xpaget DS9Test bin function >> ${tt}.out
 xpaget DS9Test bin lock >> ${tt}.out
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="blink"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test blink >> ${tt}.out
 xpaget DS9Test blink interval >> ${tt}.out
@@ -339,11 +370,13 @@ xpaset -p DS9Test frame first
 xpaset -p DS9Test frame next
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="block"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test block open
 xpaset -p DS9Test block 4
@@ -361,11 +394,13 @@ xpaset -p DS9Test block close
 xpaget DS9Test block >> ${tt}.out
 xpaget DS9Test block lock >> ${tt}.out
 
+endtest
 testit $tt
 fi
 
 tt="catalog"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo "$tt/cat..."
 echo " default..."
 xpaset -p DS9Test catalog sao
@@ -492,20 +527,24 @@ xpaset -p DS9Test catalog close
 xpaset -p DS9Test catalog clear
 xpaset -p DS9Test catalog close
 
+endtest
 testit $tt
 fi
 
 tt="cd"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test cd >> ${tt}.out
 xpaset -p DS9Test cd .
 
+endtest
 testit $tt
 fi
 
 tt="cmap"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test cmap >> ${tt}.out
 xpaget DS9Test cmap file >> ${tt}.out
@@ -542,11 +581,13 @@ xpaget DS9Test cmap favorite >> ${tt}.out
 xpaset -p DS9Test cmap Grey
 xpaset -p DS9Test cmap close
 
+endtest
 testit $tt
 fi
 
 tt="colorbar"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test colorbar >> ${tt}.out
 xpaget DS9Test colorbar show >> ${tt}.out
@@ -621,19 +662,23 @@ xpaset -p DS9Test colorbar ticks 11
 xpaset -p DS9Test colorbar width 1
 xpaset -p DS9Test colorbar center 0.5
 
+endtest
 testit $tt
 fi
 
 tt="console"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test console
 
+endtest
 testit $tt
 fi
 
 tt="contour"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/contours..."
 xpaset -p DS9Test contour yes
 xpaset -p DS9Test contour open
@@ -728,11 +773,13 @@ xpaset -p DS9Test contour style clear
 xpaset -p DS9Test contour clear
 xpaset -p DS9Test contour close
 
+endtest
 testit $tt
 fi
 
 tt="crop"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test mode crop
 xpaset -p DS9Test crop open
@@ -774,11 +821,13 @@ xpaset -p DS9Test mode none
 xpaset -p DS9Test crop close
 xpaset -p DS9Test 3d close
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="crosshair"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test mode crosshair
 xpaget DS9Test crosshair >> ${tt}.out
@@ -801,11 +850,13 @@ xpaset -p DS9Test crosshair lock wcs
 xpaset -p DS9Test crosshair lock none
 xpaset -p DS9Test mode none
 
+endtest
 testit $tt
 fi
 
 tt="cube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/datacube..."
 xpaset -p DS9Test cube open
 xpaset -p DS9Test cube close
@@ -832,27 +883,32 @@ xpaset -p DS9Test cube axes lock no
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="cursor"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test mode crosshair
 xpaset -p DS9Test cursor 10 10
 xpaset -p DS9Test mode none
 
+endtest
 testit $tt
 fi
 
 tt="data"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test data image 450 520 3 3 yes >> ${tt}.out
 xpaget DS9Test data physical 899 1039 6 6 no >> ${tt}.out
 xpaget DS9Test data fk5 202.4709 47.19681 0.00016517 0.00016517 yes >> ${tt}.out
 xpaget DS9Test data wcs fk5 202.4709 47.19681 0.00016517 0.00016517 no >> ${tt}.out
 
+endtest
 testit $tt
 fi
 
@@ -893,6 +949,7 @@ fi
 
 tt="dsseso"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test dsseso open
 xpaset -p DS9Test dsseso close
@@ -926,11 +983,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="dssstsci"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test dssstsci open
 xpaset -p DS9Test dssstsci close
@@ -964,11 +1023,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="envi"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test envi envi/cube_float_little.hdr envi/cube_float_little.bsq
@@ -976,11 +1037,13 @@ xpaset -p DS9Test envi envi/cube_float_little.hdr
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test envi new envi/cube_float_little.hdr envi/cube_float_little.bsq
 xpaset -p DS9Test frame delete
+endtest
 testit $tt
 fi
 
 tt="export"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test export array foo.arr little
 xpaset -p DS9Test export foo.arr
@@ -1017,11 +1080,13 @@ xpaset -p DS9Test export foo.arr
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test hsv close
 
+endtest
 testit $tt
 fi
 
 tt="fade"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test fade >> ${tt}.out
 xpaget DS9Test fade interval >> ${tt}.out
@@ -1034,12 +1099,14 @@ xpaset -p DS9Test frame first
 xpaset -p DS9Test frame next
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # backward compatibility
 tt="file"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo "$tt...backward compatibility..."
 xpaget DS9Test file >> ${tt}.out
 
@@ -1290,11 +1357,13 @@ xpaset -p DS9Test rgb close
 xpaset -p DS9Test hls close
 xpaset -p DS9Test hsv close
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="fits"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test fits > /dev/null
 xpaget DS9Test fits image > /dev/null
@@ -1414,11 +1483,13 @@ xpaset -p DS9Test rgb close
 xpaset -p DS9Test hls close
 xpaset -p DS9Test hsv close
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="footprint"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/fp..."
 xpaset -p DS9Test footprint cxc
 #xpaset -p DS9Test footprint hla
@@ -1457,11 +1528,13 @@ xpaset -p DS9Test footprint close
 xpaset -p DS9Test footprint clear
 xpaset -p DS9Test footprint close
 
+endtest
 testit $tt
 fi
 
 tt="frame"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test frame lock >> ${tt}.out
 xpaget DS9Test frame has amplifier >> ${tt}.out
@@ -1543,11 +1616,13 @@ xpaset -p DS9Test hls close
 xpaset -p DS9Test hsv close
 xpaset -p DS9Test 3d close
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="gif"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test gif photo/rose.gif
@@ -1561,11 +1636,13 @@ xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test cube close
 
+endtest
 testit $tt
 fi
 
 tt="graph"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test graph grid >> ${tt}.out
 xpaget DS9Test graph log >> ${tt}.out
@@ -1589,11 +1666,13 @@ xpaset -p DS9Test graph fontslant roman
 xpaset -p DS9Test graph size 150
 xpaset -p DS9Test graph thickness 1
 
+endtest
 testit $tt
 fi
 
 tt="grid"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test wcs wcs
 xpaget DS9Test grid >> ${tt}.out
@@ -1775,11 +1854,13 @@ xpaset -p DS9Test grid reset
 xpaset -p DS9Test grid no
 xpaset -p DS9Test grid close
 
+endtest
 testit $tt
 fi
 
 tt="header"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test header
 xpaset -p DS9Test header save foo.txt
@@ -1787,20 +1868,24 @@ xpaset -p DS9Test header close
 xpaset -p DS9Test header 1
 xpaset -p DS9Test header close 1
 
+endtest
 testit $tt
 fi
 
 tt="height"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test height >> /dev/null
 xpaset -p DS9Test height 443
 
+endtest
 testit $tt
 fi
 
 tt="hls"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test hls open
 xpaset -p DS9Test hls close
@@ -1846,11 +1931,13 @@ xpaset -p DS9Test hls lock smooth no
 xpaset -p DS9Test hls close
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="hlsimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new hls
 xpaset -p DS9Test hlsimage hls/hlsimage.fits
@@ -1862,11 +1949,13 @@ xpaset -p DS9Test hlsimage new hls/hlsimage.fits
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test hls close
+endtest
 testit $tt
 fi
 
 tt="hlscube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new hls
 xpaset -p DS9Test hlscube hls/hlscube.fits
@@ -1878,11 +1967,13 @@ xpaset -p DS9Test hlscube new hls/hlscube.fits
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test hls close
+endtest
 testit $tt
 fi
 
 tt="hsv"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test hsv open
 xpaset -p DS9Test hsv close
@@ -1928,11 +2019,13 @@ xpaset -p DS9Test hsv lock smooth no
 xpaset -p DS9Test hsv close
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="hsvimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new hsv
 xpaset -p DS9Test hsvimage hsv/hsvimage.fits
@@ -1944,11 +2037,13 @@ xpaset -p DS9Test hsvimage new hsv/hsvimage.fits
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test hsv close
+endtest
 testit $tt
 fi
 
 tt="hsvcube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new hsv
 xpaset -p DS9Test hsvcube hsv/hsvcube.fits
@@ -1960,33 +2055,39 @@ xpaset -p DS9Test hsvcube new hsv/hsvcube.fits
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test hsv close
+endtest
 testit $tt
 fi
 
 tt="iconify"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test iconify >> ${tt}.out
 xpaset -p DS9Test iconify
 xpaset -p DS9Test iconify yes
 xpaset -p DS9Test iconify no
 
+endtest
 testit $tt
 fi
 
 tt="iis"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test iis filename >> ${tt}.out
 xpaget DS9Test iis filename 1 >> ${tt}.out
 xpaset -p DS9Test iis filename foo.fits
 xpaset -p DS9Test iis filename foo.fits 1
 
+endtest
 testit $tt
 fi
 
 tt="iexam"
 if [ "$1" = "$tt" ]; then
+starttest
 echo "$tt..."
 echo "Select coordinate point:"
 xpaget DS9Test iexam coordinate wcs fk5 degrees
@@ -2016,11 +2117,13 @@ xpaget DS9Test iexam any {'Click at $x,$y in file $filename'}
 echo "  ok"
 sleep $delay
 
+endtest
 testit $tt
 fi
 
 tt="illustrate"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test illustrate >> /dev/null
 xpaget DS9Test illustrate show >> ${tt}.out
@@ -2077,19 +2180,23 @@ xpaset -p DS9Test illustrate open
 xpaset -p DS9Test illustrate close
 xpaset -p DS9Test illustrate delete
 
+endtest
 testit $tt
 fi
 
 tt="foo"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/jpg..."
 
 
+endtest
 testit $tt
 fi
 
 tt="jpeg"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/jpg..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test jpeg photo/rose.jpeg
@@ -2101,11 +2208,13 @@ xpaset -p DS9Test jpeg new photo/rose.jpeg
 xpaset -p DS9Test jpeg slice photo/rose.jpeg
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="lock"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test lock frame >> ${tt}.out
 xpaget DS9Test lock crosshair >> ${tt}.out
@@ -2151,20 +2260,24 @@ xpaset -p DS9Test mode none
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test wcs align no
 
+endtest
 testit $tt
 fi
 
 tt="lower"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test lower
 xpaset -p DS9Test raise
 
+endtest
 testit $tt
 fi
 
 tt="magnifier"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test magnifier color >> ${tt}.out
 xpaget DS9Test magnifier zoom >> ${tt}.out
@@ -2175,11 +2288,13 @@ xpaset -p DS9Test magnifier zoom 4
 xpaset -p DS9Test magnifier cursor yes
 xpaset -p DS9Test magnifier region yes
 
+endtest
 testit $tt
 fi
 
 tt="mask"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test mask color >> ${tt}.out
 xpaget DS9Test mask mark >> ${tt}.out
@@ -2215,11 +2330,13 @@ xpaset -p DS9Test mask clear
 xpaset -p DS9Test mask close
 sleep $delay
 
+endtest
 testit $tt
 fi
 
 tt="match"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test fits new fits/img.fits
 xpaset -p DS9Test tile
@@ -2242,11 +2359,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test scale zscale
 xpaset -p DS9Test mode none
 
+endtest
 testit $tt
 fi
 
 tt="mecube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mecube mecube/float.fits
@@ -2255,11 +2374,13 @@ xpaget DS9Test mecube > /dev/null
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="minmax"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test minmax >> ${tt}.out
 xpaget DS9Test minmax mode >> ${tt}.out
@@ -2269,11 +2390,13 @@ xpaset -p DS9Test minmax mode scan
 xpaset -p DS9Test minmax interval 100
 xpaset -p DS9Test minmax rescan
 
+endtest
 testit $tt
 fi
 
 tt="mode"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test mode >> ${tt}.out
 xpaset -p DS9Test mode none
@@ -2290,11 +2413,13 @@ xpaset -p DS9Test mode examine
 xpaset -p DS9Test mode 3d
 xpaset -p DS9Test mode none
 
+endtest
 testit $tt
 fi
 
 tt="mosaic"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mosaic mosaic/mosaicimage.fits
@@ -2313,11 +2438,13 @@ xpaset -p DS9Test mosaic new mosaic/mosaicimage.fits
 xpaset -p DS9Test mosaic mask mosaic/mosaicimage.fits
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="mosaicimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mosaicimage mosaic/mosaicimage.fits
@@ -2340,12 +2467,14 @@ xpaset -p DS9Test mosaicimage new mosaic/mosaicimage.fits
 xpaset -p DS9Test mosaicimage mask mosaic/mosaicimage.fits
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # backward compatibility
 tt="mosaicwcs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt...backward compatibility..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mosaicwcs mosaic/mosaicimage.fits
@@ -2358,12 +2487,14 @@ xpaset -p DS9Test mosaicwcs new mosaic/mosaicimage.fits
 xpaset -p DS9Test mosaicwcs mask mosaic/mosaicimage.fits
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # backward compatibility
 tt="mosaiciraf"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt...backward compatibility..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mosaiciraf mosaic/mosaicimage.fits
@@ -2375,12 +2506,14 @@ xpaset -p DS9Test mosaiciraf new mosaic/mosaicimage.fits
 xpaset -p DS9Test mosaiciraf mask mosaic/mosaicimage.fits
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # backward compatibility
 tt="mosaicimagewcs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt...backward compatibility..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mosaicimagewcs mosaic/mosaicimage.fits
@@ -2393,12 +2526,14 @@ xpaset -p DS9Test mosaicimagewcs new mosaic/mosaicimage.fits
 xpaset -p DS9Test mosaicimagewcs mask mosaic/mosaicimage.fits
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # backward compatibility
 tt="mosaicimageiraf"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt...backward compatibility..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mosaicimageiraf mosaic/mosaicimage.fits
@@ -2410,12 +2545,14 @@ xpaset -p DS9Test mosaicimageiraf new mosaic/mosaicimage.fits
 xpaset -p DS9Test mosaicimageiraf mask mosaic/mosaicimage.fits
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # backward compatibility
 tt="mosaicimagewfpc2"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt...backward compatibility..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test mosaicimagewfpc2 mosaic/hst.fits
@@ -2427,12 +2564,14 @@ xpaset -p DS9Test mosaicimagewfpc2 new mosaic/hst.fits
 xpaset -p DS9Test mosaicimagewfpc2 mask mosaic/hst.fits
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # movie will fail if moved from corner
 tt="movie"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/savempeg..."
 xpaset -p DS9Test width 715
 xpaset -p DS9Test height 450
@@ -2451,11 +2590,13 @@ xpaset -p DS9Test 3d close
 xpaset -p DS9Test cube close
 
 xpaset -p DS9Test movie script gif movie.script script_xpa.gif
+endtest
 testit $tt
 fi
 
 tt="multiframe"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/memf..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test multiframe mecube/float.fits
@@ -2463,11 +2604,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="multicolor"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test multicolor
 xpaset -p DS9Test layer color red
@@ -2669,11 +2812,13 @@ xpaset -p DS9Test layer delete
 xpaget DS9Test layer count >> ${tt}.out
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="nameserver"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test nameserver open
 xpaset -p DS9Test nameserver close
@@ -2692,22 +2837,26 @@ xpaset -p DS9Test nameserver close
 xpaset -p DS9Test mode none
 xpaset -p DS9Test frame reset
 
+endtest
 testit $tt
 fi
 
 # backward compatibility prefs
 tt="nan"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test nan >> ${tt}.out
 xpaset -p DS9Test nan blue
 xpaset -p DS9Test nan white
 
+endtest
 testit $tt
 fi
 
 tt="notes"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test notes > /dev/null
 xpaset -p DS9Test notes
@@ -2723,11 +2872,13 @@ xpaset -p DS9Test notes clear
 sleep 1
 xpaset -p DS9Test notes close
 
+endtest
 testit $tt
 fi
 
 tt="nrrd"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test nrrd nrrd/float_big_raw.nrrd
@@ -2740,11 +2891,13 @@ xpaset -p DS9Test nrrd new nrrd/float_big_raw.nrrd
 xpaset -p DS9Test nrrd mask nrrd/float_big_raw.nrrd
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="nvss"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test nvss open
 xpaset -p DS9Test nvss close
@@ -2776,11 +2929,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="orient"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test orient open
 xpaset -p DS9Test orient none
@@ -2791,11 +2946,13 @@ xpaset -p DS9Test orient close
 xpaget DS9Test orient >> ${tt}.out
 xpaset -p DS9Test frame reset
 
+endtest
 testit $tt
 fi
 
 tt="pagesetup"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test pspagesetup orient >> ${tt}.out
 xpaget DS9Test pspagesetup scale >> ${tt}.out
@@ -2804,11 +2961,13 @@ xpaset -p DS9Test pspagesetup orient portrait
 xpaset -p DS9Test pspagesetup scale 100
 xpaset -p DS9Test pspagesetup size letter
 
+endtest
 testit $tt
 fi
 
 tt="pan"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test pan physical >> ${tt}.out
 xpaget DS9Test pan wcs fk5 sexagesimal >> ${tt}.out
@@ -2829,11 +2988,13 @@ xpaset -p DS9Test pan to 13:29:52.908 +47:11:38.19 wcs fk5
 xpaset -p DS9Test pan close
 xpaset -p DS9Test frame reset
 
+endtest
 testit $tt
 fi
 
 tt="pixeltable"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test pixeltable >> ${tt}.out
 xpaset -p DS9Test pixeltable
@@ -2842,11 +3003,13 @@ xpaset -p DS9Test pixeltable no
 xpaset -p DS9Test pixeltable open
 xpaset -p DS9Test pixeltable close
 
+endtest
 testit $tt
 fi
 
 tt="plot"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo "$tt..."
 
 echo -n " gui..."
@@ -3330,11 +3493,13 @@ xpaset -p DS9Test plot close
 xpaset -p DS9Test plot close
 echo "PASSED"
 
+endtest
 testit $tt
 fi
 
 tt="png"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test png photo/rose.png
@@ -3346,21 +3511,25 @@ xpaset -p DS9Test png new photo/rose.png
 xpaset -p DS9Test png slice photo/rose.png
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 # backward compatibility prefs
 tt="precision"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test precision >> ${tt}.out
 xpaset -p DS9Test precision 8 7 4 3 8 7 5 3 8
 
+endtest
 testit $tt
 fi
 
 tt="prefs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo "$tt..."
 xpaset -p DS9Test prefs clear
 xpaset -p DS9Test prefs irafalign yes
@@ -3399,23 +3568,27 @@ xpaset -p DS9Test prefs theme default
 xpaset -p DS9Test prefs threads 12
 xpaset -p DS9Test prefs irafalign yes
 
+endtest
 testit $tt
 fi
 
 tt="preserve"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test preserve pan >> ${tt}.out
 xpaget DS9Test preserve regions >> ${tt}.out
 xpaset -p DS9Test preserve pan no
 xpaset -p DS9Test preserve regions no
 
+endtest
 testit $tt
 fi
 
 # can only be run local
 tt="print"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test psprint destination >> ${tt}.out
 xpaget DS9Test psprint command >> ${tt}.out
@@ -3430,11 +3603,13 @@ xpaset -p DS9Test psprint color rgb
 xpaset -p DS9Test psprint level 2
 xpaset -p DS9Test psprint resolution 150
 
+endtest
 testit $tt
 fi
 
 tt="prism"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test prism
 xpaget DS9Test prism  >> ${tt}.out
@@ -3487,20 +3662,24 @@ xpaset -p DS9Test prism close
 xpaset -p DS9Test plot close
 xpaset -p DS9Test plot close
 
+endtest
 testit $tt
 fi
 
 tt="raise"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test lower
 xpaset -p DS9Test raise
 
+endtest
 testit $tt
 fi
 
 tt="region"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/region..."
 xpaset -p DS9Test region delete
 xpaset -p DS9Test region system physical
@@ -3655,11 +3834,13 @@ xpaset -p DS9Test region open
 xpaset -p DS9Test region close
 xpaset -p DS9Test region delete
 
+endtest
 testit $tt
 fi
 
 tt="reveal"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test reveal >> ${tt}.out
 xpaget DS9Test reveal split >> ${tt}.out
@@ -3675,11 +3856,13 @@ xpaset -p DS9Test reveal no
 xpaset -p DS9Test single
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="rgb"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test rgb open
 xpaset -p DS9Test rgb close
@@ -3725,11 +3908,13 @@ xpaset -p DS9Test rgb lock smooth no
 xpaset -p DS9Test rgb close
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="rgbarray"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new rgb
 xpaset -p DS9Test rgbarray rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=big]
@@ -3741,11 +3926,13 @@ xpaset -p DS9Test rgbarray new rgbarray/float_big.rgb[dim=256,bitpix=-32,endian=
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test rgb close
+endtest
 testit $tt
 fi
 
 tt="rgbimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new rgb
 xpaset -p DS9Test rgbimage rgb/rgbimage.fits
@@ -3757,11 +3944,13 @@ xpaset -p DS9Test rgbimage new rgb/rgbimage.fits
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test rgb close
+endtest
 testit $tt
 fi
 
 tt="rgbcube"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new rgb
 xpaset -p DS9Test rgbcube rgb/rgbcube.fits
@@ -3773,11 +3962,13 @@ xpaset -p DS9Test rgbcube new rgb/rgbcube.fits
 xpaset -p DS9Test frame delete
 
 xpaset -p DS9Test rgb close
+endtest
 testit $tt
 fi
 
 tt="rotate"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test rotate >> ${tt}.out
 xpaset -p DS9Test rotate open
@@ -3786,11 +3977,13 @@ xpaset -p DS9Test rotate 15
 xpaset -p DS9Test rotate close
 xpaset -p DS9Test frame reset
 
+endtest
 testit $tt
 fi
 
 tt="samp"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "samp..."
 
 xpaset -p DS9Test fits new fits/table.fits
@@ -3802,11 +3995,13 @@ xpaset -p DS9Test samp send table topcat
 xpaset -p DS9Test samp hub info
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="save"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo "$tt/savefits..."
 
 echo -n " fits..."
@@ -3907,11 +4102,13 @@ xpaset -p DS9Test rgb close
 xpaset -p DS9Test hls close
 xpaset -p DS9Test hsv close
 xpaset -p DS9Test cube close
+endtest
 testit $tt
 fi
 
 tt="saveimage"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test saveimage fits foo.fits
 xpaset -p DS9Test saveimage foo.fits
@@ -3930,11 +4127,13 @@ xpaset -p DS9Test saveimage tiff none foo.tiff
 xpaset -p DS9Test saveimage jpeg 100 foo.jpeg
 #xpaset -p DS9Test saveimage mpeg foo.mpeg
 
+endtest
 testit $tt
 fi
 
 tt="scale"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test scale >> ${tt}.out
 xpaget DS9Test scale log exp >> ${tt}.out
@@ -3985,11 +4184,13 @@ xpaset -p DS9Test scale lock limits no
 xpaset -p DS9Test scale zscale
 xpaset -p DS9Test scale close
 
+endtest
 testit $tt
 fi
 
 tt="single"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test single >> ${tt}.out
 xpaset -p DS9Test tile
@@ -3997,18 +4198,22 @@ xpaget DS9Test single >> ${tt}.out
 xpaset -p DS9Test single
 xpaget DS9Test single >> ${tt}.out
 
+endtest
 testit $tt
 fi
 
 tt="shm"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt...no test..."
 
+endtest
 testit $tt
 fi
 
 tt="sia"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test sia mast
 xpaset -p DS9Test sia cxc
@@ -4042,11 +4247,13 @@ xpaset -p DS9Test sia cancel
 xpaset -p DS9Test sia close
 xpaset -p DS9Test sia close
 
+endtest
 testit $tt
 fi
 
 tt="skyview"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test skyview open
 xpaset -p DS9Test skyview close
@@ -4082,20 +4289,24 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="sleep"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test sleep
 xpaset -p DS9Test sleep 2
 
+endtest
 testit $tt
 fi
 
 tt="smooth"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test smooth >> ${tt}.out
 xpaget DS9Test smooth function >> ${tt}.out
@@ -4119,51 +4330,61 @@ xpaset -p DS9Test smooth lock no
 xpaset -p DS9Test smooth no
 xpaset -p DS9Test smooth close
 
+endtest
 testit $tt
 fi
 
 # can only be run local
 tt="source"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test source aux/source.tcl
 
+endtest
 testit $tt
 fi
 
 # can only be run local
 tt="tcl"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 cat aux/hello.tcl | xpaset DS9Test tcl
 echo 'puts "Hello World"' | xpaset DS9Test tcl
 xpaset -p DS9Test tcl {puts {Hello Again, World}}
 
+endtest
 testit $tt
 fi
 
 # backward compatibility prefs
 tt="theme"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test theme >> ${tt}.out
 xpaset -p DS9Test theme default
 
+endtest
 testit $tt
 fi
 
 # backward compatibility prefs
 tt="threads"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test threads >> ${tt}.out
 xpaset -p DS9Test threads 12
 
+endtest
 testit $tt
 fi
 
 tt="tiff"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt/tif..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test tiff photo/rose.tiff
@@ -4176,11 +4397,13 @@ xpaset -p DS9Test tiff new photo/rose.tiff
 xpaset -p DS9Test tiff slice photo/rose.tiff
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="tile"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test tile >> ${tt}.out
 xpaget DS9Test tile mode >> ${tt}.out
@@ -4207,37 +4430,45 @@ xpaset -p DS9Test tile grid mode automatic
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="update"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test update
 xpaset -p DS9Test update 1 100 100 300 400
 
+endtest
 testit $tt
 fi
 
 tt="url"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test frame new
 xpaset -p DS9Test url http://ds9.si.edu/download/data/img.fits
 xpaset -p DS9Test frame delete
+endtest
 testit $tt
 fi
 
 tt="version"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test version >> /dev/null
 
+endtest
 testit $tt
 fi
 
 tt="view"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test view layout >> ${tt}.out
 xpaget DS9Test view multi >> ${tt}.out
@@ -4380,11 +4611,13 @@ sleep $delay
 xpaset -p DS9Test rgb close
 xpaset -p DS9Test hls close
 xpaset -p DS9Test hsv close
+endtest
 testit $tt
 fi
 
 tt="vla"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test vla open
 xpaset -p DS9Test vla close
@@ -4418,11 +4651,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="vlss"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test vlss open
 xpaset -p DS9Test vlss close
@@ -4454,11 +4689,13 @@ xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 xpaset -p DS9Test frame delete
 
+endtest
 testit $tt
 fi
 
 tt="vo"
 if [ "$1" = "$tt" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test vo method >> ${tt}.out
 xpaget DS9Test vo server >> ${tt}.out
@@ -4477,11 +4714,13 @@ xpaset -p DS9Test vo disconnect xray1.physics.rutgers
 xpaset -p DS9Test vo close
 xpaset -p DS9Test web close
 
+endtest
 testit $tt
 fi
 
 tt="wcs"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test wcs >> ${tt}.out
 xpaget DS9Test wcs system >> ${tt}.out
@@ -4508,11 +4747,13 @@ xpaset -p DS9Test wcs reset
 xpaset -p DS9Test wcs skyformat sexagesimal
 xpaset -p DS9Test wcs close
 
+endtest
 testit $tt
 fi
 
 tt="web"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test web ds9.si.edu/doc/acknowledgment.html
 sleep $delay
@@ -4526,16 +4767,19 @@ xpaset -p DS9Test web clear
 xpaset -p DS9Test web close
 xpaset -p DS9Test web close
 
+endtest
 testit $tt
 fi
 
 tt="width"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test width >> /dev/null
 xpaset -p DS9Test width 600
 
 
+endtest
 testit $tt
 fi
 
@@ -4543,6 +4787,7 @@ sleep 2
 
 tt="xpa"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test xpa >> /dev/null
 xpaget DS9Test xpa info >> /dev/null
@@ -4550,11 +4795,13 @@ xpaget DS9Test xpa info >> /dev/null
 #xpaset -p DS9Test xpa disconnect
 xpaset -p DS9Test xpa info
 
+endtest
 testit $tt
 fi
 
 tt="zscale"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaget DS9Test zscale contrast >> ${tt}.out
 xpaget DS9Test zscale sample >> ${tt}.out
@@ -4563,11 +4810,13 @@ xpaset -p DS9Test zscale contrast .25
 xpaset -p DS9Test zscale sample 600
 xpaset -p DS9Test zscale line 120
 
+endtest
 testit $tt
 fi
 
 tt="zoom"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test zoom open
 xpaset -p DS9Test zoom 2
@@ -4581,16 +4830,19 @@ xpaset -p DS9Test zoom close
 xpaget DS9Test zoom > /dev/null
 xpaset -p DS9Test frame reset
 
+endtest
 testit $tt
 fi
 
 # do this last
 tt="backup"
 if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
 echo -n "$tt..."
 xpaset -p DS9Test backup foo.bck
 xpaset -p DS9Test restore foo.bck
 
+endtest
 testit $tt
 fi
 
