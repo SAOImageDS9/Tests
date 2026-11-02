@@ -3,8 +3,8 @@ echo "SAMP Tests"
 
 startit () {
     echo "Starting DS9..."
-    echo "ds9 -title DS9Test -debug $samp -debug $samphub -zscale fits/img.fits"
-    ds9 -title DS9Test -debug $samp -debug $samphub -zscale fits/img.fits&
+    echo "ds9 -title DS9Test -debug $samp -debug $samphub -zscale"
+    ds9 -title DS9Test -debug $samp -debug $samphub -zscale&
     #~ echo "click return to start"
     #~ read
     i=1
@@ -21,9 +21,25 @@ startit () {
 
 }
 
+# each test starts from a clean slate with just fits/img.fits loaded,
+# so a failure in one test can not leave the wrong (or no) frames
+# behind for the next one
+starttest () {
+    xpaset -p DS9Test frame delete all
+    xpaset -p DS9Test frame new
+    xpaset -p DS9Test fits fits/img.fits
+}
+
+endtest () {
+    xpaset -p DS9Test frame delete all
+}
+
 testit () {
     echo
     echo "Testing $1"
+    if [ "$1" != "exit" ]; then
+	starttest
+    fi
     # native windows ds9 writes its .samp lockfile under USERPROFILE;
     # under cygwin, point the test client's HOME there so it finds the
     # hub. subshell keeps HOME change local and preserves exit status
@@ -33,7 +49,12 @@ testit () {
     esac
     tclsh samp.tcl $debug block $msg < samp/${1}.samp
     )
-    case $? in
+    rr=$?
+    # on 125 leave ds9 as is for inspection
+    if [ "$1" != "exit" -a $rr -ne 125 ]; then
+	endtest
+    fi
+    case $rr in
 	124)
 	    echo "FAILED: $1 had timeouts"
 	    failed="$failed $1"
