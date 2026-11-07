@@ -183,6 +183,66 @@ testit xml image fk5 degrees regions/xml.lineend.image.reg
 testit2 ds9 image fk5 degrees regions/ds9.lineend.legacy.reg regions/ds9.lineend.legacy.norm.reg
 fi
 
+if [ "$1" = "glyph" -o -z "$1" ]; then
+echo
+echo "Testing DS9 Glyph Regions..."
+xpaset -p DS9Test frame clear
+xpaset -p DS9Test fits fits/img.fits
+
+# round trips; glyph files next to the region file stay relative
+testit ds9 image fk5 degrees regions/ds9.glyph.image.reg
+testit ds9 physical fk5 degrees regions/ds9.glyph.physical.reg
+testit ds9 wcs fk5 degrees regions/ds9.glyph.fk5.reg
+testit ds9 wcs fk5 sexagesimal regions/ds9.glyph.fk5.hms.reg
+# bare glyph(...), space separated and exclude forms load as # glyph(...)
+testit2 ds9 image fk5 degrees regions/ds9.glyph.bare.reg regions/ds9.glyph.image.reg
+
+# saved from another directory, paths are written relative to it
+echo "Test glyph relative paths"
+xpaset -p DS9Test regions format ds9
+xpaset -p DS9Test regions system image
+xpaset -p DS9Test regions file regions/ds9.glyph.image.reg
+xpaset -p DS9Test regions save foo.glyph.reg
+o=`diff -w regions/ds9.glyph.parent.reg foo.glyph.reg`
+if [ "$o" = "" ]; then echo "PASSED"; else echo "FAILED"; echo "$o"; fi
+rm -f foo.glyph.reg
+
+# other formats drop glyphs
+testit3 ciao physical fk5 degrees regions/ciao.glyph.reg
+xpaset -p DS9Test regions format ds9
+
+# shape setting
+echo "Test glyph shape"
+xpaset -p DS9Test regions shape glyph
+o=`xpaget DS9Test regions shape`
+if [ "$o" = "glyph" ]; then echo "PASSED"; else echo "FAILED"; echo "$o"; fi
+xpaset -p DS9Test regions shape circle
+
+# backup copies glyph files and restores from the copies
+echo "Test glyph backup"
+rm -rf foo.glyph.bck foo.glyph.bck.dir
+xpaset -p DS9Test regions system image
+xpaset -p DS9Test regions file regions/ds9.glyph.image.reg
+xpaset -p DS9Test backup foo.glyph.bck
+o=""
+for ff in glyph_glyph_star.png glyph_glyph_dot.png; do
+    if [ ! -f foo.glyph.bck.dir/Frame1/$ff ]; then o="$o missing $ff"; fi
+done
+# glyph_missing.png cannot be copied and keeps its path
+if grep "regions/glyph_" foo.glyph.bck.dir/Frame1/ds9.reg | grep -qv glyph_missing; then
+    o="$o ds9.reg still points at the originals"
+fi
+xpaset -p DS9Test regions deleteall
+xpaset -p DS9Test restore foo.glyph.bck
+xpaset -p DS9Test regions system image
+xpaset -p DS9Test regions save foo.glyph.reg
+n=`grep -c "glyph(.*foo.glyph.bck.dir/Frame1/glyph_glyph_" foo.glyph.reg`
+if [ "$n" != "4" ]; then o="$o restored $n of 4 copied glyphs"; fi
+if [ "$o" = "" ]; then echo "PASSED"; else echo "FAILED"; echo "$o"; cat foo.glyph.reg; fi
+xpaset -p DS9Test regions deleteall
+rm -rf foo.glyph.reg foo.glyph.bck foo.glyph.bck.dir
+fi
+
 if [ "$1" = "mosaic" -o -z "$1" ]; then
 echo
 echo "Testing DS9 Mosaic Format..."

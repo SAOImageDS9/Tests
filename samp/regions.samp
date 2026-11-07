@@ -47,6 +47,9 @@ set {} region load regions/ds9.fk5*.reg
 set {} region delete
 set {} region load all regions/ds9.physical.reg
 set {} region delete load regions/ds9.physical.reg
+set {} region delete
+set {} region load regions/ds9.glyph.image.reg
+set {} region delete
 
 set {} region save foo.reg
 set {} region save select foo.reg
@@ -76,6 +79,7 @@ set {} region sky fk5
 set {} region skyformat degrees
 set {} region strip no
 
+set {} region shape glyph
 set {} region shape circle
 set {} region color green
 set {} region fill no

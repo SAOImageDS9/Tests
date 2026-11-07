@@ -1,0 +1,8 @@
+# Region file format: DS9 version 4.1
+image
+glyph(400,500,{glyph_star.png})
+glyph(500,500,{glyph_star.png},64,0) # color=red text={big}
+glyph 600 500 {glyph_dot.png} 20 10 # width=2 tag={dots}
+glyph(400,600,{glyph_missing.png},24,24)
+-glyph(500,600,{glyph_dot.png},0,32) # font="times 12 bold roman" text={excluded}
+circle(600,600,20)

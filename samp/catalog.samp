@@ -61,6 +61,10 @@ set {} catalog symbol fontweight bold
 set {} catalog symbol fontslant italic
 # backward compatibility
 set {} catalog symbol fontstyle italic
+set {} catalog symbol shape glyph
+set {} catalog symbol glyph regions/glyph_star.png
+set {} catalog symbol size 16
+set {} catalog symbol shape text
 set {} catalog symbol add
 set {} catalog symbol remove
 set {} catalog symbol load aux/ds9.sym
