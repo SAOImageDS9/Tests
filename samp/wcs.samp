@@ -3,6 +3,7 @@ get wcs system
 get wcs sky
 get wcs skyformat
 get wcs align
+get wcs avm
 set {} wcs open
 set {} wcs wcs
 set {} wcs align yes
@@ -10,6 +11,8 @@ set {} wcs system wcs
 set {} wcs sky galactic
 set {} wcs skyformat sexagesimal
 set {} wcs align no
+set {} wcs avm no
+set {} wcs avm yes
 set {} wcs sky fk5
 set {} wcs skyformat degrees
 set file:aux/image.wcs wcs append
@@ -21,6 +24,8 @@ set {} wcs append aux/image.wcs
 set {} wcs replace aux/image.wcs
 set {} wcs reset
 set {} wcs skyformat sexagesimal
+set {} png photo/avm.png
+set {} wcs reset
 set {} wcs close
 
 set {} single

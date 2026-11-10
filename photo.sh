@@ -64,6 +64,69 @@ doit () {
     echo "PASSED"
 }
 
+# AVM: the ICRS position of image pixels in photo/avm*, as printed by
+# photo/mkavm.py
+AVMPixels="1 1 202.5603792 47.2078485
+227 149 202.4015576 47.2139330
+114 75 202.4809730 47.2109182"
+
+# AVMCheck name: the current frame has the AVM WCS
+AVMCheck () {
+    echo "$AVMPixels" | while read x y ra dec; do
+	xpaset -p DS9Test pan to $x $y image
+	rr=`xpaget DS9Test pan wcs icrs degrees`
+	if echo "$rr $ra $dec" | awk '{d=($1-$3)*cos($4*3.14159265/180); e=$2-$4; exit !(NF==4 && d*d+e*e < 1e-12)}'; then
+	    :
+	else
+	    echo "FAILED: $1: pixel $x $y is '$rr', expected '$ra $dec'"
+	    echo "$1" >> avm.failed
+	fi
+    done
+}
+
+# AVMCheckNone name: the current frame has no WCS
+AVMCheckNone () {
+    xpaset -p DS9Test pan to 114 75 image
+    rr=`xpaget DS9Test pan wcs icrs degrees`
+    if [ -n "$rr" ]; then
+	echo "FAILED: $1: expected no WCS, got '$rr'"
+	echo "$1" >> avm.failed
+    fi
+}
+
+# wait for a ds9 started in the background to register
+WaitDS9 () {
+    i=1
+    while [ "$i" -le 20 ]; do
+	sleep 1
+	if [ `xpaaccess DS9Test` = yes ]; then
+	    break
+	fi
+	i=`expr $i + 1`
+    done
+}
+
+# quit ds9 and wait for it to go away
+QuitDS9 () {
+    xpaset -p DS9Test quit
+    i=1
+    while [ "$i" -le 20 ]; do
+	if [ `xpaaccess DS9Test` = no ]; then
+	    break
+	fi
+	sleep 1
+	i=`expr $i + 1`
+    done
+}
+
+# AVMLoad name type file [frametype]: load into a new frame
+AVMLoad () {
+    echo "..  $1"
+    xpaset -p DS9Test frame delete all
+    xpaset -p DS9Test frame new $4
+    xpaset -p DS9Test $2 $3
+}
+
 StartDS9 () {
     if [ `xpaaccess DS9Test` = no ]; then
 	ds9 -title DS9Test &
@@ -314,6 +377,79 @@ DoXPAStdout rgb png
 
 xpaset -p DS9Test quit
 echo "PASSED"
+fi
+
+# AVM: WCS from Astronomy Visualization Metadata
+if [ "$1" = "avm" -o  -z "$1" ]; then
+echo "Testing AVM"
+rm -f avm.failed
+
+StartDS9
+xpaset -p DS9Test wcs avm yes
+if [ `xpaget DS9Test wcs avm` != yes ]; then
+    echo "FAILED: xpaget wcs avm"
+    echo "get" >> avm.failed
+fi
+
+echo ".. formats"
+AVMLoad "png" png photo/avm.png;            AVMCheck "png"
+AVMLoad "png compressed" png photo/avmz.png; AVMCheck "png compressed"
+AVMLoad "jpeg" jpeg photo/avm.jpeg;         AVMCheck "jpeg"
+AVMLoad "jpeg extendedxmp" jpeg photo/avmext.jpeg; AVMCheck "jpeg extendedxmp"
+AVMLoad "tiff" tiff photo/avm.tiff;         AVMCheck "tiff"
+AVMLoad "gif" gif photo/avm.gif;            AVMCheck "gif"
+
+echo ".. no wcs"
+AVMLoad "no avm" png photo/rose.png;            AVMCheckNone "no avm"
+AVMLoad "quality position" png photo/avmpos.png; AVMCheckNone "quality position"
+AVMLoad "cropped" png photo/avmcrop.png;        AVMCheckNone "cropped"
+xpaset -p DS9Test wcs avm no
+AVMLoad "wcs avm no" png photo/avm.png;          AVMCheckNone "wcs avm no"
+xpaset -p DS9Test wcs avm yes
+AVMLoad "wcs avm yes" png photo/avm.png;         AVMCheck "wcs avm yes"
+
+echo ".. stdin"
+xpaset -p DS9Test frame delete all
+xpaset -p DS9Test frame new
+cat photo/avm.png | xpaset DS9Test png
+AVMCheck "stdin"
+
+echo ".. rgb"
+AVMLoad "rgb" png photo/avm.png rgb
+for cc in red green blue; do
+    xpaset -p DS9Test rgb channel $cc
+    AVMCheck "rgb $cc"
+done
+
+echo ".. 3d"
+AVMLoad "3d" png photo/avm.png 3d
+AVMCheck "3d"
+
+echo ".. header"
+AVMLoad "header" png photo/avm.png
+xpaset -p DS9Test header
+xpaset -p DS9Test header close
+
+QuitDS9
+
+echo ".. command line"
+echo "..  -png"
+ds9 -title DS9Test -wcs avm yes -png photo/avm.png &
+WaitDS9
+AVMCheck "command line"
+QuitDS9
+echo "..  -wcs avm no"
+ds9 -title DS9Test -wcs avm no -png photo/avm.png &
+WaitDS9
+AVMCheckNone "command line -wcs avm no"
+QuitDS9
+
+if [ -f avm.failed ]; then
+    echo "FAILED"
+else
+    echo "PASSED"
+fi
+rm -f avm.failed
 fi
 
 rm -f foo.*
