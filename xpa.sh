@@ -4736,7 +4736,6 @@ xpaget DS9Test wcs system >> ${tt}.out
 xpaget DS9Test wcs sky >> ${tt}.out
 xpaget DS9Test wcs skyformat >> ${tt}.out
 xpaget DS9Test wcs align >> ${tt}.out
-xpaget DS9Test wcs avm >> ${tt}.out
 xpaset -p DS9Test wcs open
 xpaset -p DS9Test wcs wcs
 xpaset -p DS9Test wcs align yes
@@ -4744,8 +4743,6 @@ xpaset -p DS9Test wcs system wcs
 xpaset -p DS9Test wcs sky galactic
 xpaset -p DS9Test wcs skyformat sexagesimal
 xpaset -p DS9Test wcs align no
-xpaset -p DS9Test wcs avm no
-xpaset -p DS9Test wcs avm yes
 xpaset -p DS9Test wcs sky fk5
 xpaset -p DS9Test wcs skyformat degrees
 xpaset -p DS9Test wcs load aux/image.wcs

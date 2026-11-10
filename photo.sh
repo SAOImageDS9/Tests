@@ -385,11 +385,6 @@ echo "Testing AVM"
 rm -f avm.failed
 
 StartDS9
-xpaset -p DS9Test wcs avm yes
-if [ `xpaget DS9Test wcs avm` != yes ]; then
-    echo "FAILED: xpaget wcs avm"
-    echo "get" >> avm.failed
-fi
 
 echo ".. formats"
 AVMLoad "png" png photo/avm.png;            AVMCheck "png"
@@ -403,10 +398,6 @@ echo ".. no wcs"
 AVMLoad "no avm" png photo/rose.png;            AVMCheckNone "no avm"
 AVMLoad "quality position" png photo/avmpos.png; AVMCheckNone "quality position"
 AVMLoad "cropped" png photo/avmcrop.png;        AVMCheckNone "cropped"
-xpaset -p DS9Test wcs avm no
-AVMLoad "wcs avm no" png photo/avm.png;          AVMCheckNone "wcs avm no"
-xpaset -p DS9Test wcs avm yes
-AVMLoad "wcs avm yes" png photo/avm.png;         AVMCheck "wcs avm yes"
 
 echo ".. stdin"
 xpaset -p DS9Test frame delete all
@@ -434,14 +425,9 @@ QuitDS9
 
 echo ".. command line"
 echo "..  -png"
-ds9 -title DS9Test -wcs avm yes -png photo/avm.png &
+ds9 -title DS9Test -png photo/avm.png &
 WaitDS9
 AVMCheck "command line"
-QuitDS9
-echo "..  -wcs avm no"
-ds9 -title DS9Test -wcs avm no -png photo/avm.png &
-WaitDS9
-AVMCheckNone "command line -wcs avm no"
 QuitDS9
 
 if [ -f avm.failed ]; then
