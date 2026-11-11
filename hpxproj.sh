@@ -67,6 +67,10 @@ StartDS9 () {
 #    fixtures in fits/hpxproj come from hpxproj/make_fixtures.py.
 #  - full-sky images are blank exactly outside the projection boundary
 #    (hpxproj/boundary.py)
+#  - the open-dialog probe ($frame fitsy info FILE) reports what a load
+#    would show and, for HEALPix, the order, system and columns it would
+#    use, for maps, explicit-index maps, MOCs, gzipped files, an image
+#    ahead of a HEALPix table, and files that aren't HEALPix
 #  - with "threads 1" the same loads give byte-identical images (the
 #    resampler splits output rows across the threads preference)
 #
@@ -595,6 +599,42 @@ done
 # (grammar rule used the bracketed hpxs instead of hpxsb)
 check "[1,proj=ait]" "`load "${fixtures}/ring64_gal.fits[1,proj=ait]"`" "356 180"
 check "[1,layout=north]" "`load "${fixtures}/ring64_gal.fits[1,layout=north]"`" "256 256"
+
+# Probe for the File -> Open HEALPix dialog: "$frame fitsy info FILE"
+# describes what loading FILE would show without loading it (the same
+# search as the load), and for HEALPix the defaults a load would use,
+# in the words the [order=,system=,col=] options take.
+# info FILE -> the probe's Tcl dict
+info () {
+    echo "set f [open ${tmp}/info.out w]; puts -nonewline \$f [\$::current(frame) fitsy info \"\\\"[file normalize {$1}]\\\"\"]; close \$f" | \
+	xpaset DS9Test tcl
+    cat ${tmp}/info.out
+}
+# a primary image followed by a HEALPix table: the load shows the image
+cat fits/float.fits > ${tmp}/imghpx.fits
+tail -c +2881 ${fixtures}/ring64_gal.fits >> ${tmp}/imghpx.fits
+
+check "info ring" "`info ${wmap}`" \
+    "type healpix ext 1 extname xtension ordering ring coordsys {} nside 256 mocorder -1 rows 768 index 0 default 1 cols {{1 signal 1024K}}"
+check "info nested, two columns" "`info fits/wmap.fits`" \
+    "type healpix ext 1 extname {Archive Map Table} ordering nested coordsys {} nside 512 mocorder -1 rows 3145728 index 0 default 1 cols {{1 TEMPERATURE E} {2 N_OBS E}}"
+check "info galactic" "`info ${fixtures}/nested64_gal.fits`" \
+    "type healpix ext 1 extname {} ordering nested coordsys galactic nside 64 mocorder -1 rows 49152 index 0 default 1 cols {{1 SIGNAL E}}"
+partialinfo="type healpix ext 1 extname {} ordering nested coordsys equatorial nside 128 mocorder -1 rows 21318 index 1 default 2 cols {{2 COUNTS J}}"
+check "info explicit index" "`info ${partial}`" "${partialinfo}"
+check "info explicit index (gz)" "`info ${partial}.gz`" "${partialinfo}"
+mocinfo="type moc ext 1 extname {} ordering nuniq coordsys equatorial nside 0 mocorder 10 rows 165279 index 1 default 0 cols {}"
+check "info moc" "`info ${moc}`" "${mocinfo}"
+check "info moc (gz)" "`info ${moc}.gz`" "${mocinfo}"
+check "info image" "`info fits/float.fits.gz`" "type image ext 0 extname {}"
+check "info events" "`info fits/table.fits`" "type events ext 2 extname STDEVT"
+check "info image then HEALPix" "`info ${tmp}/imghpx.fits`" \
+    "type image ext 0 extname {}"
+check "info image then HEALPix [1]" "`info ${tmp}/imghpx.fits[1]`" \
+    "type healpix ext 1 extname {} ordering ring coordsys galactic nside 64 mocorder -1 rows 49152 index 0 default 1 cols {{1 SIGNAL E}}"
+# ASCII-table HEALPix doesn't load (the search only takes binary tables)
+check "info ascii table" "`info ${fixtures}/ascii32_gal.fits`" ""
+check "info missing file" "`info fits/nosuch.fits`" ""
 
 # Display parity: a resampled image must render exactly like the same
 # image saved with "save fits" and reloaded as an ordinary FITS file,
