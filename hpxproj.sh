@@ -40,7 +40,8 @@ StartDS9 () {
 #    refused for all-sky images; recentred images are compared too
 #  - live recentring during a drag: the window follows every few pixels,
 #    the grabbed point stays under the pointer, release doesn't move the
-#    view, contours carried during the drag are regenerated on release
+#    view, contours carried during the drag are regenerated on release;
+#    the same with block 2, plus pan to and window size when blocked
 #  - live recentring after pans: threshold, pan/crosshair kept, pan to
 #    targets beyond the window and in another sky system, conics follow
 #    in longitude only, locked frames follow, scale limits from the
@@ -345,6 +346,35 @@ check "drag: contours regenerated on release" \
     "`shasum -a 256 < ${tmp}/drag_release.png | cut -c1-16`" \
     "`shasum -a 256 < ${tmp}/drag_fresh.png | cut -c1-16`"
 xpaset -p DS9Test contour no
+
+# Blocking: REF (and refToImage) are the blocked image's pixels, the
+# window's WCS is unblocked. "-block to 2" used to send the pan to the
+# window's corner on the first pan (a factor 2 between the two), and
+# windows were sized for block 1. A blocked window must cover the same
+# screen area as an unblocked one (same size in displayed pixels).
+load "${wmap}[system=galactic,proj=tan,lat0=40]" > /dev/null
+xpaset -p DS9Test block to 2
+echo "source ${tmp}/drag.tcl" | xpaset DS9Test tcl
+check "block 2 drag: grabbed point under the pointer" \
+    "`sep \"\`sed -n 1p ${tmp}/drag.txt\`\" \"\`sed -n 2p ${tmp}/drag.txt\`\" | awk '{print ($1 < 1e-4) ? "yes" : "no: " $1}'`" "yes"
+echo 'lassign $::hpxdrag x0 cy; $current(frame) pan motion end [expr {$x0-200}] $cy' | \
+    xpaset DS9Test tcl
+# the last re-snap leaves the pan a few displayed pixels off the tangent
+# point (1.7 deg here: a 200 px drag at block 2 crosses 92 deg of sky);
+# the bug put it at the window's corner, tens of degrees away
+check "block 2 drag: pan stays near the tangent point" \
+    "`sep \"\`cv\`\" \"\`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'\`\" | awk '{print ($1 < 3) ? "yes" : "no: " $1}'`" "yes"
+xpaset -p DS9Test pan to 120 60 wcs galactic
+check "block 2: pan to" "`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'`" \
+    "120.0000000 60.0000000"
+xpaset -p DS9Test zoom to 8
+xpaset -p DS9Test pan to 200 30 wcs galactic
+bs2=`xpaget DS9Test fits size | tr -d '\n'`
+xpaset -p DS9Test block to 1
+xpaset -p DS9Test pan to 250 30 wcs galactic
+bs1=`xpaget DS9Test fits size | tr -d '\n'`
+check "block 2 window covers what block 1 does" "$bs2" "$bs1"
+xpaset -p DS9Test zoom to 1
 
 # locked frames: the second window follows
 load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
