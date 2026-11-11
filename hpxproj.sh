@@ -63,6 +63,8 @@ StartDS9 () {
 #    fixtures in fits/hpxproj come from hpxproj/make_fixtures.py.
 #  - full-sky images are blank exactly outside the projection boundary
 #    (hpxproj/boundary.py)
+#  - with "threads 1" the same loads give byte-identical images (the
+#    resampler splits output rows across the threads preference)
 #
 # The numeric checks need python with numpy, astropy, healpy and
 # reproject. Set HPXPY to that python; the default is the "hpxtest"
@@ -544,6 +546,50 @@ do
 	"`shasum -a 256 < ${tmp}/parity_$1_hpx.png | cut -c1-16`" \
 	"`shasum -a 256 < ${tmp}/parity_$1_plain.png | cut -c1-16`"
 done
+
+# Single thread: the resampler splits output rows across the "threads"
+# preference (default: every core). Redo the loads checked above against
+# reproject with threads 1; each saved image must be byte-identical to
+# the threaded one. Window sizes depend on the zoom, and the render loop
+# left it at "fit".
+xpaset -p DS9Test zoom to 1
+xpaset -p DS9Test scale linear
+nthreads=`xpaget DS9Test threads | tr -d '\n'`
+xpaset -p DS9Test threads 1
+check "threads 1 set" "`xpaget DS9Test threads | tr -d '\n'`" "1"
+while read name spec
+do
+    load "$spec" > /dev/null
+    xpaset -p DS9Test save fits ${tmp}/t1_$name.fits
+    check "threads 1 = threads $nthreads: $name" \
+	"`shasum -a 256 < ${tmp}/t1_$name.fits | cut -c1-16`" \
+	"`shasum -a 256 < ${tmp}/$name.fits | cut -c1-16`"
+done <<LIST
+wmap_AIT ${wmap}[system=galactic,proj=AIT,lon0=0]
+wmap_MOL ${wmap}[system=galactic,proj=MOL,lon0=180]
+wmap_CAR ${wmap}[system=galactic,proj=CAR,lon0=90]
+wmap_SFL ${wmap}[system=galactic,proj=SFL,lon0=-60]
+wmap_PAR ${wmap}[system=galactic,proj=PAR,lon0=0]
+wmap_CEA ${wmap}[system=galactic,proj=CEA,lon0=270]
+wmap_TAN ${wmap}[system=galactic,proj=tan]
+wmap_TANpole ${wmap}[system=galactic,proj=tan,lon0=45,lat0=90,fov=40]
+wmap_SIN ${wmap}[system=galactic,proj=sin,lat0=60]
+wmap_STG ${wmap}[system=galactic,proj=stg,lon0=120,lat0=-30]
+wmap_ARC ${wmap}[system=galactic,proj=arc,lat0=30]
+wmap_ZEA ${wmap}[system=galactic,proj=zea,lat0=-90]
+wmap_COE ${wmap}[system=galactic,proj=coe]
+wmap_COD ${wmap}[system=galactic,proj=cod,lon0=90,lat0=-30]
+wmap_COO ${wmap}[system=galactic,proj=coo,lat0=30,fov=200]
+wmap_COP ${wmap}[system=galactic,proj=cop,fov=150]
+wmap_BON ${wmap}[system=galactic,proj=bon,lat0=45]
+moc_TANpole ${moc}[proj=tan,lon0=45,lat0=90,fov=40]
+moc_ARCcap ${moc}[proj=arc,fov=360]
+moc_MOL ${moc}[proj=mol]
+partial_AIT ${partial}[proj=ait]
+fix_nested64_gal_AIT ${fixtures}/nested64_gal.fits[proj=ait,lon0=120]
+fix_ring64_unk_MOL ${fixtures}/ring64_unk.fits[proj=mol,lon0=-90]
+LIST
+xpaset -p DS9Test threads $nthreads
 
 xpaset -p DS9Test frame delete all
 xpaset -p DS9Test quit
