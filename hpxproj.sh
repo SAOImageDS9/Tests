@@ -38,6 +38,9 @@ StartDS9 () {
 #  - recentring a window ($frame update fits center [lon lat]) moves the
 #    centre, keeps the size, keeps a conic's reference latitude, and is
 #    refused for all-sky images; recentred images are compared too
+#  - live recentring during a drag: the window follows every few pixels,
+#    the grabbed point stays under the pointer, release doesn't move the
+#    view, contours carried during the drag are regenerated on release
 #  - live recentring after pans: threshold, pan/crosshair kept, pan to
 #    targets beyond the window and in another sky system, conics follow
 #    in longitude only, locked frames follow, scale limits from the
@@ -296,6 +299,52 @@ check "conic pan, zoomed in: meridian only" \
 check "conic pan, zoomed in: pan kept" \
     "`xpaget DS9Test pan wcs fk5 degrees | tr -d '\n'`" "150.0000000 45.0000000"
 xpaset -p DS9Test zoom to 1
+
+# Live recentring during a drag ("Drag to Center", pan motion begin/
+# motion/end): the window is rebuilt around the pan every few screen
+# pixels, so its tangent point follows the view and the view never turns
+# in one step on release (it used to turn ~10 deg at b=40 for a 12 deg
+# pan); the grabbed point stays under the pointer; contours are carried
+# through the sky during the drag and regenerated on release.
+# sep "L1 B1" "L2 B2" -> angular separation [deg]
+sep () {
+    echo "$1 $2" | awk '{d=atan2(0,-1)/180; c=sin($2*d)*sin($4*d)+cos($2*d)*cos($4*d)*cos(($1-$3)*d); if (c>1) c=1; print atan2(sqrt(1-c*c),c)/d}'
+}
+load "${wmap}[system=galactic,proj=tan,lat0=40]" > /dev/null
+xpaset -p DS9Test contour yes
+cat > ${tmp}/drag.tcl <<EOF
+set f \$current(frame)
+lassign [\$f get cursor canvas] cx cy
+set x0 [expr {\$cx+100}]
+set ::hpxdrag [list \$x0 \$cy]
+set ch [open ${tmp}/drag.txt w]
+puts \$ch [\$f get coordinates \$x0 \$cy wcs galactic degrees]
+\$f pan motion begin \$x0 \$cy
+for {set i 1} {\$i <= 20} {incr i} {\$f pan motion [expr {\$x0-10*\$i}] \$cy; update idletasks}
+puts \$ch [\$f get coordinates [expr {\$x0-200}] \$cy wcs galactic degrees]
+close \$ch
+EOF
+echo "source ${tmp}/drag.tcl" | xpaset DS9Test tcl
+check "drag: window follows during the drag" \
+    "`cv | awk '{print ($1 != 0) ? "yes" : "no: " $0}'`" "yes"
+check "drag: grabbed point under the pointer" \
+    "`sep \"\`sed -n 1p ${tmp}/drag.txt\`\" \"\`sed -n 2p ${tmp}/drag.txt\`\" | awk '{print ($1 < 1e-4) ? "yes" : "no: " $1}'`" "yes"
+p0=`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'`
+echo 'lassign $::hpxdrag x0 cy; $current(frame) pan motion end [expr {$x0-200}] $cy' | \
+    xpaset DS9Test tcl
+p1=`xpaget DS9Test pan wcs galactic degrees | tr -d '\n'`
+# release can make one last small rebuild; the view centre moves by less
+# than a screen pixel (0.229 deg at zoom 1 here), not the old jump
+check "drag: release keeps the view" \
+    "`sep \"$p0\" \"$p1\" | awk '{print ($1 < 0.229) ? "yes" : "no: " $1}'`" "yes"
+xpaset -p DS9Test saveimage png ${tmp}/drag_release.png
+xpaset -p DS9Test contour no
+xpaset -p DS9Test contour yes
+xpaset -p DS9Test saveimage png ${tmp}/drag_fresh.png
+check "drag: contours regenerated on release" \
+    "`shasum -a 256 < ${tmp}/drag_release.png | cut -c1-16`" \
+    "`shasum -a 256 < ${tmp}/drag_fresh.png | cut -c1-16`"
+xpaset -p DS9Test contour no
 
 # locked frames: the second window follows
 load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
