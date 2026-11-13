@@ -109,7 +109,7 @@ check () {
 
 # crval1 FITSFILE -> CRVAL1 of the primary header, as written
 crval1 () {
-    head -c 28800 "$1" | fold -w 80 | grep '^CRVAL1 ' | head -1 | \
+    head -c 28800 "$1" | fold -w 80 | grep -a '^CRVAL1 ' | head -1 | \
 	sed 's/^CRVAL1  = *//;s/ *\/.*$//'
 }
 
@@ -171,16 +171,16 @@ xpaset -p DS9Test save fits ${tmp}/moc_TANpole.fits
 check "initial window: twice the frame" "`load "${moc}[proj=arc,fov=360]"`" "1600 1104"
 xpaset -p DS9Test save fits ${tmp}/moc_ARCcap.fits
 check "initial window: HEALPix pixels" \
-    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep '^CDELT2 ' | sed 's/^CDELT2 *= *//;s/ .*//' | awk '{printf "%.5f", $1}'`" "0.05726"
+    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -a '^CDELT2 ' | sed 's/^CDELT2 *= *//;s/ .*//' | awk '{printf "%.5f", $1}'`" "0.05726"
 check "initial window: no coarsening" \
-    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -c 'coarser than the HEALPix'`" "0"
+    "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -a -c 'coarser than the HEALPix'`" "0"
 # windows follow the zoom: pixels as fine as a screen pixel (down to the
 # HEALPix pixel), twice the visible area, and the on-screen scale (deg
 # per screen pixel = CDELT / zoom) unchanged; zoom to fit shows the
 # whole fov
 # key FITSFILE KEY -> value
 key () {
-    head -c 28800 "$1" | fold -w 80 | grep "^$2 " | head -1 | sed "s/^$2 *= *//;s/ *\/.*\$//"
+    head -c 28800 "$1" | fold -w 80 | grep -a "^$2 " | head -1 | sed "s/^$2 *= *//;s/ *\/.*\$//"
 }
 # scale -> deg per screen pixel of the current frame
 scale () {
@@ -225,7 +225,7 @@ fr () {
 }
 # crval2 FITSFILE -> "CRVAL1 CRVAL2" as written
 crval12 () {
-    echo "`crval1 $1` `head -c 28800 "$1" | fold -w 80 | grep '^CRVAL2 ' | head -1 | sed 's/^CRVAL2  = *//;s/ *\/.*$//'`"
+    echo "`crval1 $1` `head -c 28800 "$1" | fold -w 80 | grep -a '^CRVAL2 ' | head -1 | sed 's/^CRVAL2  = *//;s/ *\/.*$//'`"
 }
 
 load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
