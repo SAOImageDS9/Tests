@@ -1,9 +1,9 @@
 # Region file format: DS9 version 4.1
 global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
 physical
-# glyph(799,999,{glyph_star.png})
-# glyph(999,999,{glyph_star.png},64,0) color=red text={big}
-# glyph(1199,999,{glyph_dot.png},20,10) width=2 tag={dots}
-# glyph(799,1199,{glyph_missing.png},24,24)
-# -glyph(999,1199,{glyph_dot.png},0,32) font="times 12 bold roman" text={excluded}
+point(799,999) # point=glyph {glyph_star.png}
+point(999,999) # point=glyph 64 {glyph_star.png} color=red text={big}
+point(1199,999) # point=glyph 20 {glyph_dot.png} width=2 tag={dots}
+point(799,1199) # point=glyph 24 {glyph_missing.png}
+-point(999,1199) # point=glyph 32 {glyph_dot.png} font="times 12 bold roman" text={excluded}
 circle(1199,1199,40)

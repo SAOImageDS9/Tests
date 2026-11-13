@@ -56,14 +56,14 @@ glyphit () {
 
 # per row image file from a column, native size
 glyphit aux/glyph.native.reg \
-    -catalog symbol shape glyph \
+    -catalog symbol shape glyph point \
     -catalog symbol glyph 'regions/glyph_$type.png'
-# width only keeps the aspect ratio
+# size: the image is fitted into a size x size box
 glyphit aux/glyph.size.reg \
-    -catalog symbol shape glyph \
+    -catalog symbol shape glyph point \
     -catalog symbol glyph 'regions/glyph_$type.png' \
     -catalog symbol size 24
-# width and height
+# size2 does not apply to glyphs; shape glyph is short for glyph point
 glyphit aux/glyph.size2.reg \
     -catalog symbol shape glyph \
     -catalog symbol glyph 'regions/glyph_$type.png' \
@@ -82,7 +82,7 @@ rm -f foo.glyph.reg
 ds9 -title DS9Test -zscale fits/img.fits \
     -catalog import tsv aux/glyph.tsv -catalog symbol shape glyph \
     -catalog regions -regions system image -regions save foo.glyph.reg -exit
-n=`grep -c 'glyph(.*doc/sun.png' foo.glyph.reg`
+n=`grep -c 'point=glyph.*doc/sun.png' foo.glyph.reg`
 if [ "$n" = "5" ]; then echo "PASSED"; else echo "FAILED"; cat foo.glyph.reg; fi
 rm -f foo.glyph.reg
 echo ""

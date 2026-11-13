@@ -194,8 +194,8 @@ testit ds9 image fk5 degrees regions/ds9.glyph.image.reg
 testit ds9 physical fk5 degrees regions/ds9.glyph.physical.reg
 testit ds9 wcs fk5 degrees regions/ds9.glyph.fk5.reg
 testit ds9 wcs fk5 sexagesimal regions/ds9.glyph.fk5.hms.reg
-# bare glyph(...), space separated and exclude forms load as # glyph(...)
-testit2 ds9 image fk5 degrees regions/ds9.glyph.bare.reg regions/ds9.glyph.image.reg
+# global point=glyph applies to points without their own point= property
+testit2 ds9 image fk5 degrees regions/ds9.glyph.global.reg regions/ds9.glyph.global.out.reg
 
 # saved from another directory, paths are written relative to it
 echo "Test glyph relative paths"
@@ -207,15 +207,15 @@ o=`diff -w regions/ds9.glyph.parent.reg foo.glyph.reg`
 if [ "$o" = "" ]; then echo "PASSED"; else echo "FAILED"; echo "$o"; fi
 rm -f foo.glyph.reg
 
-# other formats drop glyphs
+# other formats keep glyphs as plain points
 testit3 ciao physical fk5 degrees regions/ciao.glyph.reg
 xpaset -p DS9Test regions format ds9
 
 # shape setting
 echo "Test glyph shape"
-xpaset -p DS9Test regions shape glyph
+xpaset -p DS9Test regions shape glyph point
 o=`xpaget DS9Test regions shape`
-if [ "$o" = "glyph" ]; then echo "PASSED"; else echo "FAILED"; echo "$o"; fi
+if [ "$o" = "glyph point" ]; then echo "PASSED"; else echo "FAILED"; echo "$o"; fi
 xpaset -p DS9Test regions shape circle
 
 # backup copies glyph files and restores from the copies
@@ -236,7 +236,7 @@ xpaset -p DS9Test regions deleteall
 xpaset -p DS9Test restore foo.glyph.bck
 xpaset -p DS9Test regions system image
 xpaset -p DS9Test regions save foo.glyph.reg
-n=`grep -c "glyph(.*foo.glyph.bck.dir/Frame1/glyph_glyph_" foo.glyph.reg`
+n=`grep -c "point=glyph.*foo.glyph.bck.dir/Frame1/glyph_glyph_" foo.glyph.reg`
 if [ "$n" != "4" ]; then o="$o restored $n of 4 copied glyphs"; fi
 if [ "$o" = "" ]; then echo "PASSED"; else echo "FAILED"; echo "$o"; cat foo.glyph.reg; fi
 xpaset -p DS9Test regions deleteall

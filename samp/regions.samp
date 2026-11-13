@@ -79,7 +79,7 @@ set {} region sky fk5
 set {} region skyformat degrees
 set {} region strip no
 
-set {} region shape glyph
+set {} region shape glyph point
 set {} region shape circle
 set {} region color green
 set {} region fill no

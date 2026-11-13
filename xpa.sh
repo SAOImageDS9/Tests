@@ -470,7 +470,7 @@ xpaset -p DS9Test catalog symbol fontweight bold
 xpaset -p DS9Test catalog symbol fontslant italic
 # backward compatibility
 xpaset -p DS9Test catalog symbol fontstyle italic
-xpaset -p DS9Test catalog symbol shape glyph
+xpaset -p DS9Test catalog symbol shape {glyph point}
 xpaset -p DS9Test catalog symbol glyph regions/glyph_star.png
 xpaset -p DS9Test catalog symbol size 16
 xpaset -p DS9Test catalog symbol shape text
@@ -3758,7 +3758,7 @@ echo "image; line 100 100 200 400" | xpaset DS9Test region
 echo "physical; ruler 200 300 200 400" | xpaset DS9Test region
 echo "image; text 100 100 # text={Hello, World}" | xpaset DS9Test region
 echo "fk4; boxcircle point 13:29:55 47:11:50" | xpaset DS9Test region
-echo "image; # glyph(100,100,{regions/glyph_star.png},24,0)" | xpaset DS9Test region
+echo "image; point(100,100) # point=glyph 24 {regions/glyph_star.png}" | xpaset DS9Test region
 xpaset -p DS9Test region delete
 
 xpaset -p DS9Test region regions/ds9.physical.reg
@@ -3802,7 +3802,7 @@ xpaset -p DS9Test region sky fk5
 xpaset -p DS9Test region skyformat degrees
 xpaset -p DS9Test region strip no
 
-xpaset -p DS9Test region shape glyph
+xpaset -p DS9Test region shape glyph point
 xpaset -p DS9Test region shape circle
 xpaset -p DS9Test region color green
 xpaset -p DS9Test region fill no

@@ -1,8 +1,8 @@
 # Region file format: DS9 version 4.1
 global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
 image
-# glyph(300.00856,299.9972,{regions/glyph_star.png})
-# glyph(700.00863,299.99695,{regions/glyph_dot.png})
-# glyph(300.00805,699.99796,{regions/glyph_dot.png})
-# glyph(700.00848,699.99696,{regions/glyph_star.png})
-# glyph(500.00794,499.99825,{regions/glyph_star.png})
+point(300.00856,299.9972) # point=glyph {regions/glyph_star.png}
+point(700.00863,299.99695) # point=glyph {regions/glyph_dot.png}
+point(300.00805,699.99796) # point=glyph {regions/glyph_dot.png}
+point(700.00848,699.99696) # point=glyph {regions/glyph_star.png}
+point(500.00794,499.99825) # point=glyph {regions/glyph_star.png}

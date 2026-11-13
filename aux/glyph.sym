@@ -1,4 +1,4 @@
 condition	shape	color	width	dash	font	fontsize	fontweight	fontslant	text	size	size2	units	angle	glyph
 ---------	-----	-----	-----	----	----	--------	----------	---------	----	----	-----	-----	-----	-----
-[string equal $type star]	glyph	red	1	0	helvetica	10	normal	roman		24		physical		regions/glyph_star.png
+[string equal $type star]	glyph point	red	1	0	helvetica	10	normal	roman		24		physical		regions/glyph_star.png
 	boxcircle point	cyan	1	0	helvetica	10	normal	roman				physical		
