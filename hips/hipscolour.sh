@@ -127,8 +127,30 @@ check "RGB frame, order 3" "$(ftype)/$(size)" "rgb/20480 20480"
 $X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
 check "MOL" "$(ftype)/$(nframes)/$(lasterr)" "rgb/1/"
 
+echo "8. the coverage overlay of a colour HiPS is the frame's"
+# aux <channel>: that channel's aux contours (the current one is put back)
+echo 'proc ::auxn {c} {global current; set f $current(frame); set o [$f get rgb channel]; $f rgb channel $c; set n [$f get contour aux count]; $f rgb channel $o; return $n}' | $X/xpaset $T tcl
+aux() { tcl "auxn $1"; }
+$X/xpaset -p $T rgb channel green
+$X/xpaset -p $T hips coverage yes
+cov=""; for c in red green blue; do $X/xpaset -p $T rgb channel $c; cov="$cov $($X/xpaget $T hips coverage)"; done
+check "on from green: on in every channel" "$cov" " yes yes yes"
+check "  drawn once, in red" "$(aux red)/$(aux green)/$(aux blue)" "1/0/0"
+$X/xpaset -p $T backup $W/c.bck
+check "  the backup restores it" "$(grep -c 'HiPSRestore.* 0$' $W/c.bck)" "1"
+$X/xpaset -p $T hips coverage no
+check "off from blue" "$($X/xpaget $T hips coverage)/$(aux red)" "no/0"
+$X/xpaset -p $T hips coverage yes
+$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
+check "loading again: off" "$($X/xpaget $T hips coverage)" "no"
+$X/xpaset -p $T frame delete all
+$X/xpaset -p $T restore $W/c.bck
+check "restored: on" "$($X/xpaget $T hips coverage)/$(aux red)" "yes/1"
+$X/xpaset -p $T hips coverage no
+check "  and off again" "$($X/xpaget $T hips coverage)/$(aux red)" "no/0"
+
 check "no unexpected errors" "$(tcl 'set ::errs')" ""
 stop
-rm -rf "$W" ~/.$T
+[ -n "$KEEP" ] && cp -R $W/c.bck* "$KEEP"; rm -rf "$W" ~/.$T
 echo "PASSED $pass, FAILED $fail"
 [ $fail = 0 ]
