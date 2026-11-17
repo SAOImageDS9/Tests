@@ -216,7 +216,22 @@ after=$(tcl 'llength [HiPSCacheList]')
 check "a small cache keeps only what was just loaded" "$after" "1"
 check "  the HiPS in use" "$(tcl 'lindex [HiPSCacheList] 0')" "$d/synth_f32"
 if [ "$before" -gt 1 ]; then ok "  ($before HiPS before)"; else bad "  only $before HiPS cached before"; fi
+# a HiPS shown in another frame is in use too, and zooming a deep
+# window stamps it
+$X/xpaset -p $T hips "$U/abell[order=2,proj=TAN,lon0=92.7153,lat0=73.2733,fov=4]"
+$X/xpaset -p $T frame new
+$X/xpaset -p $T hips "$U/synth_f32[order=0]"
+check "a HiPS in another frame survives pruning" "$(tcl 'llength [HiPSCacheList]')" "2"
+$X/xpaset -p $T frame first
+touch -t 202001010000 $d/abell/.used
+$X/xpaset -p $T zoom to 8
+for i in $(seq 1 40); do [ "$(tcl 'expr {$hipsdeep(running)+[llength $hipsdeep(queue)]}')" = 0 ] && break; nap; done
+if [ $(stat -f %m $d/abell/.used) -gt $(date -j -f %Y%m%d%H%M 202001010000 +%s) ]; then ok "  deep tiles arriving stamp it"; else bad "  deep tiles did not stamp .used"; fi
 tcl 'set phpxopen(hipscache) 2048' >/dev/null
+tcl 'HiPSCacheClear' >/dev/null
+check "Clear HiPS Cache keeps the HiPS shown" "$(cd $d && ls | sort | tr '\n' ' ')" "abell synth_f32 "
+$X/xpaset -p $T frame delete all
+$X/xpaset -p $T frame new
 tcl 'HiPSCacheClear' >/dev/null
 check "Clear HiPS Cache" "$([ -e $CACHE ] && echo there || echo gone)" "gone"
 $X/xpaset -p $T hips "$U/synth_f32[order=0]"
