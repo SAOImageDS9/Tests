@@ -160,6 +160,26 @@ shot cb
 r=$(dcheck $ABELL cb); rc=$?
 if [ $rc = 0 ]; then ok "  zooming back fetches the rest ($r)"; else bad "  $r"; fi
 check "  the status line went away by itself" "$(tcl 'HiPSDeepStatusShown')" "0"
+echo "5a. clearing or deleting the frame drops its waiting requests"
+tcl 'set hipsnet(parallel) 1' >/dev/null
+for how in clear delete load; do
+  $X/xpaset -p $T hips "$U/crawl/abell[$V]"
+  $X/xpaset -p $T zoom to 8
+  q=$(tcl 'llength $hipsdeep(queue)')
+  : > $W/log
+  case $how in
+    clear) $X/xpaset -p $T frame clear;;
+    delete) $X/xpaset -p $T frame delete; $X/xpaset -p $T frame new;;
+    # another image in the frame: the queue is skipped as it comes up
+    load) $X/xpaset -p $T hips "${ABELL}[proj=MOL]";;
+  esac
+  [ $how = load ] || check "frame $how: nothing waiting (of $q), the one in flight left" "$(tcl 'llength $hipsdeep(queue)')/$($X/xpaget $T hips status)" "0/1"
+  idle 40
+  n=$(grep -c 'Norder' $W/log)
+  if [ "$n" -le 1 ]; then ok "  frame $how: only the request in flight finished ($n of $q)"; else bad "  frame $how: $n requests made after it (of $q)"; fi
+done
+tcl 'set hipsnet(parallel) 6' >/dev/null
+
 echo "5b. a failing server: each tile asked for once, not in a loop"
 $X/xpaset -p $T hips "$U/nodeep/abell[$V]"
 : > $W/log
