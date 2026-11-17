@@ -22,6 +22,7 @@ pass=0; fail=0
 
 ok()  { pass=$((pass+1)); echo "  ok   $*"; }
 bad() { fail=$((fail+1)); echo "  FAIL $*"; }
+check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
 
 # --- references (independent of ds9's reader) ---
 for k in 0 1 2 3; do "$PY" -I $H/mkref.py $FERMI $k $W/fermi_o$k.fits >/dev/null; done
@@ -106,6 +107,20 @@ expect_error "order with no data here" "${DSS}[order=2]" "no fits tiles or Allsk
 expect_error "truncated Allsky named" "${DSS}" "Allsky.fits is unreadable"
 expect_error "map too large" "${DSS}[order=9]" "larger than the limit"
 expect_error "not a HiPS" "$TOP/hips" "can't read"
+# a deep order= with no tiles is refused at once: looking for any of
+# its 12*4^25 tiles first never finished
+cp -R $TOP/Tests/fits/hips $W/deep
+sed -i.bak 's/^hips_order .*/hips_order = 29/' $W/deep/properties
+t0=$(date +%s)
+expect_error "order=25: map too large" "$W/deep[order=25]" "order 25 is a map of nside 536870912, larger than the limit"
+dt=$(( $(date +%s) - t0 ))
+if [ $dt -le 5 ]; then ok "  at once (${dt}s)"; else bad "  took ${dt}s"; fi
+# File > Open HiPS... lists a local order too deep to load without
+# counting its tiles
+mkdir -p $W/deep/Norder12/Dir0
+cp $W/deep/Norder1/Dir0/Npix0.fits $W/deep/Norder12/Dir0/Npix0.fits
+echo "set f [open $W/o.txt w]; puts \$f [HiPSOpenOrderLabel [lindex [HiPSOpenOrders $W/deep 16] 0]]; close \$f" | $X/xpaset $T tcl
+check "dialog: a deep local order" "$(cat $W/o.txt)" "Order 12: NSIDE 65536, tiles, 196608 MB (too large)"
 
 $X/xpaset -p $T exit
 rm -rf "$W"

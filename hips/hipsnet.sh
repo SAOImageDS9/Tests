@@ -135,6 +135,16 @@ $X/xpaset -p $T hips "$U/abell[order=3]"
 case "$(lasterr)" in *"more than the limit"*) ok "too much to fetch: $(lasterr | head -c 90)";; *) bad "too much: '$(lasterr)'";; esac
 tcl 'set hipsnet(maxbytes) [expr {wide(1)<<30}]' >/dev/null
 tcl 'set ::errs {}' >/dev/null
+# a deep order= is refused before its tiles are listed (12*4^12 here)
+cp -R $W/www/synth_f32 $W/www/deep
+sed -i.bak 's/^hips_order .*/hips_order = 29/' $W/www/deep/properties
+mark
+t0=$(date +%s)
+$X/xpaset -p $T hips "$U/deep[order=12]"
+dt=$(( $(date +%s) - t0 ))
+case "$(lasterr)" in *"larger than the limit"*) ok "order=12 remote: $(lasterr | sed 's/.*: HiPS: //')";; *) bad "order=12 remote: '$(lasterr)'";; esac
+if [ $dt -le 5 ]; then ok "  at once (${dt}s), no tiles asked for ($(reqs Norder12))"; else bad "  took ${dt}s"; fi
+tcl 'set ::errs {}' >/dev/null
 # something inside the fetch throws (a full disk, say): that load
 # fails, and the next one is not refused as "another HiPS is being fetched"
 tcl 'rename HiPSFetchAllsky HiPSFetchAllskyReal; proc HiPSFetchAllsky {args} {error "no space left on device"}' >/dev/null
