@@ -9,7 +9,7 @@
 # Test HiPS are in hips/ (see hips/samples.md). Starts and stops its own
 # ds9 (title HiPSTest).
 
-PY=${1:-$HOME/miniforge/envs/hpxtest/bin/python}
+PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
 TOP=$PWD
 H=$TOP/Tests/hips
 W=$(mktemp -d "${TMPDIR:-/tmp}/hipstest.XXXXXX")
