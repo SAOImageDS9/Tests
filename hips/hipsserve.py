@@ -11,6 +11,8 @@ on 127.0.0.1 that it writes to <portfile>. Each GET is logged to
   /crawl/...     as without it, after 1 s
   /half/...      properties as without it, anything else 503 (a broken
                  server whose properties name a mirror)
+  /nodeep/...    as without it, but 503 for tiles of order 3 and up (a
+                 server that fails while a deep window fetches)
   /MocServer/query
                  a mock CDS MocServer over the records in <root>/registry.txt
                  ("key = value" lines, blank-line separated; {URL} becomes
@@ -24,6 +26,7 @@ With HIPSSERVE_CERT and HIPSSERVE_KEY set (PEM files) it serves https
 instead. Runs until killed.
 """
 import os
+import re
 import sys
 import time
 import threading
@@ -114,6 +117,14 @@ class Handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 return
             path = path[len("/half"):]
+        if path.startswith("/nodeep/"):
+            path = path[len("/nodeep"):]
+            if re.search(r"/Norder([3-9]|[1-9][0-9])/", path):
+                log(503, path)
+                self.send_response(503)
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
         if path.startswith("/crawl/"):
             time.sleep(1.0)
             path = path[len("/crawl"):]

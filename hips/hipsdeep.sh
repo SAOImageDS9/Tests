@@ -160,6 +160,26 @@ shot cb
 r=$(dcheck $ABELL cb); rc=$?
 if [ $rc = 0 ]; then ok "  zooming back fetches the rest ($r)"; else bad "  $r"; fi
 check "  the status line went away by itself" "$(tcl 'HiPSDeepStatusShown')" "0"
+echo "5b. a failing server: each tile asked for once, not in a loop"
+$X/xpaset -p $T hips "$U/nodeep/abell[$V]"
+: > $W/log
+$X/xpaset -p $T zoom to 8
+idle
+sleep 2
+idle
+n1=$(grep -c '^503 .*Norder[3-9]' $W/log)
+if [ "$n1" -gt 0 ]; then ok "the deep tiles failed ($n1 requests)"; else bad "no deep tile was asked for"; fi
+check "  none asked for twice" "$(grep '^503 ' $W/log | sort | uniq -d | wc -l | tr -d ' ')" "0"
+$X/xpaset -p $T zoom to 0.125
+$X/xpaset -p $T zoom to 8
+idle
+check "  zooming back within a minute: not asked for again" "$(grep -c '^503 .*Norder[3-9]' $W/log)" "$n1"
+$X/xpaset -p $T hips cancel
+$X/xpaset -p $T zoom to 0.125
+$X/xpaset -p $T zoom to 8
+idle
+n2=$(grep -c '^503 .*Norder[3-9]' $W/log)
+if [ "$n2" -gt "$n1" ]; then ok "  after hips cancel they are tried again"; else bad "  after hips cancel: not tried again ($n2)"; fi
 kill $SRV; wait $SRV 2>/dev/null
 
 echo "6. colour: every channel goes deep"
