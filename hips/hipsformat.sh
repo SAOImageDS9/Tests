@@ -111,6 +111,23 @@ mark
 $X/xpaset -p $T zoom to 8
 for i in $(seq 1 40); do [ "$($X/xpaget $T hips status)" = 0 ] && [ "$(tcl 'set hipsdeep(running)')" = 0 ] && break; nap; done
 check "deep tiles fetched as png" "$( [ $(grep -c 'Norder1/.*Npix' $W/log) -gt 0 ] && echo some)/$(grep -c 'Npix[0-9]*\.\(fits\|jpg\)' $W/log)" "some/0"
+# a tile missing only as PNG is still fetched as FITS
+cp -R $M $W/www/fmix; rm $W/www/fmix/Norder0/Dir0/Npix3.png
+$X/xpaset -p $T hips "$U/fmix[order=0,format=png]"
+mark
+$X/xpaset -p $T hips "$U/fmix[order=0,format=fits]"
+check "png 404 then fits: Npix3.fits asked for" "$(grep -c '^200 /fmix/Norder0/Dir0/Npix3.fits' $W/log)" "1"
+# an unusable (truncated) Allsky is not kept, nor asked for again
+cp -R $M $W/www/badsky
+head -c 100 $M/Norder1/Allsky.png > $W/www/badsky/Norder1/Allsky.png
+d=~/.$T/hips/127.0.0.1_$(cat $W/port)/badsky/Norder1
+mark
+$X/xpaset -p $T hips "$U/badsky[format=png]"
+check "truncated Allsky.png: not cached, remembered" "$(ls $d/Allsky.png 2>/dev/null | wc -l | tr -d ' ')/$(ls -a $d | grep -c '^.noallsky.png$')" "0/1"
+mark
+$X/xpaset -p $T hips "$U/badsky[format=png]"
+check "  not asked for again" "$(grep -c 'Allsky' $W/log)" "0"
+tcl 'set ::errs {}' >/dev/null
 kill $SRV; wait $SRV 2>/dev/null
 
 echo "6. backup/restore keeps format="
