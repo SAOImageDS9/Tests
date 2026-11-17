@@ -72,6 +72,19 @@ check "COMMENT copied" "$(hcount '^COMMENT.*a test comment')" "1"
 $X/xpaset -p $T fits "$W/hpx.fits[proj=AIT]"
 check "AIT window: HISTORY copied" "$(hcount '^HISTORY.*made by hipsprov.sh')" "1"
 
+echo "5. a long obs_title with a quote stays inside its card"
+cp -R $TOP/Tests/fits/hips $W/long
+title="Bob's survey: $(printf 'x%.0s' $(seq 1 120))"
+sed -i.bak "s/^obs_title .*/obs_title = $title/" $W/long/properties
+for v in "" "[proj=MOL]"; do
+  $X/xpaset -p $T hips "$W/long$v"
+  obj=$(hdr | grep '^OBJECT')
+  check "OBJECT$v: quote doubled, cut to the card" "$obj" \
+    "OBJECT  = 'Bob''s survey: $(printf 'x%.0s' $(seq 1 53))'"
+  check "OBJECT$v: card length" "${#obj}" "80"
+  check "OBJECT$v: next card intact" "$(hcount '^HIPSORD = ')" "1"
+done
+
 $X/xpaset -p $T exit
 rm -rf "$W" ~/.$T
 echo "PASSED $pass, FAILED $fail"
