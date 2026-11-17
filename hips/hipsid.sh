@@ -193,6 +193,16 @@ tcl 'set hipslist(ok) 0' >/dev/null
 for i in $(seq 1 20); do [ "$(tcl 'set ::done')" = 1 ] && break; nap; done
 check "Cancel: nothing loaded" "$(tcl 'winfo exists .hipslist')/$($X/xpaget $T hips)" "0/$U/synth_i16"
 
+echo "8. a request made while a load waits gets its own answer"
+# the load waits a second for its properties (/crawl/); the list is
+# asked for from inside that wait, as a dialog or SAMP would (an XPA
+# request waits for the load to finish, so it can't do this)
+tcl 'set ::errs {}' >/dev/null
+r=$(tcl "after 300 {set ::nested [llength [HiPSListRecords 1]]}; HiPSFetch {$U/crawl/synth_f32[order=0]}")
+check "the load: its cache directory" "$r" "$CACHE/127.0.0.1_$(cat $W/port)/crawl/synth_f32[order=0]"
+check "  the list asked for meanwhile: 4 HiPS" "$(tcl 'set ::nested')" "4"
+check "  the properties are the HiPS's" "$(sed -n 's/^obs_title *= *//p' $CACHE/127.0.0.1_$(cat $W/port)/crawl/synth_f32/properties)" "$(sed -n 's/^obs_title *= *//p' $W/www/synth_f32/properties)"
+
 check "no errors" "$(tcl 'set ::errs')" ""
 $X/xpaset -p $T exit
 for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
