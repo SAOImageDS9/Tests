@@ -135,6 +135,17 @@ $X/xpaset -p $T hips "$U/abell[order=3]"
 case "$(lasterr)" in *"more than the limit"*) ok "too much to fetch: $(lasterr | head -c 90)";; *) bad "too much: '$(lasterr)'";; esac
 tcl 'set hipsnet(maxbytes) [expr {wide(1)<<30}]' >/dev/null
 tcl 'set ::errs {}' >/dev/null
+# something inside the fetch throws (a full disk, say): that load
+# fails, and the next one is not refused as "another HiPS is being fetched"
+tcl 'rename HiPSFetchAllsky HiPSFetchAllskyReal; proc HiPSFetchAllsky {args} {error "no space left on device"}' >/dev/null
+$X/xpaset -p $T hips "$U/fermi"
+case "$(lasterr)" in *"no space left"*) ok "a throw fails the load: $(lasterr | head -c 70)";; *) bad "a throw: '$(lasterr)'";; esac
+check "  hipsnet(busy) reset" "$(tcl 'set hipsnet(busy)')" "0"
+tcl 'rename HiPSFetchAllsky {}; rename HiPSFetchAllskyReal HiPSFetchAllsky; set ::errs {}' >/dev/null
+$X/xpaset -p $T hips "$U/fermi"
+check "  the next load works" "$(lasterr)/$(size)" "/2560 2560"
+check "  no temporary files left in the cache" "$(find $CACHE -name '*.new' | wc -l | tr -d ' ')" "0"
+tcl 'set ::errs {}' >/dev/null
 
 echo "8. cancel"
 tcl 'set hipsnet(parallel) 1' >/dev/null
