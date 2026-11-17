@@ -1,0 +1,12 @@
+# synthetic HiPS for ds9 tests (Tests/hips/mksynth.py synth_i16, plus an order-0 Moc.fits)
+creator_did          = ivo://ds9.test/P/synth/synth_i16
+obs_title            = synthetic synth_i16
+dataproduct_type     = image
+hips_version         = 1.4
+hips_release_date    = 2026-11-15T00:00Z
+hips_status          = private master unclonable
+hips_tile_format     = fits
+hips_order           = 1
+hips_frame           = equatorial
+hips_tile_width      = 16
+hips_pixel_bitpix    = 16

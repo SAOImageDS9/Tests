@@ -156,6 +156,7 @@ doit "$1" grid
 doit "$1" header
 doit "$1" healpix
 doit "$1" height
+doit "$1" hips
 doit "$1" hls
 doit "$1" hlsarray
 doit "$1" hlsimage

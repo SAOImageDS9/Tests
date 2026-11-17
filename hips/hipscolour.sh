@@ -1,0 +1,134 @@
+#!/bin/bash
+# HiPS Phase 3 checks: colour HiPS (dataproduct_subtype = color, PNG/JPEG
+# tiles) load into an RGB frame, one HEALPix map per channel. Run from
+# the top of the ds9 tree: Tests/hips/hipscolour.sh
+# Starts and stops its own ds9s (title HiPSCol) and a local HTTP server.
+
+TOP=$PWD
+X=$TOP/bin
+T=HiPSCol
+H=$TOP/Tests/hips
+PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+W=$(mktemp -d "${TMPDIR:-/tmp}/hipscol.XXXXXX")
+pass=0; fail=0
+ok()  { pass=$((pass+1)); echo "  ok   $*"; }
+bad() { fail=$((fail+1)); echo "  FAIL $*"; }
+check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
+tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
+size() { tcl '$current(frame) get fits size'; }
+ftype() { tcl '$current(frame) get type'; }
+nframes() { $X/xpaget $T frame all | wc -w | tr -d ' '; }
+nap() { perl -e 'select(undef,undef,undef,0.3)'; }
+shot() { rm -f $W/$1.fits; $X/xpaset -p $T save fits $W/$1.fits; }
+cmp() { "$PY" -I -c "
+import sys, numpy as np; from astropy.io import fits
+a, b = fits.getdata(sys.argv[1]), fits.getdata(sys.argv[2])
+if a.shape != b.shape: print(f'shape {a.shape} {b.shape}'); sys.exit()
+na, nb = np.isnan(a), np.isnan(b)
+if (na != nb).any(): print(f'NaN differ at {int((na != nb).sum())} pixels'); sys.exit()
+print('same' if np.array_equal(a[~na], b[~na]) else f'max diff {np.abs(a[~na]-b[~na]).max()}')" $W/$1.fits $W/$2.fits; }
+hdr() { $X/xpaget $T fits header; }
+lasterr() { tcl 'lindex $::errs end'; }
+start() {
+    rm -rf ~/$T.auto ~/$T.auto.dir
+    PATH="$X:$PATH" $X/ds9 -title $T "$@" >/dev/null 2>&1 &
+    for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
+    echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
+}
+stop() {
+    $X/xpaset -p $T exit
+    for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
+}
+# channels <prefix>: save each channel of the current RGB frame
+channels() {
+    for c in red green blue; do $X/xpaset -p $T rgb channel $c; shot $1$c; done
+    $X/xpaset -p $T rgb channel red
+}
+
+"$PY" -I $H/mkpng.py $W >/dev/null
+# references: each channel as its own FITS HiPS, at order 0 and 1
+rm -rf ~/.$T
+start
+for o in 0 1; do
+    for c in r g b; do $X/xpaset -p $T hips "$W/pc$c[order=$o]"; shot ref$o$c; done
+done
+$X/xpaset -p $T frame delete all
+$X/xpaset -p $T frame new
+
+echo "1. a colour HiPS goes to an RGB frame"
+$X/xpaset -p $T hips "$W/pcol[order=0]"
+check "new RGB frame" "$(ftype)/$(nframes)" "rgb/2"
+channels a
+check "red = the red levels" "$(cmp ared ref0r)" "same"
+check "green = the green levels" "$(cmp agreen ref0g)" "same"
+check "blue = the blue levels" "$(cmp ablue ref0b)" "same"
+check "header names the channel" "$(hdr | grep -c 'the red channel of the colour tiles')" "1"
+check "xpaget hips" "$($X/xpaget $T hips)" "$W/pcol[order=0]"
+check "current channel kept (red)" "$($X/xpaget $T rgb channel)" "red"
+lim=""; for c in red green blue; do $X/xpaset -p $T rgb channel $c; lim="$lim $($X/xpaget $T scale limits)"; done
+$X/xpaset -p $T rgb channel red
+check "every channel 0-255" "$lim" " 0 255 0 255 0 255"
+
+echo "2. into the current RGB frame; Allsky; projections"
+$X/xpaset -p $T hips "$W/pcol"
+check "same frame reused" "$(ftype)/$(nframes)" "rgb/2"
+channels b
+check "order 1 (Allsky.png is grey here: none; tiles) red" "$(cmp bred ref1r)" "same"
+check "  blue" "$(cmp bblue ref1b)" "same"
+$X/xpaset -p $T hips "$W/pcol[order=1,proj=TAN,fov=60]"
+s=""; for c in red green blue; do $X/xpaset -p $T rgb channel $c; s="$s $(size)"; done
+check "TAN: three windows the same size" "$s" " $(size) $(size) $(size)"
+$X/xpaset -p $T rgb channel red
+
+echo "3. a grey HiPS in an RGB frame goes to a plain frame"
+$X/xpaset -p $T hips "$W/ppng[order=0]"
+check "new plain frame" "$(ftype)/$(nframes)" "base/3"
+
+echo "4. Open Recent and the dialog"
+tcl 'RecentOpen [list hips {'$W'/pcol[order=0]}]' >/dev/null
+check "Open Recent from a plain frame: RGB frame" "$(ftype)/$(nframes)" "rgb/4"
+tcl "after idle {set ::res [HiPSOpenParamsDialog {$W/pcol}]; set ::done 1}; set ::done 0" >/dev/null
+for i in $(seq 1 40); do [ "$(tcl 'grab current')" = .hipsopen ] && break; nap; done
+check "dialog says colour" "$(tcl '.hipsopen.data.reading cget -text')" "Reading png: colour, into an RGB frame"
+tcl 'set hpxed(ok) 0' >/dev/null
+
+echo "5. backup/restore"
+$X/xpaset -p $T frame delete all
+$X/xpaset -p $T hips "$W/pcol[order=1]"
+channels c
+$X/xpaset -p $T backup $W/b.bck
+check "backup restores the HiPS once" "$(grep -c 'HiPSRestore' $W/b.bck)" "1"
+stop
+start
+$X/xpaset -p $T restore $W/b.bck
+check "restored: one RGB frame" "$(ftype)/$(nframes)" "rgb/1"
+channels d
+check "  red" "$(cmp dred cred)" "same"
+check "  green" "$(cmp dgreen cgreen)" "same"
+check "  blue" "$(cmp dblue cblue)" "same"
+
+echo "6. remote colour HiPS"
+mkdir -p $W/www; ln -s $W/pcol $W/www/pcol
+"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
+SRV=$!
+for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
+U=http://127.0.0.1:$(cat $W/port)
+$X/xpaset -p $T hips "$U/pcol[order=0]"
+channels e
+check "remote: red" "$(cmp ered ref0r)" "same"
+check "remote: blue" "$(cmp eblue ref0b)" "same"
+check "  each tile fetched once" "$(grep -c '^200 /pcol/Norder0/Dir0/Npix' $W/log)" "11"
+kill $SRV; wait $SRV 2>/dev/null
+
+echo "7. XRISM (a real colour HiPS)"
+$X/xpaset -p $T frame delete all
+$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[order=3]"
+check "RGB frame, order 3" "$(ftype)/$(size)" "rgb/20480 20480"
+$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
+check "MOL" "$(ftype)/$(nframes)/$(lasterr)" "rgb/1/"
+
+check "no unexpected errors" "$(tcl 'set ::errs')" ""
+stop
+rm -rf "$W" ~/.$T
+echo "PASSED $pass, FAILED $fail"
+[ $fail = 0 ]

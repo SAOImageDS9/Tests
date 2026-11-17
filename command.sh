@@ -1171,6 +1171,21 @@ testit "-height 443"
 doit
 fi
 
+tt="hips"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+# a tiny local HiPS (fits/hips: 16-px int16 tiles, orders 0-1, a MOC)
+testit "-hips fits/hips"
+testit "-hips coverage yes"
+testit "-hips coverage no"
+testit "-hips 'fits/hips[order=0,proj=mol]'"
+testit "-frame new -hips 'fits/hips[proj=tan,lon0=30,lat0=10,fov=40]'"
+testit "-hips cancel"
+testit "-hips close"
+
+doit
+fi
+
 tt="histequ"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"

@@ -9,6 +9,7 @@ regions3d.sh
 ciaoregs.sh
 pixmask.sh
 moc.sh
+hips.sh
 composites.sh
 
 parse.sh
