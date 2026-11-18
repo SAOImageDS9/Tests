@@ -42,6 +42,21 @@ shot local3
 check "same image as the local HiPS" "$(same remote3 local3)" "same"
 check "scale limits from the cached properties" "$($X/xpaget $T scale limits)" "2e-09 8e-07"
 
+echo "1b. a few cached tiles don't replace a reduced Allsky"
+# synth_reduced: order-1 Allsky of 8-px tiles (16-px tiles); the quick
+# look reads it as norder=1. Tiles a deep window left in the cache (two
+# here) cover a few patches only: the map must still be the Allsky
+$X/xpaset -p $T hips "$U/synth_reduced"
+d=$CACHE/127.0.0.1_$(cat $W/port)/synth_reduced
+check "quick look: the reduced Allsky" "$(hdr | grep -o 'from Allsky.fits')" "from Allsky.fits"
+mkdir -p $d/Norder1/Dir0
+cp $W/www/synth_f32/Norder1/Dir0/Npix5.fits $W/www/synth_f32/Norder1/Dir0/Npix6.fits $d/Norder1/Dir0/
+$X/xpaset -p $T hips "$U/synth_reduced"
+check "  with 2 of its 48 tiles cached: still the Allsky" "$(hdr | grep -o 'from Allsky.fits\|from fits tiles: [0-9]* of [0-9]*')" "from Allsky.fits"
+$X/xpaset -p $T hips "$d[norder=1]"
+check "  the reader, asked for order 1 there: the Allsky" "$(hdr | grep -o 'from Allsky.fits\|from fits tiles: [0-9]* of [0-9]*')" "from Allsky.fits"
+rm -rf $d/Norder1/Dir0
+
 echo "2. norder=K: tiles"
 mark
 $X/xpaset -p $T hips "$U/fermi[norder=2]"

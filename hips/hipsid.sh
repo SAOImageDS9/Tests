@@ -157,7 +157,8 @@ check "File menu: no HiPS entries of its own" "$(tcl 'llength [lsearch -all [mla
 check "  Open as > HiPS..." "$(tcl 'set m $ds9(mb).file.open; list [$m entrycget end -label] [$m entrycget end -command]')" "HiPS... HiPSDialog"
 tcl 'HiPSDialog' >/dev/null
 check "a window, not modal" "$(tcl 'winfo exists .hips')/$(tcl 'grab current')" "1/"
-check "  its menus" "$(tcl 'mlabels .hipsmb')" "File Edit"
+check "  its menus" "$(tcl 'mlabels .hipsmb')" "File Edit Cache"
+check "  Cache" "$(tcl 'mlabels .hipsmb.cache')" "Clear"
 check "  File" "$(tcl 'join [mlabels .hipsmb.file] |')" "Open...|Open URL...|Open Selected|Update List|Close"
 check "  Edit" "$(tcl 'mlabels .hipsmb.edit')" "Cut Copy Paste"
 check "all listed, the first selected" "$(tcl 'set hipslist(count)')/$(tcl '$hipslist(tree) selection')" "4 / 4/TEST/P/cube"
@@ -194,6 +195,10 @@ check "  File > Open URL...: the Open HiPS dialog" "$(tcl '.hipsopen.file.dir cg
 tcl 'set hpxed(order) 0; HiPSOpenOrderChanged; HiPSOpenOK' >/dev/null
 for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && [ "$($X/xpaget $T hips)" = "$U/synth_f32[norder=0]" ] && break; nap; done
 check "  loaded" "$($X/xpaget $T hips)" "$U/synth_f32[norder=0]"
+# Cache > Clear keeps the HiPS shown (synth_f32, just loaded)
+n0=$(tcl 'llength [HiPSCacheList]')
+check "Cache > Clear" "$(tcl '.hipsmb.cache invoke Clear; set hipslist(status)' | sed 's/: [0-9.]* MB/: N MB/')" "HiPS cache cleared: N MB, 1 kept (shown or loading)"
+check "  only the HiPS shown is left (of $n0)" "$(tcl 'llength [HiPSCacheList]')/$(tcl 'file tail [lindex [HiPSCacheList] 0]')" "1/synth_f32"
 tcl "rename EntryDialog {}; rename EntryDialogOrig EntryDialog; HiPSDestroyDialog; set phpxopen(mocserver) $U/MocServer/query; set ::errs {}" >/dev/null
 
 echo "8. a request made while a load waits gets its own answer"
