@@ -49,6 +49,21 @@ case "$r" in *"Unable to load HiPS"*"can't read"*) ok "not a HiPS: $(echo "$r" |
 r=$($X/xpaset -p $T hips "${FERMI}[norder=7]" 2>&1)
 case "$r" in *"Unable to load HiPS"*"deeper than hips_order"*) ok "too deep: $(echo "$r" | head -c 100)";; *) bad "too deep: '$r'";; esac
 
+
+echo "the hips command's grammar"
+$X/xpaset -p $T hips "${FERMI}[norder=1]"
+check "xpaget hips" "$($X/xpaget $T hips)" "${FERMI}[norder=1]"
+check "xpaget hips coverage" "$($X/xpaget $T hips coverage)" "no"
+check "xpaget hips status" "$($X/xpaget $T hips status)" "0"
+r=$($X/xpaget $T hips bogus 2>&1)
+case "$r" in *XPA\$ERROR*) ok "xpaget hips bogus: an error";; *) bad "xpaget hips bogus: '$r'";; esac
+r=$($X/xpaget $T hips status extra 2>&1)
+case "$r" in *XPA\$ERROR*) ok "xpaget hips status extra: an error";; *) bad "xpaget hips status extra: '$r'";; esac
+for w in status list; do
+  r=$($X/xpaset -p $T hips $w 2>&1)
+  case "$r" in *XPA\$ERROR*) ok "xpaset hips $w: an error";; *) bad "xpaset hips $w: '$r'";; esac
+  check "  nothing loaded" "$($X/xpaget $T hips)" "${FERMI}[norder=1]"
+done
 $X/xpaset -p $T exit
 rm -rf "$W"
 echo "PASSED $pass, FAILED $fail"
