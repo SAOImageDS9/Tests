@@ -1,6 +1,6 @@
 #!/bin/bash
 # HiPS checks: format= (which tiles to read when a HiPS has several
-# kinds; fitsy/hips.C and HiPSTileExt), the Open HiPS dialog's Tiles
+# kinds; fitsy/hips.C, which the Tcl side asks through hipsinfo format), the Open HiPS dialog's Tiles
 # choice, and hips close. Run from the top of the ds9 tree:
 #   Tests/hips/hipsformat.sh
 # Starts and stops its own ds9 (title HiPSFormat; cache ~/.HiPSFormat,

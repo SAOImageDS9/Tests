@@ -43,8 +43,14 @@ proc probe {dir} {
     set props [HiPSReadProperties \$dir]
     set width [HiPSProp \$props hips_tile_width 512]
     set maxorder [HiPSProp \$props hips_order 29]
-    set orders [HiPSOpenOrders \$dir \$width]
-    set auto [HiPSOpenAutoOrder \$orders \$width \$maxorder]
+    # the dialog's scan (its Automatic is the reader's, hipsinfo describe)
+    set scan [HiPSOpenScan \$dir {} \$props [hipsinfo format \$dir]]
+    set orders {}
+    set auto {}
+    if {\$scan != {}} {
+	set orders [dict get \$scan orders]
+	set auto [dict get \$scan auto]
+    }
     set rr {}
     if {\$auto != {}} {
 	lappend rr [list auto [dict get \$auto order] [dict get \$auto nside] [dict get \$auto source]]
@@ -136,7 +142,7 @@ mkdir -p $W/webp
 sed 's/^hips_tile_format.*/hips_tile_format = webp/' $FERMI/properties > $W/webp/properties
 dialog "$W/webp" "" "" >/dev/null
 check "no FITS, PNG or JPEG tiles" "$(tcl 'lindex $::errs 0')" \
-    "Unable to load HiPS $W/webp: no FITS, PNG or JPEG tiles, this HiPS has webp"
+    "Unable to load HiPS $W/webp: no FITS, PNG or JPEG tiles (hips_tile_format = webp)"
 check "  and no dialog" "$(tcl 'winfo exists .hipsopen')" "0"
 tcl 'set ::errs {}' >/dev/null
 dialog "$TOP/hips" "" "" >/dev/null

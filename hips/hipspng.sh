@@ -1,6 +1,6 @@
 #!/bin/bash
 # HiPS Phase 3 checks: PNG and JPEG tiles (fitsy/hips.C readPhoto, and
-# the Tcl side's HiPSTileExt). Run from the top of the ds9 tree:
+# the Tcl side asks it, hipsinfo format). Run from the top of the ds9 tree:
 #   Tests/hips/hipspng.sh
 # Starts and stops its own ds9 (title HiPSPng) and a local HTTP server.
 

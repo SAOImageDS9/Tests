@@ -94,6 +94,19 @@ shot ra1
 $X/xpaset -p $T hips "${ABELL}[norder=1]"
 shot la1
 check "same image as the local HiPS" "$(same ra1 la1)" "same"
+check "the reader's MOC cells (hipsinfo moc) agree" "$(tcl "llength [hipsinfo moc {$ABELL/Moc.fits} 1]")" "$want"
+# a MOC that isn't NUNIQ (here marked RANGE, MOC 2.0) isn't misread as
+# one: it limits nothing, so every tile of the order is asked for
+mkdir -p $W/www/rmoc
+for f in $ABELL/*; do [ "$(basename $f)" != Moc.fits ] && ln -s $f $W/www/rmoc/; done
+"$PY" -I -c "
+import sys; from astropy.io import fits
+h = fits.open(sys.argv[1]); h[1].header['ORDERING'] = 'RANGE'; h.writeto(sys.argv[2])" $ABELL/Moc.fits $W/www/rmoc/Moc.fits
+check "  hipsinfo moc refuses a RANGE MOC" "$(tcl "catch {hipsinfo moc {$W/www/rmoc/Moc.fits} 1}")" "1"
+mark
+$X/xpaset -p $T hips "$U/rmoc[norder=1]"
+check "  a RANGE MOC limits nothing: all 48 tiles asked for" "$(reqs 'rmoc/Norder1/Dir')" "48"
+tcl 'set ::errs {}' >/dev/null
 
 echo "4. missing tiles (404) are blank and not asked for again"
 mark

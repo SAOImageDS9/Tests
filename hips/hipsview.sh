@@ -2,7 +2,7 @@
 # HiPS Phase 2 checks: defaults from properties.
 #  - hips_initial_ra/dec/fov centre a zenithal window that has no
 #    lon0/lat0 (fov: no fov=), rotated from ICRS into hips_frame
-#    (FitsHiPS::initialView, and HiPSInitialView in the dialog), both
+#    (FitsHiPS::initialView, which the dialog asks through hipsinfo describe), both
 #    checked against astropy; not for all-sky projections or when
 #    lon0= or lat0= is given
 #  - hips_pixel_cut becomes the user scale limits (pref phpxopen(hipscut))
@@ -72,7 +72,7 @@ for c in "Fermi:$FERMI:galactic:270.0:-25.0:0.15:3" "Abell:$ABELL:galactic:203.9
     want=$(sky $ra $dec $frame)
     $X/xpaset -p $T hips "${dir}[norder=$order,proj=TAN]"
     near "$name: window centre (pan $frame)" "$(pan $frame)" "$want" $tol
-    near "$name: dialog's centre" "$(tcl "set v [HiPSInitialView [HiPSReadProperties {$dir}]]; list [dict get \$v lon] [dict get \$v lat]")" "$want" 1e-5
+    near "$name: dialog's centre" "$(tcl "set v [hipsinfo describe {$dir}]; list [dict get \$v lon] [dict get \$v lat]")" "$want" 1e-5
 done
 
 echo "2. when the initial view applies"
@@ -142,7 +142,7 @@ check "suggested limits shown" "$(tcl 'set ::c')" "Suggested scale limits: 2.0E-
 check "untouched: just proj=tan" "$(dialog "$FERMI" "" HiPSOpenOK)" "${FERMI}[proj=tan]"
 check "lat0 changed: lon0 and lat0 written" \
     "$(dialog "$FERMI" 'set hpxed(lat0) 0' HiPSOpenOK)" \
-    "${FERMI}[proj=tan,lon0=$(tcl 'HiPSOpenFmt [dict get [HiPSInitialView [HiPSReadProperties {'$FERMI'}]] lon]'),lat0=0]"
+    "${FERMI}[proj=tan,lon0=$(tcl 'HiPSOpenFmt [dict get [hipsinfo describe {'$FERMI'}] lon]'),lat0=0]"
 check "fov 90 (TAN's own default) written" "$(dialog "$FERMI" 'set hpxed(fov) 90' HiPSOpenOK)" "${FERMI}[proj=tan,fov=90]"
 check "centre 0 0 written" "$(dialog "$FERMI" 'set hpxed(lon0) 0; set hpxed(lat0) 0' HiPSOpenOK)" "${FERMI}[proj=tan,lon0=0,lat0=0]"
 dialog "$FERMI" 'set hpxed(lon0) 5; set hpxed(proj) zea; HiPSOpenProjChanged; set ::a $hpxed(lon0); set hpxed(proj) mol; HiPSOpenProjChanged; set ::b $hpxed(lon0); set hpxed(proj) tan; HiPSOpenProjChanged; set ::c [list $hpxed(lon0) $hpxed(fov)]' 'set hpxed(ok) 0' >/dev/null
