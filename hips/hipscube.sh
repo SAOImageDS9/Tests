@@ -205,6 +205,40 @@ $X/xpaset -p $T hips "$TOP/Tests/fits/hips[slice=2]" 2>/dev/null
 case "$(tcl 'lindex $::errs end')" in *"slice= needs a cube HiPS"*) ok "slice=2 on an image HiPS refused";; *) bad "slice=2 on an image: '$(tcl 'lindex $::errs end')'";; esac
 tcl 'set ::errs {}' >/dev/null
 
+echo "11. the rest of ds9 sees the cube (CubeFrame everywhere)"
+$X/xpaset -p $T frame delete all
+$X/xpaset -p $T hips "$C[slice=2,proj=TAN,lon0=0,lat0=0,fov=60]"
+F=$(tcl 'set current(frame)')
+# a movie through the slices: every frame, then back where it was
+rm -f $W/m.gif
+$X/xpaset -p $T movie slice gif $W/m.gif
+check "movie slice: one movie frame per cube frame" "$("$PY" -I -c "from PIL import Image; print(Image.open('$W/m.gif').n_frames)" 2>&1)" "5"
+check "  and back at slice 2" "$(kw HIPSSLIC)" "2"
+# bookmarks keep the slice
+b=$(tcl "BookmarkGetSlices $F")
+$X/xpaset -p $T cube 4
+tcl "BookmarkSetSlices $F {$b}" >/dev/null
+check "bookmark: the slice comes back" "$(kw HIPSSLIC)" "2"
+# analysis macros
+check "analysis \$depth" "$(tcl "set c {d=\$depth}; ParseXYBitpixMacro c $F; set c")" "d=5"
+check "analysis \$z" "$(tcl "set c {z=\$z\"}; ParseZMacro c $F; set c")" "z=2\""
+# the info panel: the slice, and its value on the cube's axis
+tcl "UpdateInfoBox $F [expr {[winfo width \$ds9(canvas)]/2}] [expr {[winfo height \$ds9(canvas)]/2}] canvas" >/dev/null
+check "info panel: image z, wcs z" "$(tcl 'list $infobox(image,z) $infobox(wcs,z)')" "2 $(tcl "HiPSCubeValue [HiPSCubeState $F] 2")"
+check "  the z column shown" "$(tcl 'winfo ismapped $ds9(info).imageZValue')" "1"
+# examine: the same HiPS and slice in a new frame
+n1=$($X/xpaget $T hips)
+tcl "set pexamine(mode) new; ExamineButton $F [expr {[winfo width \$ds9(canvas)]/2}] [expr {[winfo height \$ds9(canvas)]/2}]" >/dev/null
+check "examine: a second frame" "$($X/xpaget $T frame all | wc -w | tr -d ' ')" "2"
+$X/xpaset -p $T frame last
+check "  the same HiPS, the same slice" "$($X/xpaget $T hips)/$(kw HIPSSLIC)" "$n1/2"
+$X/xpaset -p $T frame first
+# plot 3d can't go through a HiPS cube: it says so
+tcl 'set ::errs {}' >/dev/null
+tcl "MarkerAnalysisPlot3d $F 1 1" >/dev/null
+case "$(tcl 'lindex $::errs end')" in *"Plot 3D: a HiPS cube"*) ok "plot 3d refused: $(tcl 'lindex $::errs end' | head -c 60)";; *) bad "plot 3d: '$(tcl 'lindex $::errs end')'";; esac
+tcl 'set ::errs {}' >/dev/null
+
 check "no errors" "$(tcl 'set ::errs')" ""
 stop
 rm -rf "$W" ~/.$T
