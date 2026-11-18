@@ -165,7 +165,8 @@ tcl 'after idle {OpenHiPSURLDialog; set ::done 1}; set ::done 0' >/dev/null
 opened .hipsopen
 check "the Open HiPS dialog, for its URL" "$(tcl '.hipsopen.file.dir cget -text')" "$U/cube"
 tcl 'set hpxed(order) 1; HiPSOpenOrderChanged; HiPSOpenOK' >/dev/null
-for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && break; nap; done
+# the load runs in the background
+for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && [ "$($X/xpaget $T hips)" = "$U/cube[norder=1]" ] && break; nap; done
 check "  loaded" "$($X/xpaget $T hips)" "$U/cube[norder=1]"
 tcl "rename EntryDialog {}; rename EntryDialogOrig EntryDialog" >/dev/null
 
@@ -184,7 +185,8 @@ tcl 'set hipslist(filter) 16-bit; HiPSListFill; HiPSListOK' >/dev/null
 opened .hipsopen
 check "Open: the Open HiPS dialog for its URL" "$(tcl '.hipsopen.file.dir cget -text')" "$U/synth_i16"
 tcl 'HiPSOpenOK' >/dev/null
-for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && break; nap; done
+# the load runs in the background
+for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && [ "$($X/xpaget $T hips)" = "$U/synth_i16" ] && break; nap; done
 check "  loaded" "$($X/xpaget $T hips)" "$U/synth_i16"
 check "  the filter is kept for next time" "$(tcl 'set hipslist(filter)')" "16-bit"
 tcl 'after idle {OpenHiPSListDialog; set ::done 1}; set ::done 0' >/dev/null
