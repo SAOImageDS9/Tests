@@ -19,13 +19,13 @@ size()   { echo 'set f [open '$W'/q w]; puts $f [$current(frame) get fits size];
 frames() { $X/xpaget $T frame all | wc -w | tr -d ' '; }
 
 rm -rf ~/$T.auto ~/$T.auto.dir
-echo "command line: -hips <dir>[order=2]"
-PATH="$X:$PATH" $X/ds9 -title $T -hips "${FERMI}[order=2]" >/dev/null 2>&1 &
+echo "command line: -hips <dir>[norder=2]"
+PATH="$X:$PATH" $X/ds9 -title $T -hips "${FERMI}[norder=2]" >/dev/null 2>&1 &
 for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; perl -e 'select(undef,undef,undef,0.5)'; done
 # ds9 answers XPA before it has worked through its command line
 for i in $(seq 1 40); do [ "$(size)" != "0 0" ] && break; perl -e 'select(undef,undef,undef,0.5)'; done
 check "loaded at order 2 (nside 256)" "$(size)" "1280 1280"
-check "xpaget hips" "$($X/xpaget $T hips)" "${FERMI}[order=2]"
+check "xpaget hips" "$($X/xpaget $T hips)" "${FERMI}[norder=2]"
 
 echo "xpaset hips"
 $X/xpaset -p $T hips "${FERMI}[proj=MOL]"
@@ -46,7 +46,7 @@ check "xpaget hips after a FITS load" "$($X/xpaget $T hips)" ""
 echo "errors"
 r=$($X/xpaset -p $T hips "$TOP/hips" 2>&1)
 case "$r" in *"Unable to load HiPS"*"can't read"*) ok "not a HiPS: $(echo "$r" | head -c 100)";; *) bad "not a HiPS: '$r'";; esac
-r=$($X/xpaset -p $T hips "${FERMI}[order=7]" 2>&1)
+r=$($X/xpaset -p $T hips "${FERMI}[norder=7]" 2>&1)
 case "$r" in *"Unable to load HiPS"*"deeper than hips_order"*) ok "too deep: $(echo "$r" | head -c 100)";; *) bad "too deep: '$r'";; esac
 
 $X/xpaset -p $T exit

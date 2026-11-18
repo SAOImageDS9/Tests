@@ -70,9 +70,9 @@ check "zoom out: back to the map" "$(order)" "map"
 check "  HIPSORD: 2 again" "$($X/xpaget $T fits header keyword HIPSORD)" "2"
 
 echo "2. which windows go deep"
-$X/xpaset -p $T hips "${ABELL}[order=1,$V]"
+$X/xpaset -p $T hips "${ABELL}[norder=1,$V]"
 $X/xpaset -p $T zoom to 8
-check "order=1 is only the start: zoom 8 -> order 4" "$(order)" "4"
+check "norder=1 is only the start: zoom 8 -> order 4" "$(order)" "4"
 $X/xpaset -p $T hips "${ABELL}[proj=MOL]"
 $X/xpaset -p $T zoom to 8
 check "all-sky (MOL) never goes deep" "$(order)" "map"

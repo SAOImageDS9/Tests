@@ -73,24 +73,24 @@ PROJS="proj=HPX proj=MOL proj=AIT proj=CAR proj=TAN,lon0=30,lat0=10,fov=40"
 
 echo "Fermi (galactic, 64-px tiles, Allsky at order 3, unpadded tiles)"
 for k in 0 1 2 3; do
-  for p in $PROJS; do compare "order=$k $p" "${FERMI}[order=$k,$p]" "$W/fermi_o$k.fits[$p]"; done
+  for p in $PROJS; do compare "norder=$k $p" "${FERMI}[norder=$k,$p]" "$W/fermi_o$k.fits[$p]"; done
 done
 compare "automatic order (3)" "${FERMI}" "$W/fermi_o3.fits"
 compare "automatic order, MOL" "${FERMI}[proj=MOL]" "$W/fermi_o3.fits[proj=MOL]"
 
 echo "Synthetic (equatorial, 16-px tiles, every BITPIX, BLANK/BSCALE/BZERO, missing tiles, padded+unpadded)"
 for t in $SYNTH; do
-  compare "$t order=0" "$W/synth_${t}[order=0]" "$W/synth_${t}_o0.fits"
+  compare "$t norder=0" "$W/synth_${t}[norder=0]" "$W/synth_${t}_o0.fits"
   compare "$t automatic (order 1, tiles; Allsky is reduced)" "$W/synth_${t}" "$W/synth_${t}_o1.fits"
-  compare "$t order=1 MOL" "$W/synth_${t}[order=1,proj=MOL]" "$W/synth_${t}_o1.fits[proj=MOL]"
+  compare "$t norder=1 MOL" "$W/synth_${t}[norder=1,proj=MOL]" "$W/synth_${t}_o1.fits[proj=MOL]"
 done
-compare "reduced Allsky only (order=1)" "$W/synth_reduced[order=1]" "$W/synth_reduced_o1.fits"
-compare "reduced Allsky only, AIT" "$W/synth_reduced[order=1,proj=AIT]" "$W/synth_reduced_o1.fits[proj=AIT]"
+compare "reduced Allsky only (norder=1)" "$W/synth_reduced[norder=1]" "$W/synth_reduced_o1.fits"
+compare "reduced Allsky only, AIT" "$W/synth_reduced[norder=1,proj=AIT]" "$W/synth_reduced_o1.fits[proj=AIT]"
 
 echo "Abell1763 irac1 (galactic, partial, float + NaN, padded tiles)"
 for k in 0 1 2; do
-  compare "order=$k HPX" "${ABELL}[order=$k]" "$W/abell_o$k.fits"
-  compare "order=$k TAN at target" "${ABELL}[order=$k,proj=TAN,lon0=92.7153,lat0=73.2733,fov=4]" "$W/abell_o$k.fits[proj=TAN,lon0=92.7153,lat0=73.2733,fov=4]"
+  compare "norder=$k HPX" "${ABELL}[norder=$k]" "$W/abell_o$k.fits"
+  compare "norder=$k TAN at target" "${ABELL}[norder=$k,proj=TAN,lon0=92.7153,lat0=73.2733,fov=4]" "$W/abell_o$k.fits[proj=TAN,lon0=92.7153,lat0=73.2733,fov=4]"
 done
 compare "automatic (order 2)" "${ABELL}" "$W/abell_o2.fits"
 
@@ -100,19 +100,24 @@ echo "Unusable HiPS give a message"
 mkdir -p $W/webp
 sed 's/^hips_tile_format.*/hips_tile_format = webp/' $FERMI/properties > $W/webp/properties
 expect_error "no readable tile format" "$W/webp" "no FITS, PNG or JPEG tiles"
-expect_error "order deeper than hips_order" "${FERMI}[order=4]" "deeper than hips_order"
-expect_error "order with no data here" "${DSS}[order=2]" "no fits tiles or Allsky at order 2"
+expect_error "order deeper than hips_order" "${FERMI}[norder=4]" "deeper than hips_order"
+expect_error "order with no data here" "${DSS}[norder=2]" "no fits tiles or Allsky at order 2"
 # IRSA's DSS2 red Norder3/Allsky.fits is truncated (4932972 of 6417216
 # bytes), and the local copy has no order 0-2 tiles
 expect_error "truncated Allsky named" "${DSS}" "Allsky.fits is unreadable"
-expect_error "map too large" "${DSS}[order=9]" "larger than the limit"
+expect_error "map too large" "${DSS}[norder=9]" "larger than the limit"
 expect_error "not a HiPS" "$TOP/hips" "can't read"
-# a deep order= with no tiles is refused at once: looking for any of
+# options: order= is only the HEALPix ordering, and an option the
+# grammar doesn't know (which it would take for a bin filter) is refused
+expect_error "order=0 (not the HiPS order)" "${FERMI}[order=0]" "unknown option in \[order=0\] (the HiPS order is norder=)"
+expect_error "order=nested" "${FERMI}[order=nested]" "order= is a HEALPix table's pixel ordering"
+expect_error "a mistyped option" "${FERMI}[norder=1,prj=mol]" "unknown option in \[prj=mol\]"
+# a deep norder= with no tiles is refused at once: looking for any of
 # its 12*4^25 tiles first never finished
 cp -R $TOP/Tests/fits/hips $W/deep
 sed -i.bak 's/^hips_order .*/hips_order = 29/' $W/deep/properties
 t0=$(date +%s)
-expect_error "order=25: map too large" "$W/deep[order=25]" "order 25 is a map of nside 536870912, larger than the limit"
+expect_error "norder=25: map too large" "$W/deep[norder=25]" "order 25 is a map of nside 536870912, larger than the limit"
 dt=$(( $(date +%s) - t0 ))
 if [ $dt -le 5 ]; then ok "  at once (${dt}s)"; else bad "  took ${dt}s"; fi
 # File > Open HiPS... lists a local order too deep to load without

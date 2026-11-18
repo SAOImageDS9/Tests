@@ -1925,7 +1925,7 @@ xpaset -p DS9Test hips coverage yes
 xpaget DS9Test hips coverage >> ${tt}.out
 xpaset -p DS9Test hips coverage no
 xpaget DS9Test hips coverage >> ${tt}.out
-xpaset -p DS9Test hips "fits/hips[order=0,proj=mol]"
+xpaset -p DS9Test hips "fits/hips[norder=0,proj=mol]"
 xpaget DS9Test fits size >> ${tt}.out
 xpaget DS9Test hips | sed "s|^$PWD/||" >> ${tt}.out
 xpaset -p DS9Test hips new "fits/hips[proj=tan,lon0=30,lat0=10,fov=40]"

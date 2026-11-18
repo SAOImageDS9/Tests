@@ -38,12 +38,12 @@ for i in $(seq 1 200); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
 alive() { kill -0 $PID 2>/dev/null; }
 
 for i in $(seq 1 $ROUNDS); do
-  $X/xpaset -p $T hips "$U/f$i[order=1,proj=tan,lon0=$((i*37%360)),lat0=10,fov=20]" || bad "load f$i"
+  $X/xpaset -p $T hips "$U/f$i[norder=1,proj=tan,lon0=$((i*37%360)),lat0=10,fov=20]" || bad "load f$i"
   for z in 2 4 8 16; do $X/xpaset -p $T zoom to $z; done
   $X/xpaset -p $T pan to $((i*37%360+3)) 12 galactic
-  $X/xpaset -p $T hips "$U/a$i[order=1,proj=tan]" || bad "load a$i"
+  $X/xpaset -p $T hips "$U/a$i[norder=1,proj=tan]" || bad "load a$i"
   for z in 4 8 16; do $X/xpaset -p $T zoom to $z; done
-  $X/xpaset -p $T hips "$U/slow/f$i[order=2,proj=tan,lon0=$((i*53%360)),lat0=-20,fov=15]"
+  $X/xpaset -p $T hips "$U/slow/f$i[norder=2,proj=tan,lon0=$((i*53%360)),lat0=-20,fov=15]"
   $X/xpaset -p $T zoom to 8; $X/xpaset -p $T pan to $((i*53%360+2)) -18 galactic
   [ $((i%3)) = 0 ] && $X/xpaset -p $T hips cancel
   $X/xpaset -p $T zoom to 16

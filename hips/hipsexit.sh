@@ -36,7 +36,7 @@ for run in $(seq 1 $RUNS); do
   PID=$!
   for i in $(seq 1 200); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
   # deep tiles come in the background, 0.2 s each (/slow/); exit while they do
-  $X/xpaset -p $T hips "$U/slow/f[order=1,proj=tan,lon0=$((run*40)),lat0=20,fov=20]"
+  $X/xpaset -p $T hips "$U/slow/f[norder=1,proj=tan,lon0=$((run*40)),lat0=20,fov=20]"
   : > $W/log
   $X/xpaset -p $T zoom to 8
   nap; nap

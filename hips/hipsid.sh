@@ -69,7 +69,7 @@ tcl "set phpxopen(mocserver) $U/MocServer/query" >/dev/null
 
 echo "1. what is an ID"
 mkdir -p $W/AB/P/here
-for c in "CDS/P/DSS2/color:1" "ivo://CDS/P/DSS2/color:1" "CDS/P/DSS2/color[order=3]:1" \
+for c in "CDS/P/DSS2/color:1" "ivo://CDS/P/DSS2/color:1" "CDS/P/DSS2/color[norder=3]:1" \
 	 "ESAVO/P/HST/ACS-blue:1" "$W/AB/P/here:0" "$U/synth_f32:0" "file:///a/P/b:0" \
 	 "hips/data1/ancillary:0" "DSS2_red:0" "CDS/C/x:1"; do
     n=${c%:*}
@@ -104,8 +104,8 @@ check "loaded (order 1's reduced Allsky)" "$(size)" "80 80"
 check "xpaget hips: its URL" "$($X/xpaget $T hips)" "$U/synth_f32"
 check "  resolved from the list, no query" "$(reqs MocServer)" "0"
 check "in Open Recent as the URL" "$(tcl 'lindex $irecent(list) 0')" "hips $U/synth_f32"
-$X/xpaset -p $T hips "ivo://TEST/P/synth[order=0]"
-check "ivo:// and options" "$($X/xpaget $T hips)/$(size)" "$U/synth_f32[order=0]/80 80"
+$X/xpaset -p $T hips "ivo://TEST/P/synth[norder=0]"
+check "ivo:// and options" "$($X/xpaget $T hips)/$(size)" "$U/synth_f32[norder=0]/80 80"
 $X/xpaset -p $T hips test/p/lower
 check "another case, trailing / dropped" "$($X/xpaget $T hips)" "$U/synth_i16"
 $X/xpaset -p $T hips new TEST/P/cube
@@ -166,7 +166,7 @@ opened .hipsopen
 check "the Open HiPS dialog, for its URL" "$(tcl '.hipsopen.file.dir cget -text')" "$U/cube"
 tcl 'set hpxed(order) 1; HiPSOpenOrderChanged; HiPSOpenOK' >/dev/null
 for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && break; nap; done
-check "  loaded" "$($X/xpaget $T hips)" "$U/cube[order=1]"
+check "  loaded" "$($X/xpaget $T hips)" "$U/cube[norder=1]"
 tcl "rename EntryDialog {}; rename EntryDialogOrig EntryDialog" >/dev/null
 
 echo "7. File > Open HiPS from List..."
@@ -198,8 +198,8 @@ echo "8. a request made while a load waits gets its own answer"
 # asked for from inside that wait, as a dialog or SAMP would (an XPA
 # request waits for the load to finish, so it can't do this)
 tcl 'set ::errs {}' >/dev/null
-r=$(tcl "after 300 {set ::nested [llength [HiPSListRecords 1]]}; HiPSFetch {$U/crawl/synth_f32[order=0]}")
-check "the load: its cache directory" "$r" "$CACHE/127.0.0.1_$(cat $W/port)/crawl/synth_f32[order=0]"
+r=$(tcl "after 300 {set ::nested [llength [HiPSListRecords 1]]}; HiPSFetch {$U/crawl/synth_f32[norder=0]}")
+check "the load: its cache directory" "$r" "$CACHE/127.0.0.1_$(cat $W/port)/crawl/synth_f32[norder=0]"
 check "  the list asked for meanwhile: 4 HiPS" "$(tcl 'set ::nested')" "4"
 check "  the properties are the HiPS's" "$(sed -n 's/^obs_title *= *//p' $CACHE/127.0.0.1_$(cat $W/port)/crawl/synth_f32/properties)" "$(sed -n 's/^obs_title *= *//p' $W/www/synth_f32/properties)"
 

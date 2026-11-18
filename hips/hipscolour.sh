@@ -50,20 +50,20 @@ channels() {
 rm -rf ~/.$T
 start
 for o in 0 1; do
-    for c in r g b; do $X/xpaset -p $T hips "$W/pc$c[order=$o]"; shot ref$o$c; done
+    for c in r g b; do $X/xpaset -p $T hips "$W/pc$c[norder=$o]"; shot ref$o$c; done
 done
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T frame new
 
 echo "1. a colour HiPS goes to an RGB frame"
-$X/xpaset -p $T hips "$W/pcol[order=0]"
+$X/xpaset -p $T hips "$W/pcol[norder=0]"
 check "new RGB frame" "$(ftype)/$(nframes)" "rgb/2"
 channels a
 check "red = the red levels" "$(cmp ared ref0r)" "same"
 check "green = the green levels" "$(cmp agreen ref0g)" "same"
 check "blue = the blue levels" "$(cmp ablue ref0b)" "same"
 check "header names the channel" "$(hdr | grep -c 'the red channel of the colour tiles')" "1"
-check "xpaget hips" "$($X/xpaget $T hips)" "$W/pcol[order=0]"
+check "xpaget hips" "$($X/xpaget $T hips)" "$W/pcol[norder=0]"
 check "current channel kept (red)" "$($X/xpaget $T rgb channel)" "red"
 lim=""; for c in red green blue; do $X/xpaset -p $T rgb channel $c; lim="$lim $($X/xpaget $T scale limits)"; done
 $X/xpaset -p $T rgb channel red
@@ -75,17 +75,17 @@ check "same frame reused" "$(ftype)/$(nframes)" "rgb/2"
 channels b
 check "order 1 (Allsky.png is grey here: none; tiles) red" "$(cmp bred ref1r)" "same"
 check "  blue" "$(cmp bblue ref1b)" "same"
-$X/xpaset -p $T hips "$W/pcol[order=1,proj=TAN,fov=60]"
+$X/xpaset -p $T hips "$W/pcol[norder=1,proj=TAN,fov=60]"
 s=""; for c in red green blue; do $X/xpaset -p $T rgb channel $c; s="$s $(size)"; done
 check "TAN: three windows the same size" "$s" " $(size) $(size) $(size)"
 $X/xpaset -p $T rgb channel red
 
 echo "3. a grey HiPS in an RGB frame goes to a plain frame"
-$X/xpaset -p $T hips "$W/ppng[order=0]"
+$X/xpaset -p $T hips "$W/ppng[norder=0]"
 check "new plain frame" "$(ftype)/$(nframes)" "base/3"
 
 echo "4. Open Recent and the dialog"
-tcl 'RecentOpen [list hips {'$W'/pcol[order=0]}]' >/dev/null
+tcl 'RecentOpen [list hips {'$W'/pcol[norder=0]}]' >/dev/null
 check "Open Recent from a plain frame: RGB frame" "$(ftype)/$(nframes)" "rgb/4"
 tcl "after idle {set ::res [HiPSOpenParamsDialog {$W/pcol}]; set ::done 1}; set ::done 0" >/dev/null
 for i in $(seq 1 40); do [ "$(tcl 'grab current')" = .hipsopen ] && break; nap; done
@@ -94,7 +94,7 @@ tcl 'set hpxed(ok) 0' >/dev/null
 
 echo "5. backup/restore"
 $X/xpaset -p $T frame delete all
-$X/xpaset -p $T hips "$W/pcol[order=1]"
+$X/xpaset -p $T hips "$W/pcol[norder=1]"
 channels c
 $X/xpaset -p $T backup $W/b.bck
 check "backup restores the HiPS once" "$(grep -c 'HiPSRestore' $W/b.bck)" "1"
@@ -113,7 +113,7 @@ mkdir -p $W/www; ln -s $W/pcol $W/www/pcol
 SRV=$!
 for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
 U=http://127.0.0.1:$(cat $W/port)
-$X/xpaset -p $T hips "$U/pcol[order=0]"
+$X/xpaset -p $T hips "$U/pcol[norder=0]"
 channels e
 check "remote: red" "$(cmp ered ref0r)" "same"
 check "remote: blue" "$(cmp eblue ref0b)" "same"
@@ -122,7 +122,7 @@ kill $SRV; wait $SRV 2>/dev/null
 
 echo "7. XRISM (a real colour HiPS)"
 $X/xpaset -p $T frame delete all
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[order=3]"
+$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[norder=3]"
 check "RGB frame, order 3" "$(ftype)/$(size)" "rgb/20480 20480"
 $X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
 check "MOL" "$(ftype)/$(nframes)/$(lasterr)" "rgb/1/"

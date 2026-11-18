@@ -33,12 +33,12 @@ stop() {
 rm -rf ~/.$T
 start
 echo "Open Recent"
-N="${FERMI}[order=2,proj=MOL]"
+N="${FERMI}[norder=2,proj=MOL]"
 $X/xpaset -p $T hips "$N"
 check "loaded" "$(size)" "1418 710"
 check "recent entry" "$(head -3 ~/.$T/recent.txt | tail -1)" "hips {$N}"
 # long paths are shortened in the menu, keeping the HiPS name and options
-check "menu label" "$(tcl 'RecentLabel [lindex $irecent(list) 0]' | sed 's|.*/||')" "HiPS[order=2,proj=MOL]  (HiPS)"
+check "menu label" "$(tcl 'RecentLabel [lindex $irecent(list) 0]' | sed 's|.*/||')" "HiPS[norder=2,proj=MOL]  (HiPS)"
 $X/xpaset -p $T frame delete
 $X/xpaset -p $T frame new rgb
 tcl 'RecentOpen [lindex $irecent(list) 0]' >/dev/null

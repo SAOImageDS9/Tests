@@ -82,7 +82,7 @@ probe() {
 	    tcl 'set ::errs {}' >/dev/null
 	elif [ -n "$src" ] && [ "$n" -le 2048 ]; then
 	    $X/xpaset -p $T frame clear
-	    tcl "ImportHiPSFile {${dir}[order=$k]}" >/dev/null
+	    tcl "ImportHiPSFile {${dir}[norder=$k]}" >/dev/null
 	    check "$name order $k ($src)" "$(size)" "$((5*n)) $((5*n))"
 	fi
     done > $W/probe.out
@@ -111,7 +111,7 @@ dialog() {
 check "defaults: the bare directory" "$(dialog "$FERMI" "" HiPSOpenOK)" "$FERMI"
 check "order 2, Mollweide, lon0 180" \
     "$(dialog "$FERMI" 'set hpxed(order) 2; HiPSOpenOrderChanged; set hpxed(proj) mol; HPXOpenProjChanged; set hpxed(lon0) 180' HiPSOpenOK)" \
-    "${FERMI}[order=2,proj=mol,lon0=180]"
+    "${FERMI}[norder=2,proj=mol,lon0=180]"
 check "gnomonic window" \
     "$(dialog "$FERMI" 'set hpxed(proj) tan; HPXOpenProjChanged; set hpxed(lon0) 83.6; set hpxed(lat0) -5; set hpxed(fov) 20' HiPSOpenOK)" \
     "${FERMI}[proj=tan,lon0=83.6,lat0=-5,fov=20]"
@@ -154,8 +154,8 @@ tcl 'set hpxed(order) 1; HiPSOpenOrderChanged; HiPSOpenOK' >/dev/null
 for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && break; nap; done
 check "a Norder directory picks its HiPS; new plain frame" "$(tcl '$current(frame) get type')" "base"
 check "loaded order 1" "$(size)" "640 640"
-check "xpaget hips" "$($X/xpaget $T hips)" "${FERMI}[order=1]"
-check "in Open Recent" "$(tcl 'lindex $irecent(list) 0')" "hips {${FERMI}[order=1]}"
+check "xpaget hips" "$($X/xpaget $T hips)" "${FERMI}[norder=1]"
+check "in Open Recent" "$(tcl 'lindex $irecent(list) 0')" "hips {${FERMI}[norder=1]}"
 check "next chooser starts beside the HiPS" "$(tcl 'set hipsopen(dir)')" "$(dirname $FERMI)"
 check "no errors" "$(tcl 'set ::errs')" ""
 

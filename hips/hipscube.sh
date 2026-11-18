@@ -72,7 +72,7 @@ check "xpaget cube wcs" "$($X/xpaget $T cube wcs)" "1750"
 check "xpaget hips names the slice" "$($X/xpaget $T hips)" "$C[slice=3]"
 
 echo "3. the view is kept"
-$X/xpaset -p $T hips "$C[order=0,proj=TAN,lon0=45,lat0=30,fov=40]"
+$X/xpaset -p $T hips "$C[norder=0,proj=TAN,lon0=45,lat0=30,fov=40]"
 $X/xpaset -p $T pan to 50 32 fk5
 z0=$($X/xpaget $T zoom); p0=$($X/xpaget $T pan wcs fk5 degrees)
 $X/xpaset -p $T cube next
@@ -102,7 +102,7 @@ mkdir -p $W/www; ln -s $C $W/www/cube
 SRV=$!
 for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
 U=http://127.0.0.1:$(cat $W/port)
-$X/xpaset -p $T hips "$U/cube[order=1]"
+$X/xpaset -p $T hips "$U/cube[norder=1]"
 check "remote first frame" "$(kw HIPSSLIC)/$(code)" "2/2 1"
 check "  fetched its _2 tiles" "$(grep -c '^200 /cube/Norder1/Dir0/Npix[0-9]*_2.fits' $W/log)" "48"
 : > $W/log

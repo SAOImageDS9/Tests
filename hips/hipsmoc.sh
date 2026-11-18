@@ -1,6 +1,6 @@
 #!/bin/bash
 # HiPS Phase 2 checks: the coverage overlay (hips coverage, Analysis >
-# HiPS Coverage) and order=K on MOC files.
+# HiPS Coverage) and mocorder=K on MOC files.
 # Run from the top of the ds9 tree: Tests/hips/hipsmoc.sh
 # Starts and stops its own ds9s (title HiPSMoc).
 
@@ -36,23 +36,23 @@ outline() { tcl "\$current(frame) contour save aux {$1} wcs $2" >/dev/null; }
 rm -rf ~/.$T
 start
 
-echo "1. order=K on a MOC file"
+echo "1. mocorder=K on a MOC file"
 $X/xpaset -p $T fits "$ABELL/Moc.fits"
 check "Abell MOC as is (MOCORDER 7: nside 128)" "$(size)" "640 640"
-$X/xpaset -p $T fits "$ABELL/Moc.fits[order=5]"
-check "order=5: coarser (nside 32)" "$(size)" "160 160"
-$X/xpaset -p $T fits "$ABELL/Moc.fits[order=9]"
-check "order=9: finer (nside 512)" "$(size)" "2560 2560"
+$X/xpaset -p $T fits "$ABELL/Moc.fits[mocorder=5]"
+check "mocorder=5: coarser (nside 32)" "$(size)" "160 160"
+$X/xpaset -p $T fits "$ABELL/Moc.fits[mocorder=9]"
+check "mocorder=9: finer (nside 512)" "$(size)" "2560 2560"
 # coverage area is kept when refining, grows (or stays) when coarsening
 area() { rm -f $W/a.fits; $X/xpaset -p $T save fits $W/a.fits; "$PY" -I -c "import sys,numpy as np; from astropy.io import fits; print(int((fits.getdata(sys.argv[1])==1).sum()))" $W/a.fits; }
 $X/xpaset -p $T fits "$ABELL/Moc.fits"; a7=$(area)
-$X/xpaset -p $T fits "$ABELL/Moc.fits[order=9]"; a9=$(area)
-check "order=9 covers the same cells (16 pixels per order-7 pixel)" "$a9" "$((a7*16))"
-$X/xpaset -p $T fits "$ABELL/Moc.fits[order=5]"; a5=$(area)
-if [ "$((a5*16))" -ge "$a7" ]; then ok "order=5 covers at least as much ($a5*16 >= $a7)"; else bad "order=5 lost coverage: $a5*16 < $a7"; fi
+$X/xpaset -p $T fits "$ABELL/Moc.fits[mocorder=9]"; a9=$(area)
+check "mocorder=9 covers the same cells (16 pixels per order-7 pixel)" "$a9" "$((a7*16))"
+$X/xpaset -p $T fits "$ABELL/Moc.fits[mocorder=5]"; a5=$(area)
+if [ "$((a5*16))" -ge "$a7" ]; then ok "mocorder=5 covers at least as much ($a5*16 >= $a7)"; else bad "mocorder=5 lost coverage: $a5*16 < $a7"; fi
 
 echo "2. the overlay"
-$X/xpaset -p $T hips "${ABELL}[order=2,proj=TAN,fov=5]"
+$X/xpaset -p $T hips "${ABELL}[norder=2,proj=TAN,fov=5]"
 check "off at first" "$($X/xpaget $T hips coverage)" "no"
 $X/xpaset -p $T hips coverage
 check "on" "$($X/xpaget $T hips coverage)" "yes"
@@ -92,7 +92,7 @@ check "  and it is the user's (4 vertices)" "$(grep -c '^ *[0-9]' $W/left.ctr)" 
 tcl '$current(frame) contour delete aux' >/dev/null
 
 echo "4. a full-sky MOC; an equatorial MOC on a galactic survey"
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=MOL]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=MOL]"
 $X/xpaset -p $T hips coverage
 check "Fermi (full-sky MOC): on" "$($X/xpaget $T hips coverage)" "yes"
 check "  no edge, nothing drawn" "$(aux)" "0"
@@ -106,7 +106,7 @@ check "  on/off leaves another aux contour" "$(aux)" "1"
 # an equatorial MOC (XRISM's, 221 cells) with galactic tiles (Fermi's)
 mkdir -p $W/xmoc; for f in $FERMI/Norder* $FERMI/properties; do ln -s $f $W/xmoc/; done
 ln -s $TOP/hips/XRISM_RESOLVE/Moc.fits $W/xmoc/Moc.fits
-$X/xpaset -p $T hips "$W/xmoc[order=3,proj=MOL]"
+$X/xpaset -p $T hips "$W/xmoc[norder=3,proj=MOL]"
 tcl '$current(frame) contour delete aux' >/dev/null
 $X/xpaset -p $T hips coverage
 check "equatorial MOC on a galactic MOL: on" "$($X/xpaget $T hips coverage)/$(aux)" "yes/1"
@@ -125,7 +125,7 @@ r=$(tcl 'lindex $::errs 0')
 case "$r" in *"does not hold a HiPS"*) ok "empty frame: $r";; *) bad "empty frame: '$r'";; esac
 check "  xpaget: no" "$($X/xpaget $T hips coverage)" "no"
 mkdir -p $W/nomoc; for f in $FERMI/Norder* $FERMI/properties; do ln -s $f $W/nomoc/; done
-$X/xpaset -p $T hips "$W/nomoc[order=1]"
+$X/xpaset -p $T hips "$W/nomoc[norder=1]"
 tcl 'set ::errs {}' >/dev/null
 $X/xpaset -p $T hips coverage
 r=$(tcl 'lindex $::errs 0')
@@ -140,17 +140,17 @@ $X/xpaset -p $T frame 2
 $X/xpaset -p $T frame clear
 check "menu: disabled on an empty frame" "$(tcl '$ds9(mb).analysis entrycget {HiPS Coverage} -state')" "disabled"
 $X/xpaset -p $T frame 1
-$X/xpaset -p $T hips "${ABELL}[order=2,proj=TAN,fov=5]"
+$X/xpaset -p $T hips "${ABELL}[norder=2,proj=TAN,fov=5]"
 tcl 'set hipscov(view) 1; HiPSCoverageMenu' >/dev/null
 check "menu turns it on" "$($X/xpaget $T hips coverage)" "yes"
 check "  checkbutton follows" "$(tcl 'set hipscov(view)')" "1"
-$X/xpaset -p $T hips "${ABELL}[order=1,proj=TAN,fov=5]"
+$X/xpaset -p $T hips "${ABELL}[norder=1,proj=TAN,fov=5]"
 check "a new load clears it" "$($X/xpaget $T hips coverage)/$(aux)" "no/0"
 
 echo "6. backup/restore"
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T frame new
-$X/xpaset -p $T hips "${ABELL}[order=2,proj=TAN,fov=5]"
+$X/xpaset -p $T hips "${ABELL}[norder=2,proj=TAN,fov=5]"
 $X/xpaset -p $T hips coverage yes
 outline $W/before.ctr galactic
 $X/xpaset -p $T backup $W/b.bck
@@ -172,11 +172,11 @@ check "no unexpected errors" "$(tcl 'set ::errs')" ""
 stop
 
 echo "7. command line"
-start -hips "${ABELL}[order=2,proj=TAN,fov=5]" -hips coverage -zoom 2
+start -hips "${ABELL}[norder=2,proj=TAN,fov=5]" -hips coverage -zoom 2
 for i in $(seq 1 40); do [ "$(size)" != "0 0" ] && break; nap; done
 for i in $(seq 1 20); do [ "$($X/xpaget $T hips coverage)" = yes ] && break; nap; done
 check "-hips <dir> -hips coverage" "$($X/xpaget $T hips coverage)/$(aux)" "yes/1"
-check "  the HiPS is loaded" "$($X/xpaget $T hips)" "${ABELL}[order=2,proj=TAN,fov=5]"
+check "  the HiPS is loaded" "$($X/xpaget $T hips)" "${ABELL}[norder=2,proj=TAN,fov=5]"
 # -zoom 2 makes the HiPS window go deep (order 3), and the rebuild puts
 # the zoom back to 1 (it keeps the on-screen scale)
 rm -f $W/z.fits; $X/xpaset -p $T save fits $W/z.fits

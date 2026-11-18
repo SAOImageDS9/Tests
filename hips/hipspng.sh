@@ -40,12 +40,12 @@ echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
 
 echo "1. PNG tiles = FITS tiles"
 for o in 0 1; do
-    $X/xpaset -p $T hips "$W/pfits[order=$o]"; shot f$o
-    $X/xpaset -p $T hips "$W/ppng[order=$o]"; shot p$o
+    $X/xpaset -p $T hips "$W/pfits[norder=$o]"; shot f$o
+    $X/xpaset -p $T hips "$W/ppng[norder=$o]"; shot p$o
     check "order $o: PNG (grey + alpha) equals FITS, alpha 0 = NaN" "$(cmp f$o p$o 0)" "same"
 done
 check "order 1 came from Allsky.png" "$(hdr | grep -c 'from Allsky.png')" "1"
-$X/xpaset -p $T hips "$W/ppng[order=0]"
+$X/xpaset -p $T hips "$W/ppng[norder=0]"
 check "order 0 from png tiles" "$(hdr | grep -c 'from png tiles: 11 of 12')" "1"
 check "display-level note in the header" "$(hdr | grep -c 'png display levels 0-255')" "1"
 check "no hips_pixel_cut comment (physical units)" "$(hdr | grep -c 'hips_pixel_cut')" "0"
@@ -57,8 +57,8 @@ check "  but is to FITS" "$($X/xpaget $T scale mode)" "user"
 $X/xpaset -p $T scale mode minmax
 
 echo "2. JPEG"
-$X/xpaset -p $T hips "$W/pfits[order=0]"; shot f0
-$X/xpaset -p $T hips "$W/pjpg[order=0]"; shot j0
+$X/xpaset -p $T hips "$W/pfits[norder=0]"; shot f0
+$X/xpaset -p $T hips "$W/pjpg[norder=0]"; shot j0
 r=$("$PY" -I -c "
 import sys, numpy as np; from astropy.io import fits
 a, b = fits.getdata(sys.argv[1]), fits.getdata(sys.argv[2])
@@ -74,8 +74,8 @@ check "  JPEG NaNs are a subset of the FITS ones" "$sub" "True"
 if [ "$nblank" -gt 0 ]; then ok "  the blank pixels ($nblank in the image) have values in JPEG"; else bad "  blank pixels with values: $nblank"; fi
 
 echo "3. colour PNG: luminance"
-$X/xpaset -p $T hips "$W/prgbl[order=0]"; shot l0
-$X/xpaset -p $T hips "$W/prgb[order=0]"; shot c0
+$X/xpaset -p $T hips "$W/prgbl[norder=0]"; shot l0
+$X/xpaset -p $T hips "$W/prgb[norder=0]"; shot c0
 check "RGB PNG = its luminance (Rec. 601)" "$(cmp l0 c0 1e-4)" "same"
 
 echo "4. the Open HiPS dialog"
@@ -98,11 +98,11 @@ mkdir -p $W/fpng; for f in $FERMI/Norder* $FERMI/Moc.fits; do ln -s $f $W/fpng/;
 sed 's/^hips_tile_format.*/hips_tile_format = png/' $FERMI/properties > $W/fpng/properties
 $X/xpaset -p $T hips "$W/fpng"
 check "Fermi from Allsky.png" "$(size)/$(hdr | grep -c 'from Allsky.png')" "2560 2560/1"
-$X/xpaset -p $T hips "$W/fpng[order=2]"
+$X/xpaset -p $T hips "$W/fpng[norder=2]"
 check "Fermi from png tiles at order 2" "$(size)/$(hdr | grep -c 'from png tiles: 192 of 192')" "1280 1280/1"
 $X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
 check "XRISM (png only), automatic: order 2 tiles" "$(hdr | grep -c 'order 2, nside 2048, from png tiles: 2 of 192')/$(lasterr)" "1/"
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[order=3]"
+$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[norder=3]"
 check "XRISM order 3: its tile, not the reduced Allsky" "$(hdr | grep -c 'from png tiles: 1 of 768')" "1"
 
 echo "6. remote PNG"
@@ -111,8 +111,8 @@ mkdir -p $W/www; ln -s $W/ppng $W/www/ppng
 SRV=$!
 for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
 U=http://127.0.0.1:$(cat $W/port)
-$X/xpaset -p $T hips "$U/ppng[order=0]"; shot r0
-$X/xpaset -p $T hips "$W/ppng[order=0]"; shot p0
+$X/xpaset -p $T hips "$U/ppng[norder=0]"; shot r0
+$X/xpaset -p $T hips "$W/ppng[norder=0]"; shot p0
 check "remote PNG tiles = local" "$(cmp r0 p0 0)" "same"
 check "  fetched .png tiles" "$(grep -c '^200 /ppng/Norder0/Dir0/Npix.*\.png' $W/log)" "11"
 check "  one 404 (missing tile 5)" "$(grep -c '^404 /ppng/Norder0/Dir0/Npix5.png' $W/log)" "1"

@@ -3,7 +3,7 @@ fits/hips
 yes
 no
 92 48
-fits/hips[order=0,proj=mol]
+fits/hips[norder=0,proj=mol]
 26 26
 0
 

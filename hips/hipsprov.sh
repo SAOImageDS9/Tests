@@ -30,7 +30,7 @@ for i in $(seq 1 40); do [ "$($X/xpaget $T version 2>/dev/null)" != "" ] && brea
 did=$(sed -n 's/^creator_did *= *//p' $FERMI/properties | head -1)
 
 echo "1. HPX image"
-$X/xpaset -p $T hips "${FERMI}[order=2]"
+$X/xpaset -p $T hips "${FERMI}[norder=2]"
 check "HiPS survey" "$(hcount "^HISTORY.*HiPS $did")" "1"
 check "order, nside, tiles read" "$(hcount '^HISTORY.*order 2, nside 256, from fits tiles: 192 of 192 tiles read')" "1"
 check "hips_pixel_cut" "$(hcount '^COMMENT.*hips_pixel_cut 2.0E-9 8.0E-7')" "1"
@@ -38,17 +38,17 @@ check "OBJECT still there" "$(hcount "^OBJECT  = 'Fermi-LAT 1-3 GeV")" "1"
 check "no NUL bytes in the header" "$(hdr | "$PY" -I -c 'import sys; print(sys.stdin.buffer.read().count(0))')" "0"
 
 echo "2. projection windows"
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=MOL]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=MOL]"
 check "MOL: HiPS survey" "$(hcount "^HISTORY.*HiPS $did")" "1"
 check "MOL: order line" "$(hcount '^HISTORY.*order 2, nside 256')" "1"
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=TAN]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=TAN]"
 check "TAN: HiPS survey" "$(hcount "^HISTORY.*HiPS $did")" "1"
 check "TAN: centre from the initial view" "$(hcount '^HISTORY.*from hips_initial_ra/dec (ICRS)')" "1"
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=TAN,lon0=10,lat0=10]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=TAN,lon0=10,lat0=10]"
 check "TAN with lon0/lat0: no initial-view card" "$(hcount 'hips_initial_ra/dec')" "0"
 
 echo "3. File > Save keeps it"
-$X/xpaset -p $T hips "${FERMI}[order=1,proj=MOL]"
+$X/xpaset -p $T hips "${FERMI}[norder=1,proj=MOL]"
 $X/xpaset -p $T save fits $W/s.fits
 check "saved file: HISTORY HiPS" "$("$PY" -I -c "
 import sys; from astropy.io import fits

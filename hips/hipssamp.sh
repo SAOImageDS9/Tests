@@ -57,21 +57,21 @@ echo "1. connected"
 check "ds9 is on the private hub" "$(tcl 'info exists samp(private)')" "1"
 
 echo "2. load and ask"
-check "ds9.set hips <dir>" "$(sset "hips $FERMI[order=2]")" ""
-check "ds9.get hips" "$(sget hips)" "$FERMI[order=2]"
+check "ds9.set hips <dir>" "$(sset "hips $FERMI[norder=2]")" ""
+check "ds9.get hips" "$(sget hips)" "$FERMI[norder=2]"
 check "  the frame" "$(tcl '$current(frame) get fits size')" "1280 1280"
-sset "hips new $FERMI[order=1,proj=mol,lon0=180]" >/dev/null
-check "hips new, projection options" "$(sget frame)/$(sget hips)" "2/$FERMI[order=1,proj=mol,lon0=180]"
-check "a URL" "$(sset "hips $U/synth_f32[order=0]"; sget hips)" "$U/synth_f32[order=0]"
-check "an ID" "$(sset 'hips TEST/P/i16[order=1]'; sget hips)" "$U/synth_i16[order=1]"
-check "format=" "$(sset "hips $U/synth_f32[order=0,format=fits]"; sget hips)" "$U/synth_f32[order=0,format=fits]"
+sset "hips new $FERMI[norder=1,proj=mol,lon0=180]" >/dev/null
+check "hips new, projection options" "$(sget frame)/$(sget hips)" "2/$FERMI[norder=1,proj=mol,lon0=180]"
+check "a URL" "$(sset "hips $U/synth_f32[norder=0]"; sget hips)" "$U/synth_f32[norder=0]"
+check "an ID" "$(sset 'hips TEST/P/i16[norder=1]'; sget hips)" "$U/synth_i16[norder=1]"
+check "format=" "$(sset "hips $U/synth_f32[norder=0,format=fits]"; sget hips)" "$U/synth_f32[norder=0,format=fits]"
 
 echo "3. the other hips commands"
 check "hips list (a file over SAMP, one per line)" "$(sget 'hips list' | cut -f1 | tr '\n' ' ')" "TEST/P/i16 TEST/P/synth "
 check "hips list with a pattern" "$(sget 'hips list integer')" "$(printf 'TEST/P/i16\tInteger survey')"
 check "hips status" "$(sget 'hips status')" "0"
 check "hips cancel" "$(sset 'hips cancel')" ""
-sset "hips $FERMI[order=2]" >/dev/null
+sset "hips $FERMI[norder=2]" >/dev/null
 check "hips coverage yes" "$(sset 'hips coverage yes'; sget 'hips coverage')" "yes"
 check "hips coverage no" "$(sset 'hips coverage no'; sget 'hips coverage')" "no"
 check "hips close" "$(sset 'hips close'; sget hips)/$(tcl '$current(frame) has fits')" "/0"
@@ -83,7 +83,7 @@ r=$(sset "hips TEST/P/none")
 check "an unknown ID" "$r" "ERROR: Unable to load HiPS TEST/P/none: no HiPS with the ID TEST/P/none"
 r=$(sset "hips $FERMI[format=gif]")
 check "a bad format=" "$r" "ERROR: Unable to load HiPS $FERMI[format=gif]: format= is fits, png or jpeg"
-check "  and ds9 still answers" "$(sset "hips $FERMI[order=0]"; sget hips)" "$FERMI[order=0]"
+check "  and ds9 still answers" "$(sset "hips $FERMI[norder=0]"; sget hips)" "$FERMI[norder=0]"
 
 $X/xpaset -p $T exit
 for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done

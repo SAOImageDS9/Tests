@@ -4,7 +4,7 @@ get hips
 set {} hips coverage yes
 get hips coverage
 set {} hips coverage no
-set {} hips fits/hips[order=0,proj=mol]
+set {} hips fits/hips[norder=0,proj=mol]
 get fits size
 set {} hips new fits/hips[proj=tan,lon0=30,lat0=10,fov=40]
 get fits size

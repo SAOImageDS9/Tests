@@ -49,28 +49,28 @@ for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
 echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
 
 echo "1. format= picks the tiles"
-$X/xpaset -p $T hips "$M[order=0]"
+$X/xpaset -p $T hips "$M[norder=0]"
 check "automatic: FITS" "$(src)" "from fits tiles"
 shot f
-$X/xpaset -p $T hips "$M[order=0,format=png]"
+$X/xpaset -p $T hips "$M[norder=0,format=png]"
 check "format=png" "$(src)" "from png tiles"
 shot p
 check "  the same pixels" "$(same f p)" "same"
-check "  xpaget hips keeps it" "$($X/xpaget $T hips)" "$M[order=0,format=png]"
-$X/xpaset -p $T hips "$M[order=0,format=jpeg]"
+check "  xpaget hips keeps it" "$($X/xpaget $T hips)" "$M[norder=0,format=png]"
+$X/xpaset -p $T hips "$M[norder=0,format=jpeg]"
 check "format=jpeg" "$(src)" "from jpg tiles"
-$X/xpaset -p $T hips "$M[format=JPG,order=0]"
+$X/xpaset -p $T hips "$M[format=JPG,norder=0]"
 check "format=JPG (any case, jpg)" "$(src)" "from jpg tiles"
-$X/xpaset -p $T hips "$M[order=1,format=png]"
+$X/xpaset -p $T hips "$M[norder=1,format=png]"
 check "order 1, png: its Allsky.png" "$(src)" "from Allsky.png"
-$X/xpaset -p $T hips "$M[order=0,format=FITS]"
+$X/xpaset -p $T hips "$M[norder=0,format=FITS]"
 check "format=FITS" "$(src)" "from fits tiles"
 
 echo "2. the scale limits follow the tiles"
 $X/xpaset -p $T scale mode minmax
-$X/xpaset -p $T hips "$M[order=0]"
+$X/xpaset -p $T hips "$M[norder=0]"
 check "FITS: hips_pixel_cut" "$($X/xpaget $T scale limits)" "$(sed -n 's/^hips_pixel_cut *= *//p' $M/properties)"
-$X/xpaset -p $T hips "$M[order=0,format=png]"
+$X/xpaset -p $T hips "$M[norder=0,format=png]"
 check "PNG: 0-255" "$($X/xpaget $T scale limits)" "0 255"
 $X/xpaset -p $T scale mode minmax
 
@@ -85,9 +85,9 @@ tcl 'set ::errs {}' >/dev/null
 echo "4. colour"
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T frame new
-$X/xpaset -p $T hips "$C[order=0]"
+$X/xpaset -p $T hips "$C[norder=0]"
 check "a colour HiPS with FITS tiles: their data, a plain frame" "$(tcl '$current(frame) get type')/$(src)" "base/from fits tiles"
-$X/xpaset -p $T hips "$C[order=0,format=png]"
+$X/xpaset -p $T hips "$C[norder=0,format=png]"
 check "format=png: colour, an RGB frame" "$(tcl '$current(frame) get type')/$($X/xpaget $T frame)" "rgb/2"
 
 echo "5. remote: only the tiles asked for"
@@ -102,20 +102,20 @@ mark
 $X/xpaset -p $T hips "$U/multi[format=png]"
 check "quick look: Allsky.png" "$(grep -c 'Allsky' $W/log)/$(grep -c 'Allsky.png' $W/log)/$(src)" "1/1/from Allsky.png"
 mark
-$X/xpaset -p $T hips "$U/multi[order=0,format=jpeg]"
+$X/xpaset -p $T hips "$U/multi[norder=0,format=jpeg]"
 check "order 0 jpeg: jpg tiles only (no Moc.fits: all 12 asked, 11 there)" "$(grep -c 'Npix' $W/log)/$(grep -c 'Npix[0-9]*\.jpg' $W/log)/$(grep -c '^200 .*Npix' $W/log)/$(src)" "12/12/11/from jpg tiles"
 # deep window: zoomed in, order 1 tiles, still png
 rm -rf ~/.$T/hips
-$X/xpaset -p $T hips "$U/multi[order=0,format=png,proj=tan,lon0=45,lat0=30,fov=40]"
+$X/xpaset -p $T hips "$U/multi[norder=0,format=png,proj=tan,lon0=45,lat0=30,fov=40]"
 mark
 $X/xpaset -p $T zoom to 8
 for i in $(seq 1 40); do [ "$($X/xpaget $T hips status)" = 0 ] && [ "$(tcl 'set hipsdeep(running)')" = 0 ] && break; nap; done
 check "deep tiles fetched as png" "$( [ $(grep -c 'Norder1/.*Npix' $W/log) -gt 0 ] && echo some)/$(grep -c 'Npix[0-9]*\.\(fits\|jpg\)' $W/log)" "some/0"
 # a tile missing only as PNG is still fetched as FITS
 cp -R $M $W/www/fmix; rm $W/www/fmix/Norder0/Dir0/Npix3.png
-$X/xpaset -p $T hips "$U/fmix[order=0,format=png]"
+$X/xpaset -p $T hips "$U/fmix[norder=0,format=png]"
 mark
-$X/xpaset -p $T hips "$U/fmix[order=0,format=fits]"
+$X/xpaset -p $T hips "$U/fmix[norder=0,format=fits]"
 check "png 404 then fits: Npix3.fits asked for" "$(grep -c '^200 /fmix/Norder0/Dir0/Npix3.fits' $W/log)" "1"
 # an unusable (truncated) Allsky is not kept, nor asked for again
 cp -R $M $W/www/badsky
@@ -133,11 +133,11 @@ kill $SRV; wait $SRV 2>/dev/null
 echo "6. backup/restore keeps format="
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T frame new
-$X/xpaset -p $T hips "$M[order=0,format=png]"
+$X/xpaset -p $T hips "$M[norder=0,format=png]"
 $X/xpaset -p $T backup $W/b.bck
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T restore $W/b.bck
-check "restored" "$($X/xpaget $T hips)/$(src)" "$M[order=0,format=png]/from png tiles"
+check "restored" "$($X/xpaget $T hips)/$(src)" "$M[norder=0,format=png]/from png tiles"
 
 echo "7. hips close"
 # (multi has no Moc.fits: the outline is the whole sky, and an error)
@@ -150,7 +150,7 @@ $X/xpaset -p $T hips close
 check "not a HiPS: left alone" "$(tcl '$current(frame) has fits')" "1"
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T frame new
-$X/xpaset -p $T hips "$C[order=0,format=png]"
+$X/xpaset -p $T hips "$C[norder=0,format=png]"
 $X/xpaset -p $T hips close
 check "an RGB frame of a colour HiPS" "$(tcl '$current(frame) has fits')" "0"
 
@@ -168,8 +168,8 @@ check "several: Tiles shown, FITS first" \
     "$(dialog $M 'set ::st [winfo ismapped .hipsopen.data.tiles]/$hpxed(extlabel)/[.hipsopen.data.tiles.m index end]' 'set hpxed(ok) 0' >/dev/null; tcl 'set ::st')" \
     "1/FITS (data values)/3"
 check "one kind: no Tiles" "$(dialog $W/pfits 'set ::st [winfo ismapped .hipsopen.data.tiles]' 'set hpxed(ok) 0' >/dev/null; tcl 'set ::st')" "0"
-check "the automatic choice: no format=" "$(dialog $M 'set hpxed(order) 0; HiPSOpenOrderChanged' HiPSOpenOK)" "$M[order=0]"
-check "PNG: format=png" "$(dialog $M 'set hpxed(ext) png; HiPSOpenExtChanged; set hpxed(order) 0; HiPSOpenOrderChanged' HiPSOpenOK)" "$M[order=0,format=png]"
+check "the automatic choice: no format=" "$(dialog $M 'set hpxed(order) 0; HiPSOpenOrderChanged' HiPSOpenOK)" "$M[norder=0]"
+check "PNG: format=png" "$(dialog $M 'set hpxed(ext) png; HiPSOpenExtChanged; set hpxed(order) 0; HiPSOpenOrderChanged' HiPSOpenOK)" "$M[norder=0,format=png]"
 check "JPEG: format=jpeg" "$(dialog $M 'set hpxed(ext) jpg; HiPSOpenExtChanged' HiPSOpenOK)" "$M[format=jpeg]"
 check "  the cut line hidden, the reading line says so" \
     "$(dialog $M 'set hpxed(ext) png; HiPSOpenExtChanged; set ::st [winfo ismapped .hipsopen.file.cut]/$hpxed(reading)' 'set hpxed(ok) 0' >/dev/null; tcl 'set ::st')" \

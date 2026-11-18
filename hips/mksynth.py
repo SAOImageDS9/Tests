@@ -10,7 +10,7 @@ alternate padded/unpadded, a few tiles are missing, and order 1 also
 has a reduced (8-px) Allsky.fits.
 
 <outdir>/synth_reduced/ has order-0 tiles plus only a reduced Allsky at
-order 1, so order=1 must come from the Allsky.
+order 1, so norder=1 must come from the Allsky.
 
 Tile layout follows the HiPS convention measured on real data (see
 TODO_HIPS.md): rows from the top -> ix (even bits), columns -> iy.

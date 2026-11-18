@@ -42,45 +42,45 @@ PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
 for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
 
 echo "1. zenithal and conic windows (galactic Fermi map)"
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=tan,lon0=30,lat0=20,fov=40]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=tan,lon0=30,lat0=20,fov=40]"
 agree "TAN, order 2" $W/fermi2.fits 99.9 99.9
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=sin,lon0=200,lat0=-60,fov=80]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=sin,lon0=200,lat0=-60,fov=80]"
 agree "SIN near the south pole" $W/fermi2.fits 99.9 99.9
-$X/xpaset -p $T hips "${FERMI}[order=3,proj=zea,lon0=0,lat0=0,fov=30]"
+$X/xpaset -p $T hips "${FERMI}[norder=3,proj=zea,lon0=0,lat0=0,fov=30]"
 agree "ZEA across the centre, order 3" $W/fermi3.fits 99.9 99.9
-$X/xpaset -p $T hips "${FERMI}[order=1,proj=arc,lon0=0,lat0=90,fov=100]"
+$X/xpaset -p $T hips "${FERMI}[norder=1,proj=arc,lon0=0,lat0=90,fov=100]"
 agree "ARC at the pole, order 1" $W/fermi1.fits 99.9 99.9
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=coe,lon0=120,lat0=45,fov=60]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=coe,lon0=120,lat0=45,fov=60]"
 agree "COE" $W/fermi2.fits 99.9 99.9
 
 echo "2. all-sky projections"
-$X/xpaset -p $T hips "${FERMI}[order=1,proj=mol]"
+$X/xpaset -p $T hips "${FERMI}[norder=1,proj=mol]"
 agree "MOL, order 1" $W/fermi1.fits 99.9 99.9
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=ait,lon0=180]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=ait,lon0=180]"
 agree "AIT, lon0 180" $W/fermi2.fits 99.9 99.9
-$X/xpaset -p $T hips "${FERMI}[order=1,proj=car]"
+$X/xpaset -p $T hips "${FERMI}[norder=1,proj=car]"
 agree "CAR" $W/fermi1.fits 99.9 99.9
 
 echo "3. an equatorial HiPS with partial coverage (Abell 1763)"
-$X/xpaset -p $T hips "${ABELL}[order=2,proj=tan]"
+$X/xpaset -p $T hips "${ABELL}[norder=2,proj=tan]"
 agree "TAN at its initial view, order 2" $W/abell2.fits 99.9 99.9
-$X/xpaset -p $T hips "${ABELL}[order=3,proj=tan]"
+$X/xpaset -p $T hips "${ABELL}[norder=3,proj=tan]"
 agree "  order 3" $W/abell3.fits 99.9 99.9
 
 echo "4. integer and double tiles"
-$X/xpaset -p $T hips "$W/synth_u8[order=1,proj=tan,lon0=100,lat0=10,fov=60]"
+$X/xpaset -p $T hips "$W/synth_u8[norder=1,proj=tan,lon0=100,lat0=10,fov=60]"
 agree "BITPIX 8 (BLANK, BSCALE, BZERO)" $W/synth_u8.fits 99.9 99.9
-$X/xpaset -p $T hips "$W/synth_f64[order=1,proj=mol]"
+$X/xpaset -p $T hips "$W/synth_f64[norder=1,proj=mol]"
 agree "BITPIX -64 (NaN), MOL" $W/synth_f64.fits 99.9 99.9
 
 echo "5. deep windows: zoomed in past the loaded map"
-$X/xpaset -p $T hips "${FERMI}[order=1,proj=tan,lon0=30,lat0=20,fov=20]"
+$X/xpaset -p $T hips "${FERMI}[norder=1,proj=tan,lon0=30,lat0=20,fov=20]"
 $X/xpaset -p $T zoom to 4
 k=$(kw HIPSORD)
 if [ "$k" -gt 1 ] 2>/dev/null; then ok "deep: order $k"; else bad "deep: HIPSORD '$k'"; fi
 agree "  the deep window, against order $k" $W/fermi$k.fits 99.9 99.9
 # (orders past 3 would need a reference map at nside 8192 and more)
-$X/xpaset -p $T hips "${ABELL}[order=1,proj=tan]"
+$X/xpaset -p $T hips "${ABELL}[norder=1,proj=tan]"
 $X/xpaset -p $T zoom to 4
 k=$(kw HIPSORD)
 if [ "$k" = 3 ]; then ok "Abell deep: order 3"; else bad "Abell deep: HIPSORD '$k', want 3"; fi

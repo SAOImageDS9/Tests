@@ -70,52 +70,52 @@ for c in "Fermi:$FERMI:galactic:270.0:-25.0:0.15:3" "Abell:$ABELL:galactic:203.9
          "ecliptic copy:$W/ecl:ecliptic:270.0:-25.0:0.15:3" "equatorial copy:$W/equ:fk5:270.0:-25.0:0.15:3"; do
     IFS=: read name dir frame ra dec tol order <<< "$c"
     want=$(sky $ra $dec $frame)
-    $X/xpaset -p $T hips "${dir}[order=$order,proj=TAN]"
+    $X/xpaset -p $T hips "${dir}[norder=$order,proj=TAN]"
     near "$name: window centre (pan $frame)" "$(pan $frame)" "$want" $tol
     near "$name: dialog's centre" "$(tcl "set v [HiPSInitialView [HiPSReadProperties {$dir}]]; list [dict get \$v lon] [dict get \$v lat]")" "$want" 1e-5
 done
 
 echo "2. when the initial view applies"
-$X/xpaset -p $T hips "${FERMI}[order=3,proj=ZEA]"
+$X/xpaset -p $T hips "${FERMI}[norder=3,proj=ZEA]"
 near "ZEA: centred too" "$(pan galactic)" "$(sky 270 -25 galactic)" 0.15
-$X/xpaset -p $T hips "${FERMI}[order=3,proj=MOL]"
+$X/xpaset -p $T hips "${FERMI}[norder=3,proj=MOL]"
 near "MOL (all-sky): centre 0 0, not the initial view" "$(pan galactic)" "0 0" 0.15
-$X/xpaset -p $T hips "${FERMI}[order=3,proj=TAN,lon0=0]"
+$X/xpaset -p $T hips "${FERMI}[norder=3,proj=TAN,lon0=0]"
 near "lon0=0 given: centre 0 0" "$(pan galactic)" "0 0" 0.15
-$X/xpaset -p $T hips "${FERMI}[order=3,proj=TAN,lat0=10]"
+$X/xpaset -p $T hips "${FERMI}[norder=3,proj=TAN,lat0=10]"
 near "lat0=10 given: centre 0 10" "$(pan galactic)" "0 10" 0.15
 # fov: from properties unless given, clamped to the projection
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=TAN,lon0=10,lat0=10]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=TAN,lon0=10,lat0=10]"
 a=$(size)
-$X/xpaset -p $T hips "${FERMI}[order=2,proj=TAN,lon0=10,lat0=10,fov=58.6323014283504]"
+$X/xpaset -p $T hips "${FERMI}[norder=2,proj=TAN,lon0=10,lat0=10,fov=58.6323014283504]"
 check "fov from hips_initial_fov when centre given" "$a" "$(size)"
 sed 's/^hips_initial_fov .*/hips_initial_fov = 360.5/' $FERMI/properties > $W/fov.props
 mkdir -p $W/wide; for f in $FERMI/Norder*; do ln -s $f $W/wide/; done; cp $W/fov.props $W/wide/properties
-$X/xpaset -p $T hips "${W}/wide[order=2,proj=TAN]"
+$X/xpaset -p $T hips "${W}/wide[norder=2,proj=TAN]"
 a=$(size)
-$X/xpaset -p $T hips "${W}/wide[order=2,proj=TAN,fov=170]"
+$X/xpaset -p $T hips "${W}/wide[norder=2,proj=TAN,fov=170]"
 check "fov 360.5 clamped to TAN's 170" "$a" "$(size)"
-$X/xpaset -p $T hips "${W}/wide[order=2,proj=ZEA]"
+$X/xpaset -p $T hips "${W}/wide[norder=2,proj=ZEA]"
 a=$(size)
-$X/xpaset -p $T hips "${W}/wide[order=2,proj=ZEA,fov=360]"
+$X/xpaset -p $T hips "${W}/wide[norder=2,proj=ZEA,fov=360]"
 check "fov 360.5 clamped to ZEA's 360" "$a" "$(size)"
 
 echo "3. hips_pixel_cut"
 $X/xpaset -p $T scale mode minmax
-$X/xpaset -p $T hips "${FERMI}[order=1]"
+$X/xpaset -p $T hips "${FERMI}[norder=1]"
 check "scale mode user" "$($X/xpaget $T scale mode)" "user"
 check "limits from hips_pixel_cut" "$($X/xpaget $T scale limits)" "2e-09 8e-07"
 $X/xpaset -p $T scale mode minmax
-$X/xpaset -p $T hips "${W}/equ[order=1]"
+$X/xpaset -p $T hips "${W}/equ[norder=1]"
 check "no hips_pixel_cut: scale untouched" "$($X/xpaget $T scale mode)" "minmax"
 tcl 'set phpxopen(hipscut) 0' >/dev/null
-$X/xpaset -p $T hips "${FERMI}[order=1]"
+$X/xpaset -p $T hips "${FERMI}[norder=1]"
 check "pref off: scale untouched" "$($X/xpaget $T scale mode)" "minmax"
 tcl 'set phpxopen(hipscut) 1' >/dev/null
 $X/xpaset -p $T exit
 for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
 rm -rf ~/$T.auto ~/$T.auto.dir
-PATH="$X:$PATH" $X/ds9 -title $T -hips "${FERMI}[order=1]" -scale limits 1e-8 1e-7 >/dev/null 2>&1 &
+PATH="$X:$PATH" $X/ds9 -title $T -hips "${FERMI}[norder=1]" -scale limits 1e-8 1e-7 >/dev/null 2>&1 &
 for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
 for i in $(seq 1 40); do [ "$(size)" != "0 0" ] && break; nap; done
 nap; nap
