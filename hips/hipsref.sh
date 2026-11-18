@@ -21,10 +21,10 @@ ok()  { pass=$((pass+1)); echo "  ok   $*"; }
 bad() { fail=$((fail+1)); echo "  FAIL $*"; }
 nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 kw() { $X/xpaget $T fits header keyword $1; }
-# agree <label> <ref map> <min % same value> <min % same NaN mask>
+# agree <label> <ref map> <min % same value> <min % same NaN mask> [ring]
 agree() {
     rm -f $W/d.fits; $X/xpaset -p $T save fits $W/d.fits
-    read same mask n <<< "$("$PY" -I $H/refcmp.py $W/d.fits $2)"
+    read same mask n <<< "$("$PY" -I $H/refcmp.py $W/d.fits $2 $5)"
     if [ -n "$n" ] && awk "BEGIN{exit !($same >= $3 && $mask >= $4)}"; then
 	ok "$1: $same% same, $mask% same NaNs ($n px)"
     else
@@ -72,6 +72,27 @@ $X/xpaset -p $T hips "$W/synth_u8[norder=1,proj=tan,lon0=100,lat0=10,fov=60]"
 agree "BITPIX 8 (BLANK, BSCALE, BZERO)" $W/synth_u8.fits 99.9 99.9
 $X/xpaset -p $T hips "$W/synth_f64[norder=1,proj=mol]"
 agree "BITPIX -64 (NaN), MOL" $W/synth_f64.fits 99.9 99.9
+
+echo "4b. HEALPix tables, sampled the same way: RING with an nside that"
+echo "    isn't a power of 2 (no NESTED ordering exists for it), and NESTED"
+"$PY" -I -c "
+import sys, numpy as np
+from astropy.io import fits
+rng = np.random.default_rng(3)
+for ns, order, name in ((100, 'RING', 'ring100'), (64, 'NESTED', 'nest64')):
+    m = rng.random(12*ns*ns, dtype=np.float32)
+    t = fits.BinTableHDU.from_columns([fits.Column(name='T', format='E', array=m)])
+    for k, v in (('PIXTYPE','HEALPIX'),('ORDERING',order),('NSIDE',ns),('COORDSYS','G'),('INDXSCHM','IMPLICIT')):
+        t.header[k] = v
+    fits.HDUList([fits.PrimaryHDU(), t]).writeto(sys.argv[1] + '/' + name + '.fits')" $W
+$X/xpaset -p $T fits "$W/ring100.fits[proj=tan,lon0=40,lat0=50,fov=60]"
+agree "RING nside 100, TAN" $W/ring100.fits 99.9 99.9 ring
+$X/xpaset -p $T fits "$W/ring100.fits[proj=stg,lon0=0,lat0=-90,fov=120]"
+agree "RING nside 100, STG at the south pole" $W/ring100.fits 99.9 99.9 ring
+$X/xpaset -p $T fits "$W/ring100.fits[proj=mol]"
+agree "RING nside 100, MOL" $W/ring100.fits 99.9 99.9 ring
+$X/xpaset -p $T fits "$W/nest64.fits[proj=coe,lon0=200,lat0=30,fov=90]"
+agree "NESTED nside 64, COE" $W/nest64.fits 99.9 99.9
 
 echo "5. deep windows: zoomed in past the loaded map"
 $X/xpaset -p $T hips "${FERMI}[norder=1,proj=tan,lon0=30,lat0=20,fov=20]"

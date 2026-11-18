@@ -265,10 +265,15 @@ lim () {
     xpaset -p DS9Test scale mode minmax
     echo "$l1 / $l2"
 }
+# a window's limits come from the whole map, not the window: minmax is
+# the HPX image's (zscale samples the map's own pixels, not the HPX
+# image's padded layout, so it picks a different sample), and neither
+# changes when the window is recentred
 load "${wmap}[system=galactic]" > /dev/null
 hpxlim=`lim`
 load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
-check "window scale = whole map" "`lim`" "$hpxlim"
+winlim=`lim`
+check "window minmax = whole map" "${winlim%% / *}" "${hpxlim%% / *}"
 xpaset -p DS9Test mode crosshair
 xpaset -p DS9Test crosshair 20 5 wcs galactic
 xpaset -p DS9Test mode none
@@ -280,7 +285,7 @@ check "long pan: pan kept" "`xpaget DS9Test pan wcs galactic degrees | tr -d '\n
     "40.0000000 10.0000000"
 check "long pan: crosshair kept" \
     "`xpaget DS9Test crosshair wcs galactic degrees | tr -d '\n'`" "20.0000000 5.0000000"
-check "recentred: scale unchanged" "`lim`" "$hpxlim"
+check "recentred: scale unchanged" "`lim`" "$winlim"
 xpaset -p DS9Test pan to 200 -30 wcs galactic
 check "pan beyond TAN reach" "`cv`" "200 -30"
 xpaset -p DS9Test pan to 300 -60 wcs fk5

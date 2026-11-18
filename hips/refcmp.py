@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 """Compare a projected HiPS image saved by ds9 with an independent one.
 
-usage: python -I refcmp.py <ds9 image.fits> <reference map.fits>
+usage: python -I refcmp.py <ds9 image.fits> <reference map.fits> [ring]
 
 <reference map.fits> is the NESTED HEALPix table mkref.py writes from
-the HiPS tiles (not through ds9's reader). It is projected onto the WCS
+the HiPS tiles (not through ds9's reader), or with ring, any RING
+HEALPix table (a plain HEALPix file ds9 loaded). It is projected onto the WCS
 of <ds9 image.fits> with reproject_from_healpix, nearest-neighbour as
 ds9 samples, converting from the map's frame (COORDSYS) to the image's.
 Prints "<agree> <nanagree> <n>": the percentages of pixels with the
@@ -24,8 +25,9 @@ warnings.simplefilter("ignore")
 img, hdr = fits.getdata(sys.argv[1], header=True)
 img = img.astype(np.float64)
 w = WCS(hdr).celestial
+nested = not (len(sys.argv) > 3 and sys.argv[3] == "ring")
 ref, _ = reproject_from_healpix(sys.argv[2], w, shape_out=img.shape,
-                                order="nearest-neighbor", nested=True)
+                                order="nearest-neighbor", nested=nested)
 # outside an all-sky projection (no sky position) reproject still fills
 # in a value (seen with MOL, AIT, CAR); there is nothing there
 yy, xx = np.mgrid[0:img.shape[0], 0:img.shape[1]]
