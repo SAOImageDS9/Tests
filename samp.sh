@@ -2,6 +2,13 @@
 echo "SAMP Tests"
 
 startit () {
+    # one already running (a single-section run leaves it up): use it,
+    # rather than a second DS9Test that fights it for ~/DS9Test.auto
+    # and the SAMP hub
+    if test "`xpaaccess DS9Test`" = "yes"; then
+	echo "Using the running DS9Test"
+	return
+    fi
     echo "Starting DS9..."
     echo "ds9 -title DS9Test -debug $samp -debug $samphub -zscale"
     ds9 -title DS9Test -debug $samp -debug $samphub -zscale&
