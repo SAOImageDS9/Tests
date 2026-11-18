@@ -193,6 +193,35 @@ $X/xpaset -p $T rgb channel red
 check "red green blue orders" "$s" "$(o=$(order); echo " $o $o $o")"
 case "$s" in *map*) bad "  a channel is not deep: $s";; *) ok "  deep in every channel";; esac
 
+echo "7. a drag reads no tiles; its end does"
+# synth_f32 at norder=0 (nside 16): a window goes deep at order 1, whose
+# tiles (29 deg each) no window has read yet. During a drag only tiles
+# already in memory are used (the map shows elsewhere); the end reads
+# the rest, as a rebuild in place would.
+"$PY" -I $H/mksynth.py $W/syn >/dev/null
+# "<not loaded> <touched>" from the window's HISTORY
+notloaded() { shot nl; "$PY" -I -c "
+from astropy.io import fits
+h = [str(c) for c in fits.getheader('$W/nl.fits').get('HISTORY', []) if 'not loaded' in str(c)]
+print(h[0].split(';')[1].split('not')[0].replace('of','').strip() if h else 'none')"; }
+$X/xpaset -p $T hips "$W/syn/synth_f32[norder=0,proj=TAN,lon0=0,lat0=0,fov=20]"
+$X/xpaset -p $T zoom to 2
+check "deep at order 1" "$(order)" "1"
+start0=$(notloaded)
+tcl 'set fr $current(frame); $fr pan motion begin 450 350; for {set i 1} {$i <= 12} {incr i} {$fr pan motion [expr {450-$i*60}] 350}; list' >/dev/null
+during=$(notloaded)
+tcl '$current(frame) pan motion end -300 350' >/dev/null
+released=$(notloaded)
+shot rel
+tcl '$current(frame) update fits center' >/dev/null
+shot inplace
+check "  during the drag, tiles left unread ($start0 at the start)" "$( [ ${during% *} -gt ${released% *} ] && echo more)" "more"
+ok "  not loaded: during $during, after release $released"
+check "  after release: the same as a rebuild in place" "$("$PY" -I -c "
+import numpy as np; from astropy.io import fits
+a, b = fits.getdata('$W/rel.fits'), fits.getdata('$W/inplace.fits')
+print('same' if a.shape == b.shape and np.array_equal(a, b, equal_nan=True) else 'differ')")" "same"
+
 check "no errors" "$(tcl 'set ::errs')" ""
 $X/xpaset -p $T exit
 finish
