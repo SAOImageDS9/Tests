@@ -139,7 +139,7 @@ check "no list at all: an error" "$(lasterr)" "HiPS list: can't query $U/down/Mo
 tcl "set phpxopen(mocserver) $U/MocServer/query" >/dev/null
 tcl 'set ::errs {}' >/dev/null
 
-echo "6. File > Open HiPS URL... takes an ID"
+echo "6. Open URL... takes an ID"
 tcl "rename EntryDialog EntryDialogOrig; proc EntryDialog {t m s v} {upvar \$v x; set x TEST/P/cube; return 1}" >/dev/null
 tcl 'after idle {OpenHiPSURLDialog; set ::done 1}; set ::done 0' >/dev/null
 opened .hipsopen
@@ -150,30 +150,51 @@ for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && [ "$($X/xpaget $T hips
 check "  loaded" "$($X/xpaget $T hips)" "$U/cube[norder=1]"
 tcl "rename EntryDialog {}; rename EntryDialogOrig EntryDialog" >/dev/null
 
-echo "7. File > Open HiPS from List..."
-tcl 'after idle {OpenHiPSListDialog; set ::done 1}; set ::done 0' >/dev/null
-opened .hipslist
+echo "7. File > Open as > HiPS: the HiPS window"
+# mlabels <menu>: its entries' labels (not tearoffs or separators)
+echo 'proc ::mlabels {m} {set r {}; for {set i 0} {$i <= [$m index end]} {incr i} {if {[$m type $i] ni {tearoff separator}} {lappend r [$m entrycget $i -label]}}; return $r}' | $X/xpaset $T tcl
+check "File menu: no HiPS entries of its own" "$(tcl 'llength [lsearch -all [mlabels $ds9(mb).file] *HiPS*]')" "0"
+check "  Open as > HiPS..." "$(tcl 'set m $ds9(mb).file.open; list [$m entrycget end -label] [$m entrycget end -command]')" "HiPS... HiPSDialog"
+tcl 'HiPSDialog' >/dev/null
+check "a window, not modal" "$(tcl 'winfo exists .hips')/$(tcl 'grab current')" "1/"
+check "  its menus" "$(tcl 'mlabels .hipsmb')" "File Edit"
+check "  File" "$(tcl 'join [mlabels .hipsmb.file] |')" "Open...|Open URL...|Open Selected|Update List|Close"
+check "  Edit" "$(tcl 'mlabels .hipsmb.edit')" "Cut Copy Paste"
 check "all listed, the first selected" "$(tcl 'set hipslist(count)')/$(tcl '$hipslist(tree) selection')" "4 / 4/TEST/P/cube"
 check "  columns" "$(tcl '$hipslist(tree) item test/P/Lower -values')" "test/P/Lower {Integer survey (16-bit)} image"
 tcl 'set hipslist(filter) float; HiPSListFill' >/dev/null
 check "filtered by title" "$(tcl '$hipslist(tree) children {}')/$(tcl 'set hipslist(count)')" "TEST/P/synth/1 / 4"
 tcl 'set hipslist(filter) {}; HiPSListFill' >/dev/null
 check "  the selection kept when the filter widens" "$(tcl '$hipslist(tree) selection')" "TEST/P/synth"
-tcl 'set hipslist(filter) nosuch; HiPSListFill; HiPSListOK' >/dev/null
-check "  nothing to open: stays" "$(tcl 'winfo exists .hipslist')/$(tcl 'set hipslist(ok)')" "1/0"
-tcl 'set hipslist(filter) 16-bit; HiPSListFill; HiPSListOK' >/dev/null
+# Edit works on the filter field
+check "Edit > Copy, Paste in the filter" "$(tcl 'set e .hips.filter.filter; focus -force $e; set hipslist(filter) {Lower}; $e selection range 0 end; .hipsmb.edit invoke Copy; set hipslist(filter) {}; $e icursor 0; .hipsmb.edit invoke Paste; set hipslist(filter)')" "Lower"
+check "  Cut" "$(tcl 'set e .hips.filter.filter; $e selection range 0 end; .hipsmb.edit invoke Cut; list $hipslist(filter) [clipboard get]')" "{} Lower"
+tcl 'set hipslist(filter) nosuch; HiPSListFill; HiPSListOpen' >/dev/null
+check "  nothing to open: nothing happens" "$(tcl 'winfo exists .hipsopen')" "0"
+tcl 'set hipslist(filter) 16-bit; HiPSListFill; after idle {HiPSListOpen; set ::done 1}; set ::done 0' >/dev/null
 opened .hipsopen
 check "Open: the Open HiPS dialog for its URL" "$(tcl '.hipsopen.file.dir cget -text')" "$U/synth_i16"
 tcl 'HiPSOpenOK' >/dev/null
 # the load runs in the background
 for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && [ "$($X/xpaget $T hips)" = "$U/synth_i16" ] && break; nap; done
 check "  loaded" "$($X/xpaget $T hips)" "$U/synth_i16"
+check "  the window stays open" "$(tcl 'winfo exists .hips')" "1"
+tcl '.hipsmb.file invoke Close' >/dev/null
+check "File > Close" "$(tcl 'winfo exists .hips')/$(tcl 'winfo exists .hipsmb')" "0/0"
 check "  the filter is kept for next time" "$(tcl 'set hipslist(filter)')" "16-bit"
-tcl 'after idle {OpenHiPSListDialog; set ::done 1}; set ::done 0' >/dev/null
-opened .hipslist
-tcl 'set hipslist(ok) 0' >/dev/null
-for i in $(seq 1 20); do [ "$(tcl 'set ::done')" = 1 ] && break; nap; done
-check "Cancel: nothing loaded" "$(tcl 'winfo exists .hipslist')/$($X/xpaget $T hips)" "0/$U/synth_i16"
+# no list (the MocServer down, nothing cached): the window opens anyway,
+# says why, and opening by URL still works
+tcl "file delete [file join [HiPSCacheRoot] mocserver.txt]; unset -nocomplain hipsnet(list); set phpxopen(mocserver) {$U/down/MocServer/query}" >/dev/null
+tcl 'HiPSDialog' >/dev/null
+check "no list: the window says why" "$(tcl 'winfo exists .hips')/$(tcl 'set hipslist(count)')/$(tcl 'set hipslist(status)')" "1/0 / 0/No list of HiPS: can't query $U/down/MocServer/query (HTTP 503)"
+tcl "rename EntryDialog EntryDialogOrig; proc EntryDialog {t m s v} {upvar \$v x; set x {$U/synth_f32}; return 1}" >/dev/null
+tcl 'after idle {.hipsmb.file invoke {Open URL...}; set ::done 1}; set ::done 0' >/dev/null
+opened .hipsopen
+check "  File > Open URL...: the Open HiPS dialog" "$(tcl '.hipsopen.file.dir cget -text')" "$U/synth_f32"
+tcl 'set hpxed(order) 0; HiPSOpenOrderChanged; HiPSOpenOK' >/dev/null
+for i in $(seq 1 40); do [ "$(tcl 'set ::done')" = 1 ] && [ "$($X/xpaget $T hips)" = "$U/synth_f32[norder=0]" ] && break; nap; done
+check "  loaded" "$($X/xpaget $T hips)" "$U/synth_f32[norder=0]"
+tcl "rename EntryDialog {}; rename EntryDialogOrig EntryDialog; HiPSDestroyDialog; set phpxopen(mocserver) $U/MocServer/query; set ::errs {}" >/dev/null
 
 echo "8. a request made while a load waits gets its own answer"
 # the load waits a second for its properties (/crawl/); the list is

@@ -158,7 +158,9 @@ for i in $(seq 1 20); do [ "$($X/xpaget $T hips coverage)" = yes ] && break; nap
 check "-hips <dir> -hips coverage" "$($X/xpaget $T hips coverage)/$(aux)" "yes/1"
 check "  the HiPS is loaded" "$($X/xpaget $T hips)" "${ABELL}[norder=2,proj=TAN,fov=5]"
 # -zoom 2 makes the HiPS window go deep (order 3), and the rebuild puts
-# the zoom back to 1 (it keeps the on-screen scale)
+# the zoom back to 1 (it keeps the on-screen scale). ds9 answers XPA
+# while it is still working through its command line: wait for it
+for i in $(seq 1 40); do [ "$(kw HIPSORD)" = 3 ] && break; nap; done
 rm -f $W/z.fits; $X/xpaset -p $T save fits $W/z.fits
 check "  and the next option still parsed (zoom 2: order 3 tiles)" "$(${PY:-$HOME/miniforge/envs/hpxtest/bin/python} -I -c "
 from astropy.io import fits
