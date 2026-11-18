@@ -149,6 +149,50 @@ check "restored: on" "$($X/xpaget $T hips coverage)/$(aux red)" "yes/1"
 $X/xpaset -p $T hips coverage no
 check "  and off again" "$($X/xpaget $T hips coverage)/$(aux red)" "no/0"
 
+echo "9. each file decoded once, for all channels, and kept across rebuilds"
+# a copy: new paths, so nothing of it is cached yet
+cp -R $W/pcol $W/pcol2
+# count decodes (image create photo -file) of pcol2 files from here on
+# (not ds9's own icons)
+echo 'rename ::image ::image_real; set ::dec {}; proc ::image {args} {if {[lrange $args 0 2] eq {create photo -file} && [string match */pcol2/* [lindex $args 3]]} {lappend ::dec [lindex $args 3]}; uplevel 1 ::image_real $args}' | $X/xpaset $T tcl
+# dec: "<decodes> <distinct files>" since the last call
+dec() { tcl 'set n "[llength $::dec] [llength [lsort -unique $::dec]]"; set ::dec {}; set n'; }
+$X/xpaset -p $T hips "$W/pcol2[norder=0]"
+check "load: 11 tiles, each decoded once" "$(dec)" "11 11"
+$X/xpaset -p $T hips "$W/pcol2[norder=0]"
+check "load again: none" "$(dec)" "0 0"
+V="norder=0,proj=TAN,lon0=40,lat0=20,fov=40"
+$X/xpaset -p $T hips "$W/pcol2[$V]"
+$X/xpaset -p $T zoom to 4
+d=$(dec); n=${d% *}
+check "deep window: its order-1 tiles each decoded once" "$( [ $n -gt 0 ] && echo "$d")" "$n $n"
+channels deep
+$X/xpaset -p $T block to 2
+$X/xpaset -p $T block to 1
+$X/xpaset -p $T pan to 41 21 fk5
+$X/xpaset -p $T pan to 40 20 fk5
+# a new window (each window had its own cache before)
+$X/xpaset -p $T hips "$W/pcol2[$V]"
+$X/xpaset -p $T zoom to 4
+check "block change, pans, the window built again: none" "$(dec)" "0 0"
+# the deep channels against each channel as its own FITS HiPS
+for c in r g b; do
+    $X/xpaset -p $T frame new
+    $X/xpaset -p $T hips "$W/pc$c[$V]"
+    $X/xpaset -p $T zoom to 4
+    shot dref$c
+    $X/xpaset -p $T frame delete
+done
+check "deep red = the red levels" "$(cmp deepred drefr)" "same"
+check "  green" "$(cmp deepgreen drefg)" "same"
+check "  blue" "$(cmp deepblue drefb)" "same"
+dec >/dev/null
+# rewritten tiles (new files, as a fetch writes them) are read afresh
+for f in $W/pcol2/Norder1/Dir0/*.png; do cp $f $W/x.png; mv $W/x.png $f; done
+$X/xpaset -p $T hips "$W/pcol2[$V]"
+$X/xpaset -p $T zoom to 4
+check "rewritten tiles decoded again, once each" "$(dec)" "$n $n"
+
 check "no unexpected errors" "$(tcl 'set ::errs')" ""
 stop
 [ -n "$KEEP" ] && cp -R $W/c.bck* "$KEEP"; rm -rf "$W" ~/.$T
