@@ -11,28 +11,15 @@
 #  3. refusals before the dialog (no readable tile format, not a HiPS)
 #  4. the menu command end to end, from an RGB frame
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSDlg
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsdlg.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
 
 # run Tcl in ds9 (at global level) and print its result
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 
 "$PY" -I $H/mksynth.py $W >/dev/null
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
+start
 
 # stubs: errors are collected, the directory chooser returns ::pick
 cat <<EOF | $X/xpaset $T tcl
@@ -166,6 +153,4 @@ check "next chooser starts beside the HiPS" "$(tcl 'set hipsopen(dir)')" "$(dirn
 check "no errors" "$(tcl 'set ::errs')" ""
 
 $X/xpaset -p $T exit
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

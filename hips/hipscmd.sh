@@ -4,19 +4,10 @@
 #   Tests/hips/hipscmd.sh
 # Starts and stops its own ds9 (title HiPSCmd).
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSCmd
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipscmd.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
 # check <name> <got> <want>
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-
-size()   { echo 'set f [open '$W'/q w]; puts $f [$current(frame) get fits size]; close $f' | $X/xpaset $T tcl; cat $W/q; }
-frames() { $X/xpaget $T frame all | wc -w | tr -d ' '; }
 
 rm -rf ~/$T.auto ~/$T.auto.dir
 echo "command line: -hips <dir>[norder=2]"
@@ -49,7 +40,6 @@ case "$r" in *"Unable to load HiPS"*"can't read"*) ok "not a HiPS: $(echo "$r" |
 r=$($X/xpaset -p $T hips "${FERMI}[norder=7]" 2>&1)
 case "$r" in *"Unable to load HiPS"*"deeper than hips_order"*) ok "too deep: $(echo "$r" | head -c 100)";; *) bad "too deep: '$r'";; esac
 
-
 echo "the hips command's grammar"
 $X/xpaset -p $T hips "${FERMI}[norder=1]"
 check "xpaget hips" "$($X/xpaget $T hips)" "${FERMI}[norder=1]"
@@ -65,6 +55,4 @@ for w in status list; do
   check "  nothing loaded" "$($X/xpaget $T hips)" "${FERMI}[norder=1]"
 done
 $X/xpaset -p $T exit
-rm -rf "$W"
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

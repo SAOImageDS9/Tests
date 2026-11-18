@@ -6,21 +6,10 @@
 # Run from the top of the ds9 tree: Tests/hips/hipscube.sh
 # Starts and stops its own ds9s (title HiPSCube) and a local HTTP server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSCube
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
+ERRS=1
 LAB=$TOP/hips/LABHI_cube
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipscube.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-kw() { $X/xpaget $T fits header keyword $1; }
-shot() { rm -f $W/$1.fits; $X/xpaset -p $T save fits $W/$1.fits; }
 # the frame and order the values come from (mkcube.py's encoding), at
 # the image centre: "frame order"
 code() { shot c; "$PY" -I -c "
@@ -29,16 +18,6 @@ d = fits.getdata('$W/c.fits'); ny, nx = d.shape
 v = d[ny//2-20:ny//2+20, nx//2-20:nx//2+20]; v = v[np.isfinite(v)]
 v = int(np.median(np.floor(v)))
 print(v // 1000, (v % 1000) // 100)"; }
-start() {
-    rm -rf ~/$T.auto ~/$T.auto.dir
-    PATH="$X:$PATH" $X/ds9 -title $T "$@" >/dev/null 2>&1 &
-    for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-    echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
-}
-stop() {
-    $X/xpaset -p $T exit
-    for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
-}
 
 "$PY" -I $H/mkcube.py $W >/dev/null
 C=$W/cube
@@ -98,10 +77,7 @@ check "restored at slice 1" "$(kw HIPSSLIC)/$(code)" "1/0 2"
 
 echo "6. remote cubes fetch the frame's files"
 mkdir -p $W/www; ln -s $C $W/www/cube
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 $X/xpaset -p $T hips "$U/cube[norder=1]"
 check "remote first frame" "$(kw HIPSSLIC)/$(code)" "3/2 1"
 check "  fetched its _2 tiles" "$(grep -c '^200 /cube/Norder1/Dir0/Npix[0-9]*_2.fits' $W/log)" "48"
@@ -241,6 +217,4 @@ tcl 'set ::errs {}' >/dev/null
 
 check "no errors" "$(tcl 'set ::errs')" ""
 stop
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

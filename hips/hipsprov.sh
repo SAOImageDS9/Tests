@@ -8,18 +8,9 @@
 # Run from the top of the ds9 tree: Tests/hips/hipsprov.sh
 # Starts and stops its own ds9 (title HiPSProv).
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSProv
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsprov.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-hdr() { $X/xpaget $T fits header; }
 # hcount <pattern>: matching header lines
 hcount() { hdr | grep -c "$1"; }
 
@@ -86,6 +77,4 @@ for v in "" "[proj=MOL]"; do
 done
 
 $X/xpaset -p $T exit
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

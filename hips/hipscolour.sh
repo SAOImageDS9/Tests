@@ -4,22 +4,10 @@
 # the top of the ds9 tree: Tests/hips/hipscolour.sh
 # Starts and stops its own ds9s (title HiPSCol) and a local HTTP server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSCol
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipscol.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
+. Tests/hips/lib.sh
+ERRS=1
 ftype() { tcl '$current(frame) get type'; }
-nframes() { $X/xpaget $T frame all | wc -w | tr -d ' '; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-shot() { rm -f $W/$1.fits; $X/xpaset -p $T save fits $W/$1.fits; }
 cmp() { "$PY" -I -c "
 import sys, numpy as np; from astropy.io import fits
 a, b = fits.getdata(sys.argv[1]), fits.getdata(sys.argv[2])
@@ -27,18 +15,6 @@ if a.shape != b.shape: print(f'shape {a.shape} {b.shape}'); sys.exit()
 na, nb = np.isnan(a), np.isnan(b)
 if (na != nb).any(): print(f'NaN differ at {int((na != nb).sum())} pixels'); sys.exit()
 print('same' if np.array_equal(a[~na], b[~na]) else f'max diff {np.abs(a[~na]-b[~na]).max()}')" $W/$1.fits $W/$2.fits; }
-hdr() { $X/xpaget $T fits header; }
-lasterr() { tcl 'lindex $::errs end'; }
-start() {
-    rm -rf ~/$T.auto ~/$T.auto.dir
-    PATH="$X:$PATH" $X/ds9 -title $T "$@" >/dev/null 2>&1 &
-    for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-    echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
-}
-stop() {
-    $X/xpaset -p $T exit
-    for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
-}
 # channels <prefix>: save each channel of the current RGB frame
 channels() {
     for c in red green blue; do $X/xpaset -p $T rgb channel $c; shot $1$c; done
@@ -109,10 +85,7 @@ check "  blue" "$(cmp dblue cblue)" "same"
 
 echo "6. remote colour HiPS"
 mkdir -p $W/www; ln -s $W/pcol $W/www/pcol
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 $X/xpaset -p $T hips "$U/pcol[norder=0]"
 channels e
 check "remote: red" "$(cmp ered ref0r)" "same"
@@ -195,6 +168,5 @@ check "rewritten tiles decoded again, once each" "$(dec)" "$n $n"
 
 check "no unexpected errors" "$(tcl 'set ::errs')" ""
 stop
-[ -n "$KEEP" ] && cp -R $W/c.bck* "$KEEP"; rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+[ -n "$KEEP" ] && cp -R $W/c.bck* "$KEEP"
+finish

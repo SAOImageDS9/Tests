@@ -5,30 +5,12 @@
 # Starts and stops its own ds9s (title HiPSBck, so the recent list is
 # ~/.HiPSBck/recent.txt, which is removed at the end).
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSBck
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsbck.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
 
 # run Tcl in ds9 and print what it returns
-tcl() { echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q; }
-size()   { tcl '$current(frame) get fits size'; }
-frames() { $X/xpaget $T frame all | wc -w | tr -d ' '; }
 shot()   { $X/xpaset -p $T saveimage png $W/$1.png; shasum -a 256 $W/$1.png | cut -c1-16; }
-start() {
-    rm -rf ~/$T.auto ~/$T.auto.dir
-    PATH="$X:$PATH" $X/ds9 -title $T "$@" >/dev/null 2>&1 &
-    for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; perl -e 'select(undef,undef,undef,0.5)'; done
-}
-stop() {
-    $X/xpaset -p $T exit
-    for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; perl -e 'select(undef,undef,undef,0.5)'; done
-}
 
 rm -rf ~/.$T
 start
@@ -81,6 +63,4 @@ check "same picture" "$(shot after)" "$before"
 
 stop
 
-rm -rf "$W" ~/.$T ~/$T.auto ~/$T.auto.dir
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

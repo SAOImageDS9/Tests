@@ -6,25 +6,10 @@
 # Starts and stops its own ds9 (title HiPSID; its cache is ~/.HiPSID/hips,
 # removed at the end) and server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSID
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsid.XXXXXX")
+. Tests/hips/lib.sh
 CACHE=~/.$T/hips
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-mark() { : > $W/log; }
-reqs() { grep -c "${1:-.}" $W/log; }
-lasterr() { tcl 'lindex $::errs end'; }
 # wait until dialog w is up and waiting (DialogWait grabs it)
-opened() { for i in $(seq 1 40); do [ "$(tcl 'grab current')" = "$1" ] && break; nap; done; }
 
 mkdir -p $W/www
 "$PY" -I $H/mksynth.py $W/www >/dev/null
@@ -56,15 +41,10 @@ obs_title            = Registered, not served
 dataproduct_type     = image
 REG
 
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
+start
+errors
 tcl "set phpxopen(mocserver) $U/MocServer/query" >/dev/null
 
 echo "1. what is an ID"
@@ -208,7 +188,4 @@ check "  the properties are the HiPS's" "$(sed -n 's/^obs_title *= *//p' $CACHE/
 check "no errors" "$(tcl 'set ::errs')" ""
 $X/xpaset -p $T exit
 for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
-kill $SRV; wait $SRV 2>/dev/null
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

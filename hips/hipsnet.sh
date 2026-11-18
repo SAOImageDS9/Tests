@@ -5,32 +5,17 @@
 # Starts and stops its own ds9 (title HiPSNet; its cache is
 # ~/.HiPSNet/hips, removed at the end) and server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSNet
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
 ABELL=$TOP/hips/Abell1763_irac1
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsnet.XXXXXX")
 CACHE=~/.$T/hips
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 # requests since the last mark: reqs [pattern]
-mark() { : > $W/log; }
-reqs() { grep -c "${1:-.}" $W/log; }
 # save the current frame's image, to compare: shot <name>
-shot() { rm -f $W/$1.fits; $X/xpaset -p $T save fits $W/$1.fits; }
 same() { "$PY" -I -c "
 import sys, numpy as np; from astropy.io import fits
 a, b = fits.getdata(sys.argv[1]), fits.getdata(sys.argv[2])
 print('same' if a.shape == b.shape and np.array_equal(a, b, equal_nan=True) else f'differ {a.shape} {b.shape}')" $W/$1.fits $W/$2.fits; }
-lasterr() { tcl 'lindex $::errs end'; }
 
 # what the server offers
 mkdir -p $W/www
@@ -40,15 +25,10 @@ ln -s $ABELL $W/www/abell
 # a copy whose properties the test changes (new release)
 cp -R $W/www/synth_f32 $W/www/rel
 
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
+start
+errors
 
 echo "1. quick look: properties and one Allsky"
 mark
@@ -318,6 +298,4 @@ check "loaded with the server gone" "$(size)/$(lasterr)" "1280 1280/"
 
 check "no unexpected errors" "$(tcl 'set ::errs')" ""
 $X/xpaset -p $T exit
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

@@ -9,16 +9,12 @@
 # Needs the hpxtest conda env (PY). Starts its own ds9 (title HiPSPad*),
 # restarting it if a load kills it.
 
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
-TOP=$PWD
-H=$TOP/Tests/hips
-X=$TOP/bin
+# a new title each start (a crash leaves the old one's files); the
+# work directory is kept when a check fails
+T=HiPSPad
+KEEPFAIL=1
+. Tests/hips/lib.sh
 TILE=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS/Norder3/Dir0/Npix0.fits
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipspad.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 
 # --- test files ---
 mkdir -p $W/pad $W/out
@@ -29,7 +25,7 @@ head -c $((2880+1048576-40000)) $W/pad/f512_nopad.fits > $W/pad/trunc.fits
 
 start() {
   T=HiPSPad$$_$RANDOM; rm -rf ~/$T.auto ~/$T.auto.dir
-  PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 & pid=$!
+  PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 & pid=$!; DS9PID=$pid
   for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
   echo "source $H/padtest.tcl" | $X/xpaset $T tcl
 }
@@ -87,6 +83,4 @@ done
 
 $X/xpaset -p $T exit
 for i in $(seq 1 40); do alive || break; nap; done
-[ $fail = 0 ] && rm -rf "$W" || echo "work dir kept: $W"
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

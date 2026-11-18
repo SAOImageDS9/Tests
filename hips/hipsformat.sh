@@ -6,28 +6,14 @@
 # Starts and stops its own ds9 (title HiPSFormat; cache ~/.HiPSFormat,
 # removed at the end) and a local HTTP server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSFormat
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsformat.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-shot() { rm -f $W/$1.fits; $X/xpaset -p $T save fits $W/$1.fits; }
+. Tests/hips/lib.sh
 same() { "$PY" -I -c "
 import sys, numpy as np; from astropy.io import fits
 a, b = fits.getdata(sys.argv[1]), fits.getdata(sys.argv[2])
 print('same' if a.shape == b.shape and np.array_equal(a, b, equal_nan=True) else 'differ')" $W/$1.fits $W/$2.fits; }
 # where the values came from, as the header's HISTORY says
 src() { $X/xpaget $T fits header | grep -o 'from [A-Za-z]*[. ][a-z]*' | head -1; }
-lasterr() { tcl 'lindex $::errs end'; }
-mark() { : > $W/log; }
-opened() { for i in $(seq 1 40); do [ "$(tcl 'grab current')" = "$1" ] && break; nap; done; }
 
 "$PY" -I $H/mkpng.py $W >/dev/null
 # one HiPS with the same pixels as FITS, PNG and JPEG tiles
@@ -43,10 +29,8 @@ for d in prgb prgbl; do (cd $W/$d && tar cf - Norder*) | (cd $C && tar xf -); do
 sed 's/^hips_tile_format.*/hips_tile_format = png fits/' $W/pcol/properties > $C/properties
 grep -q '^dataproduct_subtype' $C/properties || echo 'dataproduct_subtype = color' >> $C/properties
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
+start
+errors
 
 echo "1. format= picks the tiles"
 $X/xpaset -p $T hips "$M[norder=0]"
@@ -92,10 +76,7 @@ check "format=png: colour, an RGB frame" "$(tcl '$current(frame) get type')/$($X
 
 echo "5. remote: only the tiles asked for"
 mkdir -p $W/www; ln -s $M $W/www/multi
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T frame new
 mark
@@ -186,6 +167,4 @@ check "the orders are those of the tiles chosen" \
 check "no errors" "$(tcl 'set ::errs')" ""
 $X/xpaset -p $T exit
 for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

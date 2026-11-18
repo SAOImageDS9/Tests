@@ -4,32 +4,12 @@
 # Run from the top of the ds9 tree: Tests/hips/hipsmoc.sh
 # Starts and stops its own ds9s (title HiPSMoc).
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSMoc
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
+ERRS=1
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
 ABELL=$TOP/hips/Abell1763_irac1
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsmoc.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
 aux() { tcl '$current(frame) get contour aux count'; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-start() {
-    rm -rf ~/$T.auto ~/$T.auto.dir
-    PATH="$X:$PATH" $X/ds9 -title $T "$@" >/dev/null 2>&1 &
-    for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-    echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
-}
-stop() {
-    $X/xpaset -p $T exit
-    for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
-}
 # outline <file> <frame>: save the aux contours, in the MOC's frame
 outline() { tcl "\$current(frame) contour save aux {$1} wcs $2" >/dev/null; }
 
@@ -186,6 +166,4 @@ print(sum('HiPS order 3' in str(c) for c in fits.getheader('$W/z.fits').get('HIS
 stop
 
 [ -n "$KEEP" ] && cp -R $W/b.bck $W/b.bck.dir $W/before.ctr $W/after.ctr "$KEEP"/
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

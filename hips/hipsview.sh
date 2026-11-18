@@ -11,25 +11,15 @@
 # Run from the top of the ds9 tree: Tests/hips/hipsview.sh
 # Starts and stops its own ds9 (title HiPSView).
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSView
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
 ABELL=$TOP/hips/Abell1763_irac1
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsview.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
 # near <name> <got "a b"> <want "a b"> <tol>: each pair of numbers within tol
 near() {
     if [ -n "$2" ] && "$PY" -I -c "import sys; g=[float(x) for x in sys.argv[1].split()]; w=[float(x) for x in sys.argv[2].split()]; t=float(sys.argv[3]); sys.exit(0 if len(g)==len(w) and all(min(abs(a-b),abs(abs(a-b)-360))<=t for a,b in zip(g,w)) else 1)" "$2" "$3" "$4"
     then ok "$1: $2"; else bad "$1: got '$2', want '$3' (to $4)"; fi
 }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 # the sky position at the image centre, in the survey's frame
 pan() { $X/xpaget $T pan wcs $1 degrees; }
 
@@ -55,9 +45,7 @@ for f in $FERMI/Norder*; do ln -s $f $W/equ/; done
 grep -v '^hips_pixel_cut\|^hips_frame' $FERMI/properties > $W/equ/properties
 echo "hips_frame = equatorial" >> $W/equ/properties
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
+start
 cat <<EOF | $X/xpaset $T tcl
 set ::errs {}
 proc Error {m} {lappend ::errs \$m}
@@ -159,6 +147,4 @@ check "no initial view (equatorial copy has one): name" "$(dialog "$W/equ" "" Hi
 check "no errors" "$(tcl 'set ::errs')" ""
 
 $X/xpaset -p $T exit
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

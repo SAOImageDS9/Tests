@@ -5,6 +5,9 @@
 #   Tests/hips.sh [suite ...]     e.g. Tests/hips.sh hipsref hipsid
 # Each suite's output goes to $OUT/<suite>.out (default a temporary
 # directory, kept); prints one line per suite and exits 1 if any failed.
+# The suites share their helpers, ds9/server start-up and cleanup
+# (Tests/hips/lib.sh): a suite that fails or is interrupted still stops
+# its ds9 and server and removes its work directory.
 # hipsstress and hipsexit also need openssl, for a throwaway certificate
 # for the local https server; hipsexit uses Guard Malloc when there is one.
 # Needs the hpxtest conda env (numpy, astropy, healpy, reproject, PIL;

@@ -7,19 +7,9 @@
 # Run from the top of the ds9 tree: Tests/hips/hipssamp.sh
 # Starts and stops its own hub, ds9 (title HiPSSamp) and HTTP server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSSamp
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipssamp.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 sset() { "$PY" -I $H/sampcall.py $W/lock "$NAME" set "$1"; }
 sget() { "$PY" -I $H/sampcall.py $W/lock "$NAME" get "$1"; }
 
@@ -40,14 +30,9 @@ obs_title            = Integer survey
 dataproduct_type     = image
 hips_service_url     = {URL}/synth_i16
 REG
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-SAMP_HUB=std-lockurl:file://$W/lock PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
+DS9ENV="SAMP_HUB=std-lockurl:file://$W/lock" start
 tcl "set phpxopen(mocserver) $U/MocServer/query" >/dev/null
 $X/xpaset -p $T samp connect
 for i in $(seq 1 30); do [ "$(tcl 'info exists samp(private)')" = 1 ] && break; nap; done
@@ -87,7 +72,4 @@ check "  and ds9 still answers" "$(sset "hips $FERMI[norder=0]"; sget hips)" "$F
 
 $X/xpaset -p $T exit
 for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
-kill $SRV $HUB; wait $SRV $HUB 2>/dev/null
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

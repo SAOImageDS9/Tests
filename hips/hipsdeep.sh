@@ -7,21 +7,9 @@
 # Run from the top of the ds9 tree: Tests/hips/hipsdeep.sh
 # Starts and stops its own ds9 (title HiPSDeep) and a local HTTP server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSDeep
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 ABELL=$TOP/hips/Abell1763_irac1
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsdeep.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-shot() { rm -f $W/$1.fits; $X/xpaset -p $T save fits $W/$1.fits; }
 # the window's order, from its HISTORY ("map" if not deep)
 order() { shot o; "$PY" -I -c "
 from astropy.io import fits
@@ -33,10 +21,8 @@ dcheck() { "$PY" -I $H/deepcheck.py "$1" $W/$2.fits; }
 idle() { for i in $(seq 1 ${1:-80}); do r=$(tcl 'list $hipsdeep(running) [llength $hipsdeep(queue)] [llength [array names hipsdeep timer,*]]'); [ "$r" = "0 0 0" ] && break; nap; done; }
 V="proj=TAN,lon0=92.7153,lat0=73.2733,fov=4"
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
+start
+errors
 
 echo "1. local: zooming in reads deeper tiles"
 $X/xpaset -p $T hips "${ABELL}[$V]"
@@ -79,10 +65,7 @@ check "all-sky (MOL) never goes deep" "$(order)" "map"
 
 echo "3. remote: the visible tiles are fetched in the background"
 mkdir -p $W/www; ln -s $ABELL $W/www/abell
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 $X/xpaset -p $T hips "$U/abell[$V]"
 check "starts at the quick look" "$(order)" "map"
 : > $W/log
@@ -212,6 +195,4 @@ case "$s" in *map*) bad "  a channel is not deep: $s";; *) ok "  deep in every c
 
 check "no errors" "$(tcl 'set ::errs')" ""
 $X/xpaset -p $T exit
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

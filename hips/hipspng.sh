@@ -4,21 +4,9 @@
 #   Tests/hips/hipspng.sh
 # Starts and stops its own ds9 (title HiPSPng) and a local HTTP server.
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSPng
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipspng.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
-size() { tcl '$current(frame) get fits size'; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-shot() { rm -f $W/$1.fits; $X/xpaset -p $T save fits $W/$1.fits; }
 # cmp <a> <b> <tol>: same NaNs, values within tol
 cmp() { "$PY" -I -c "
 import sys, numpy as np; from astropy.io import fits
@@ -28,15 +16,11 @@ na, nb = np.isnan(a), np.isnan(b)
 if (na != nb).any(): print(f'NaN differ at {int((na != nb).sum())} pixels'); sys.exit()
 d = np.abs(a[~na] - b[~na]).max() if (~na).any() else 0
 print('same' if d <= t else f'max diff {d}')" $W/$1.fits $W/$2.fits $3; }
-hdr() { $X/xpaget $T fits header; }
-lasterr() { tcl 'lindex $::errs end'; }
 
 "$PY" -I $H/mkpng.py $W >/dev/null
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
-echo 'set ::errs {}; proc Error {m} {lappend ::errs $m}' | $X/xpaset $T tcl
+start
+errors
 
 echo "1. PNG tiles = FITS tiles"
 for o in 0 1; do
@@ -107,10 +91,7 @@ check "XRISM order 3: its tile, not the reduced Allsky" "$(hdr | grep -c 'from p
 
 echo "6. remote PNG"
 mkdir -p $W/www; ln -s $W/ppng $W/www/ppng
-"$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=http://127.0.0.1:$(cat $W/port)
+serve
 $X/xpaset -p $T hips "$U/ppng[norder=0]"; shot r0
 $X/xpaset -p $T hips "$W/ppng[norder=0]"; shot p0
 check "remote PNG tiles = local" "$(cmp r0 p0 0)" "same"
@@ -122,6 +103,4 @@ kill $SRV; wait $SRV 2>/dev/null
 
 check "no unexpected errors" "$(tcl 'set ::errs')" ""
 $X/xpaset -p $T exit
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

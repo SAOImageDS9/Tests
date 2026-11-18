@@ -8,19 +8,10 @@
 # Run from the top of the ds9 tree: Tests/hips/hipsref.sh
 # Starts and stops its own ds9 (title HiPSRef).
 
-TOP=$PWD
-X=$TOP/bin
 T=HiPSRef
-H=$TOP/Tests/hips
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
 ABELL=$TOP/hips/Abell1763_irac1
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsref.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
-kw() { $X/xpaget $T fits header keyword $1; }
 # agree <label> <ref map> <min % same value> <min % same NaN mask> [ring]
 agree() {
     rm -f $W/d.fits; $X/xpaset -p $T save fits $W/d.fits
@@ -37,9 +28,7 @@ for k in 0 1 2 3; do "$PY" -I $H/mkref.py $FERMI $k $W/fermi$k.fits >/dev/null; 
 for k in 1 2 3; do "$PY" -I $H/mkref.py $ABELL $k $W/abell$k.fits >/dev/null; done
 for t in u8 f64; do "$PY" -I $H/mkref.py $W/synth_$t 1 $W/synth_$t.fits >/dev/null; done
 
-rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
+start
 
 echo "1. zenithal and conic windows (galactic Fermi map)"
 $X/xpaset -p $T hips "${FERMI}[norder=2,proj=tan,lon0=30,lat0=20,fov=40]"
@@ -109,6 +98,4 @@ agree "  against order 3" $W/abell3.fits 99.9 99.9
 
 $X/xpaset -p $T exit
 for i in $(seq 1 20); do [ "$($X/xpaaccess -n $T)" = 0 ] && break; nap; done
-rm -rf "$W" ~/.$T
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

@@ -9,20 +9,11 @@
 # Test HiPS are in hips/ (see hips/samples.md). Starts and stops its own
 # ds9 (title HiPSTest).
 
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
-TOP=$PWD
-H=$TOP/Tests/hips
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipstest.XXXXXX")
-X=$TOP/bin
 T=HiPSTest
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
 DSS=$TOP/hips/DSS2_red
 ABELL=$TOP/hips/Abell1763_irac1
-pass=0; fail=0
-
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-check() { if [ "$2" = "$3" ]; then ok "$1: $2"; else bad "$1: got '$2', want '$3'"; fi; }
 
 # --- references (independent of ds9's reader) ---
 for k in 0 1 2 3; do "$PY" -I $H/mkref.py $FERMI $k $W/fermi_o$k.fits >/dev/null; done
@@ -35,9 +26,7 @@ done
 "$PY" -I $H/mkref.py $W/synth_reduced 1 $W/synth_reduced_o1.fits allsky >/dev/null
 
 # --- ds9 ---
-rm -rf ~/$T.auto ~/$T.auto.dir
-PATH="$X:$PATH" $X/ds9 -title $T >/dev/null 2>&1 &
-for i in $(seq 1 40); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; perl -e 'select(undef,undef,undef,0.5)'; done
+start
 echo "source $H/hipsload.tcl" | $X/xpaset $T tcl
 
 # compare <name> <hips spec> <reference spec>
@@ -128,6 +117,4 @@ echo "set f [open $W/o.txt w]; puts \$f [HiPSOpenOrderLabel [lindex [HiPSOpenOrd
 check "dialog: a deep local order" "$(cat $W/o.txt)" "Order 12: NSIDE 65536, tiles, 196608 MB (too large)"
 
 $X/xpaset -p $T exit
-rm -rf "$W"
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish

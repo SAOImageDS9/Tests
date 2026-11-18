@@ -11,29 +11,22 @@
 # fail. Needs the hpxtest conda env (PY) and openssl.
 
 RUNS=${1:-3}
-PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
-TOP=$PWD; X=$TOP/bin; H=$TOP/Tests/hips
+# each run has a title of its own (T below)
+T=HiPSExit$$
+. Tests/hips/lib.sh
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-W=$(mktemp -d "${TMPDIR:-/tmp}/hipsexit.XXXXXX")
-pass=0; fail=0
-ok()  { pass=$((pass+1)); echo "  ok   $*"; }
-bad() { fail=$((fail+1)); echo "  FAIL $*"; }
-nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 
 openssl req -x509 -newkey rsa:2048 -nodes -days 2 -subj /CN=127.0.0.1 \
   -addext "subjectAltName=IP:127.0.0.1" -keyout $W/key.pem -out $W/cert.pem 2>/dev/null
 mkdir $W/www; ln -s $FERMI $W/www/f
-HIPSSERVE_CERT=$W/cert.pem HIPSSERVE_KEY=$W/key.pem "$PY" -I $H/hipsserve.py $W/www $W/port $W/log &
-SRV=$!
-for i in $(seq 1 30); do [ -s $W/port ] && break; nap; done
-U=https://127.0.0.1:$(cat $W/port)
+HIPSSERVE_CERT=$W/cert.pem HIPSSERVE_KEY=$W/key.pem serve
 GM=/usr/lib/libgmalloc.dylib
 [ -f $GM ] && MENV="DYLD_INSERT_LIBRARIES=$GM" || MENV=
 
 for run in $(seq 1 $RUNS); do
   T=HiPSExit$$_$run; rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
   env SSL_CERT_FILE=$W/cert.pem $MENV PATH="$X:$PATH" $X/ds9 -title $T >$W/ds9.$run.out 2>&1 &
-  PID=$!
+  PID=$!; DS9PID=$PID
   for i in $(seq 1 200); do [ "$($X/xpaaccess -n $T)" -ge 1 ] && break; nap; done
   # deep tiles come in the background, 0.2 s each (/slow/); exit while they do
   $X/xpaset -p $T hips "$U/slow/f[norder=1,proj=tan,lon0=$((run*40)),lat0=20,fov=20]"
@@ -53,7 +46,4 @@ for run in $(seq 1 $RUNS); do
   fi
   rm -rf ~/$T.auto ~/$T.auto.dir ~/.$T
 done
-kill $SRV
-rm -rf "$W"
-echo "PASSED $pass, FAILED $fail"
-[ $fail = 0 ]
+finish
