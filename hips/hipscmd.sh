@@ -40,6 +40,18 @@ case "$r" in *"Unable to load HiPS"*"can't read"*) ok "not a HiPS: $(echo "$r" |
 r=$($X/xpaset -p $T hips "${FERMI}[norder=7]" 2>&1)
 case "$r" in *"Unable to load HiPS"*"deeper than hips_order"*) ok "too deep: $(echo "$r" | head -c 100)";; *) bad "too deep: '$r'";; esac
 
+echo "HiPS options elsewhere are refused, not ignored"
+# err <spec>: the load's error, from Unable to load on
+err() { $X/xpaset -p $T fits "$1" 2>&1 | sed 's/.*Unable to load/Unable to load/; s/ (DS9:.*//; s|/[^ ]*/||'; }
+check "norder= on an image" "$(err "$W/img.fits[norder=2]")" "Unable to load fits  img.fits[norder=2]: norder= is for a HiPS (the hips command)"
+check "slice= on a HEALPix table" "$(err "$TOP/Tests/fits/wmap.fits[slice=2]")" "Unable to load fits  wmap.fits[slice=2]: slice= is for a HiPS (the hips command)"
+check "format= on a HEALPix table" "$(err "$TOP/Tests/fits/wmap.fits[format=png]")" "Unable to load fits  wmap.fits[format=png]: format= is for a HiPS (the hips command)"
+check "mocorder= on a map that isn't a MOC" "$(err "$TOP/Tests/fits/wmap.fits[mocorder=3]")" "Unable to load fits  wmap.fits[mocorder=3]: HEALPix: mocorder= is for a MOC (ORDERING = NUNIQ)"
+$X/xpaset -p $T fits "$TOP/hips/Abell1763_irac1/Moc.fits[mocorder=5]"
+check "  and on a MOC it still works" "$(size)" "160 160"
+r=$(echo '$current(frame) load hipz /nowhere' | $X/xpaset $T tcl 2>&1)
+case "$r" in *"load: unknown type"*) ok "frame load, a misspelled type: $(echo "$r" | sed 's/XPA.ERROR //; s/ (DS9:.*//')";; *) bad "frame load hipz: '$r'";; esac
+
 echo "the hips command's grammar"
 $X/xpaset -p $T hips "${FERMI}[norder=1]"
 check "xpaget hips" "$($X/xpaget $T hips)" "${FERMI}[norder=1]"
