@@ -23,7 +23,11 @@ on 127.0.0.1 that it writes to <portfile>. Each GET is logged to
   /down/MocServer/query
                  503 (a MocServer that is down)
 With HIPSSERVE_CERT and HIPSSERVE_KEY set (PEM files) it serves https
-instead. Runs until killed.
+instead. It speaks HTTP/1.1, keeping connections open as real servers
+do, and logs each new connection to <logfile>.conns; HIPSSERVE_CONNDELAY
+(seconds) delays each new connection, like a slow TLS handshake, and
+HIPSSERVE_IDLE (seconds) closes a connection idle that long, as real
+servers do. Runs until killed.
 """
 import os
 import re
@@ -45,9 +49,25 @@ def log(code, path):
             f.write(f"{code} {path}\n")
 
 
+conndelay = float(os.environ.get("HIPSSERVE_CONNDELAY", "0"))
+
+
 class Handler(BaseHTTPRequestHandler):
+    # keep-alive, as real servers (every answer has a Content-Length)
+    protocol_version = "HTTP/1.1"
+    # an idle connection is closed after this long (None: never)
+    timeout = float(os.environ["HIPSSERVE_IDLE"]) if os.environ.get("HIPSSERVE_IDLE") else None
+
     def log_message(self, *args):
         pass
+
+    def setup(self):
+        super().setup()
+        with lock:
+            with open(logfile + ".conns", "a") as f:
+                f.write("conn\n")
+        if conndelay > 0:
+            time.sleep(conndelay)
 
     def send(self, code, data=b""):
         self.send_response(code)

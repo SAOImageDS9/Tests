@@ -59,8 +59,12 @@ rm -rf $d/Norder1/Dir0
 
 echo "2. norder=K: tiles"
 mark
+: > $W/log.conns
 $X/xpaset -p $T hips "$U/fermi[norder=2]"
 check "192 tiles fetched (full-sky MOC)" "$(reqs '^200 /fermi/Norder2/Dir0/Npix')" "192"
+# each worker keeps its connection (keep-alive): at most one each
+nc=$(grep -c . $W/log.conns)
+if [ "$nc" -le "$(tcl 'set hipsnet(parallel)')" ]; then ok "  over $nc connections (keep-alive)"; else bad "  $nc connections for $(reqs .) requests"; fi
 check "Moc.fits fetched" "$(reqs '^200 /fermi/Moc.fits')" "1"
 check "order 2 Allsky asked for once (none there)" "$(reqs 'Norder2/Allsky.fits')" "1"
 shot remote2
@@ -302,6 +306,24 @@ nap
 t=$(tcl 'set t0 [clock milliseconds]; HiPSCancel; while {[llength $hipsnet(fetches)]} {vwait hipsnet(fetches)}; expr {[clock milliseconds]-$t0}')
 if [ "$t" -lt 600 ]; then ok "  cancel ends a 1 s request at once ($t ms)"; else bad "  cancel took $t ms"; fi
 tcl 'set ::errs {}' >/dev/null
+
+echo "15. a server that closes idle connections"
+# real servers close a kept-alive connection after a few idle seconds;
+# the workers' next requests must reconnect, not fail
+mkdir -p $W/idle; ln -s $FERMI $W/idle/fermi
+HIPSSERVE_IDLE=1 "$PY" -I $H/hipsserve.py $W/idle $W/iport $W/ilog &
+HUB=$!
+for i in $(seq 1 30); do [ -s $W/iport ] && break; nap; done
+IU=http://127.0.0.1:$(cat $W/iport)
+tcl 'set ::errs {}' >/dev/null
+$X/xpaset -p $T hips "$IU/fermi[norder=1]"
+c1=$(grep -c . $W/ilog.conns)
+sleep 3
+$X/xpaset -p $T hips "$IU/fermi[norder=2]"
+check "after they were closed: every tile" "$(grep -c '^200 /fermi/Norder2/Dir0/Npix' $W/ilog)/$(size)/$(lasterr)" "192/1280 1280/"
+c2=$(grep -c . $W/ilog.conns)
+if [ $c2 -gt $c1 ]; then ok "  over new connections ($c1, then $((c2-c1)) more)"; else bad "  no new connections ($c1, $c2)"; fi
+kill $HUB; wait $HUB 2>/dev/null; HUB=
 
 echo "10. offline: the cache serves"
 # (13 cleared the cache) fetch it, then stop the server
