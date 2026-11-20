@@ -82,7 +82,7 @@ rm -f foo.glyph.reg
 ds9 -title DS9Test -zscale fits/img.fits \
     -catalog import tsv aux/glyph.tsv -catalog symbol shape glyph \
     -catalog regions -regions system image -regions save foo.glyph.reg -exit
-n=`grep -c 'point=glyph.*doc/sun.png' foo.glyph.reg`
+n=`grep -c 'point=glyph {builtin://closed_circle_crosshairs.svg}' foo.glyph.reg`
 if [ "$n" = "5" ]; then echo "PASSED"; else echo "FAILED"; cat foo.glyph.reg; fi
 rm -f foo.glyph.reg
 echo ""
