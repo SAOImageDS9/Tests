@@ -13,8 +13,9 @@ baseline in the same format `../asdf.sh` uses.
 | `make_baselines.sh` | Loads each FITS twin into *today's* DS9 and records the probe as `<fixture>.xisf.sav`. Refused fixtures get the empty-frame probe. |
 | `crosscheck_sergio.py` | Runs a third-party reader, [sergio-dr/xisf](https://github.com/sergio-dr/xisf) (GPL-3.0), over every manifest entry. Point it at a checkout's `src/`. |
 | `check_container.py` | Check of fitsy's container reader (Phases 1–2): runs `utils/xisfdump` over every file and compares each image's verdict, stored bytes and **decoded** bytes with `read_xisf.py`. Refusals only `block()` can make (bad checksum, a subblock decoding to the wrong size) are checked there, and Phase 3 refusals are listed as DEFERRED. Expect 0 failures, 8 BLOCK, 1 DEFERRED. |
-| `check_fits.py` | Phase 3 check of `FitsXisf`, the FitsFile ds9 loads: runs `utils/xisfdump --fits` over every file and compares dimensions, BITPIX and every plane's samples with the twin, loads the other images of multi-image files by id/index, requires a message for every refusal, and checks the header carries no BZERO/BSCALE/BLANK or WCS card. Expect 0 failures. |
-| `MANIFEST.tsv` | `fixture  expect  bitpix  notes` for the 105 synthetic files. `expect` is `load`, `load-first` (multi-image: the twin is the default image) or `refuse`. |
+| `check_fits.py` | Phase 3 check of `FitsXisf`, the FitsFile ds9 loads: runs `utils/xisfdump --fits` over every file and compares dimensions, BITPIX and every plane's samples with the twin, loads the other images of multi-image files by id/index, requires a message for every refusal, checks the header carries no BZERO/BSCALE/BLANK, and compares its WCS with the twin's numerically (same sky position to 1e-9° on a pixel grid; no WCS where the twin has none). Expect 0 failures. |
+| `check_ds9_wcs.sh` | Phase 4: the reader's exact header cards plus the twin's pixels, loaded into ds9, must reproduce every `wcs/` fixture's probe baseline, so AST reads the reader's WCS as it reads the twin's. Run with `sh`. Expect 19 passed. |
+| `MANIFEST.tsv` | `fixture  expect  bitpix  notes` for the 107 synthetic files. `expect` is `load`, `load-first` (multi-image: the twin is the default image) or `refuse`. |
 | `real/MANIFEST.tsv`, `real/libxisf/`, `real/xisfits/` | 14 real files from two other projects' test suites: 11 written by PixInsight (1.8.6 and 1.8.9), 2 by libXISF. See below. |
 
 Families: `formats/` (every sampleFormat, non-finite values, bounds),
@@ -54,7 +55,9 @@ them. The conversions it bakes in are the ones `TODO_XISF.md` §2 commits to:
   when file and memory row orders differ. So a keyword-only solution
   (`wcs/keywords_only`) is put through PCL's `MirrorVertically` for the
   row-flipped twin: `CRPIX2 → H+1−CRPIX2`, and `CD1_2`/`CD2_2` (or `CDELT2`
-  with no CD/PC matrix) negated. **Caveat:** PCL's own `ComputeWCSKeywords`
+  with no PC matrix) negated, and the SIP terms (A/AP for odd q, B/BP for even q).
+  The generator re-derives each mirrored twin's sky positions with astropy before
+  writing it, so a wrong rule cannot produce a twin. **Caveat:** PCL's own `ComputeWCSKeywords`
   writes *bottom-up* keywords next to the properties in every solved XISF it
   saves, which contradicts that documented convention. PixInsight never reads
   them back, because the properties win. A DS9 reader must not use them when
@@ -70,10 +73,11 @@ is wrong. Fix it in the generator, regenerate, and rerun the baselines.
 
 ```bash
 ~/miniforge/envs/ds9asdf/bin/python make_xisf_fixtures.py
-~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 105/105
-~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 113/119
+~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 107/107
+~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 115/121
 make -C ../../utils/xisfdump && ~/miniforge/envs/ds9asdf/bin/python check_container.py ../../utils/xisfdump/xisfdump
 ~/miniforge/envs/ds9asdf/bin/python check_fits.py ../../utils/xisfdump/xisfdump
+PATH=<dir with ds9 + xpa tools>:$PATH sh check_ds9_wcs.sh
 PATH=<dir with ds9 + xpa tools>:$PATH sh make_baselines.sh  # AGENTS.md: macOS shim
 ```
 
@@ -133,7 +137,7 @@ A plate-solved PixInsight file is the most valuable thing still missing.
 
 ## Third-party cross-check
 
-`crosscheck_sergio.py` agrees with the manifest on 113 of 119 files, including
+`crosscheck_sergio.py` agrees with the manifest on 115 of 121 files, including
 every real file it can read. Each disagreement is explained:
 
 | Fixture | sergio-dr/xisf | Why |

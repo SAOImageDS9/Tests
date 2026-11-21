@@ -541,6 +541,19 @@ def header():
             notes="empty vector/matrix = inline block with no content (spec "
                   "11.1.8); libXISF writes one and crashed sergio-dr/xisf; "
                   "plus an inline ICCProfile, as PixInsight writes")
+    longname = "M31 (Andromeda) 'the great nebula' " * 9      # ~330 chars
+    fixture("header/long_values.xisf",
+            [Image(gray("UInt16"), "UInt16", children=[
+                prop("Observation:Object:Name", "String", text=longname),
+                prop("Instrument:Camera:Name", "String", text="C" * 500),
+                prop("Instrument:ExposureTime", "Float32", "1" * 300),
+                keyword("NOTE", "'" + "v" * 120 + "'", "c" * 200),
+                keyword("HISTORY", "", "h" * 300)],
+                   extra={"imageType": "L" * 400})],
+            notes="property strings, a keyword value and comments far past "
+                  "80 columns, quotes inside a string: every card must be "
+                  "truncated at column 80, never overflow it",
+            twin_cards=[])
     fixture("header/offset_pedestal.xisf",
             [Image(gray("UInt16"), "UInt16", extra={"offset": "100"})],
             notes="offset is recorded, pixels are not changed")
@@ -555,20 +568,50 @@ PROJ = {"Gnomonic": "TAN", "Stereographic": "STG", "ZenithalEqualArea": "ZEA",
 
 def mirror_vertically(cards):
     """PCL's WCSKeywords::MirrorVertically, for a keyword list whose rows
-    are about to be stored in reverse order."""
-    names = {k for k, _ in cards}
-    has_matrix = any(n.startswith(("CD1_", "CD2_", "PC1_", "PC2_"))
-                     for n in names)
+    are about to be stored in reverse order: CRPIX2 -> H+1-CRPIX2; CD1_2,
+    CD2_2, PC1_2, PC2_2 negated; CDELT2 negated when there is no PC matrix;
+    SIP A_p_q/AP_p_q negated for odd q, B_p_q/BP_p_q for even q."""
+    has_pc = any(k.startswith(("PC1_", "PC2_")) for k, _ in cards)
     out = []
     for k, v in cards:
+        sip = k.split("_")
         if k == "CRPIX2":
             v = H + 1 - v
         elif k in ("CD1_2", "CD2_2", "PC1_2", "PC2_2"):
             v = -v
-        elif k == "CDELT2" and not has_matrix:
+        elif k == "CDELT2" and not has_pc:
             v = -v
+        elif len(sip) == 3 and sip[0] in ("A", "AP", "B", "BP") and \
+                sip[1].isdigit() and sip[2].isdigit():
+            odd = int(sip[2]) % 2 == 1
+            if (sip[0] in ("A", "AP")) == odd:
+                v = -v
         out.append((k, v))
+    verify_mirror(cards, out)
     return out
+
+
+def verify_mirror(orig, mirrored):
+    """Independent check of the mirror rule, which the reader implements
+    the same way: the keywords read top down (row 1 = XISF row 0) and the
+    mirrored ones read bottom up must give every pixel the same sky
+    position. Raises if not, so a wrong rule cannot produce a twin."""
+    import warnings
+    from astropy.wcs import WCS
+    def wcs(cards):
+        h = fits.Header()
+        for k, v in cards:
+            h[k] = v
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            return WCS(h)
+    a, b = wcs(orig), wcs(mirrored)
+    j, i = np.mgrid[0:H:7, 0:W:9]
+    i, j = i.ravel(), j.ravel()
+    pa = a.all_pix2world(np.c_[i + 1, j + 1], 1)
+    pb = b.all_pix2world(np.c_[i + 1, H - j], 1)
+    err = np.abs(pa - pb).max()
+    assert err < 1e-10, f"mirror rule moves the sky by {err} deg"
 
 
 def solution(proj="Gnomonic", crval=(10.6847, 41.2690), ref=(30.25, 20.75),
@@ -662,6 +705,32 @@ def wcs():
                  ("CRVAL1", 200.0), ("CRVAL2", -30.0),
                  ("CRPIX1", 1.0), ("CRPIX2", 1.0),
                  ("CDELT1", -0.001), ("CDELT2", 0.001)]))
+    t = np.radians(25.0)
+    s1 = 2.0 / 3600
+    sip = [("CTYPE1", "RA---TAN-SIP"), ("CTYPE2", "DEC--TAN-SIP"),
+           ("CRVAL1", 83.82), ("CRVAL2", -5.39),
+           ("CRPIX1", 20.5), ("CRPIX2", 10.25),
+           ("CD1_1", float(-s1 * np.cos(t))), ("CD1_2", float(s1 * np.sin(t))),
+           ("CD2_1", float(s1 * np.sin(t))), ("CD2_2", float(s1 * np.cos(t))),
+           ("A_ORDER", 3), ("B_ORDER", 3),
+           ("A_0_2", 1e-5), ("A_1_1", 2e-5), ("A_2_0", -1.5e-5),
+           ("A_0_3", 3e-7), ("A_1_2", -2e-7), ("A_2_1", 4e-7), ("A_3_0", 1e-7),
+           ("B_0_2", 3e-6), ("B_1_1", -2e-5), ("B_2_0", 1e-5),
+           ("B_0_3", -1e-7), ("B_1_2", 5e-7), ("B_2_1", -3e-7), ("B_3_0", 2e-7)]
+    def fmt(v):                     # FITS value syntax, not Python's repr
+        if isinstance(v, str):
+            return f"'{v}'"
+        if isinstance(v, int):
+            return str(v)
+        return f"{float(v):.17G}"
+    fixture("wcs/keywords_only_sip.xisf",
+            [Image(gray("Float32"), "Float32", bounds="0:1",
+                   children=[keyword(k, fmt(v)) for k, v in sip])],
+            notes="keyword-only TAN-SIP with a rotated CD matrix and every "
+                  "SIP term to order 3: exercises each sign rule of PCL's "
+                  "MirrorVertically (the twin's mirror is verified "
+                  "independently with astropy when it is generated)",
+            twin_cards=mirror_vertically(sip))
     p, cards = solution(prefix="PCL:AstrometricSolution:", version=None)
     fixture("wcs/legacy_pcl_prefix.xisf",
             [Image(gray("Float32"), "Float32", bounds="0:1", children=p)],

@@ -14,7 +14,10 @@ For every fixture in MANIFEST.tsv and real/MANIFEST.tsv, runs
   * the other images of a multi-image file load by id or index and match
     their own twins (multi_three__<id>.fits, <name>.<index>.fits);
   * no header carries a card that would reinterpret the pixels (BZERO,
-    BSCALE, BLANK) or a WCS card (Phase 4 has not decided how to read them);
+    BSCALE, BLANK);
+  * the header's WCS and the twin's agree: the same sky position, to 1e-9
+    degrees, at a grid of pixels over the whole image (Phase 4) - and a
+    twin with no celestial WCS means the header must have none;
   * the header keeps the keywords it should, for the fixtures built to
     test that.
 
@@ -24,16 +27,19 @@ import pathlib
 import subprocess
 import sys
 
+import warnings
+
 import numpy as np
 from astropy.io import fits
+from astropy.wcs import WCS, FITSFixedWarning
 
 HERE = pathlib.Path(__file__).resolve().parent
 
 DTYPE = {"8": "u1", "-16": "<u2", "64": "<i8", "-32": "<f4", "-64": "<f8"}
 
 # cards no loaded header may have
-FORBIDDEN = ("BZERO", "BSCALE", "BLANK", "CTYPE1", "CTYPE2", "CRPIX1",
-             "CRPIX2", "CRVAL1", "CD1_1", "CDELT1", "PC1_1")
+FORBIDDEN = ("BZERO", "BSCALE", "BLANK")
+WCS_TOL = 1e-9          # degrees
 
 # keywords particular fixtures must carry: name -> value text it contains
 EXPECT_CARDS = {
@@ -81,6 +87,31 @@ def card_value(cards, name):
     return None
 
 
+def celestial(header):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", FITSFixedWarning)
+        w = WCS(header, naxis=2)
+    return w if w.has_celestial else None
+
+
+def compare_wcs(cards, twin_header, w, h):
+    head = fits.Header.fromstring("".join(c.ljust(80)[:80] for c in cards))
+    mine, want = celestial(head), celestial(twin_header)
+    if want is None:
+        return ["header has a WCS, twin has none"] if mine else []
+    if mine is None:
+        return ["header has no WCS, twin has one"]
+    xs = np.linspace(1, w, 7)
+    ys = np.linspace(1, h, 5)
+    pix = np.array([(x, y) for x in xs for y in ys])
+    a = mine.all_pix2world(pix, 1)
+    b = want.all_pix2world(pix, 1)
+    dra = (a[:, 0] - b[:, 0] + 180) % 360 - 180
+    err = np.max(np.hypot(dra * np.cos(np.radians(b[:, 1])), a[:, 1] - b[:, 1]))
+    return [f"WCS differs from the twin by {err:.3g} deg"] if err > WCS_TOL \
+        else []
+
+
 def compare(rel, d, twin_path, bitpix):
     problems = []
     if "crash" in d:
@@ -104,6 +135,7 @@ def compare(rel, d, twin_path, bitpix):
     for name in FORBIDDEN:
         if card_value(d["cards"], name) is not None:
             problems.append(f"header has {name}")
+    problems += compare_wcs(d["cards"], fits.getheader(twin_path), w, h)
     for name, text in EXPECT_CARDS.get(rel, {}).items():
         v = card_value(d["cards"], name)
         if v is None or text not in v:

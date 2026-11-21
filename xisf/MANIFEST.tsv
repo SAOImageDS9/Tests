@@ -65,6 +65,7 @@ header/signed.xisf	load	-16	detached <Signature> after </xisf>: two top-level el
 header/comment_and_foreign.xisf	load	-16	XML comment, foreign-namespace and unknown elements and attributes are ignored; orientation is a display hint only
 header/with_thumbnail.xisf	load	-16	a <Thumbnail> child is not an image to load; its bogus location must not break the parent
 header/empty_vector_property.xisf	load	-16	empty vector/matrix = inline block with no content (spec 11.1.8); libXISF writes one and crashed sergio-dr/xisf; plus an inline ICCProfile, as PixInsight writes
+header/long_values.xisf	load	-16	property strings, a keyword value and comments far past 80 columns, quotes inside a string: every card must be truncated at column 80, never overflow it
 header/offset_pedestal.xisf	load	-16	offset is recorded, pixels are not changed
 wcs/layer1_tan.xisf	load	-32	Gnomonic -> TAN; 10"/px so the projection matters
 wcs/layer1_stg.xisf	load	-32	Stereographic -> STG; 10"/px so the projection matters
@@ -80,6 +81,7 @@ wcs/layer3_incomplete.xisf	load	-32	an incomplete layer 3 falls back to layer 1
 wcs/layer3_unknown_basis.xisf	load	-32	unknown BasisFunction: layer 3 unavailable, layer 1 stands
 wcs/properties_beat_keywords.xisf	load	-32	stale WCS FITSKeywords + a solution: the solution wins
 wcs/keywords_only.xisf	load	-32	WCS from FITSKeywords alone. Per PCL, keywords refer to rows in storage order (row 1 = top), so the twin's cards are MirrorVertically'd: CRPIX2 1 -> H, CDELT2 negated
+wcs/keywords_only_sip.xisf	load	-32	keyword-only TAN-SIP with a rotated CD matrix and every SIP term to order 3: exercises each sign rule of PCL's MirrorVertically (the twin's mirror is verified independently with astropy when it is generated)
 wcs/legacy_pcl_prefix.xisf	load	-32	pre-standard PixInsight block (PCL:AstrometricSolution:*, no Version); PCL still reads it, same semantics
 wcs/solution_version_2.xisf	load	-32	AstrometricSolution:Version major != 1: PCL ignores the whole block. Image, no WCS
 wcs/pcl_shaped.xisf	load	-32	what PCL 2.15 writes: the full layer 1 set incl. native and pole coordinates, plus the WCS keywords ComputeWCSKeywords emits (bottom-up: they equal the twin's cards). Properties win, so the answer is the same either way
