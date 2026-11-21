@@ -141,18 +141,26 @@ class Block:
 
     def __init__(self, raw, codec=None, itemsize=1, shuffled=False,
                  subblock=None, raw_subblocks=(), checksum=None,
-                 bad_checksum=False, lie_size=0):
+                 bad_checksum=False, lie_size=0, split=None,
+                 declared=None):
         self.attrs = {}
         stored = raw
         if codec:
             data = shuffle(raw, itemsize) if shuffled else raw
             if subblock:
                 parts, sizes = [], []
-                for k, i in enumerate(range(0, len(data), subblock)):
-                    chunk = data[i:i + subblock]
+                # split: explicit chunk sizes instead of a fixed stride;
+                # declared: uncompressed sizes to write in place of the
+                # true ones (a lie the reader must catch per subblock)
+                cuts = split or [subblock] * (-(-len(data) // subblock))
+                i = 0
+                for k, n in enumerate(cuts):
+                    chunk = data[i:i + n]
+                    i += n
                     c = chunk if k in raw_subblocks else compress_one(codec, chunk)
                     parts.append(c)
-                    sizes.append(f"{len(c)},{len(chunk)}")
+                    u = declared[k] if declared else len(chunk)
+                    sizes.append(f"{len(c)},{u}")
                 stored = b"".join(parts)
                 self.attrs["subblocks"] = ":".join(sizes)
             else:
@@ -715,6 +723,25 @@ def malformed():
                    block_kw=dict(codec="zstd", lie_size=2))],
             expect="refuse",
             notes="declared uncompressed size != actual: invalid block")
+    for codec in ("zlib", "lz4", "zstd"):
+        fixture(f"malformed/subblock_size_lie_{codec}.xisf",
+                [Image(gray("UInt16"), "UInt16",
+                       block_kw=dict(codec=codec, subblock=1,
+                                     split=[3000, 3144],
+                                     declared=[3072, 3072]))],
+                expect="refuse",
+                notes="subblocks really hold 3000+3144 bytes but declare "
+                      "3072+3072: the total matches the geometry, so only "
+                      "a per-subblock size check catches it")
+        fixture(f"malformed/subblock_short_{codec}.xisf",
+                [Image(gray("UInt16"), "UInt16",
+                       block_kw=dict(codec=codec, subblock=1,
+                                     split=[3000, 3000],
+                                     declared=[3072, 3072]))],
+                expect="refuse",
+                notes="both subblocks decode to 3000 bytes but declare "
+                      "3072: nothing overflows, so only checking each "
+                      "decoded size against its declaration catches it")
     fixture("malformed/unknown_codec.xisf",
             [Image(gray("UInt16"), "UInt16",
                    extra={"compression": "brotli:6144"})],

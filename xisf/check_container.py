@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check fitsy's XISF container reader against the fixtures (TODO_XISF.md Phase 1).
+"""Check fitsy's XISF container reader against the fixtures (TODO_XISF.md Phases 1-2).
 
     check_container.py <path to utils/xisfdump/xisfdump>
 
@@ -14,7 +14,11 @@ the first:
     (decompression, checksums, sample values), which the container reader
     is not expected to catch yet and which is listed as DEFERRED;
   * the stored bytes the reader returns are exactly the block's bytes;
-  * for a block that needs no decoding, block() returns those same bytes;
+  * the decoded bytes block() returns (checksum verified, decompressed,
+    unshuffled) are exactly read_xisf.py's, for every image it loads;
+  * a block whose checksum is wrong, or whose subblocks decode to other than
+    their declared sizes, is refused by block(), even though the header
+    alone cannot know that;
   * the manifest's expectation for image 0 is consistent with all of that.
 
 Exit status is the number of failures.
@@ -29,9 +33,11 @@ import read_xisf as rx
 
 HERE = pathlib.Path(__file__).resolve().parent
 
-# read_xisf.py refusals that are Phase 2 (codecs, checksums) or Phase 3
-# (sample values) work, not the container's.
-DEFERRED = ("checksum mismatch", "UInt64 value above INT64_MAX")
+# read_xisf.py refusals that only block() can make - the header cannot know
+# a digest is wrong, or that a subblock decodes to other than its declared
+# size - and those that are Phase 3's (sample values).
+BLOCK_LEVEL = ("checksum mismatch", "zlib:", "lz4:", "lz4hc:", "zstd:")
+DEFERRED = ("UInt64 value above INT64_MAX",)
 
 
 def fnv1a64(data):
@@ -117,6 +123,13 @@ def main(tool):
                 if py is None and not ok:
                     problems.append(f"image {i}: reader {status!r}, "
                                     "reference loads it")
+                elif py is not None and ok and py.startswith(BLOCK_LEVEL):
+                    blk = d["block"].get(i, "")
+                    if not blk.startswith("error"):
+                        problems.append(f"image {i}: block() returned "
+                                        f"{blk!r}, reference: {py}")
+                    deferred.append(f"{rel} image {i}: refused by block(): "
+                                    f"{blk[6:]}")
                 elif py is not None and ok:
                     if py.startswith(DEFERRED):
                         deferred.append(f"{rel} image {i}: {py}")
@@ -129,11 +142,10 @@ def main(tool):
                     if d["stored"].get(i) != want:
                         problems.append(f"image {i}: stored "
                                         f"{d['stored'].get(i)} != {want}")
-                    plain = (not el.get("compression") and
-                             not el.get("checksum") and
-                             (el.find(rx.NS + "Data") is None or
-                              not el.find(rx.NS + "Data").get("compression")))
-                    if plain and d["block"].get(i) != want:
+                if ok and py is None:
+                    dec = rx.block(raw, el, el)
+                    want = f"{len(dec)} {fnv1a64(dec)}"
+                    if d["block"].get(i) != want:
                         problems.append(f"image {i}: block "
                                         f"{d['block'].get(i)} != {want}")
             first = d["images"].get(0)
@@ -146,11 +158,13 @@ def main(tool):
         if problems:
             fails += [f"{rel}: {p}" for p in problems]
     for x in deferred:
-        print(f"DEFERRED {x}")
+        print(("BLOCK    " if "refused by block()" in x else "DEFERRED ") + x)
     for f in fails:
         print(f"FAIL     {f}")
+    nb = sum("refused by block()" in x for x in deferred)
     print(f"{len(rows)} files, {checked} images: {len(fails)} failures, "
-          f"{len(deferred)} deferred to later phases")
+          f"{nb} refused by block(), {len(deferred) - nb} deferred to "
+          "later phases")
     return len(fails)
 
 

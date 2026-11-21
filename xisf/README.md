@@ -12,8 +12,8 @@ baseline in the same format `../asdf.sh` uses.
 | `read_xisf.py` | An independent minimal decoder, sharing no code with the generator. `check` decodes every manifest entry and compares it with its twin, or confirms it is refused. `twin` writes a twin for a file we did not generate. `dump` lists images. |
 | `make_baselines.sh` | Loads each FITS twin into *today's* DS9 and records the probe as `<fixture>.xisf.sav`. Refused fixtures get the empty-frame probe. |
 | `crosscheck_sergio.py` | Runs a third-party reader, [sergio-dr/xisf](https://github.com/sergio-dr/xisf) (GPL-3.0), over every manifest entry. Point it at a checkout's `src/`. |
-| `check_container.py` | Phase 1 check of fitsy's container reader: runs `utils/xisfdump` over every file and compares each image's verdict and stored bytes with `read_xisf.py`. Refusals that belong to later phases are listed as DEFERRED. |
-| `MANIFEST.tsv` | `fixture  expect  bitpix  notes` for the 99 synthetic files. `expect` is `load`, `load-first` (multi-image: the twin is the default image) or `refuse`. |
+| `check_container.py` | Check of fitsy's container reader (Phases 1–2): runs `utils/xisfdump` over every file and compares each image's verdict, stored bytes and **decoded** bytes with `read_xisf.py`. Refusals only `block()` can make (bad checksum, a subblock decoding to the wrong size) are checked there, and Phase 3 refusals are listed as DEFERRED. Expect 0 failures, 8 BLOCK, 1 DEFERRED. |
+| `MANIFEST.tsv` | `fixture  expect  bitpix  notes` for the 105 synthetic files. `expect` is `load`, `load-first` (multi-image: the twin is the default image) or `refuse`. |
 | `real/MANIFEST.tsv`, `real/libxisf/`, `real/xisfits/` | 14 real files from two other projects' test suites: 11 written by PixInsight (1.8.6 and 1.8.9), 2 by libXISF. See below. |
 
 Families: `formats/` (every sampleFormat, non-finite values, bounds),
@@ -69,8 +69,8 @@ is wrong. Fix it in the generator, regenerate, and rerun the baselines.
 
 ```bash
 ~/miniforge/envs/ds9asdf/bin/python make_xisf_fixtures.py
-~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 99/99
-~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 107/113
+~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 105/105
+~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 113/119
 make -C ../../utils/xisfdump && ~/miniforge/envs/ds9asdf/bin/python check_container.py ../../utils/xisfdump/xisfdump
 PATH=<dir with ds9 + xpa tools>:$PATH sh make_baselines.sh  # AGENTS.md: macOS shim
 ```
@@ -131,7 +131,7 @@ A plate-solved PixInsight file is the most valuable thing still missing.
 
 ## Third-party cross-check
 
-`crosscheck_sergio.py` agrees with the manifest on 107 of 113 files, including
+`crosscheck_sergio.py` agrees with the manifest on 113 of 119 files, including
 every real file it can read. Each disagreement is explained:
 
 | Fixture | sergio-dr/xisf | Why |
@@ -147,6 +147,12 @@ every real file it can read. Each disagreement is explained:
   codec, checksum, geometry, version). Tolerate writer slips that do not:
   nonzero reserved bytes, a missing `encoding=`, and a float image without
   `bounds` (it only sets the display range, which DS9 computes anyway).
+- **Short subblocks need their own fixtures.** If a subblock's declared size is
+  larger than its real one, and the total still matches the geometry, some other
+  subblock must overflow. Every codec rejects an overflow on capacity alone, which
+  hides a reader that never checks each decoded size. `malformed/subblock_short_*`
+  make every subblock short instead (the data is short overall). Without them, a
+  reader with that check removed passed every test.
 - **Check the codec name before the raw-subblock rule.** A block with no
   `subblocks` attribute and an unknown codec, whose stored size happens to
   equal its declared size, looks exactly like a raw subblock.

@@ -93,6 +93,12 @@ malformed/wrong_namespace.xisf	refuse		root is not in the XISF namespace
 header/reserved_nonzero.xisf	load	-16	reserved bytes 12-15 nonzero: 'shall be zero' binds writers; readers tolerate it
 header/xml_decl_no_encoding.xisf	load	-16	libXISF omits encoding=UTF-8 (spec says must begin with it); real files do this, so tolerate
 malformed/size_lie.xisf	refuse		declared uncompressed size != actual: invalid block
+malformed/subblock_size_lie_zlib.xisf	refuse		subblocks really hold 3000+3144 bytes but declare 3072+3072: the total matches the geometry, so only a per-subblock size check catches it
+malformed/subblock_short_zlib.xisf	refuse		both subblocks decode to 3000 bytes but declare 3072: nothing overflows, so only checking each decoded size against its declaration catches it
+malformed/subblock_size_lie_lz4.xisf	refuse		subblocks really hold 3000+3144 bytes but declare 3072+3072: the total matches the geometry, so only a per-subblock size check catches it
+malformed/subblock_short_lz4.xisf	refuse		both subblocks decode to 3000 bytes but declare 3072: nothing overflows, so only checking each decoded size against its declaration catches it
+malformed/subblock_size_lie_zstd.xisf	refuse		subblocks really hold 3000+3144 bytes but declare 3072+3072: the total matches the geometry, so only a per-subblock size check catches it
+malformed/subblock_short_zstd.xisf	refuse		both subblocks decode to 3000 bytes but declare 3072: nothing overflows, so only checking each decoded size against its declaration catches it
 malformed/unknown_codec.xisf	refuse		unknown codec: image unavailable. Stored size == declared size, so a reader that applies the raw-subblock rule before checking the codec name loads it by mistake
 malformed/geometry_zero.xisf	refuse		zero dimension
 malformed/geometry_mismatch.xisf	refuse		geometry needs 100x more bytes than the block holds
