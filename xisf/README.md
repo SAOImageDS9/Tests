@@ -13,6 +13,7 @@ baseline in the same format `../asdf.sh` uses.
 | `make_baselines.sh` | Loads each FITS twin into *today's* DS9 and records the probe as `<fixture>.xisf.sav`. Refused fixtures get the empty-frame probe. |
 | `crosscheck_sergio.py` | Runs a third-party reader, [sergio-dr/xisf](https://github.com/sergio-dr/xisf) (GPL-3.0), over every manifest entry. Point it at a checkout's `src/`. |
 | `check_container.py` | Check of fitsy's container reader (Phases 1–2): runs `utils/xisfdump` over every file and compares each image's verdict, stored bytes and **decoded** bytes with `read_xisf.py`. Refusals only `block()` can make (bad checksum, a subblock decoding to the wrong size) are checked there, and Phase 3 refusals are listed as DEFERRED. Expect 0 failures, 8 BLOCK, 1 DEFERRED. |
+| `check_fits.py` | Phase 3 check of `FitsXisf`, the FitsFile ds9 loads: runs `utils/xisfdump --fits` over every file and compares dimensions, BITPIX and every plane's samples with the twin, loads the other images of multi-image files by id/index, requires a message for every refusal, and checks the header carries no BZERO/BSCALE/BLANK or WCS card. Expect 0 failures. |
 | `MANIFEST.tsv` | `fixture  expect  bitpix  notes` for the 105 synthetic files. `expect` is `load`, `load-first` (multi-image: the twin is the default image) or `refuse`. |
 | `real/MANIFEST.tsv`, `real/libxisf/`, `real/xisfits/` | 14 real files from two other projects' test suites: 11 written by PixInsight (1.8.6 and 1.8.9), 2 by libXISF. See below. |
 
@@ -72,6 +73,7 @@ is wrong. Fix it in the generator, regenerate, and rerun the baselines.
 ~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 105/105
 ~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 113/119
 make -C ../../utils/xisfdump && ~/miniforge/envs/ds9asdf/bin/python check_container.py ../../utils/xisfdump/xisfdump
+~/miniforge/envs/ds9asdf/bin/python check_fits.py ../../utils/xisfdump/xisfdump
 PATH=<dir with ds9 + xpa tools>:$PATH sh make_baselines.sh  # AGENTS.md: macOS shim
 ```
 

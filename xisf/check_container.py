@@ -35,7 +35,8 @@ HERE = pathlib.Path(__file__).resolve().parent
 
 # read_xisf.py refusals that only block() can make - the header cannot know
 # a digest is wrong, or that a subblock decodes to other than its declared
-# size - and those that are Phase 3's (sample values).
+# size - and those that are FitsXisf's (sample values; check_fits.py checks
+# that it refuses them).
 BLOCK_LEVEL = ("checksum mismatch", "zlib:", "lz4:", "lz4hc:", "zstd:")
 DEFERRED = ("UInt64 value above INT64_MAX",)
 
