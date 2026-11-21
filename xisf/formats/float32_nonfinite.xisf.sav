@@ -1,0 +1,7 @@
+size 64 48
+bitpix -32
+blank none
+value 1 1 nan
+value 32 24 inf
+value 64 48 inf
+wcs 32 24 none

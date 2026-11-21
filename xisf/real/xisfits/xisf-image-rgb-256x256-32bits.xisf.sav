@@ -1,0 +1,7 @@
+size 256 256
+bitpix 64
+blank none
+value 1 1 4294967295
+value 128 128 4294967295
+value 256 256 4294967295
+wcs 128 128 none

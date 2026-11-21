@@ -1,0 +1,7 @@
+size 5 7
+bitpix -16
+blank none
+value 1 1 30
+value 2 3 21
+value 5 7 4
+wcs 2 3 none

@@ -1,0 +1,15 @@
+# fixture	expect	bitpix	notes
+real/libxisf/test.xisf	load	-16	PixInsight 1.8.9 (INDI capture): embedded base64, Thumbnail attachment past EOF, stale BITPIX/BZERO=32768/DATAMIN cards, ROWORDER='TOP-DOWN'
+real/libxisf/test_lz4.xisf	load	-16	as test.xisf, embedded <Data compression=lz4+sh>; pixels identical to test.xisf
+real/libxisf/subblock-lz4hc-sh.xisf	load	-32	PixInsight: 1449x1449 Float32 lz4hc+sh, three subblocks, the first stored raw (c == u)
+real/libxisf/littleendian.xisf	load-first	-16	libXISF: two images (zlib; lz4+sh), pixels = storage index; no encoding= in the XML declaration
+real/libxisf/bigendian.xisf	load-first	-16	as littleendian.xisf with byteOrder=big on images and properties
+real/xisfits/xisf-image-gray-256x256-8bits.xisf	load	8	PixInsight 1.8.6: UInt8 attached, 4096-aligned
+real/xisfits/xisf-image-rgb-256x256-8bits-compressed.xisf	load	8	PixInsight 1.8.6: embedded zlib on <Data> (named rgb- upstream, but is Gray)
+real/xisfits/xisf-image-gray-256x256-16bits-zlib.xisf	load	-16	PixInsight: UInt16 zlib
+real/xisfits/xisf-image-gray-256x256-16bits-zlib_sh.xisf	load	-16	PixInsight: UInt16 zlib+sh
+real/xisfits/xisf-image-gray-256x256-float-32bits.xisf	load	-32	PixInsight: 255x255 Float32 (odd size)
+real/xisfits/xisf-image-gray-256x256-float-64bits.xisf	load	-64	PixInsight: 255x255 Float64
+real/xisfits/xisf-image-rgb-256x256-8bits.xisf	load	8	PixInsight 1.8.6 RGB UInt8, no pixelStorage (= Planar), inline ICCProfile
+real/xisfits/xisf-image-rgb-256x256-16bits.xisf	load	-16	PixInsight RGB UInt16, inline ICCProfile
+real/xisfits/xisf-image-rgb-256x256-32bits.xisf	load	64	PixInsight RGB UInt32 (widened to 64)
