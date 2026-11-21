@@ -12,6 +12,7 @@ baseline in the same format `../asdf.sh` uses.
 | `read_xisf.py` | An independent minimal decoder, sharing no code with the generator. `check` decodes every manifest entry and compares it with its twin, or confirms it is refused. `twin` writes a twin for a file we did not generate. `dump` lists images. |
 | `make_baselines.sh` | Loads each FITS twin into *today's* DS9 and records the probe as `<fixture>.xisf.sav`. Refused fixtures get the empty-frame probe. |
 | `crosscheck_sergio.py` | Runs a third-party reader, [sergio-dr/xisf](https://github.com/sergio-dr/xisf) (GPL-3.0), over every manifest entry. Point it at a checkout's `src/`. |
+| `check_container.py` | Phase 1 check of fitsy's container reader: runs `utils/xisfdump` over every file and compares each image's verdict and stored bytes with `read_xisf.py`. Refusals that belong to later phases are listed as DEFERRED. |
 | `MANIFEST.tsv` | `fixture  expect  bitpix  notes` for the 99 synthetic files. `expect` is `load`, `load-first` (multi-image: the twin is the default image) or `refuse`. |
 | `real/MANIFEST.tsv`, `real/libxisf/`, `real/xisfits/` | 14 real files from two other projects' test suites: 11 written by PixInsight (1.8.6 and 1.8.9), 2 by libXISF. See below. |
 
@@ -70,6 +71,7 @@ is wrong. Fix it in the generator, regenerate, and rerun the baselines.
 ~/miniforge/envs/ds9asdf/bin/python make_xisf_fixtures.py
 ~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 99/99
 ~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 107/113
+make -C ../../utils/xisfdump && ~/miniforge/envs/ds9asdf/bin/python check_container.py ../../utils/xisfdump/xisfdump
 PATH=<dir with ds9 + xpa tools>:$PATH sh make_baselines.sh  # AGENTS.md: macOS shim
 ```
 
