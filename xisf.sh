@@ -224,6 +224,50 @@ check "the restored frame is the XISF file" "layer1_tan_northup.xisf" \
 rm -rf $bdir
 xpaset -p DS9Test frame delete all
 
+# RGB frames: an RGB image fills the red, green and blue channels in one
+# load; anything else goes to the current channel, as for FITS.
+rgbvalues () {
+    for c in red green blue; do
+	xpaset -p DS9Test rgb channel $c
+	printf "%s " "`xpaget DS9Test data image 1 1 1 1 yes 2>/dev/null`"
+    done
+    xpaset -p DS9Test rgb channel red
+}
+rgbload () {
+    xpaset -p DS9Test frame delete all
+    xpaset -p DS9Test rgb
+    [ -n "$2" ] && xpaset -p DS9Test rgb channel $2
+    xpaset -p DS9Test xisf $1
+}
+# PixInsight's own file: each plane is one constant, so a channel mix-up
+# cannot hide
+rgbload $where/real/xisfits/xisf-image-rgb-256x256-16bits.xisf
+check "RGB image fills the three channels (PixInsight file)" \
+    "65535 32768 16384 " "`rgbvalues`"
+rgbload $where/storage/rgb_uint16_planar.xisf
+check "RGB planar: channels match the twin's planes" \
+    "64169 1365 55977 " "`rgbvalues`"
+rgbload $where/storage/rgb_float32_normal.xisf
+check "RGB normal storage: channels match the twin's planes" \
+    "0.979167 0.0208333 0.854167 " "`rgbvalues`"
+rgbload $where/storage/rgba_float32.xisf
+check "RGBA: alpha is left out" \
+    "0.979167 0.0208333 0.854167 " "`rgbvalues`"
+rgbload $where/formats/uint16.xisf green
+check "a gray image goes to the current channel only" \
+    " 64169  " "`rgbvalues`"
+
+# and the RGB frame survives backup and restore, still in three channels
+rgbload $where/storage/rgb_uint16_planar.xisf
+bdir=`mktemp -d ./_xisfbackup.XXXXXX`
+xpaset -p DS9Test backup `pwd`/$bdir/x.bck
+xpaset -p DS9Test frame delete all
+xpaset -p DS9Test restore `pwd`/$bdir/x.bck
+check "RGB frame backup and restore" "rgb 64169 1365 55977 " \
+    "`probe_tcl '$current(frame) get type'` `rgbvalues`"
+rm -rf $bdir
+xpaset -p DS9Test frame delete all
+
 rm -f $tmp
 xpaset -p DS9Test quit
 echo "$cpassed passed, $cfailed failed"
