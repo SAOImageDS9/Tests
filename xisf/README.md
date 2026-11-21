@@ -69,6 +69,18 @@ them. The conversions it bakes in are the ones `TODO_XISF.md` §2 commits to:
 If real PixInsight output ever disagrees with a twin, the convention is what
 is wrong. Fix it in the generator, regenerate, and rerun the baselines.
 
+## Running against ds9
+
+`../xisf.sh` (from `Tests/`) drives ds9's own `xisf` command:
+- `xpa` compares every fixture with its baseline;
+- `command` does one `-xisf` launch per file;
+- `mask` checks that a mask leaves the image alone;
+- `extra` covers image selection, error messages, the header viewer and
+  backup/restore.
+
+It has no `save` mode: the baselines come from the twins, through
+`make_baselines.sh`, never from the reader.
+
 ## Regenerating
 
 ```bash

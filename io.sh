@@ -36,3 +36,4 @@ nrrd.sh
 envi.sh
 photo.sh
 #asdf.sh
+#xisf.sh
