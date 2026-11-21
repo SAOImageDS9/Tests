@@ -37,10 +37,9 @@ def load_module(src):
 
 def main(src):
     xisf = load_module(src)
-    rows = []
-    for m in (HERE / "MANIFEST.tsv", HERE / "real/MANIFEST.tsv"):
-        rows += [l.rstrip("\n").split("\t") for l in open(m)
-                 if not l.startswith("#")]
+    sys.path.insert(0, str(HERE))
+    import read_xisf
+    rows = read_xisf.manifest_rows()
     agree = 0
     for rel, expect, _, _ in rows:
         try:

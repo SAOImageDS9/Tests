@@ -1,0 +1,40 @@
+# fixture	expect	bitpix	notes
+wcs1904/keywords/1904-66_AIR.xisf	load	-32	1904-66 AIR: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_AIT.xisf	load	-32	1904-66 AIT: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_AIT.xisf	load	-32	1904-66 AIT as a HammerAitoff layer 1 solution (pole native coords from LONPOLE/LATPOLE); twin is the original with RADESYS ICRS
+wcs1904/keywords/1904-66_ARC.xisf	load	-32	1904-66 ARC: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_AZP.xisf	load	-32	1904-66 AZP: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_BON.xisf	load	-32	1904-66 BON: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_CAR.xisf	load	-32	1904-66 CAR: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_CAR.xisf	load	-32	1904-66 CAR as a PlateCarree layer 1 solution (pole native coords from LONPOLE/LATPOLE); twin is the original with RADESYS ICRS
+wcs1904/keywords/1904-66_CEA.xisf	load	-32	1904-66 CEA: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_COD.xisf	load	-32	1904-66 COD: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_COE.xisf	load	-32	1904-66 COE: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_COO.xisf	load	-32	1904-66 COO: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_COP.xisf	load	-32	1904-66 COP: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_CSC.xisf	load	-32	1904-66 CSC: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_CYP.xisf	load	-32	1904-66 CYP: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_HPX.xisf	load	-32	1904-66 HPX: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_MER.xisf	load	-32	1904-66 MER: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_MER.xisf	load	-32	1904-66 MER as a Mercator layer 1 solution (pole native coords from LONPOLE/LATPOLE); twin is the original with RADESYS ICRS
+wcs1904/keywords/1904-66_MOL.xisf	load	-32	1904-66 MOL: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_NCP.xisf	load	-32	1904-66 NCP: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_PAR.xisf	load	-32	1904-66 PAR: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_PCO.xisf	load	-32	1904-66 PCO: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_QSC.xisf	load	-32	1904-66 QSC: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_SFL.xisf	load	-32	1904-66 SFL: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_SIN.xisf	load	-32	1904-66 SIN: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_SIN.xisf	load	-32	1904-66 SIN as a Orthographic layer 1 solution (pole native coords from LONPOLE/LATPOLE); twin is the original with RADESYS ICRS
+wcs1904/keywords/1904-66_STG.xisf	load	-32	1904-66 STG: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_STG.xisf	load	-32	1904-66 STG as a Stereographic layer 1 solution (pole native coords from LONPOLE/LATPOLE); twin is the original with RADESYS ICRS
+wcs1904/keywords/1904-66_SZP.xisf	load	-32	1904-66 SZP: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_TAN.xisf	load	-32	1904-66 TAN: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_TAN.xisf	load	-32	1904-66 TAN as a Gnomonic layer 1 solution (pole native coords from LONPOLE/LATPOLE); twin is the original with RADESYS ICRS
+wcs1904/keywords/1904-66_TSC.xisf	load	-32	1904-66 TSC: original WCS keywords, mirrored top down; twin is the original
+wcs1904/keywords/1904-66_ZEA.xisf	load	-32	1904-66 ZEA: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_ZEA.xisf	load	-32	1904-66 ZEA as a ZenithalEqualArea layer 1 solution (pole native coords from LONPOLE/LATPOLE); twin is the original with RADESYS ICRS
+wcs1904/keywords/1904-66_ZPN.xisf	load	-32	1904-66 ZPN: original WCS keywords, mirrored top down; twin is the original
+wcs1904/solution/1904-66_TAN_lonpole150.xisf	load	-32	1904-66 TAN with {'LONPOLE': 150.0}: a non-default pole or native reference, so ignoring the solution's CelestialPole/ReferenceNativeCoordinates shows
+wcs1904/solution/1904-66_ZEA_lonpole240.xisf	load	-32	1904-66 ZEA with {'LONPOLE': 240.0}: a non-default pole or native reference, so ignoring the solution's CelestialPole/ReferenceNativeCoordinates shows
+wcs1904/solution/1904-66_CAR_theta20.xisf	load	-32	1904-66 CAR with {'PV1_2': 20.0, 'CRVAL2': -50.0}: a non-default pole or native reference, so ignoring the solution's CelestialPole/ReferenceNativeCoordinates shows
+wcs1904/solution/1904-66_AIT_phi30.xisf	load	-32	1904-66 AIT with {'PV1_1': 30.0, 'CRVAL2': -50.0}: a non-default pole or native reference, so ignoring the solution's CelestialPole/ReferenceNativeCoordinates shows

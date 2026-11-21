@@ -5,7 +5,7 @@ Deliberately shares no code with make_xisf_fixtures.py: it parses the header
 with ElementTree and decodes blocks from the attributes alone, so a fixture
 the generator got wrong does not get "verified" by the same mistake.
 
-    read_xisf.py check            decode every fixture in MANIFEST.tsv and
+    read_xisf.py check            decode every fixture in the MANIFESTS and
                                   compare it with its FITS twin (or confirm
                                   it is refused)
     read_xisf.py twin <file.xisf> [index]
@@ -30,6 +30,17 @@ from astropy.io import fits
 
 NS = "{http://www.pixinsight.com/xisf}"
 HERE = pathlib.Path(__file__).resolve().parent
+
+# Every fixture manifest, relative to HERE; the checkers all read these.
+MANIFESTS = ("MANIFEST.tsv", "real/MANIFEST.tsv", "wcs1904/MANIFEST.tsv")
+
+
+def manifest_rows():
+    rows = []
+    for m in MANIFESTS:
+        rows += [l.rstrip("\n").split("\t") for l in open(HERE / m)
+                 if not l.startswith("#")]
+    return rows
 DTYPE = {"UInt8": "u1", "UInt16": "u2", "UInt32": "u4", "UInt64": "u8",
          "Float32": "f4", "Float64": "f8"}
 HASH = {"sha-1": "sha1", "sha1": "sha1", "sha-256": "sha256",
@@ -187,8 +198,7 @@ def as_fits(pix):
 
 def check():
     bad = 0
-    rows = [l.rstrip("\n").split("\t") for l in open(HERE / "MANIFEST.tsv")
-            if not l.startswith("#")]
+    rows = manifest_rows()
     for rel, expect, _, _ in rows:
         try:
             raw, els = images(HERE / rel)

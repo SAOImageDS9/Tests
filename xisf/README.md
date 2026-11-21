@@ -14,7 +14,8 @@ baseline in the same format `../asdf.sh` uses.
 | `crosscheck_sergio.py` | Runs a third-party reader, [sergio-dr/xisf](https://github.com/sergio-dr/xisf) (GPL-3.0), over every manifest entry. Point it at a checkout's `src/`. |
 | `check_container.py` | Check of fitsy's container reader (Phases 1–2): runs `utils/xisfdump` over every file and compares each image's verdict, stored bytes and **decoded** bytes with `read_xisf.py`. Refusals only `block()` can make (bad checksum, a subblock decoding to the wrong size) are checked there, and Phase 3 refusals are listed as DEFERRED. Expect 0 failures, 8 BLOCK, 1 DEFERRED. |
 | `check_fits.py` | Phase 3 check of `FitsXisf`, the FitsFile ds9 loads: runs `utils/xisfdump --fits` over every file and compares dimensions, BITPIX and every plane's samples with the twin, loads the other images of multi-image files by id/index, requires a message for every refusal, checks the header carries no BZERO/BSCALE/BLANK, and compares its WCS with the twin's numerically (same sky position to 1e-9° on a pixel grid; no WCS where the twin has none). Expect 0 failures. |
-| `check_ds9_wcs.sh` | Phase 4: the reader's exact header cards plus the twin's pixels, loaded into ds9, must reproduce every `wcs/` fixture's probe baseline, so AST reads the reader's WCS as it reads the twin's. Run with `sh`. Expect 19 passed. |
+| `check_ds9_wcs.sh` | Phase 4: the reader's exact header cards plus the twin's pixels, loaded into ds9, must reproduce every `wcs/` and `wcs1904/` fixture's probe baseline, so AST reads the reader's WCS as it reads the twin's. Run with `sh`. Expect 58 passed. |
+| `make_wcs1904_fixtures.py`, `wcs1904/` | The Calabretta & Greisen 1904-66 WCS examples (`../wcs/`) as XISF; see below. Own `MANIFEST.tsv`. |
 | `MANIFEST.tsv` | `fixture  expect  bitpix  notes` for the 107 synthetic files. `expect` is `load`, `load-first` (multi-image: the twin is the default image) or `refuse`. |
 | `real/MANIFEST.tsv`, `real/libxisf/`, `real/xisfits/` | 14 real files from two other projects' test suites: 11 written by PixInsight (1.8.6 and 1.8.9), 2 by libXISF. See below. |
 
@@ -69,6 +70,42 @@ them. The conversions it bakes in are the ones `TODO_XISF.md` §2 commits to:
 If real PixInsight output ever disagrees with a twin, the convention is what
 is wrong. Fix it in the generator, regenerate, and rerun the baselines.
 
+## The 1904-66 WCS examples (`wcs1904/`)
+
+`make_wcs1904_fixtures.py` converts the same source the ASDF GWCS fixtures came from:
+`../wcs/1904-66_*.fits`, from
+<https://www.atnf.csiro.au/computing/software/wcs/example_data.html>. Each is a
+192×192 image per FITS projection code over one field, with its reference point at the
+south celestial pole far off the image and LONPOLE/LATPOLE explicit. 39 fixtures:
+
+- **`solution/`, 7 files.** TAN, STG, ZEA, SIN, CAR, MER and AIT, the projections an
+  XISF astrometric solution can express, each as a layer 1 solution. This is the
+  inverse of PCL's ComputeWCSKeywords: CRPIX → (CRPIX1 − 0.5, H + 0.5 − CRPIX2), the
+  CDELT matrix with column 2 negated, `CelestialPoleNativeCoordinates` from
+  LONPOLE/LATPOLE, and the projection's default (φ₀, θ₀) as
+  `ReferenceNativeCoordinates`. A solution is ICRS while the originals are EQUINOX 2000
+  (FK5, about 0.025″ apart), so each twin is the original with `RADESYS = 'ICRS'`
+  added. The comparison is then exact.
+- **`solution/*_lonpole150|lonpole240|theta20|phi30`, 4 variants.** The originals'
+  pole and native coordinates are exactly WCS's defaults, so on their own they cannot
+  catch a reader that ignores those two properties; a mutant that drops them passed.
+  Each variant sets one to a non-default value, in the solution and the twin alike.
+  The θ₀ and φ₀ variants also move CRVAL2 to −50, because a non-default native
+  reference at the pole has no valid celestial pole (wcslib refuses it). The mutants
+  are now off by 15°–112°.
+- **`keywords/`, 28 files**: the 27 projections of WCS Paper II plus NCP, the legacy
+  AIPS one. These carry the original WCS keywords as FITSKeywords, mirrored top down.
+  The twin is the original file unchanged, so this covers the 21 codes a solution
+  cannot express, PV parameters included.
+
+Pixels are the originals' (NaN outside each projection's domain), rows reversed. The
+mirror rule's astropy self-check, `check_fits.py`'s WCS comparison, and
+`check_ds9_wcs.sh` all require the off-sky pixels to match as well. A NaN compared as
+a number would otherwise pass silently.
+
+All 39 pass every check: decode, container, FITS and WCS against the twins, the
+reader's cards through ds9/AST, and `xisf.sh xpa`.
+
 ## Running against ds9
 
 `../xisf.sh` (from `Tests/`) drives ds9's own `xisf` command:
@@ -85,8 +122,8 @@ It has no `save` mode: the baselines come from the twins, through
 
 ```bash
 ~/miniforge/envs/ds9asdf/bin/python make_xisf_fixtures.py
-~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 107/107
-~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 115/121
+~/miniforge/envs/ds9asdf/bin/python read_xisf.py check      # expect 160/160 (all three manifests)
+~/miniforge/envs/ds9asdf/bin/python crosscheck_sergio.py <xisf checkout>/src  # expect 154/160
 make -C ../../utils/xisfdump && ~/miniforge/envs/ds9asdf/bin/python check_container.py ../../utils/xisfdump/xisfdump
 ~/miniforge/envs/ds9asdf/bin/python check_fits.py ../../utils/xisfdump/xisfdump
 PATH=<dir with ds9 + xpa tools>:$PATH sh check_ds9_wcs.sh
@@ -149,7 +186,7 @@ A plate-solved PixInsight file is the most valuable thing still missing.
 
 ## Third-party cross-check
 
-`crosscheck_sergio.py` agrees with the manifest on 115 of 121 files, including
+`crosscheck_sergio.py` agrees with the manifest on 154 of 160 files, including
 every real file it can read. Each disagreement is explained:
 
 | Fixture | sergio-dr/xisf | Why |

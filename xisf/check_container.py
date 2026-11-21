@@ -3,8 +3,8 @@
 
     check_container.py <path to utils/xisfdump/xisfdump>
 
-Runs the standalone dump driver over every fixture in MANIFEST.tsv and
-real/MANIFEST.tsv and checks, for **every** image in every file, not just
+Runs the standalone dump driver over every fixture in read_xisf.MANIFESTS
+and checks, for **every** image in every file, not just
 the first:
 
   * the container verdict (whole file refused or not) agrees with
@@ -84,10 +84,7 @@ def dump(tool, path):
 
 
 def main(tool):
-    rows = []
-    for m in (HERE / "MANIFEST.tsv", HERE / "real/MANIFEST.tsv"):
-        rows += [l.rstrip("\n").split("\t") for l in open(m)
-                 if not l.startswith("#")]
+    rows = rx.manifest_rows()
     fails, deferred, checked = [], [], 0
     for rel, expect, _, _ in rows:
         path = HERE / rel

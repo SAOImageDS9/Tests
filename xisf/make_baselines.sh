@@ -29,7 +29,7 @@ StartDS9
 printf 'set pds9(confirm) 0\n' | xpaset DS9Test tcl
 
 n=0
-for manifest in MANIFEST.tsv real/MANIFEST.tsv; do
+for manifest in MANIFEST.tsv real/MANIFEST.tsv wcs1904/MANIFEST.tsv; do
     [ -f $manifest ] || continue
     grep -v '^#' $manifest | while IFS='	' read rel expect bitpix notes; do
 	xpaset -p DS9Test frame new

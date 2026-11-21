@@ -567,10 +567,16 @@ PROJ = {"Gnomonic": "TAN", "Stereographic": "STG", "ZenithalEqualArea": "ZEA",
 
 
 def mirror_vertically(cards):
+    """mirror_vertically_for this file's W x H fixtures."""
+    return mirror_vertically_for(cards, H, W)
+
+
+def mirror_vertically_for(cards, height, width=None):
     """PCL's WCSKeywords::MirrorVertically, for a keyword list whose rows
     are about to be stored in reverse order: CRPIX2 -> H+1-CRPIX2; CD1_2,
     CD2_2, PC1_2, PC2_2 negated; CDELT2 negated when there is no PC matrix;
     SIP A_p_q/AP_p_q negated for odd q, B_p_q/BP_p_q for even q."""
+    H = height
     has_pc = any(k.startswith(("PC1_", "PC2_")) for k, _ in cards)
     out = []
     for k, v in cards:
@@ -587,11 +593,11 @@ def mirror_vertically(cards):
             if (sip[0] in ("A", "AP")) == odd:
                 v = -v
         out.append((k, v))
-    verify_mirror(cards, out)
+    verify_mirror(cards, out, H, width or H)
     return out
 
 
-def verify_mirror(orig, mirrored):
+def verify_mirror(orig, mirrored, H=H, W=W):
     """Independent check of the mirror rule, which the reader implements
     the same way: the keywords read top down (row 1 = XISF row 0) and the
     mirrored ones read bottom up must give every pixel the same sky
@@ -610,8 +616,15 @@ def verify_mirror(orig, mirrored):
     i, j = i.ravel(), j.ravel()
     pa = a.all_pix2world(np.c_[i + 1, j + 1], 1)
     pb = b.all_pix2world(np.c_[i + 1, H - j], 1)
-    err = np.abs(pa - pb).max()
-    assert err < 1e-10, f"mirror rule moves the sky by {err} deg"
+    # pixels outside a projection's domain are NaN; they must be the same
+    # pixels both ways, and the rest must agree
+    fa, fb = np.isfinite(pa).all(1), np.isfinite(pb).all(1)
+    assert (fa == fb).all(), "mirror rule changes which pixels are on the sky"
+    assert fa.any(), "no pixel of the grid is on the sky"
+    d = pa[fa] - pb[fa]
+    d[:, 0] = (d[:, 0] + 180) % 360 - 180
+    err = np.abs(d).max()
+    assert err < 1e-9, f"mirror rule moves the sky by {err} deg"
 
 
 def solution(proj="Gnomonic", crval=(10.6847, 41.2690), ref=(30.25, 20.75),

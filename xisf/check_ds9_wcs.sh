@@ -2,7 +2,7 @@
 # The reader's WCS through ds9's own WCS code (AST), before ds9 can load
 # XISF itself (TODO_XISF.md Phase 4; Phase 5 adds the load command).
 #
-# For every loadable wcs/ fixture, writes a FITS file whose header is
+# For every loadable wcs/ and wcs1904/ fixture, writes a FITS file whose header is
 # *exactly* the cards FitsXisf builds (utils/xisfdump --fits) and whose
 # pixels are the twin's, loads it into ds9 and runs the same probe as
 # ../asdf.sh. The result must equal the fixture's .xisf.sav baseline,
@@ -29,9 +29,11 @@ trap 'rm -rf "$tmp"' EXIT
 import pathlib, subprocess, sys
 from astropy.io import fits
 out, dump = pathlib.Path(sys.argv[1]), sys.argv[2]
-for line in open("MANIFEST.tsv"):
+lines = [l for m in ("MANIFEST.tsv", "wcs1904/MANIFEST.tsv")
+         for l in open(m) if not l.startswith("#")]
+for line in lines:
     rel, expect = line.split("\t")[:2]
-    if not rel.startswith("wcs/") or expect == "refuse":
+    if not rel.startswith(("wcs/", "wcs1904/")) or expect == "refuse":
         continue
     r = subprocess.run([dump, "--fits", rel], capture_output=True, text=True)
     cards = [l[5:].ljust(80)[:80] for l in r.stdout.splitlines()
@@ -52,7 +54,7 @@ printf 'set pds9(confirm) 0\n' | xpaset DS9Test tcl
 pass=0
 fail=0
 for f in $tmp/*.fits; do
-    rel=`basename $f .fits | sed 's|__|/|'`
+    rel=`basename $f .fits | sed 's|__|/|g'`
     xpaset -p DS9Test frame new
     xpaset -p DS9Test fits `pwd`/$f
     probe > $tmp/out.txt 2>&1

@@ -3,7 +3,7 @@
 
     check_fits.py <path to utils/xisfdump/xisfdump>
 
-For every fixture in MANIFEST.tsv and real/MANIFEST.tsv, runs
+For every fixture in read_xisf.MANIFESTS, runs
 `xisfdump --fits` - the FitsFile ds9 will load - and checks:
 
   * a `load'/`load-first' fixture loads, with the twin's width, height and
@@ -88,15 +88,24 @@ def card_value(cards, name):
 
 
 def celestial(header):
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", FITSFixedWarning)
-        w = WCS(header, naxis=2)
+    """The header's celestial WCS, None if it has none, or the reason it
+    is unusable as a string."""
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", FITSFixedWarning)
+            w = WCS(header, naxis=2)
+    except Exception as e:                           # noqa: BLE001
+        return f"unusable WCS: {str(e).splitlines()[-1]}"
     return w if w.has_celestial else None
 
 
 def compare_wcs(cards, twin_header, w, h):
     head = fits.Header.fromstring("".join(c.ljust(80)[:80] for c in cards))
     mine, want = celestial(head), celestial(twin_header)
+    if isinstance(want, str):
+        return [f"twin has an {want}"]
+    if isinstance(mine, str):
+        return [f"header has an {mine}"]
     if want is None:
         return ["header has a WCS, twin has none"] if mine else []
     if mine is None:
@@ -106,6 +115,16 @@ def compare_wcs(cards, twin_header, w, h):
     pix = np.array([(x, y) for x in xs for y in ys])
     a = mine.all_pix2world(pix, 1)
     b = want.all_pix2world(pix, 1)
+    # Pixels outside a projection's domain have no sky position (NaN): they
+    # must be the same pixels on both sides, and at least one must not be,
+    # or a NaN would compare as a pass.
+    fa, fb = np.isfinite(a).all(1), np.isfinite(b).all(1)
+    if (fa != fb).any():
+        return [f"{int((fa != fb).sum())} grid pixels are on the sky on one "
+                "side only"]
+    if not fa.any():
+        return ["no grid pixel has a sky position"]
+    a, b = a[fa], b[fa]
     dra = (a[:, 0] - b[:, 0] + 180) % 360 - 180
     err = np.max(np.hypot(dra * np.cos(np.radians(b[:, 1])), a[:, 1] - b[:, 1]))
     return [f"WCS differs from the twin by {err:.3g} deg"] if err > WCS_TOL \
@@ -144,10 +163,9 @@ def compare(rel, d, twin_path, bitpix):
 
 
 def main(tool):
-    rows = []
-    for m in (HERE / "MANIFEST.tsv", HERE / "real/MANIFEST.tsv"):
-        rows += [l.rstrip("\n").split("\t") for l in open(m)
-                 if not l.startswith("#")]
+    sys.path.insert(0, str(HERE))
+    import read_xisf
+    rows = read_xisf.manifest_rows()
     fails, loads, refusals, extra = [], 0, 0, 0
     for rel, expect, bitpix, _ in rows:
         path = HERE / rel
