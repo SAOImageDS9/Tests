@@ -1,4 +1,4 @@
-# TIFF fixtures (`TODO_TIFF16.md`, Phases 0–1)
+# TIFF fixtures (`TODO_TIFF16.md`, Phases 0–2)
 
 Test files for DS9's native full-depth TIFF reader. They were made before the reader
 exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
@@ -10,6 +10,7 @@ exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
 | `check_fixtures.py` | Reads every fixture back with tifffile and checks its tags against the manifest and its pixels against the twin. Expect 108 checked, 0 failed. |
 | `check_probe.py` | Runs fitsy's libtiff probe (`fitsy tiff decode`) inside a live ds9 over XPA, and compares directory 0's tags and nsamples/min/max/sum with the manifest. For `refuse` entries it prints what libtiff says. Expect 102 probed, 0 failed. |
 | `check_load.py` | Phase 1: has a live ds9 load every fixture with the frame's `load tiff` and write it back with `save fits file`. Grayscale fixtures must equal their twin pixel for pixel (directory 0 only), with the expected in-memory BITPIX from `get fits header` and a header astropy parses. `header/texttags_u2.tif`'s CREATOR/DATE/OBSERVER/COMMENT cards are checked exactly. Everything else must be refused with a `tiff: ...` reason. Expect 89 loads and 19 refusals, 0 failed. |
+| `check_entry.py` | Phase 2: every way a TIFF reaches ds9 picks the right reader. That covers XPA by file name and by data, each mode keyword and the preference, slice, mask, the SAMP path, recent files, backup/restore, and the command line (`-tiff`, `-tiff native/photo`, `-tiff -`, `-mask -tiff native`). It starts and restarts its own ds9 (title `DS9TiffEntry`) and keeps the user's recent-files list as it was. Expect 27 checks, 0 failed. |
 | `MANIFEST.tsv` | One row per fixture: `expect` (`load`/`refuse`), the tags as stored, and the probe's expected statistics. |
 
 Families: `dtype/` (u1 u2 i2 u4 i4 f4 f8 × none/PackBits/LZW/Deflate 8/Deflate
@@ -46,6 +47,7 @@ then:
 ```
 ~/miniforge/envs/ds9asdf/bin/python check_probe.py DS9TiffProbe
 ~/miniforge/envs/ds9asdf/bin/python check_load.py DS9TiffProbe
+~/miniforge/envs/ds9asdf/bin/python check_entry.py    # starts its own ds9
 ```
 
 Two things about `check_load.py` that are ds9's behaviour, not the reader's. ds9's
