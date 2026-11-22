@@ -9,5 +9,19 @@ set {} tiff new photo/rose.tiff
 set {} tiff slice photo/rose.tiff
 set {} frame delete
 
+set {} frame new
+set {} tiff native tiff/dtype/gray_u2_deflate.tif
+get fits bitpix
+set {} tiff photo tiff/dtype/gray_u2_deflate.tif
+get fits bitpix
+set file:tiff/dtype/gray_u2_deflate.tif tiff
+get fits bitpix
+set {} tiff new tiff/pages/stack3_u2_deflate.tif
+get fits depth
+set {} frame delete all
+set {} frame new rgb
+set {} tiff tiff/rgb/rgb_u2_contig_strip.tif
+set {} frame delete
+
 set {} single
 set {} raise

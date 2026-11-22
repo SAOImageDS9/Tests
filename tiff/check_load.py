@@ -124,8 +124,11 @@ def main():
                                delimiter='\t'))
     tmp = tempfile.mkdtemp(prefix='tiffload')
 
+    # a ds9 left with no frame (after `frame delete') has nothing to load
+    # into, so make one first
     base = run(title, xpabin, tmp, 'base', list(enumerate(rows)),
-               'fits file')
+               'fits file',
+               setup='if {$current(frame) == {}} {CreateFrame}')
     rgbrows = [(k, r) for k, r in enumerate(rows)
                if r['expect'] == 'load' and int(r['photometric']) == 2]
     rgb = run(title, xpabin, tmp, 'rgb', rgbrows, 'fits rgb cube file',

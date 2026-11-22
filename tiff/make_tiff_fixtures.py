@@ -81,6 +81,16 @@ def pattern(h, w, dtype, seed=0):
     return v.astype(dt)
 
 
+def stackpage(img, k):
+    """Page k of a stack, with a range of its own (integers divided by
+    k+1, floats multiplied by k+1), so that per-slice min/max, which
+    tiff.sh probes, tells the slices apart: pattern() pins every image to
+    its type's full range."""
+    if img.dtype.kind == 'f':
+        return (img * (k + 1)).astype(img.dtype)
+    return (img // (k + 1)).astype(img.dtype)
+
+
 # Orientation: `stored(c, o)` is the raster a writer stores so that a
 # reader applying Orientation o displays c (row 0 at the top). displayed()
 # is the reader's side, written directly from the tag's definition, and
@@ -147,6 +157,12 @@ class Writer:
             data = data[0]
         if data.dtype == np.float16:
             data = data.astype(np.float32)
+        if data.dtype == np.uint32:
+            # as int64 (BITPIX 64), exact and as the native reader widens
+            # it; astropy's BITPIX 32 + BZERO would make ds9 show scaled
+            # values in %g form, which tiff.sh's text baselines cannot
+            # compare with the exact integers of a native load
+            data = data.astype(np.int64)
         hdu = fits.PrimaryHDU(data)
         fn = self.path(group, name, '.fits')
         hdu.writeto(fn, overwrite=True)
@@ -323,13 +339,16 @@ def main():
           notes='unassociated alpha; twin drops it')
 
     # multi-page
-    pages = [pattern(GRAY_H, GRAY_W, 'u2', seed=s) for s in (8, 9, 10)]
+    pages = [stackpage(pattern(GRAY_H, GRAY_W, 'u2', seed=s), k)
+             for k, s in enumerate((8, 9, 10))]
     w.add('pages', 'stack3_u2_deflate', pages, twin_planes=pages,
           compression='adobe_deflate', notes='3 pages -> 3-plane cube')
-    pages = [pattern(TILE_H, TILE_W, 'f4', seed=s) for s in (8, 9, 10)]
+    pages = [stackpage(pattern(TILE_H, TILE_W, 'f4', seed=s), k)
+             for k, s in enumerate((8, 9, 10))]
     w.add('pages', 'stack3_f4_tiled', pages, twin_planes=pages, tile=TILE,
           compression='adobe_deflate')
-    full = [pattern(GRAY_H, GRAY_W, 'u2', seed=s) for s in (11, 12)]
+    full = [stackpage(pattern(GRAY_H, GRAY_W, 'u2', seed=s), k)
+            for k, s in enumerate((11, 12))]
     thumb = pattern(GRAY_H // 2, GRAY_W // 2, 'u2', seed=13)
     w.add('pages', 'stack2_u2_with_reduced', [full[0], thumb, full[1]],
           twin_planes=full, subfiletypes=[0, 1, 0],
@@ -375,8 +394,9 @@ def main():
     w.add('edge', 'col_61x1_u2', [col], twin_planes=[col])
 
     # Phase 3: an RGB stack, gray with alpha, and multi-band gray
-    pages = [np.dstack([pattern(GRAY_H, GRAY_W, 'u2', seed=s + c)
-                        for c in (0, 1, 2)]) for s in (30, 40)]
+    pages = [stackpage(np.dstack([pattern(GRAY_H, GRAY_W, 'u2', seed=s + c)
+                             for c in (0, 1, 2)]), k)
+             for k, s in enumerate((30, 40))]
     w.add('pages', 'stack2_rgb_u2', pages,
           twin_planes=[pages[0][..., c] for c in (0, 1, 2)],
           compression='adobe_deflate', photometric='rgb',

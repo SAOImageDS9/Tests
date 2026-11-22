@@ -1,4 +1,4 @@
-# TIFF fixtures (`TODO_TIFF16.md`, Phases 0–3)
+# TIFF fixtures (`TODO_TIFF16.md`, Phases 0–5)
 
 Test files for DS9's native full-depth TIFF reader. They were made before the reader
 exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
@@ -6,6 +6,7 @@ exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
 
 | Path | What |
 |---|---|
+| `../tiff.sh` | **The suite, shell only** (ds9 and the XPA tools, no Python), run from `Tests/` and by `io.sh`. `command` loads every fixture on the command line (smoke test). `xpa` loads each with `tiff native` and compares its probe (size, depth, three pixels, min/max of every slice) with `<file>.sav`. `rgb` loads each RGB fixture into an RGB frame and compares every channel with `<file>.rgb.sav`. `baselines` records those files **from the FITS twins**, never from a TIFF load (`.lum.fits` for an RGB fixture in an ordinary frame, the twin as an `rgbcube` for the RGB frame), and from a `tiff photo` load for a fixture with no twin, which the native reader refuses. Expect 111 and 14 passed. |
 | `make_tiff_fixtures.py` | Writes every fixture, its twin, and `MANIFEST.tsv`, using tifffile. Deterministic: a rerun is byte-identical. |
 | `check_fixtures.py` | Reads every fixture back with tifffile and checks its tags against the manifest and its pixels against the twin. Expect 111 checked, 0 failed. |
 | `check_probe.py` | Runs fitsy's libtiff probe (`fitsy tiff decode`) inside a live ds9 over XPA, and compares directory 0's tags and nsamples/min/max/sum with the manifest. For `refuse` entries it prints what libtiff says. Expect 104 probed, 0 failed. |
@@ -31,12 +32,30 @@ and H, 1×N, N×1), `unsupported/` (LZMA, ZSTD, half float, palette, JPEG/YCbCr,
   reduced-resolution pages (NewSubfileType bit 0) are skipped, and so are pages whose
   geometry differs from page 1.
 - **MINISWHITE values are kept as stored**, not inverted.
-- **uint16 and uint32** are written as astropy writes them (BZERO), so they read back
-  as the same values.
+- **uint16** is written as astropy writes it (BITPIX 16 + BZERO), so it reads back as
+  the same values. **uint32** is written as int64 (BITPIX 64), which holds the same
+  values exactly. That's how the native reader widens it, and BITPIX 32 + BZERO would
+  make ds9 print scaled `%g` values that `tiff.sh`'s text baselines can't match.
+- **Stack pages have ranges of their own** (integer page k divided by k+1, float page
+  k multiplied by k+1), so `tiff.sh`'s per-slice min/max tells the slices apart.
+  `pattern()` pins every image to its type's full range, and `xpaget data` always reads
+  slice 1.
 - **An RGB fixture has two twins:** `<name>.fits` holds page 1's R, G and B (what an RGB
   frame shows), and `<name>.lum.fits` holds the luminance of every page (what any
   other frame shows). Luminance is .299R + .587G + .114B in double, rounded to nearest
   for integers, the order fitsy uses, so the values match bit for bit.
+
+## In the shared runners
+
+`command.sh`, `xpa.sh` and `samp/tiff.samp` each have TIFF lines after the existing
+`photo/rose.tiff` ones: native, photo and auto, 16-bit RGB, a stack, mask, an RGB
+frame, piped data and slice. `xpa.sh` checks BITPIX and pixel values against
+`xpa/tiff.xpa`, which was written by hand from the twins' values.
+
+`samp.tcl` sources ds9's client code from a path on another machine (`/scratch1/...`).
+To run the SAMP tests here, use a copy with those six `source` lines pointed at this
+checkout. That's how `samp/tiff.samp` was checked (2026-11-22, every command
+`samp.ok`).
 
 ## Running
 
@@ -52,6 +71,13 @@ then:
 ~/miniforge/envs/ds9asdf/bin/python check_probe.py DS9TiffProbe
 ~/miniforge/envs/ds9asdf/bin/python check_load.py DS9TiffProbe
 ~/miniforge/envs/ds9asdf/bin/python check_entry.py    # starts its own ds9
+```
+
+From `Tests/`, with the built `bin/` and a `timeout` on `PATH` (AGENTS.md):
+
+```
+./tiff.sh              # command, xpa and rgb
+./tiff.sh baselines    # only after a fixture or twin changes
 ```
 
 Two things about `check_load.py` that are ds9's behaviour, not the reader's. ds9's

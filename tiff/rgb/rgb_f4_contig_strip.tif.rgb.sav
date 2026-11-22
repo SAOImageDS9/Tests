@@ -1,0 +1,21 @@
+channel red
+size 37 23
+depth 1
+value 1 1 1697.85
+value 19 12 1355.92
+value 37 23 3282.46
+slice 1 limits 746.038 3282.46
+channel green
+size 37 23
+depth 1
+value 1 1 2230.8
+value 19 12 1798
+value 37 23 3817.27
+slice 1 limits 1249.79 3817.27
+channel blue
+size 37 23
+depth 1
+value 1 1 2761.61
+value 19 12 2247.99
+value 37 23 4340.42
+slice 1 limits 1750.33 4340.42
