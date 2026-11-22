@@ -1,0 +1,108 @@
+fixture	twin	expect	group	dtype	compression	layout	planar	byteorder	photometric	width	height	spp	ndirs	orientation	predictor	subfiletype	nsamples	min	max	sum	notes
+dtype/gray_u1_none.tif	dtype/gray_u1_none.fits	load	dtype	u1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	255	99305	5-row strips, short last strip
+dtype/gray_u1_packbits.tif	dtype/gray_u1_packbits.fits	load	dtype	u1	32773	strip	1	II	1	37	23	1	1	1	0	0	851	0	255	99305	5-row strips, short last strip
+dtype/gray_u1_lzw.tif	dtype/gray_u1_lzw.fits	load	dtype	u1	5	strip	1	II	1	37	23	1	1	1	1	0	851	0	255	99305	5-row strips, short last strip
+dtype/gray_u1_adobe_deflate.tif	dtype/gray_u1_adobe_deflate.fits	load	dtype	u1	8	strip	1	II	1	37	23	1	1	1	1	0	851	0	255	99305	5-row strips, short last strip
+dtype/gray_u1_deflate.tif	dtype/gray_u1_deflate.fits	load	dtype	u1	32946	strip	1	II	1	37	23	1	1	1	1	0	851	0	255	99305	5-row strips, short last strip
+dtype/gray_u2_none.tif	dtype/gray_u2_none.fits	load	dtype	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	4583913	5-row strips, short last strip
+dtype/gray_u2_packbits.tif	dtype/gray_u2_packbits.fits	load	dtype	u2	32773	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	4583913	5-row strips, short last strip
+dtype/gray_u2_lzw.tif	dtype/gray_u2_lzw.fits	load	dtype	u2	5	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	4583913	5-row strips, short last strip
+dtype/gray_u2_adobe_deflate.tif	dtype/gray_u2_adobe_deflate.fits	load	dtype	u2	8	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	4583913	5-row strips, short last strip
+dtype/gray_u2_deflate.tif	dtype/gray_u2_deflate.fits	load	dtype	u2	32946	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	4583913	5-row strips, short last strip
+dtype/gray_i2_none.tif	dtype/gray_i2_none.fits	load	dtype	i2	1	strip	1	II	1	37	23	1	1	1	0	0	851	-32768	32767	-14153680	5-row strips, short last strip
+dtype/gray_i2_packbits.tif	dtype/gray_i2_packbits.fits	load	dtype	i2	32773	strip	1	II	1	37	23	1	1	1	0	0	851	-32768	32767	-14153680	5-row strips, short last strip
+dtype/gray_i2_lzw.tif	dtype/gray_i2_lzw.fits	load	dtype	i2	5	strip	1	II	1	37	23	1	1	1	1	0	851	-32768	32767	-14153680	5-row strips, short last strip
+dtype/gray_i2_adobe_deflate.tif	dtype/gray_i2_adobe_deflate.fits	load	dtype	i2	8	strip	1	II	1	37	23	1	1	1	1	0	851	-32768	32767	-14153680	5-row strips, short last strip
+dtype/gray_i2_deflate.tif	dtype/gray_i2_deflate.fits	load	dtype	i2	32946	strip	1	II	1	37	23	1	1	1	1	0	851	-32768	32767	-14153680	5-row strips, short last strip
+dtype/gray_u4_none.tif	dtype/gray_u4_none.fits	load	dtype	u4	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	4294967295	300434452969	5-row strips, short last strip
+dtype/gray_u4_packbits.tif	dtype/gray_u4_packbits.fits	load	dtype	u4	32773	strip	1	II	1	37	23	1	1	1	0	0	851	0	4294967295	300434452969	5-row strips, short last strip
+dtype/gray_u4_lzw.tif	dtype/gray_u4_lzw.fits	load	dtype	u4	5	strip	1	II	1	37	23	1	1	1	1	0	851	0	4294967295	300434452969	5-row strips, short last strip
+dtype/gray_u4_adobe_deflate.tif	dtype/gray_u4_adobe_deflate.fits	load	dtype	u4	8	strip	1	II	1	37	23	1	1	1	1	0	851	0	4294967295	300434452969	5-row strips, short last strip
+dtype/gray_u4_deflate.tif	dtype/gray_u4_deflate.fits	load	dtype	u4	32946	strip	1	II	1	37	23	1	1	1	1	0	851	0	4294967295	300434452969	5-row strips, short last strip
+dtype/gray_i4_none.tif	dtype/gray_i4_none.fits	load	dtype	i4	1	strip	1	II	1	37	23	1	1	1	0	0	851	-2147483648	2147483647	-927575506945	5-row strips, short last strip
+dtype/gray_i4_packbits.tif	dtype/gray_i4_packbits.fits	load	dtype	i4	32773	strip	1	II	1	37	23	1	1	1	0	0	851	-2147483648	2147483647	-927575506945	5-row strips, short last strip
+dtype/gray_i4_lzw.tif	dtype/gray_i4_lzw.fits	load	dtype	i4	5	strip	1	II	1	37	23	1	1	1	1	0	851	-2147483648	2147483647	-927575506945	5-row strips, short last strip
+dtype/gray_i4_adobe_deflate.tif	dtype/gray_i4_adobe_deflate.fits	load	dtype	i4	8	strip	1	II	1	37	23	1	1	1	1	0	851	-2147483648	2147483647	-927575506945	5-row strips, short last strip
+dtype/gray_i4_deflate.tif	dtype/gray_i4_deflate.fits	load	dtype	i4	32946	strip	1	II	1	37	23	1	1	1	1	0	851	-2147483648	2147483647	-927575506945	5-row strips, short last strip
+dtype/gray_f4_none.tif	dtype/gray_f4_none.fits	load	dtype	f4	1	strip	1	II	1	37	23	1	1	1	0	0	851	-1240.0711669921875	1199.2255859375	-43832.3076453805	5-row strips, short last strip
+dtype/gray_f4_packbits.tif	dtype/gray_f4_packbits.fits	load	dtype	f4	32773	strip	1	II	1	37	23	1	1	1	0	0	851	-1240.0711669921875	1199.2255859375	-43832.3076453805	5-row strips, short last strip
+dtype/gray_f4_lzw.tif	dtype/gray_f4_lzw.fits	load	dtype	f4	5	strip	1	II	1	37	23	1	1	1	1	0	851	-1240.0711669921875	1199.2255859375	-43832.3076453805	5-row strips, short last strip
+dtype/gray_f4_adobe_deflate.tif	dtype/gray_f4_adobe_deflate.fits	load	dtype	f4	8	strip	1	II	1	37	23	1	1	1	1	0	851	-1240.0711669921875	1199.2255859375	-43832.3076453805	5-row strips, short last strip
+dtype/gray_f4_deflate.tif	dtype/gray_f4_deflate.fits	load	dtype	f4	32946	strip	1	II	1	37	23	1	1	1	1	0	851	-1240.0711669921875	1199.2255859375	-43832.3076453805	5-row strips, short last strip
+dtype/gray_f8_none.tif	dtype/gray_f8_none.fits	load	dtype	f8	1	strip	1	II	1	37	23	1	1	1	0	0	851	-1240.071218199827	1199.2256147406006	-43832.30766295283	5-row strips, short last strip
+dtype/gray_f8_packbits.tif	dtype/gray_f8_packbits.fits	load	dtype	f8	32773	strip	1	II	1	37	23	1	1	1	0	0	851	-1240.071218199827	1199.2256147406006	-43832.30766295283	5-row strips, short last strip
+dtype/gray_f8_lzw.tif	dtype/gray_f8_lzw.fits	load	dtype	f8	5	strip	1	II	1	37	23	1	1	1	1	0	851	-1240.071218199827	1199.2256147406006	-43832.30766295283	5-row strips, short last strip
+dtype/gray_f8_adobe_deflate.tif	dtype/gray_f8_adobe_deflate.fits	load	dtype	f8	8	strip	1	II	1	37	23	1	1	1	1	0	851	-1240.071218199827	1199.2256147406006	-43832.30766295283	5-row strips, short last strip
+dtype/gray_f8_deflate.tif	dtype/gray_f8_deflate.fits	load	dtype	f8	32946	strip	1	II	1	37	23	1	1	1	1	0	851	-1240.071218199827	1199.2256147406006	-43832.30766295283	5-row strips, short last strip
+tiled/gray_u1_tiled_deflate.tif	tiled/gray_u1_tiled_deflate.fits	load	tiled	u1	8	tile	1	II	1	50	40	1	1	1	1	0	2000	0	255	249357	16x16 tiles over 50x40
+tiled/gray_u1_tiled_none.tif	tiled/gray_u1_tiled_none.fits	load	tiled	u1	1	tile	1	II	1	50	40	1	1	1	0	0	2000	0	255	249357	16x16 tiles over 50x40
+tiled/gray_u2_tiled_deflate.tif	tiled/gray_u2_tiled_deflate.fits	load	tiled	u2	8	tile	1	II	1	50	40	1	1	1	1	0	2000	0	65535	20377869	16x16 tiles over 50x40
+tiled/gray_u2_tiled_none.tif	tiled/gray_u2_tiled_none.fits	load	tiled	u2	1	tile	1	II	1	50	40	1	1	1	0	0	2000	0	65535	20377869	16x16 tiles over 50x40
+tiled/gray_i2_tiled_deflate.tif	tiled/gray_i2_tiled_deflate.fits	load	tiled	i2	8	tile	1	II	1	50	40	1	1	1	1	0	2000	-32768	32767	-4135861	16x16 tiles over 50x40
+tiled/gray_i2_tiled_none.tif	tiled/gray_i2_tiled_none.fits	load	tiled	i2	1	tile	1	II	1	50	40	1	1	1	0	0	2000	-32768	32767	-4135861	16x16 tiles over 50x40
+tiled/gray_u4_tiled_deflate.tif	tiled/gray_u4_tiled_deflate.fits	load	tiled	u4	8	tile	1	II	1	50	40	1	1	1	1	0	2000	0	4294967295	1335548047629	16x16 tiles over 50x40
+tiled/gray_u4_tiled_none.tif	tiled/gray_u4_tiled_none.fits	load	tiled	u4	1	tile	1	II	1	50	40	1	1	1	0	0	2000	0	4294967295	1335548047629	16x16 tiles over 50x40
+tiled/gray_i4_tiled_deflate.tif	tiled/gray_i4_tiled_deflate.fits	load	tiled	i4	8	tile	1	II	1	50	40	1	1	1	1	0	2000	-2147483648	2147483647	-271047720961	16x16 tiles over 50x40
+tiled/gray_i4_tiled_none.tif	tiled/gray_i4_tiled_none.fits	load	tiled	i4	1	tile	1	II	1	50	40	1	1	1	0	0	2000	-2147483648	2147483647	-271047720961	16x16 tiles over 50x40
+tiled/gray_f4_tiled_deflate.tif	tiled/gray_f4_tiled_deflate.fits	load	tiled	f4	8	tile	1	II	1	50	40	1	1	1	1	0	2000	-1145.4429931640625	1872.2110595703125	695956.1864270717	16x16 tiles over 50x40
+tiled/gray_f4_tiled_none.tif	tiled/gray_f4_tiled_none.fits	load	tiled	f4	1	tile	1	II	1	50	40	1	1	1	0	0	2000	-1145.4429931640625	1872.2110595703125	695956.1864270717	16x16 tiles over 50x40
+tiled/gray_f8_tiled_deflate.tif	tiled/gray_f8_tiled_deflate.fits	load	tiled	f8	8	tile	1	II	1	50	40	1	1	1	1	0	2000	-1145.442940182179	1872.2110435427126	695956.1861393843	16x16 tiles over 50x40
+tiled/gray_f8_tiled_none.tif	tiled/gray_f8_tiled_none.fits	load	tiled	f8	1	tile	1	II	1	50	40	1	1	1	0	0	2000	-1145.442940182179	1872.2110435427126	695956.1861393843	16x16 tiles over 50x40
+byteorder/gray_u1_MM_none.tif	byteorder/gray_u1_MM_none.fits	load	byteorder	u1	1	strip	1	MM	1	37	23	1	1	1	0	0	851	0	255	101003	
+byteorder/gray_u1_MM_deflate.tif	byteorder/gray_u1_MM_deflate.fits	load	byteorder	u1	8	strip	1	MM	1	37	23	1	1	1	1	0	851	0	255	101003	
+byteorder/gray_u2_MM_none.tif	byteorder/gray_u2_MM_none.fits	load	byteorder	u2	1	strip	1	MM	1	37	23	1	1	1	0	0	851	0	65535	6903947	
+byteorder/gray_u2_MM_deflate.tif	byteorder/gray_u2_MM_deflate.fits	load	byteorder	u2	8	strip	1	MM	1	37	23	1	1	1	1	0	851	0	65535	6903947	
+byteorder/gray_i2_MM_none.tif	byteorder/gray_i2_MM_none.fits	load	byteorder	i2	1	strip	1	MM	1	37	23	1	1	1	0	0	851	-32768	32767	-7173202	
+byteorder/gray_i2_MM_deflate.tif	byteorder/gray_i2_MM_deflate.fits	load	byteorder	i2	8	strip	1	MM	1	37	23	1	1	1	1	0	851	-32768	32767	-7173202	
+byteorder/gray_u4_MM_none.tif	byteorder/gray_u4_MM_none.fits	load	byteorder	u4	1	strip	1	MM	1	37	23	1	1	1	0	0	851	0	4294967295	452482521227	
+byteorder/gray_u4_MM_deflate.tif	byteorder/gray_u4_MM_deflate.fits	load	byteorder	u4	8	strip	1	MM	1	37	23	1	1	1	1	0	851	0	4294967295	452482521227	
+byteorder/gray_i4_MM_none.tif	byteorder/gray_i4_MM_none.fits	load	byteorder	i4	1	strip	1	MM	1	37	23	1	1	1	0	0	851	-2147483648	2147483647	-470102900737	
+byteorder/gray_i4_MM_deflate.tif	byteorder/gray_i4_MM_deflate.fits	load	byteorder	i4	8	strip	1	MM	1	37	23	1	1	1	1	0	851	-2147483648	2147483647	-470102900737	
+byteorder/gray_f4_MM_none.tif	byteorder/gray_f4_MM_none.fits	load	byteorder	f4	1	strip	1	MM	1	37	23	1	1	1	0	0	851	-235.86813354492188	2193.513671875	805257.2764339447	
+byteorder/gray_f4_MM_deflate.tif	byteorder/gray_f4_MM_deflate.fits	load	byteorder	f4	8	strip	1	MM	1	37	23	1	1	1	1	0	851	-235.86813354492188	2193.513671875	805257.2764339447	
+byteorder/gray_f8_MM_none.tif	byteorder/gray_f8_MM_none.fits	load	byteorder	f8	1	strip	1	MM	1	37	23	1	1	1	0	0	851	-235.86813695836065	2193.513755211484	805257.2757108489	
+byteorder/gray_f8_MM_deflate.tif	byteorder/gray_f8_MM_deflate.fits	load	byteorder	f8	8	strip	1	MM	1	37	23	1	1	1	1	0	851	-235.86813695836065	2193.513755211484	805257.2757108489	
+predictor/gray_u2_lzw_predictor.tif	predictor/gray_u2_lzw_predictor.fits	load	predictor	u2	5	strip	1	II	1	37	23	1	1	1	2	0	851	0	65535	8063964	horizontal (2) for ints, floating point (3) for floats
+predictor/gray_u2_adobe_deflate_predictor.tif	predictor/gray_u2_adobe_deflate_predictor.fits	load	predictor	u2	8	strip	1	II	1	37	23	1	1	1	2	0	851	0	65535	8063964	horizontal (2) for ints, floating point (3) for floats
+predictor/gray_i2_adobe_deflate_predictor.tif	predictor/gray_i2_adobe_deflate_predictor.fits	load	predictor	i2	8	strip	1	II	1	37	23	1	1	1	2	0	851	-32768	32767	-3682963	horizontal (2) for ints, floating point (3) for floats
+predictor/gray_i4_adobe_deflate_predictor.tif	predictor/gray_i4_adobe_deflate_predictor.fits	load	predictor	i4	8	strip	1	II	1	37	23	1	1	1	2	0	851	-2147483648	2147483647	-241366597633	horizontal (2) for ints, floating point (3) for floats
+predictor/gray_f4_adobe_deflate_predictor.tif	predictor/gray_f4_adobe_deflate_predictor.fits	load	predictor	f4	8	strip	1	II	1	37	23	1	1	1	3	0	851	254.3376922607422	2736.41259765625	1229896.7842254639	horizontal (2) for ints, floating point (3) for floats
+predictor/gray_f8_lzw_predictor.tif	predictor/gray_f8_lzw_predictor.fits	load	predictor	f8	5	strip	1	II	1	37	23	1	1	1	3	0	851	254.33769099222832	2736.412626764635	1229896.7847129945	horizontal (2) for ints, floating point (3) for floats
+predictor/gray_u2_tiled_lzw_predictor.tif	predictor/gray_u2_tiled_lzw_predictor.fits	load	predictor	u2	5	tile	1	II	1	50	40	1	1	1	2	0	2000	0	65535	25837737	
+rgb/rgb_u1_contig_strip.tif	rgb/rgb_u1_contig_strip.fits	load	rgb	u1	8	strip	1	II	2	37	23	3	1	1	1	0	2553	0	255	310650	twin: 3-plane cube R,G,B
+rgb/rgb_u1_contig_tiled.tif	rgb/rgb_u1_contig_tiled.fits	load	rgb	u1	8	tile	1	II	2	50	40	3	1	1	1	0	6000	0	255	751567	twin: 3-plane cube R,G,B
+rgb/rgb_u1_separate_strip.tif	rgb/rgb_u1_separate_strip.fits	load	rgb	u1	8	strip	2	II	2	37	23	3	1	1	1	0	2553	0	255	310650	twin: 3-plane cube R,G,B
+rgb/rgb_u1_separate_tiled.tif	rgb/rgb_u1_separate_tiled.fits	load	rgb	u1	8	tile	2	II	2	50	40	3	1	1	1	0	6000	0	255	751567	twin: 3-plane cube R,G,B
+rgb/rgb_u2_contig_strip.tif	rgb/rgb_u2_contig_strip.fits	load	rgb	u2	8	strip	1	II	2	37	23	3	1	1	1	0	2553	0	65535	31151994	twin: 3-plane cube R,G,B
+rgb/rgb_u2_contig_tiled.tif	rgb/rgb_u2_contig_tiled.fits	load	rgb	u2	8	tile	1	II	2	50	40	3	1	1	1	0	6000	0	65535	93892815	twin: 3-plane cube R,G,B
+rgb/rgb_u2_separate_strip.tif	rgb/rgb_u2_separate_strip.fits	load	rgb	u2	8	strip	2	II	2	37	23	3	1	1	1	0	2553	0	65535	31151994	twin: 3-plane cube R,G,B
+rgb/rgb_u2_separate_tiled.tif	rgb/rgb_u2_separate_tiled.fits	load	rgb	u2	8	tile	2	II	2	50	40	3	1	1	1	0	6000	0	65535	93892815	twin: 3-plane cube R,G,B
+rgb/rgb_f4_contig_strip.tif	rgb/rgb_f4_contig_strip.fits	load	rgb	f4	8	strip	1	II	2	37	23	3	1	1	1	0	2553	746.037841796875	4340.4248046875	6238346.525817871	twin: 3-plane cube R,G,B
+rgb/rgb_f4_contig_tiled.tif	rgb/rgb_f4_contig_tiled.fits	load	rgb	f4	8	tile	1	II	2	50	40	3	1	1	1	0	6000	344.5856628417969	4340.4248046875	14085457.399536133	twin: 3-plane cube R,G,B
+rgb/rgb_f4_separate_strip.tif	rgb/rgb_f4_separate_strip.fits	load	rgb	f4	8	strip	2	II	2	37	23	3	1	1	1	0	2553	746.037841796875	4340.4248046875	6238346.525817871	twin: 3-plane cube R,G,B
+rgb/rgb_f4_separate_tiled.tif	rgb/rgb_f4_separate_tiled.fits	load	rgb	f4	8	tile	2	II	2	50	40	3	1	1	1	0	6000	344.5856628417969	4340.4248046875	14085457.399536133	twin: 3-plane cube R,G,B
+rgb/rgba_u2_contig_strip.tif	rgb/rgba_u2_contig_strip.fits	load	rgb	u2	8	strip	1	II	2	37	23	4	1	1	1	0	3404	0	65535	43856026	unassociated alpha; twin drops it
+pages/stack3_u2_deflate.tif	pages/stack3_u2_deflate.fits	load	pages	u2	8	strip	1	II	1	37	23	1	3	1	1	0	851	0	65535	13864049	3 pages -> 3-plane cube
+pages/stack3_f4_tiled.tif	pages/stack3_f4_tiled.fits	load	pages	f4	8	tile	1	II	1	50	40	1	3	1	1	0	2000	2335.478759765625	5350.77685546875	7694582.662109375	
+pages/stack2_u2_with_reduced.tif	pages/stack2_u2_with_reduced.fits	load	pages	u2	1	strip	1	II	1	37	23	1	3	1	0	0	851	0	65535	17344100	middle page is NewSubfileType=1 (reduced); skipped
+pages/mixed_geometry_u2.tif	pages/mixed_geometry_u2.fits	load	pages	u2	1	strip	1	II	1	37	23	1	2	1	0	0	851	0	65535	20824151	second page differs in size; twin is page 1 only
+orientation/orient1_u2.tif	orientation/orient1_u2.fits	load	orientation	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	23144185	twin is the image as displayed
+orientation/orient2_u2.tif	orientation/orient2_u2.fits	load	orientation	u2	1	strip	1	II	1	37	23	1	1	2	0	0	851	0	65535	23144185	twin is the image as displayed
+orientation/orient3_u2.tif	orientation/orient3_u2.fits	load	orientation	u2	1	strip	1	II	1	37	23	1	1	3	0	0	851	0	65535	23144185	twin is the image as displayed
+orientation/orient4_u2.tif	orientation/orient4_u2.fits	load	orientation	u2	1	strip	1	II	1	37	23	1	1	4	0	0	851	0	65535	23144185	twin is the image as displayed
+orientation/orient5_u2.tif	orientation/orient5_u2.fits	load	orientation	u2	1	strip	1	II	1	23	37	1	1	5	0	0	851	0	65535	23144185	twin is the image as displayed
+orientation/orient6_u2.tif	orientation/orient6_u2.fits	load	orientation	u2	1	strip	1	II	1	23	37	1	1	6	0	0	851	0	65535	23144185	twin is the image as displayed
+orientation/orient7_u2.tif	orientation/orient7_u2.fits	load	orientation	u2	1	strip	1	II	1	23	37	1	1	7	0	0	851	0	65535	23144185	twin is the image as displayed
+orientation/orient8_u2.tif	orientation/orient8_u2.fits	load	orientation	u2	1	strip	1	II	1	23	37	1	1	8	0	0	851	0	65535	23144185	twin is the image as displayed
+photometric/miniswhite_u2.tif	photometric/miniswhite_u2.fits	load	photometric	u2	1	strip	1	II	0	37	23	1	1	1	0	0	851	0	65535	24304202	values as stored, not inverted
+edge/bigtiff_u2.tif	edge/bigtiff_u2.fits	load	edge	u2	8	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	25464219	
+edge/rps1_u2.tif	edge/rps1_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	25464219	
+edge/onestrip_u2.tif	edge/onestrip_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	25464219	single strip; -array skip= cross-check
+edge/row_1x61_u2.tif	edge/row_1x61_u2.fits	load	edge	u2	1	strip	1	II	1	61	1	1	1	1	0	0	61	0	65535	1748805	
+edge/col_61x1_u2.tif	edge/col_61x1_u2.fits	load	edge	u2	1	strip	1	II	1	1	61	1	1	1	0	0	61	0	65535	2205465	
+unsupported/gray_u2_lzma.tif		refuse	unsupported	u2	34925	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	27784253	codec not in tifftcl
+unsupported/gray_u2_zstd.tif		refuse	unsupported	u2	50000	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	27784253	codec not in tifftcl
+unsupported/gray_f2_none.tif		refuse	unsupported	f2	1	strip	1	II	1	37	23	1	1	1	0	0	851	-1.232421875	1.2060546875	-37.66129112243652	half float: rejected in v1
+unsupported/palette_u1.tif		refuse	unsupported	u1	1	strip	1	II	3	37	23	1	1	1	0	0	851	0	15	6398	photo path
+unsupported/rgb_u1_jpeg.tif		refuse	unsupported	u1	7	strip	1	II	6	64	48	3	1	1	0	0	9216	0	255	1181933	JPEG/YCbCr: photo path
+unsupported/bilevel_1bit.tif		refuse	unsupported	b1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	1	426	1 bit per sample
