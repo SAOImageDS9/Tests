@@ -95,6 +95,7 @@ orientation/orient6_u2.tif	orientation/orient6_u2.fits	load	orientation	u2	1	str
 orientation/orient7_u2.tif	orientation/orient7_u2.fits	load	orientation	u2	1	strip	1	II	1	23	37	1	1	7	0	0	851	0	65535	23144185	twin is the image as displayed
 orientation/orient8_u2.tif	orientation/orient8_u2.fits	load	orientation	u2	1	strip	1	II	1	23	37	1	1	8	0	0	851	0	65535	23144185	twin is the image as displayed
 photometric/miniswhite_u2.tif	photometric/miniswhite_u2.fits	load	photometric	u2	1	strip	1	II	0	37	23	1	1	1	0	0	851	0	65535	24304202	values as stored, not inverted
+header/texttags_u2.tif	header/texttags_u2.fits	load	header	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	34744355	Software/DateTime/Artist/ImageDescription; long, with quotes
 edge/bigtiff_u2.tif	edge/bigtiff_u2.fits	load	edge	u2	8	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	25464219	
 edge/rps1_u2.tif	edge/rps1_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	25464219	
 edge/onestrip_u2.tif	edge/onestrip_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	25464219	single strip; -array skip= cross-check

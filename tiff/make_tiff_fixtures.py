@@ -144,6 +144,7 @@ class Writer:
             byteorder='<', photometric=None, orientation=None,
             predictor=None, subfiletypes=None, bigtiff=False,
             rowsperstrip=None, extrasamples=None, colormap=None,
+            texttags=None,
             notes=''):
         """stored_pages: list of arrays as they go in the file, each (h, w)
         or (h, w, spp) for contig or (spp, h, w) for separate planes."""
@@ -156,6 +157,10 @@ class Writer:
                           photometric=photometric, predictor=predictor,
                           rowsperstrip=rowsperstrip, metadata=None,
                           software=False, datetime=False)
+                if texttags:
+                    kw['software'] = texttags.get('software', False)
+                    kw['datetime'] = texttags.get('datetime', False)
+                    kw['description'] = texttags.get('description')
                 if planar:
                     kw['planarconfig'] = planar
                 if extrasamples is not None:
@@ -167,6 +172,8 @@ class Writer:
                 extratags = []
                 if orientation is not None:
                     extratags.append((274, 'H', 1, orientation, True))
+                if texttags and 'artist' in texttags:
+                    extratags.append((315, 's', 0, texttags['artist'], True))
                 kw['extratags'] = extratags
                 if compression == 'jpeg':
                     kw['compressionargs'] = {'level': 95}
@@ -324,6 +331,16 @@ def main():
     img = pattern(GRAY_H, GRAY_W, 'u2', seed=17)
     w.add('photometric', 'miniswhite_u2', [img], twin_planes=[img],
           photometric='miniswhite', notes='values as stored, not inverted')
+
+    # text tags -> header cards (CREATOR, DATE, OBSERVER, COMMENT)
+    img = pattern(GRAY_H, GRAY_W, 'u2', seed=26)
+    w.add('header', 'texttags_u2', [img], twin_planes=[img], texttags={
+        'software': "O'Brien Capture 3.1 (a Software tag long enough that "
+                    "it cannot fit on one FITS card with its comment)",
+        'datetime': '2026:11:22 10:11:12',
+        'artist': "Observer with an apostrophe's quote",
+        'description': ('M42 stack, 40 x 120 s, gain 100. ' * 6).strip(),
+    }, notes='Software/DateTime/Artist/ImageDescription; long, with quotes')
 
     # edge cases
     img = pattern(GRAY_H, GRAY_W, 'u2', seed=18)
