@@ -256,6 +256,7 @@ doit "$1" vlss
 doit "$1" wcs
 doit "$1" web
 doit "$1" width
+doit "$1" xisf
 doit "$1" xpa
 doit "$1" zscale
 doit "$1" zoom

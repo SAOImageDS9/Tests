@@ -4848,6 +4848,29 @@ fi
 
 sleep 2
 
+tt="xisf"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+starttest
+echo -n "$tt..."
+# no stdin form and no xpaget: the reader seeks to each block by its
+# absolute position, so it needs the file itself
+xpaset -p DS9Test frame new
+xpaset -p DS9Test xisf xisf/codecs/float32_zstd.xisf
+xpaset -p DS9Test frame delete
+
+xpaset -p DS9Test xisf new xisf/codecs/float32_zstd.xisf
+xpaset -p DS9Test xisf mask xisf/codecs/float32_zstd.xisf
+xpaset -p DS9Test frame delete
+
+# an RGB image fills all three channels of an RGB frame in one load
+xpaset -p DS9Test frame new rgb
+xpaset -p DS9Test xisf xisf/storage/rgb_float32_planar.xisf
+xpaset -p DS9Test frame delete
+
+endtest
+testit $tt
+fi
+
 tt="xpa"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 starttest

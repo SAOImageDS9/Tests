@@ -3470,6 +3470,18 @@ testit "-width 600"
 doit
 fi
 
+tt="xisf"
+if [ "$1" = "$tt" -o -z "$1" ]; then
+initit "$tt"
+testit "-frame new"
+testit "-xisf xisf/codecs/float32_zstd.xisf"
+testit "-xisf -mask xisf/codecs/float32_zstd.xisf -nomask"
+testit "-frame new rgb"
+testit "-xisf xisf/storage/rgb_float32_planar.xisf"
+
+doit
+fi
+
 tt="xpa"
 if [ "$1" = "$tt" -o -z "$1" ]; then
 initit "$tt"
