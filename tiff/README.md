@@ -1,4 +1,4 @@
-# TIFF fixtures (`TODO_TIFF16.md`, Phases 0–5)
+# TIFF fixtures (`TODO_TIFF16.md`, every phase)
 
 Test files for DS9's native full-depth TIFF reader. They were made before the reader
 exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
@@ -6,21 +6,24 @@ exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
 
 | Path | What |
 |---|---|
-| `../tiff.sh` | **The suite, shell only** (ds9 and the XPA tools, no Python), run from `Tests/` and by `io.sh`. `command` loads every fixture on the command line (smoke test). `xpa` loads each with `tiff native` and compares its probe (size, depth, three pixels, min/max of every slice) with `<file>.sav`. `rgb` loads each RGB fixture into an RGB frame and compares every channel with `<file>.rgb.sav`. `baselines` records those files **from the FITS twins**, never from a TIFF load (`.lum.fits` for an RGB fixture in an ordinary frame, the twin as an `rgbcube` for the RGB frame), and from a `tiff photo` load for a fixture with no twin, which the native reader refuses. Expect 111 and 14 passed. |
+| `../tiff.sh` | **The suite, shell only** (ds9 and the XPA tools, no Python), run from `Tests/` and by `io.sh`. `command` loads every fixture on the command line (smoke test). `xpa` loads each with `tiff native` and compares its probe (size, depth, three pixels, min/max of every slice, the sky at the centre) with `<file>.sav`. `rgb` loads each RGB fixture into an RGB frame and compares every channel with `<file>.rgb.sav`. `baselines` records those files **from the FITS twins**, never from a TIFF load (`.lum.fits` for an RGB fixture in an ordinary frame, the twin as an `rgbcube` for the RGB frame), and from a `tiff photo` load for a fixture with no twin, which the native reader refuses. Expect 126 and 15 passed. |
 | `make_tiff_fixtures.py` | Writes every fixture, its twin, and `MANIFEST.tsv`, using tifffile. Deterministic: a rerun is byte-identical. |
-| `check_fixtures.py` | Reads every fixture back with tifffile and checks its tags against the manifest and its pixels against the twin. Expect 111 checked, 0 failed. |
-| `check_probe.py` | Runs fitsy's libtiff probe (`fitsy tiff decode`) inside a live ds9 over XPA, and compares directory 0's tags and nsamples/min/max/sum with the manifest. For `refuse` entries it prints what libtiff says. Expect 104 probed, 0 failed. |
-| `check_load.py` | Has a live ds9 load every fixture with the frame's `load tiff` and write it back. **Ordinary frame:** every loadable fixture must equal its twin pixel for pixel (a stack as a whole cube, an RGB TIFF against its luminance twin `<name>.lum.fits`), with the expected in-memory BITPIX and a header astropy parses. `header/texttags_u2.tif`'s cards are checked exactly. **RGB frame:** every RGB fixture's three channels must equal the R, G, B twin. **Refusals:** must fail with a `tiff: ...` reason. Expect 104 loads, 14 RGB-frame loads and 7 refusals, 0 failed. |
+| `check_fixtures.py` | Reads every fixture back with tifffile and checks its tags against the manifest and its pixels against the twin. Expect 126 checked, 0 failed. |
+| `check_probe.py` | Runs fitsy's libtiff probe (`fitsy tiff decode`) inside a live ds9 over XPA, and compares directory 0's tags and nsamples/min/max/sum with the manifest. For `refuse` entries it prints what libtiff says. Expect 121 probed, 0 failed. |
+| `check_load.py` | Has a live ds9 load every fixture with the frame's `load tiff` and write it back. **Ordinary frame:** every loadable fixture must equal its twin pixel for pixel (a stack as a whole cube, an RGB TIFF against its luminance twin `<name>.lum.fits`), with the expected in-memory BITPIX and a header astropy parses. `header/texttags_u2.tif`'s cards are checked exactly. **RGB frame:** every RGB fixture's three channels must equal the R, G, B twin. **Refusals:** must fail with a `tiff: ...` reason. Expect 121 loads, 15 RGB-frame loads and 5 refusals, 0 failed. |
 | `check_entry.py` | Phase 2: every way a TIFF reaches ds9 picks the right reader. That covers XPA by file name and by data, each mode keyword and the preference, slice, mask, the SAMP path, recent files, backup/restore, and the command line (`-tiff`, `-tiff native/photo`, `-tiff -`, `-mask -tiff native`). It starts and restarts its own ds9 (title `DS9TiffEntry`) and keeps the user's recent-files list as it was. Expect 31 checks, 0 failed. |
 | `MANIFEST.tsv` | One row per fixture: `expect` (`load`/`refuse`), the tags as stored, and the probe's expected statistics. |
 
 Families: `dtype/` (u1 u2 i2 u4 i4 f4 f8 × none/PackBits/LZW/Deflate 8/Deflate
-32946), `tiled/`, `byteorder/` (MM), `predictor/` (2 and 3), `rgb/` (contig and planar,
-strip and tile, RGBA), `pages/` (stacks, a reduced-resolution page, mixed geometry),
-`orientation/` (1–8), `photometric/` (MINISWHITE), `header/` (Software,
-DateTime, Artist and ImageDescription, long and with quotes), `edge/` (BigTIFF, RowsPerStrip 1
-and H, 1×N, N×1), `unsupported/` (LZMA, ZSTD, half float, palette, JPEG/YCbCr,
-1-bit).
+32946; half floats f2, with the floating-point predictor and the special values),
+`tiled/`, `byteorder/` (MM), `predictor/` (2 and 3), `rgb/` (contig and planar, strip
+and tile, RGBA, gray + alpha), `pages/` (stacks, an RGB stack, a reduced-resolution
+page, mixed geometry), `orientation/` (1–8), `photometric/` (MINISWHITE), `packed/`
+(1, 2, 4, 10, 12 and 14-bit, 12-bit tiled and RGB, 1-bit MinIsBlack and MinIsWhite;
+uncompressed only, since tifffile packs nothing else), `header/` (text tags; FITS cards
+in ImageDescription, merged and not; an ImageJ description), `edge/` (BigTIFF,
+RowsPerStrip 1 and H, 1×N, N×1), `unsupported/` (LZMA, ZSTD, palette, JPEG/YCbCr,
+multi-band).
 
 ## The twin encodes our conventions (TODO_TIFF16.md §2)
 
@@ -36,6 +39,8 @@ and H, 1×N, N×1), `unsupported/` (LZMA, ZSTD, half float, palette, JPEG/YCbCr,
   the same values. **uint32** is written as int64 (BITPIX 64), which holds the same
   values exactly. That's how the native reader widens it, and BITPIX 32 + BZERO would
   make ds9 print scaled `%g` values that `tiff.sh`'s text baselines can't match.
+- **FITS cards:** a fixture whose ImageDescription the reader merges has a twin that
+  carries the same cards, structural ones aside.
 - **Stack pages have ranges of their own** (integer page k divided by k+1, float page
   k multiplied by k+1), so `tiff.sh`'s per-slice min/max tells the slices apart.
   `pattern()` pins every image to its type's full range, and `xpaget data` always reads

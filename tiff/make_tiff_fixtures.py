@@ -150,7 +150,7 @@ class Writer:
         os.makedirs(d, exist_ok=True)
         return os.path.join(d, name + ext)
 
-    def twin(self, group, name, planes):
+    def twin(self, group, name, planes, cards=None):
         """planes: list of 2-D arrays, top row first, as displayed."""
         data = np.stack([np.flipud(p) for p in planes])
         if data.shape[0] == 1:
@@ -164,6 +164,9 @@ class Writer:
             # compare with the exact integers of a native load
             data = data.astype(np.int64)
         hdu = fits.PrimaryHDU(data)
+        for c in cards or []:
+            # FITS cards the reader merges from ImageDescription
+            hdu.header.append(fits.Card.fromstring(c), end=True)
         fn = self.path(group, name, '.fits')
         hdu.writeto(fn, overwrite=True)
         return os.path.relpath(fn, HERE)
@@ -173,7 +176,7 @@ class Writer:
             byteorder='<', photometric=None, orientation=None,
             predictor=None, subfiletypes=None, bigtiff=False,
             rowsperstrip=None, extrasamples=None, colormap=None,
-            texttags=None,
+            texttags=None, bitspersample=None, twin_cards=None,
             notes=''):
         """stored_pages: list of arrays as they go in the file, each (h, w)
         or (h, w, spp) for contig or (spp, h, w) for separate planes."""
@@ -182,7 +185,11 @@ class Writer:
             os.remove(fn)
         with tifftools_writer(fn, bigtiff, byteorder) as tw:
             for k, page in enumerate(stored_pages):
-                kw = dict(compression=compression, tile=tile,
+                if bitspersample is not None:
+                    extra_kw = {'bitspersample': bitspersample}
+                else:
+                    extra_kw = {}
+                kw = dict(compression=compression, tile=tile, **extra_kw,
                           photometric=photometric, predictor=predictor,
                           rowsperstrip=rowsperstrip, metadata=None,
                           software=False, datetime=False)
@@ -210,7 +217,7 @@ class Writer:
 
         twin = ''
         if expect == 'load':
-            twin = self.twin(group, name, twin_planes)
+            twin = self.twin(group, name, twin_planes, cards=twin_cards)
             if photometric == 'rgb':
                 # what a non-RGB frame shows: one luminance plane per
                 # full-resolution page (TODO_TIFF16.md, Phase 3)
@@ -381,6 +388,87 @@ def main():
         'description': ('M42 stack, 40 x 120 s, gain 100. ' * 6).strip(),
     }, notes='Software/DateTime/Artist/ImageDescription; long, with quotes')
 
+    # Phase 4: half floats
+    f2 = pattern(GRAY_H, GRAY_W, 'f2')
+    w.add('dtype', 'gray_f2_none', [f2], twin_planes=[f2],
+          notes='half float -> float32, exactly')
+    w.add('dtype', 'gray_f2_adobe_deflate_predictor', [f2], twin_planes=[f2],
+          compression='adobe_deflate', predictor=True, rowsperstrip=6,
+          notes='half float, floating point predictor (3)')
+    sp = pattern(GRAY_H, GRAY_W, 'f2', seed=3)
+    special = np.array([0.0, -0.0, 6.0e-8, -6.0e-8, 6.1e-5, 1.0e-6,
+                        65504.0, -65504.0, 6.103515625e-05], np.float16)
+    sp.flat[:special.size] = special
+    w.add('dtype', 'gray_f2_special', [sp], twin_planes=[sp],
+          notes='half float: zeros, subnormals, extremes')
+
+    # Phase 4: packed unsigned depths, raw counts
+    for bps in (1, 2, 4, 10, 12, 14):
+        dt = 'u1' if bps < 8 else 'u2'
+        img = (pattern(GRAY_H, GRAY_W, 'u2', seed=bps).astype(np.uint32)
+               % (1 << bps)).astype(dt)
+        img.flat[0] = 0
+        img.flat[-1] = (1 << bps) - 1
+        w.add('packed', f'gray_u{bps}_none', [img], twin_planes=[img],
+              bitspersample=bps, rowsperstrip=5,
+              notes=f'{bps} bits per sample, packed, 5-row strips')
+    u12 = (pattern(TILE_H, TILE_W, 'u2', seed=31) >> 4).astype(np.uint16)
+    w.add('packed', 'gray_u12_tiled', [u12], twin_planes=[u12],
+          bitspersample=12, tile=TILE, notes='12 bit, 16x16 tiles')
+    rgb12 = [(pattern(GRAY_H, GRAY_W, 'u2', seed=s) >> 4).astype(np.uint16)
+             for s in (32, 33, 34)]
+    w.add('packed', 'rgb_u12_contig', [np.dstack(rgb12)],
+          twin_planes=rgb12, bitspersample=12, photometric='rgb',
+          rowsperstrip=4, notes='12-bit RGB, chunky: samples straddle bytes')
+    b1 = (pattern(GRAY_H, GRAY_W, 'u1', seed=25) & 1).astype(np.uint8)
+    w.add('packed', 'bilevel_1bit', [b1], twin_planes=[b1],
+          bitspersample=1, notes='1 bit, MinIsBlack')
+    w.add('packed', 'miniswhite_1bit', [b1], twin_planes=[b1],
+          bitspersample=1, photometric='miniswhite',
+          notes='1 bit, MinIsWhite: values as stored')
+
+    # Phase 4: FITS cards in ImageDescription
+    img = pattern(GRAY_H, GRAY_W, 'u2', seed=35)
+    fc = [fits.Card('SIMPLE', True).image,
+          fits.Card('BITPIX', 16).image,
+          fits.Card('NAXIS', 2).image,
+          fits.Card('NAXIS1', GRAY_W).image,
+          fits.Card('NAXIS2', GRAY_H).image,
+          fits.Card('OBJECT', "Orion's nebula", 'target').image,
+          fits.Card('EXPTIME', 120.0, '[s]').image,
+          fits.Card('DATE', '2026-01-02T03:04:05', 'from the FITS cards').image,
+          fits.Card('CTYPE1', 'RA---TAN').image,
+          fits.Card('CTYPE2', 'DEC--TAN').image,
+          fits.Card('CRPIX1', 19.0).image,
+          fits.Card('CRPIX2', 12.0).image,
+          fits.Card('CRVAL1', 83.8221).image,
+          fits.Card('CRVAL2', -5.3911).image,
+          fits.Card('CDELT1', -0.0003).image,
+          fits.Card('CDELT2', 0.0003).image,
+          fits.Card('RADESYS', 'ICRS').image,
+          fits.Card('COMMENT', 'written by a capture program').image,
+          fits.Card('HISTORY', 'stacked 40 frames').image,
+          'END'.ljust(80)]
+    merged = [c for c in fc if c[:8].rstrip() not in
+              ('SIMPLE', 'BITPIX', 'NAXIS', 'NAXIS1', 'NAXIS2', 'END')]
+    tt = {'datetime': '2026:11:22 10:11:12'}
+    w.add('header', 'fitscards_newline_u2', [img], twin_planes=[img],
+          texttags=dict(tt, description='\n'.join(c.rstrip() for c in fc)),
+          twin_cards=merged,
+          notes='FITS cards, one per line, with a TAN WCS: merged')
+    w.add('header', 'fitscards_80_u2', [img], twin_planes=[img],
+          texttags=dict(tt, description=''.join(fc)), twin_cards=merged,
+          notes='FITS cards back to back, 80 characters each: merged')
+    bad = [fits.Card('NAXIS1', GRAY_W + 3).image if c.startswith('NAXIS1')
+           else c for c in fc]
+    w.add('header', 'fitscards_badnaxis_u2', [img], twin_planes=[img],
+          texttags=dict(tt, description='\n'.join(c.rstrip() for c in bad)),
+          notes='FITS cards whose NAXIS1 is not the image: not merged')
+    w.add('header', 'imagej_u2', [img], twin_planes=[img],
+          texttags={'description': 'ImageJ=1.54f\nimages=1\nunit=micron\n'
+                    'spacing=0.5\nmin=0.0\nmax=65535.0\n'},
+          notes='an ImageJ description: not FITS, kept as COMMENTs')
+
     # edge cases
     img = pattern(GRAY_H, GRAY_W, 'u2', seed=18)
     w.add('edge', 'bigtiff_u2', [img], twin_planes=[img], bigtiff=True,
@@ -412,8 +500,6 @@ def main():
           compression='lzma', notes='codec not in tifftcl')
     w.add('unsupported', 'gray_u2_zstd', [img], expect='refuse',
           compression='zstd', notes='codec not in tifftcl')
-    w.add('unsupported', 'gray_f2_none', [pattern(GRAY_H, GRAY_W, 'f2')],
-          expect='refuse', notes='half float: rejected in v1')
     pal = (pattern(GRAY_H, GRAY_W, 'u1', seed=21) % 16).astype(np.uint8)
     cmap = np.zeros((3, 256), np.uint16)
     cmap[:, :16] = np.arange(16) * 4096
@@ -427,9 +513,16 @@ def main():
     w.add('unsupported', 'multiband_u2', [np.dstack(mb)], expect='refuse',
           photometric='minisblack', extrasamples=[0, 0],
           notes='3 bands, ExtraSamples unspecified: not cut to band 1')
-    bits = (pattern(GRAY_H, GRAY_W, 'u1', seed=25) & 1).astype(bool)
-    w.add('unsupported', 'bilevel_1bit', [bits], expect='refuse',
-          photometric='minisblack', notes='1 bit per sample')
+    try:
+        i12 = (pattern(GRAY_H, GRAY_W, 'i2', seed=27) >> 4).astype(np.int16)
+        w.add('unsupported', 'gray_i12_none', [i12], expect='refuse',
+              bitspersample=12, notes='signed packed: not supported')
+    except Exception as e:                      # tifffile refuses it
+        print('skipped unsupported/gray_i12_none:', e)
+        for ext in ('.tif', '.fits'):
+            fn = os.path.join(HERE, 'unsupported', 'gray_i12_none' + ext)
+            if os.path.exists(fn):
+                os.remove(fn)
 
     fn = w.manifest()
     nload = sum(r['expect'] == 'load' for r in w.rows)

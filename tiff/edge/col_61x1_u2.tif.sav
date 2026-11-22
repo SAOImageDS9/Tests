@@ -4,3 +4,4 @@ value 1 1 65535
 value 1 31 36270
 value 1 61 0
 slice 1 limits 0 65535
+wcs none

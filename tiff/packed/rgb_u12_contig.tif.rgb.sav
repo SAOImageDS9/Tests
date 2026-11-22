@@ -1,0 +1,24 @@
+channel red
+size 37 23
+depth 1
+value 1 1 3205
+value 19 12 3065
+value 37 23 2925
+slice 1 limits 0 4095
+wcs none
+channel green
+size 37 23
+depth 1
+value 1 1 3290
+value 19 12 3150
+value 37 23 3010
+slice 1 limits 0 4095
+wcs none
+channel blue
+size 37 23
+depth 1
+value 1 1 3376
+value 19 12 3236
+value 37 23 3096
+slice 1 limits 0 4095
+wcs none

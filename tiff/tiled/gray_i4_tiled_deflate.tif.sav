@@ -4,3 +4,4 @@ value 1 1 762183680
 value 25 20 -110428160
 value 50 40 -1033502720
 slice 1 limits -2.14748e+09 2.14748e+09
+wcs none

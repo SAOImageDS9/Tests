@@ -5,6 +5,7 @@ value 1 1 13026
 value 19 12 10787
 value 37 23 8549
 slice 1 limits 0 65535
+wcs none
 channel green
 size 37 23
 depth 1
@@ -12,6 +13,7 @@ value 1 1 14392
 value 19 12 12154
 value 37 23 9915
 slice 1 limits 0 65535
+wcs none
 channel blue
 size 37 23
 depth 1
@@ -19,3 +21,4 @@ value 1 1 15758
 value 19 12 13520
 value 37 23 11282
 slice 1 limits 0 65535
+wcs none

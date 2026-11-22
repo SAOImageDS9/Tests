@@ -33,7 +33,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # `get fits header' shows it (-16 is fitsy's unsigned 16; `save fits'
 # writes such an image out as BITPIX 32, so the saved file is not used).
 BITPIX = {'u1': 8, 'u2': -16, 'i2': 16, 'u4': 64, 'i4': 32,
-          'f4': -32, 'f8': -64}
+          'f2': -32, 'f4': -32, 'f8': -64}
+
+# header/fitscards_*: FITS cards in ImageDescription. Merged, ds9's header
+# must carry the twin's values for these (DATE from the cards, not the TIFF
+# DateTime); not merged, it must not have OBJECT.
+FITSKEYS = ['OBJECT', 'EXPTIME', 'DATE', 'CTYPE1', 'CTYPE2', 'CRPIX1',
+            'CRPIX2', 'CRVAL1', 'CRVAL2', 'CDELT1', 'CDELT2', 'RADESYS']
+NOTMERGED = ['header/fitscards_badnaxis_u2.tif', 'header/imagej_u2.tif']
 
 # header/texttags_u2.tif: the cards its text tags must give
 TEXTTAGS = {
@@ -105,6 +112,14 @@ def compare(r, status, rest, twin_fn, problems):
         comments = ' '.join(str(c) for c in hdr['COMMENT'])
         if 'M42 stack, 40 x 120 s, gain 100.' not in comments:
             problems.append('ImageDescription not in COMMENT')
+    if hdr is not None and r['fixture'].startswith('header/fitscards') \
+            and r['fixture'] not in NOTMERGED:
+        th = fits.getheader(os.path.join(HERE, twin_fn))
+        for key in FITSKEYS:
+            if hdr.get(key) != th.get(key):
+                problems.append(f'{key}={hdr.get(key)!r} want {th.get(key)!r}')
+    if hdr is not None and r['fixture'] in NOTMERGED and 'OBJECT' in hdr:
+        problems.append('FITS cards merged, but must not be')
     if data is None or data.shape != twin.shape:
         problems.append('shape %s want %s' % (
             None if data is None else data.shape, twin.shape))

@@ -96,6 +96,23 @@ orientation/orient7_u2.tif	orientation/orient7_u2.fits	load	orientation	u2	1	str
 orientation/orient8_u2.tif	orientation/orient8_u2.fits	load	orientation	u2	1	strip	1	II	1	23	37	1	1	8	0	0	851	0	65535	23144185	twin is the image as displayed
 photometric/miniswhite_u2.tif	photometric/miniswhite_u2.fits	load	photometric	u2	1	strip	1	II	0	37	23	1	1	1	0	0	851	0	65535	24304202	values as stored, not inverted
 header/texttags_u2.tif	header/texttags_u2.fits	load	header	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	34744355	Software/DateTime/Artist/ImageDescription; long, with quotes
+dtype/gray_f2_none.tif	dtype/gray_f2_none.fits	load	dtype	f2	1	strip	1	II	1	37	23	1	1	1	0	0	851	-1.232421875	1.2060546875	-37.66129112243652	half float -> float32, exactly
+dtype/gray_f2_adobe_deflate_predictor.tif	dtype/gray_f2_adobe_deflate_predictor.fits	load	dtype	f2	8	strip	1	II	1	37	23	1	1	1	3	0	851	-1.232421875	1.2060546875	-37.66129112243652	half float, floating point predictor (3)
+dtype/gray_f2_special.tif	dtype/gray_f2_special.fits	load	dtype	f2	1	strip	1	II	1	37	23	1	1	1	0	0	851	-65504.0	65504.0	1216.9471445083618	half float: zeros, subnormals, extremes
+packed/gray_u1_none.tif	packed/gray_u1_none.fits	load	packed	u1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	1	426	1 bits per sample, packed, 5-row strips
+packed/gray_u2_none.tif	packed/gray_u2_none.fits	load	packed	u1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	3	1279	2 bits per sample, packed, 5-row strips
+packed/gray_u4_none.tif	packed/gray_u4_none.fits	load	packed	u1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	15	6381	4 bits per sample, packed, 5-row strips
+packed/gray_u10_none.tif	packed/gray_u10_none.fits	load	packed	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	1023	431891	10 bits per sample, packed, 5-row strips
+packed/gray_u12_none.tif	packed/gray_u12_none.fits	load	packed	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	4095	1755573	12 bits per sample, packed, 5-row strips
+packed/gray_u14_none.tif	packed/gray_u14_none.fits	load	packed	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	16383	6864983	14 bits per sample, packed, 5-row strips
+packed/gray_u12_tiled.tif	packed/gray_u12_tiled.fits	load	packed	u2	1	tile	1	II	1	50	40	1	1	1	0	0	2000	0	4095	6391306	12 bit, 16x16 tiles
+packed/rgb_u12_contig.tif	packed/rgb_u12_contig.fits	load	packed	u2	1	strip	1	II	2	37	23	3	1	1	0	0	2553	0	4095	8035893	12-bit RGB, chunky: samples straddle bytes
+packed/bilevel_1bit.tif	packed/bilevel_1bit.fits	load	packed	u1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	1	426	1 bit, MinIsBlack
+packed/miniswhite_1bit.tif	packed/miniswhite_1bit.fits	load	packed	u1	1	strip	1	II	0	37	23	1	1	1	0	0	851	0	1	426	1 bit, MinIsWhite: values as stored
+header/fitscards_newline_u2.tif	header/fitscards_newline_u2.fits	load	header	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	45184508	FITS cards, one per line, with a TAN WCS: merged
+header/fitscards_80_u2.tif	header/fitscards_80_u2.fits	load	header	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	45184508	FITS cards back to back, 80 characters each: merged
+header/fitscards_badnaxis_u2.tif	header/fitscards_badnaxis_u2.fits	load	header	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	45184508	FITS cards whose NAXIS1 is not the image: not merged
+header/imagej_u2.tif	header/imagej_u2.fits	load	header	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	45184508	an ImageJ description: not FITS, kept as COMMENTs
 edge/bigtiff_u2.tif	edge/bigtiff_u2.fits	load	edge	u2	8	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	25464219	
 edge/rps1_u2.tif	edge/rps1_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	25464219	
 edge/onestrip_u2.tif	edge/onestrip_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	25464219	single strip; -array skip= cross-check
@@ -105,8 +122,6 @@ pages/stack2_rgb_u2.tif	pages/stack2_rgb_u2.fits	load	pages	u2	8	strip	1	II	2	37
 rgb/graya_u2_contig.tif	rgb/graya_u2_contig.fits	load	rgb	u2	1	strip	1	II	1	37	23	2	1	1	0	0	1702	0	65535	15049415	gray + unassociated alpha; twin drops the alpha
 unsupported/gray_u2_lzma.tif		refuse	unsupported	u2	34925	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	27784253	codec not in tifftcl
 unsupported/gray_u2_zstd.tif		refuse	unsupported	u2	50000	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	27784253	codec not in tifftcl
-unsupported/gray_f2_none.tif		refuse	unsupported	f2	1	strip	1	II	1	37	23	1	1	1	0	0	851	-1.232421875	1.2060546875	-37.66129112243652	half float: rejected in v1
 unsupported/palette_u1.tif		refuse	unsupported	u1	1	strip	1	II	3	37	23	1	1	1	0	0	851	0	15	6398	photo path
 unsupported/rgb_u1_jpeg.tif		refuse	unsupported	u1	7	strip	1	II	6	64	48	3	1	1	0	0	9216	0	255	1181933	JPEG/YCbCr: photo path
 unsupported/multiband_u2.tif		refuse	unsupported	u2	1	strip	1	II	1	37	23	3	1	1	0	0	2553	0	65535	59114658	3 bands, ExtraSamples unspecified: not cut to band 1
-unsupported/bilevel_1bit.tif		refuse	unsupported	b1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	1	426	1 bit per sample

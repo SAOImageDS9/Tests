@@ -40,11 +40,12 @@ StartDS9 () {
 #
 # No argument runs command, xpa and rgb.
 
-# Probe the current frame: size, depth, three pixels, and the min/max of
-# every slice. BITPIX is left out on purpose: a twin with BZERO reports 16
-# where the native load reports -16 (fitsy's unsigned 16), and the pixel
-# values are what show the depth. `xpaget data' always reads slice 1, so
-# the slices of a stack are told apart by their scale limits (minmax).
+# Probe the current frame: size, depth, three pixels, the min/max of
+# every slice, and the sky at the centre. BITPIX is left out on purpose:
+# a twin with BZERO reports 16 where the native load reports -16 (fitsy's
+# unsigned 16), and the pixel values are what show the depth. `xpaget
+# data' always reads slice 1, so the slices of a stack are told apart by
+# their scale limits (minmax).
 probe () {
     size=`xpaget DS9Test fits size`
     echo "size $size"
@@ -67,6 +68,15 @@ probe () {
 	    echo "slice $k limits `xpaget DS9Test scale limits`"
 	    k=`expr $k + 1`
 	done
+	# the sky at the centre: none for most fixtures; header/fitscards_*
+	# carry a WCS in ImageDescription, which must match the twin's
+	xpaset -p DS9Test crosshair $cx $cy image
+	wcs=`xpaget DS9Test crosshair wcs icrs degrees 2>/dev/null`
+	if [ -z "`echo $wcs`" ]; then
+	    echo "wcs none"
+	else
+	    echo "wcs $wcs"
+	fi
     else
 	echo "value none"
     fi
