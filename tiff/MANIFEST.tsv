@@ -101,9 +101,12 @@ edge/rps1_u2.tif	edge/rps1_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	8
 edge/onestrip_u2.tif	edge/onestrip_u2.fits	load	edge	u2	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	65535	25464219	single strip; -array skip= cross-check
 edge/row_1x61_u2.tif	edge/row_1x61_u2.fits	load	edge	u2	1	strip	1	II	1	61	1	1	1	1	0	0	61	0	65535	1748805	
 edge/col_61x1_u2.tif	edge/col_61x1_u2.fits	load	edge	u2	1	strip	1	II	1	1	61	1	1	1	0	0	61	0	65535	2205465	
+pages/stack2_rgb_u2.tif	pages/stack2_rgb_u2.fits	load	pages	u2	8	strip	1	II	2	37	23	3	2	1	1	0	2553	0	65535	121633320	twin: page 1 R,G,B (RGB frame); .lum twin: 2 pages
+rgb/graya_u2_contig.tif	rgb/graya_u2_contig.fits	load	rgb	u2	1	strip	1	II	1	37	23	2	1	1	0	0	1702	0	65535	15049415	gray + unassociated alpha; twin drops the alpha
 unsupported/gray_u2_lzma.tif		refuse	unsupported	u2	34925	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	27784253	codec not in tifftcl
 unsupported/gray_u2_zstd.tif		refuse	unsupported	u2	50000	strip	1	II	1	37	23	1	1	1	1	0	851	0	65535	27784253	codec not in tifftcl
 unsupported/gray_f2_none.tif		refuse	unsupported	f2	1	strip	1	II	1	37	23	1	1	1	0	0	851	-1.232421875	1.2060546875	-37.66129112243652	half float: rejected in v1
 unsupported/palette_u1.tif		refuse	unsupported	u1	1	strip	1	II	3	37	23	1	1	1	0	0	851	0	15	6398	photo path
 unsupported/rgb_u1_jpeg.tif		refuse	unsupported	u1	7	strip	1	II	6	64	48	3	1	1	0	0	9216	0	255	1181933	JPEG/YCbCr: photo path
+unsupported/multiband_u2.tif		refuse	unsupported	u2	1	strip	1	II	1	37	23	3	1	1	0	0	2553	0	65535	59114658	3 bands, ExtraSamples unspecified: not cut to band 1
 unsupported/bilevel_1bit.tif		refuse	unsupported	b1	1	strip	1	II	1	37	23	1	1	1	0	0	851	0	1	426	1 bit per sample

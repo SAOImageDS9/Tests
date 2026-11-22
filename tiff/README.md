@@ -1,4 +1,4 @@
-# TIFF fixtures (`TODO_TIFF16.md`, Phases 0–2)
+# TIFF fixtures (`TODO_TIFF16.md`, Phases 0–3)
 
 Test files for DS9's native full-depth TIFF reader. They were made before the reader
 exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
@@ -7,10 +7,10 @@ exists, from Python and with no help from libtiff. Each `<name>.tif` has a twin,
 | Path | What |
 |---|---|
 | `make_tiff_fixtures.py` | Writes every fixture, its twin, and `MANIFEST.tsv`, using tifffile. Deterministic: a rerun is byte-identical. |
-| `check_fixtures.py` | Reads every fixture back with tifffile and checks its tags against the manifest and its pixels against the twin. Expect 108 checked, 0 failed. |
-| `check_probe.py` | Runs fitsy's libtiff probe (`fitsy tiff decode`) inside a live ds9 over XPA, and compares directory 0's tags and nsamples/min/max/sum with the manifest. For `refuse` entries it prints what libtiff says. Expect 102 probed, 0 failed. |
-| `check_load.py` | Phase 1: has a live ds9 load every fixture with the frame's `load tiff` and write it back with `save fits file`. Grayscale fixtures must equal their twin pixel for pixel (directory 0 only), with the expected in-memory BITPIX from `get fits header` and a header astropy parses. `header/texttags_u2.tif`'s CREATOR/DATE/OBSERVER/COMMENT cards are checked exactly. Everything else must be refused with a `tiff: ...` reason. Expect 89 loads and 19 refusals, 0 failed. |
-| `check_entry.py` | Phase 2: every way a TIFF reaches ds9 picks the right reader. That covers XPA by file name and by data, each mode keyword and the preference, slice, mask, the SAMP path, recent files, backup/restore, and the command line (`-tiff`, `-tiff native/photo`, `-tiff -`, `-mask -tiff native`). It starts and restarts its own ds9 (title `DS9TiffEntry`) and keeps the user's recent-files list as it was. Expect 27 checks, 0 failed. |
+| `check_fixtures.py` | Reads every fixture back with tifffile and checks its tags against the manifest and its pixels against the twin. Expect 111 checked, 0 failed. |
+| `check_probe.py` | Runs fitsy's libtiff probe (`fitsy tiff decode`) inside a live ds9 over XPA, and compares directory 0's tags and nsamples/min/max/sum with the manifest. For `refuse` entries it prints what libtiff says. Expect 104 probed, 0 failed. |
+| `check_load.py` | Has a live ds9 load every fixture with the frame's `load tiff` and write it back. **Ordinary frame:** every loadable fixture must equal its twin pixel for pixel (a stack as a whole cube, an RGB TIFF against its luminance twin `<name>.lum.fits`), with the expected in-memory BITPIX and a header astropy parses. `header/texttags_u2.tif`'s cards are checked exactly. **RGB frame:** every RGB fixture's three channels must equal the R, G, B twin. **Refusals:** must fail with a `tiff: ...` reason. Expect 104 loads, 14 RGB-frame loads and 7 refusals, 0 failed. |
+| `check_entry.py` | Phase 2: every way a TIFF reaches ds9 picks the right reader. That covers XPA by file name and by data, each mode keyword and the preference, slice, mask, the SAMP path, recent files, backup/restore, and the command line (`-tiff`, `-tiff native/photo`, `-tiff -`, `-mask -tiff native`). It starts and restarts its own ds9 (title `DS9TiffEntry`) and keeps the user's recent-files list as it was. Expect 31 checks, 0 failed. |
 | `MANIFEST.tsv` | One row per fixture: `expect` (`load`/`refuse`), the tags as stored, and the probe's expected statistics. |
 
 Families: `dtype/` (u1 u2 i2 u4 i4 f4 f8 × none/PackBits/LZW/Deflate 8/Deflate
@@ -33,6 +33,10 @@ and H, 1×N, N×1), `unsupported/` (LZMA, ZSTD, half float, palette, JPEG/YCbCr,
 - **MINISWHITE values are kept as stored**, not inverted.
 - **uint16 and uint32** are written as astropy writes them (BZERO), so they read back
   as the same values.
+- **An RGB fixture has two twins:** `<name>.fits` holds page 1's R, G and B (what an RGB
+  frame shows), and `<name>.lum.fits` holds the luminance of every page (what any
+  other frame shows). Luminance is .299R + .587G + .114B in double, rounded to nearest
+  for integers, the order fitsy uses, so the values match bit for bit.
 
 ## Running
 

@@ -118,6 +118,19 @@ def displayed(s, o):
     return out
 
 
+def luminance(page, planar):
+    """.299R + .587G + .114B, in the order and precision fitsy uses
+    (double, left to right), rounded to nearest for integers."""
+    a = np.asarray(page)
+    r, g, b = (a[0], a[1], a[2]) if planar == 'separate' else \
+        (a[..., 0], a[..., 1], a[..., 2])
+    v = (0.299 * r.astype(np.float64) + 0.587 * g.astype(np.float64)
+         + 0.114 * b.astype(np.float64))
+    if a.dtype.kind == 'f':
+        return v.astype(a.dtype)
+    return np.floor(v + 0.5).astype(a.dtype)
+
+
 class Writer:
     def __init__(self):
         self.rows = []
@@ -182,6 +195,13 @@ class Writer:
         twin = ''
         if expect == 'load':
             twin = self.twin(group, name, twin_planes)
+            if photometric == 'rgb':
+                # what a non-RGB frame shows: one luminance plane per
+                # full-resolution page (TODO_TIFF16.md, Phase 3)
+                self.twin(group, name + '.lum', [
+                    luminance(pg, planar) for k, pg in
+                    enumerate(stored_pages)
+                    if not (subfiletypes and subfiletypes[k] & 1)])
 
         first = np.asarray(stored_pages[0])
         if first.ndim == 2:
@@ -354,6 +374,18 @@ def main():
     col = pattern(61, 1, 'u2', seed=19)
     w.add('edge', 'col_61x1_u2', [col], twin_planes=[col])
 
+    # Phase 3: an RGB stack, gray with alpha, and multi-band gray
+    pages = [np.dstack([pattern(GRAY_H, GRAY_W, 'u2', seed=s + c)
+                        for c in (0, 1, 2)]) for s in (30, 40)]
+    w.add('pages', 'stack2_rgb_u2', pages,
+          twin_planes=[pages[0][..., c] for c in (0, 1, 2)],
+          compression='adobe_deflate', photometric='rgb',
+          notes='twin: page 1 R,G,B (RGB frame); .lum twin: 2 pages')
+    ga = [pattern(GRAY_H, GRAY_W, 'u2', seed=s) for s in (50, 51)]
+    w.add('rgb', 'graya_u2_contig', [np.dstack(ga)], twin_planes=ga[:1],
+          photometric='minisblack', extrasamples=[2],
+          notes='gray + unassociated alpha; twin drops the alpha')
+
     # not loadable natively in v1: report why (or fall back to photo)
     img = pattern(GRAY_H, GRAY_W, 'u2', seed=20)
     w.add('unsupported', 'gray_u2_lzma', [img], expect='refuse',
@@ -371,6 +403,10 @@ def main():
     w.add('unsupported', 'rgb_u1_jpeg', [rgb8], expect='refuse',
           compression='jpeg', photometric='ycbcr', tile=None,
           rowsperstrip=16, notes='JPEG/YCbCr: photo path')
+    mb = [pattern(GRAY_H, GRAY_W, 'u2', seed=s) for s in (60, 61, 62)]
+    w.add('unsupported', 'multiband_u2', [np.dstack(mb)], expect='refuse',
+          photometric='minisblack', extrasamples=[0, 0],
+          notes='3 bands, ExtraSamples unspecified: not cut to band 1')
     bits = (pattern(GRAY_H, GRAY_W, 'u1', seed=25) & 1).astype(bool)
     w.add('unsupported', 'bilevel_1bit', [bits], expect='refuse',
           photometric='minisblack', notes='1 bit per sample')

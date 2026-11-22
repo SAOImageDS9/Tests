@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Phase 2 check: every way a TIFF reaches ds9 picks the right reader.
+"""Phases 2-3 check: every way a TIFF reaches ds9 picks the right reader.
 
 A native load is recognised by its header, which carries the comment
 `Read from TIFF at full depth', and by its BITPIX; a photo load has
@@ -38,6 +38,7 @@ U1 = os.path.join(HERE, 'dtype', 'gray_u1_none.tif')
 F4 = os.path.join(HERE, 'dtype', 'gray_f4_lzw.tif')
 RGB8 = os.path.join(HERE, 'rgb', 'rgb_u1_contig_strip.tif')
 RGB16 = os.path.join(HERE, 'rgb', 'rgb_u2_contig_strip.tif')
+STACK = os.path.join(HERE, 'pages', 'stack3_u2_deflate.tif')
 PAL = os.path.join(HERE, 'unsupported', 'palette_u1.tif')
 FITS = os.path.join(HERE, 'dtype', 'gray_u2_none.fits')
 
@@ -167,11 +168,54 @@ def run(p):
     xpaset('tiff', 'native', U1)
     check('xpa native, uint8 gray', True, 8)
     xpaset('tiff', 'new', RGB16)
-    check('xpa auto, RGB uint16 -> photo (Phase 3)', False, 8)
+    check('xpa auto, RGB uint16 -> native luminance', True, -16)
+    xpaset('tiff', RGB8)
+    check('xpa auto, RGB uint8 -> photo', False, 8)
+    xpaset('tiff', STACK)
+    depth = tcl('puts $_out [$current(frame) get fits depth 2]').strip()
+    native, _ = state()
+    note(native and depth == '3', 'xpa auto, uint16 stack -> 3-plane cube',
+         f'native={int(native)} depth={depth}')
+
+    # RGB frame: R, G, B into the three channels, natively
+    xpaset('frame', 'new', 'rgb')
+    xpaset('tiff', RGB16)
+    out = tcl('foreach c {red green blue} {\n'
+              '  $current(frame) rgb channel $c\n'
+              '  set h [$current(frame) get fits header 1]\n'
+              '  puts $_out "$c [string match *full\\ depth* $h] '
+              '[$current(frame) get fits size]"\n}\n'
+              '$current(frame) rgb channel red')
+    lines = out.split('\n')
+    note(len([ln for ln in lines if ln.endswith('1 37 23')]) == 3,
+         'xpa auto, RGB uint16 into an RGB frame: 3 native channels',
+         '; '.join(ln for ln in lines if ln))
+    xpaset('frame', 'delete')
+
+    # slice mode: the next slice of the current cube, natively or as a
+    # photo; `fits header' shows the current slice, so step to slice 2
+    xpaset('frame', 'new')
+    xpaset('tiff', U2)
+    xpaset('tiff', 'slice', os.path.join(HERE, 'dtype',
+                                         'gray_u2_lzw.tif'))
+    depth = tcl('puts $_out [$current(frame) get fits depth 2]').strip()
+    xpaset('cube', '2')
+    native, bitpix = state()
+    note(native and depth == '2' and bitpix == -16,
+         'xpa slice, uint16 -> native second slice',
+         f'native={int(native)} depth={depth} BITPIX={bitpix}')
+    xpaset('frame', 'new')
+    xpaset('tiff', 'photo', U2)
+    xpaset('tiff', 'slice', 'photo', U2)
+    depth = tcl('puts $_out [$current(frame) get fits depth 2]').strip()
+    xpaset('cube', '2')
+    native, bitpix = state()
+    note(not native and depth == '2' and bitpix == 8,
+         'xpa slice photo -> photo second slice',
+         f'native={int(native)} depth={depth} BITPIX={bitpix}')
+
     xpaset('tiff', 'native', PAL)
     check('xpa native, palette -> falls back to photo', False, 8)
-    xpaset('tiff', 'slice', U2)
-    check('xpa slice -> photo', False, 8)
 
     # preference
     tcl('set pds9(tiff,mode) photo')

@@ -20,7 +20,7 @@ import tifffile
 from astropy.io import fits
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from make_tiff_fixtures import displayed  # noqa: E402
+from make_tiff_fixtures import displayed, luminance  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -63,7 +63,9 @@ def main():
                 problems.append('layout')
 
             if r['expect'] == 'load':
-                planes = []
+                rgb = int(r['photometric']) == 2
+                planar = 'separate' if int(r['planar']) == 2 else 'contig'
+                planes, lums = [], []
                 for pg in tf.pages:
                     if tag(pg, 254, 0) & 1:
                         continue                        # reduced resolution
@@ -72,26 +74,35 @@ def main():
                         continue                        # different geometry
                     a = pg.asarray()
                     o = tag(pg, 274, 1)
-                    spp = int(r['spp'])
-                    if spp == 1:
-                        planes.append(displayed(a, o) if o != 1 else a)
+                    if rgb:
+                        # twin: page 1's R, G, B (an RGB frame); .lum twin:
+                        # every page's luminance (any other frame)
+                        lums.append(luminance(a, planar))
+                        if not planes:
+                            ch = np.moveaxis(a, 0, -1) if planar == \
+                                'separate' else a
+                            planes = [ch[..., c] for c in (0, 1, 2)]
                     else:
-                        if int(r['planar']) == 2:
-                            a = np.moveaxis(a, 0, -1)
-                        for s in range(min(spp, 3)):
-                            planes.append(a[..., s])
-                data = np.stack([np.flipud(p) for p in planes])
-                if data.shape[0] == 1:
-                    data = data[0]
-                twin = fits.getdata(os.path.join(HERE, r['twin']))
-                if twin.shape != data.shape:
-                    problems.append(f'twin shape {twin.shape} vs {data.shape}')
-                elif not np.array_equal(twin, data.astype(twin.dtype)):
-                    problems.append('twin pixels differ')
-                elif data.dtype.kind in 'ui' and \
-                        not np.array_equal(twin.astype(np.int64),
-                                           data.astype(np.int64)):
-                    problems.append('twin values differ after BZERO')
+                        if a.ndim == 3:                 # gray + alpha
+                            a = a[0] if planar == 'separate' else a[..., 0]
+                        planes.append(displayed(a, o) if o != 1 else a)
+                for twin_fn, pl in [(r['twin'], planes)] + (
+                        [(r['twin'][:-5] + '.lum.fits', lums)] if rgb
+                        else []):
+                    data = np.stack([np.flipud(q) for q in pl])
+                    if data.shape[0] == 1:
+                        data = data[0]
+                    twin = fits.getdata(os.path.join(HERE, twin_fn))
+                    if twin.shape != data.shape:
+                        problems.append(
+                            f'{twin_fn} shape {twin.shape} vs {data.shape}')
+                    elif data.dtype.kind in 'ui' and \
+                            not np.array_equal(twin.astype(np.int64),
+                                               data.astype(np.int64)):
+                        problems.append(f'{twin_fn} values differ')
+                    elif data.dtype.kind == 'f' and \
+                            not np.array_equal(twin, data):
+                        problems.append(f'{twin_fn} values differ')
 
         if problems:
             fails += 1
