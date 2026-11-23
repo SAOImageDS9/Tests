@@ -13,7 +13,7 @@ has a reduced (8-px) Allsky.fits.
 order 1, so norder=1 must come from the Allsky.
 
 Tile layout follows the HiPS convention measured on real data (see
-TODO_HIPS.md): rows from the top -> ix (even bits), columns -> iy.
+tileorder.py): rows from the top -> ix (even bits), columns -> iy.
 """
 import os, sys
 import numpy as np

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Check the HiPS tile layout conventions TODO_HIPS.md relies on.
+"""Check the HiPS tile layout conventions fitsy/hips.C relies on.
 
 usage: python -I tileorder.py <hips root> [order]
 
