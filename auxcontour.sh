@@ -376,7 +376,59 @@ eq "rgb restore: render" "`snap rgb1`" "$rgb0"
 $X -p $D frame delete all
 $X -p $D frame new
 
+echo "== XPA: contour aux"
+$X -p $D frame delete all
+$X -p $D frame new
+$X -p $D fits $T/fits/img.fits
+$X -p $D contour load $CTR
+$X -p $D contour load $CTR
+eq "xpaget contour aux" "`$G $D contour aux`" "1 ds9.ctr 5
+2 ds9.ctr 5"
+eq "xpaget contour aux style" "`$G $D contour aux style 1 | sed -n 2p`" "1 15.78775 color=red width=1 dash=no dashlist=8 3"
+$X -p $D contour aux style 1 2 white 3 yes 4 2
+eq "positional style" "`$G $D contour aux style 1 | sed -n 3p`" "2 32.5755 color=white width=3 dash=yes dashlist=4 2"
+$X -p $D contour aux style 1 all '{width=2}'
+eq "keyword style, all rows, rest kept" "`$G $D contour aux style 1 | cut -d' ' -f3- | tr '\n' ';'`" "color=blue width=2 dash=no dashlist=8 3;color=red width=2 dash=no dashlist=8 3;color=white width=2 dash=yes dashlist=4 2;color=cyan width=2 dash=no dashlist=8 3;color=magenta width=2 dash=no dashlist=8 3;"
+$X -p $D contour aux style 2 0 '{color=orange dash=yes}'
+eq "keyword style, one row" "`$G $D contour aux style 2 | sed -n 1p`" "0 -1 color=orange width=1 dash=yes dashlist=8 3"
+eq "other set untouched" "`$G $D contour aux style 1 | sed -n 1p`" "0 -1 color=blue width=2 dash=no dashlist=8 3"
+$X -p $D contour aux reset 1 2
+eq "reset row" "`$G $D contour aux style 1 | sed -n 3p`" "2 32.5755 color=yellow width=1 dash=no dashlist=8 3"
+$X -p $D contour aux reset 1
+eq "reset set" "`$G $D contour aux style 1 | sed -n 1p`" "0 -1 color=blue width=1 dash=no dashlist=8 3"
+$X -p $D contour aux name 2 '{my set}'
+$X -p $D contour aux name 1 renamed
+eq "rename" "`$G $D contour aux`" "1 renamed 5
+2 {my set} 5"
+$X -p $D contour aux save 2 $O/xpa2.ctr wcs fk5
+eq "save one set" "`grep -c '^level' $O/xpa2.ctr` `grep -c '^fk5' $O/xpa2.ctr`" "5 1"
+has "error: unknown set" "`$X -p $D contour aux style 9 0 red 2>&1`" "no loaded contour set 9"
+has "error: bad row" "`$X -p $D contour aux style 1 7 red 2>&1`" "Invalid contour level: 7"
+has "error: bad color" "`$X -p $D contour aux style 1 0 notacolor 2>&1`" "invalid color notacolor"
+has "error: get unknown set" "`$G $D contour aux style 9 2>&1`" "no loaded contour set 9"
+eq "errors changed nothing" "`$G $D contour aux style 1 | sed -n 1p`" "0 -1 color=blue width=1 dash=no dashlist=8 3"
+$X -p $D contour aux delete 1
+eq "delete" "`$G $D contour aux`" "2 {my set} 5"
+# the new keywords don't change the existing commands
+$X -p $D contour nlevels 3
+$X -p $D contour yes
+eq "contour levels still parse" "`$G $D contour levels | tr '\n' ' '`" "-10 1693 3396  "
+$X -p $D contour style 1 red 2
+eq "contour style still parses" "`$G $D contour style`" "1 color=red width=2"
+$X -p $D contour save $O/names.ctr
+eq "a file named like a new keyword still saves" "`test -s $O/names.ctr && head -1 $O/names.ctr`" "# Contour file format: DS9 version 7.5"
+$X -p $D contour clear
+
 $X -p $D exit
+echo "== command line: -contour aux"
+(nohup ds9 -title $D -geometry 900x900 $T/fits/img.fits -contour load $CTR \
+   -contour aux style 1 all 'color=green width=3' -contour aux name 1 'cmd line' \
+   > $O/ds9.log 2>&1 &)
+for i in $(seq 1 600); do xpaaccess $D 2>/dev/null | grep -q yes && break; done
+for i in $(seq 1 600); do [[ -n "`$G $D contour aux 2>/dev/null`" ]] && break; done
+eq "command line: set styled and named" "`$G $D contour aux` / `$G $D contour aux style 1 | sed -n 1p`" "1 {cmd line} 5 / 0 -1 color=green width=3 dash=no dashlist=8 3"
+$X -p $D exit
+
 rm -rf $O
 echo
 echo "$pass passed, $fail failed"
