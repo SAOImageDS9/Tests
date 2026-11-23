@@ -306,6 +306,76 @@ eq "no frame: Generated, nothing listed" "`v set` `sets`" " "
 $X -p $D frame new
 tc 'ContourDestroyDialog' > /dev/null
 
+echo "== backup / restore: a file per set"
+$X -p $D frame delete all
+$X -p $D frame new
+$X -p $D fits $T/fits/img.fits
+# linear: a backup rounds the generated contours' levels to 6 digits, and
+# log-spaced levels then regenerate slightly differently
+$X -p $D scale linear
+$X -p $D contour scale linear
+$X -p $D contour nlevels 3
+$X -p $D contour yes
+f "contour load {$CTR}" > /dev/null
+a=`lastid`
+f "contour aux style $a 2 white 3 1 4 2" > /dev/null
+f "contour load {$CTR} red 2 yes" > /dev/null
+b=`lastid`
+f "contour aux name $b {{my set}}" > /dev/null
+# physical, as the backup writes it: a paste through fk5 lands up to
+# ~1e-4 pixel off the backup's 8 digits, enough to flip a pixel or two
+tc 'set ::cc [$current(frame) get contour physical fk5]' > /dev/null
+f 'contour paste cc' > /dev/null
+p=`lastid`
+f "contour aux name $p {{paste Frame1}}" > /dev/null
+list0=`tc 'lmap s [$current(frame) get contour aux] {lrange $s 1 end}'`
+sty0=`tc 'lmap s [$current(frame) get contour aux] {$current(frame) get contour aux style [lindex $s 0]}'`
+img0=`snap bk0`
+rm -rf $O/bk.bck $O/bk.bck.dir
+$X -p $D backup $O/bk.bck
+eq "backup: a file per set" "`ls $O/bk.bck.dir/Frame1 | grep '^aux' | sort | tr '\n' ' '`" "aux$a.ctr aux$b.ctr aux$p.ctr "
+has "backup: names restored, guarded" "`cat $O/bk.bck`" "catch {Frame1 contour aux name [lindex [lindex [Frame1 get contour aux] end] 0] {{my set}}}"
+$X -p $D frame delete all
+$X -p $D restore $O/bk.bck
+eq "restore: sets and names" "`tc 'lmap s [$current(frame) get contour aux] {lrange $s 1 end}'`" "$list0"
+eq "restore: styles" "`tc 'lmap s [$current(frame) get contour aux] {$current(frame) get contour aux style [lindex $s 0]}'`" "$sty0"
+eq "restore: render" "`snap bk1`" "$img0"
+eq "restore: generated contours too" "`f 'has contour'`" "1"
+# a second backup over the first leaves no stale set files
+f "contour delete aux `lastid`" > /dev/null
+$X -p $D backup $O/bk.bck
+eq "backup again: old set files gone" "`ls $O/bk.bck.dir/Frame1 | grep -c '^aux'`" "2"
+
+echo "== backup / restore: rgb channels keep their own sets"
+$X -p $D frame delete all
+$X -p $D rgb
+$X -p $D rgb channel red
+$X -p $D fits $T/fits/img.fits
+f "contour load {$CTR}" > /dev/null
+f "contour aux name `lastid` {{red set}}" > /dev/null
+$X -p $D rgb channel blue
+$X -p $D fits $T/fits/img.fits
+f "contour load {$CTR} cyan 2 no" > /dev/null
+f "contour aux name `lastid` {{blue set}}" > /dev/null
+$X -p $D rgb channel red
+rgb0=`snap rgb0`
+rm -rf $O/rgb.bck $O/rgb.bck.dir
+$X -p $D backup $O/rgb.bck
+$X -p $D frame delete all
+$X -p $D restore $O/rgb.bck
+$X -p $D rgb channel red
+eq "rgb restore: red's set" "`tc 'lmap s [$current(frame) get contour aux] {lindex $s 1}'`" "{red set}"
+eq "rgb restore: red's styles" "`tc 'lindex [$current(frame) get contour aux style 1] 1 1'`" "red"
+$X -p $D rgb channel green
+eq "rgb restore: green has none" "`f 'get contour aux'`" ""
+$X -p $D rgb channel blue
+eq "rgb restore: blue's set" "`tc 'lmap s [$current(frame) get contour aux] {lindex $s 1}'`" "{blue set}"
+eq "rgb restore: blue's styles" "`tc 'lrange [lindex [$current(frame) get contour aux style 1] 1] 1 2'`" "cyan 2"
+$X -p $D rgb channel red
+eq "rgb restore: render" "`snap rgb1`" "$rgb0"
+$X -p $D frame delete all
+$X -p $D frame new
+
 $X -p $D exit
 rm -rf $O
 echo
