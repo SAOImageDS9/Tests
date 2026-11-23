@@ -190,6 +190,122 @@ id=`lastid`
 f "contour aux style $id all red 2 0 8 3" > /dev/null
 eq "hpx: after deletes + recentre renders like a fresh load" "`hshot hpxf 10 5`" "$after"
 
+echo "== Contour Parameters dialog"
+$X -p $D frame delete all
+$X -p $D frame new
+$X -p $D fits $T/fits/img.fits
+$X -p $D contour nlevels 4
+$X -p $D contour yes
+tc 'ContourDialog' > /dev/null
+v() { tc "set ::dcontour($1)"; }
+# menu helpers in ds9: invoke an entry by its exact label (Tk would take
+# a label like 3 as an index), and list the entries' labels
+tc 'proc ::auxmi {m lab} {
+  for {set i 0} {$i <= [$m index end]} {incr i} {
+    if {[$m type $i] ni {separator tearoff} && [$m entrycget $i -label] eq $lab} {
+      return [$m invoke $i]
+    }
+  }
+  error "no entry $lab"
+}
+proc ::auxml {m} {
+  set rr {}
+  for {set i 0} {$i <= [$m index end]} {incr i} {
+    if {[$m type $i] ni {separator tearoff}} {lappend rr [$m entrycget $i -label]}
+  }
+  return $rr
+}' > /dev/null
+sets() { tc 'auxml $::dcontour(setmb).menu'; }
+eq "dialog: starts on Generated" "`v setlabel`" "Generated"
+eq "dialog: generated rows" "`v nrow`" "4"
+# File > Open, keep the file's styles
+tc "after 300 {set ::ed(original) 1; set ::ed(ok) 1}; ContourLoadNewDialog {$CTR}" > /dev/null
+id=`lastid`
+eq "dialog: a load selects the new set" "`v set`" "$id"
+eq "dialog: set label" "`v setlabel`" "$id: ds9.ctr"
+eq "dialog: one row per level" "`v nrow`" "5"
+eq "dialog: rows show the set" "`v lev,1` `v color,1` `v width,1` `v dash,1`" "15.78775 red 1 solid"
+eq "dialog: levels read-only" "`tc '$::dcontour(tbl).lev0 cget -state'`" "readonly"
+eq "dialog: As Loaded, not Default" "`tc 'lindex [auxml $::dcontour(tbl).color0.menu] 0'` / `tc 'lindex [auxml $::dcontour(tbl).width0.menu] 0'` / `tc 'lindex [auxml $::dcontour(tbl).dash0.menu] 0'`" "As Loaded / As Loaded / As Loaded"
+eq "dialog: Apply, Generate disabled" "`tc '.ct.buttons.apply cget -state'` `tc '.ct.buttons.generate cget -state'`" "disabled disabled"
+eq "dialog: Levels slider disabled" "`tc '.ct.param.nslider.slider instate disabled'`" "1"
+eq "dialog: Scale menu disabled" "`tc '.ctmb entrycget [.ctmb index Scale] -state'`" "disabled"
+eq "dialog: Generate menu entry disabled" "`tc '.ctmb.file entrycget Generate -state'`" "disabled"
+eq "dialog: Reset Level Styles enabled" "`tc '.ctmb.color entrycget {Reset Level Styles} -state'`" "normal"
+eq "dialog: global colors disabled" "`tc '.ctmb.color entrycget Red -state'`" "disabled"
+eq "dialog: Clear, Close enabled" "`tc '.ct.buttons.clear cget -state'` `tc '.ct.buttons.close cget -state'`" "normal normal"
+
+tc 'auxmi $::dcontour(tbl).color2.menu Magenta' > /dev/null
+eq "dialog: row color reaches the set" "`tc 'lindex [$current(frame) get contour aux style '$id'] 2 1'`" "magenta"
+eq "dialog: swatch follows" "`tc '$::dcontour(tbl).swatch2 cget -background'`" "magenta"
+tc 'auxmi $::dcontour(tbl).color2.menu {As Loaded}' > /dev/null
+eq "dialog: As Loaded restores the row" "`tc 'lindex [$current(frame) get contour aux style '$id'] 2 1'` `v color,2`" "yellow yellow"
+tc 'auxmi $::dcontour(tbl).width1.menu 3' > /dev/null
+tc '$::dcontour(applyall) invoke' > /dev/null
+eq "dialog: Apply Style to All" "`tc 'lsort -unique [lmap r [$current(frame) get contour aux style '$id'] {lrange $r 1 2}]'`" "{red 3}"
+tc 'auxmi .ctmb.color {Reset Level Styles}' > /dev/null
+eq "dialog: Reset Level Styles" "`tc 'lmap r [$current(frame) get contour aux style '$id'] {lindex $r 1}'`" "blue red yellow cyan magenta"
+eq "dialog: table follows reset" "`v color,4` `v width,4`" "magenta 1"
+
+tc 'auxmi $::dcontour(setmb).menu Generated' > /dev/null
+eq "dialog: back to Generated" "`v setlabel` `v set`" "Generated "
+# an edit not applied yet must survive looking at a loaded set
+fvlev=`v lev,1`
+tc 'set ::dcontour(lev,1) 123' > /dev/null
+tc "auxmi \$::dcontour(setmb).menu {$id: ds9.ctr}" > /dev/null
+eq "dialog: set chosen from the menu" "`v set`" "$id"
+tc 'auxmi $::dcontour(setmb).menu Generated' > /dev/null
+eq "dialog: unapplied edit kept" "`v lev,1`" "123"
+eq "dialog: Apply enabled again" "`tc '.ct.buttons.apply cget -state'` `tc '.ctmb entrycget [.ctmb index Scale] -state'`" "normal normal"
+eq "dialog: Default is back" "`tc 'lindex [auxml $::dcontour(tbl).color0.menu] 0'`" "Default"
+tc "set ::dcontour(lev,1) $fvlev" > /dev/null
+
+tc "ContourSetSelect $id" > /dev/null
+$X -p $D contour nlevels 3
+eq "dialog: a levels command shows Generated" "`v set` `v nrow`" " 3"
+eq "dialog: and leaves the set alone" "`f 'get contour aux'`" "{$id ds9.ctr 5}"
+tc "ContourSetSelect $id" > /dev/null
+$X -p $D contour no
+eq "dialog: contours off shows Generated" "`v set`" ""
+$X -p $D contour yes
+tc "ContourSetSelect $id" > /dev/null
+tc '.ct.buttons.clear invoke' > /dev/null
+eq "dialog: Clear deletes just the set" "`f 'get contour aux'` `f 'has contour'`" " 1"
+eq "dialog: Clear goes back to Generated" "`v setlabel`" "Generated"
+
+# Copy Contours here, paste into a new frame
+tc 'ContourCCopyDialog' > /dev/null
+src=`tc 'set ::current(frame)'`
+$X -p $D frame new
+$X -p $D fits $T/fits/img.fits
+tc "after 300 {set ::ed2(original) 1; set ::ed2(ok) 1}; ContourCPasteDialog" > /dev/null
+pid=`lastid`
+eq "dialog: a paste is named for its frame" "`v setlabel`" "$pid: paste $src"
+eq "dialog: paste selected" "`v set`" "$pid"
+$X -p $D frame first
+eq "dialog: frame change shows Generated" "`v set` `v setlabel`" " Generated"
+eq "dialog: menu lists this frame's sets" "`sets`" "Generated"
+$X -p $D frame last
+eq "dialog: menu lists the other frame's set" "`sets`" "Generated {$pid: paste $src}"
+
+# rgb: sets are per channel
+$X -p $D frame delete all
+$X -p $D rgb
+$X -p $D rgb channel red
+$X -p $D fits $T/fits/img.fits
+tc "after 300 {set ::ed(original) 1; set ::ed(ok) 1}; ContourLoadNewDialog {$CTR}" > /dev/null
+eq "rgb: red channel's set selected" "`v setlabel`" "1: ds9.ctr"
+$X -p $D rgb channel green
+eq "rgb: other channel shows Generated" "`v set` `sets`" " Generated"
+$X -p $D rgb channel red
+eq "rgb: back on red, set listed" "`sets`" "Generated {1: ds9.ctr}"
+tc 'ContourSetSelect 1' > /dev/null
+eq "rgb: set selected again" "`v set`" "1"
+$X -p $D frame delete all
+eq "no frame: Generated, nothing listed" "`v set` `sets`" " "
+$X -p $D frame new
+tc 'ContourDestroyDialog' > /dev/null
+
 $X -p $D exit
 rm -rf $O
 echo
