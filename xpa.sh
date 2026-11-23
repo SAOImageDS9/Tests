@@ -774,6 +774,31 @@ xpaset -p DS9Test contour style 1 clear
 xpaget DS9Test contour style >> ${tt}.out
 xpaset -p DS9Test contour style clear
 
+# loaded contour sets, in a new frame so the set ids start at 1
+xpaset -p DS9Test contour clear
+xpaset -p DS9Test frame delete
+xpaset -p DS9Test frame new
+xpaset -p DS9Test fits fits/img.fits
+xpaset -p DS9Test contour load aux/ds9.ctr
+xpaset -p DS9Test contour load aux/ds9.ctr
+xpaget DS9Test contour aux >> ${tt}.out
+xpaget DS9Test contour aux style 1 >> ${tt}.out
+xpaset -p DS9Test contour aux style 1 2 red 2
+xpaset -p DS9Test contour aux style 1 3 cyan 1 yes 4 2
+xpaset -p DS9Test contour aux style 1 all {width=2}
+xpaset -p DS9Test contour aux style 2 0 {color=yellow dash=yes}
+xpaget DS9Test contour aux style 1 >> ${tt}.out
+xpaget DS9Test contour aux style 2 >> ${tt}.out
+xpaset -p DS9Test contour aux reset 1 2
+xpaset -p DS9Test contour aux reset 1
+xpaget DS9Test contour aux style 1 >> ${tt}.out
+xpaset -p DS9Test contour aux name 2 {my contours}
+xpaset -p DS9Test contour aux save 1 foo.ctr
+xpaset -p DS9Test contour aux save 1 foo.ctr wcs fk5
+xpaset -p DS9Test contour aux delete 1
+xpaget DS9Test contour aux >> ${tt}.out
+sleep $delay
+
 xpaset -p DS9Test contour clear
 xpaset -p DS9Test contour close
 
