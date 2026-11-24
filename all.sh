@@ -11,6 +11,7 @@ pixmask.sh
 moc.sh
 hips.sh
 composites.sh
+ghs.sh
 
 parse.sh
 crop.sh

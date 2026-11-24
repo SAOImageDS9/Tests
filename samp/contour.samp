@@ -67,6 +67,7 @@ set {} contour smooth 5
 set {} contour method block
 set {} contour nlevels 10
 set {} contour width 2
+set {} contour scale ghs
 set {} contour scale sqrt
 set {} contour log exp 1000
 set {} contour mode zscale
