@@ -1,0 +1,24 @@
+channel red
+size 50 40
+depth 1
+value 1 1 830.104
+value 25 20 1821.02
+value 50 40 2206.82
+slice 1 limits 344.586 3362.72
+wcs none
+channel green
+size 50 40
+depth 1
+value 1 1 1243.19
+value 25 20 2333.34
+value 50 40 2814.01
+slice 1 limits 847.963 3857.47
+wcs none
+channel blue
+size 50 40
+depth 1
+value 1 1 1661.95
+value 25 20 2845.64
+value 50 40 3423.23
+slice 1 limits 1347.46 4340.42
+wcs none

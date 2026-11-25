@@ -35,4 +35,5 @@ hlscube.sh
 nrrd.sh
 envi.sh
 photo.sh
+tiff.sh
 #asdf.sh

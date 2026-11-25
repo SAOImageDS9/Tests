@@ -1,0 +1,7 @@
+size 64 48
+depth 1
+value 1 1 132
+value 32 24 23
+value 64 48 129
+slice 1 limits 2 254
+wcs none

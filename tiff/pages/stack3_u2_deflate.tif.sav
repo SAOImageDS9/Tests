@@ -1,0 +1,9 @@
+size 37 23
+depth 3
+value 1 1 18491
+value 19 12 16253
+value 37 23 14014
+slice 1 limits 0 65535
+slice 2 limits 0 32767
+slice 3 limits 0 21845
+wcs none

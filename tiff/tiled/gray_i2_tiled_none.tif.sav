@@ -1,0 +1,7 @@
+size 50 40
+depth 1
+value 1 1 11630
+value 25 20 -1685
+value 50 40 -15770
+slice 1 limits -32768 32767
+wcs none

@@ -4498,6 +4498,43 @@ xpaset -p DS9Test tiff new photo/rose.tiff
 xpaset -p DS9Test tiff slice photo/rose.tiff
 xpaset -p DS9Test frame delete
 
+# full depth (TODO_TIFF16.md; tiff.sh is the full suite). Expected values
+# in xpa/tiff.xpa come from the fixtures' FITS twins: a native load keeps
+# 16 bits (BITPIX -16, 65535), a photo load does not (BITPIX 8, 255)
+xpaset -p DS9Test frame new
+xpaset -p DS9Test tiff native tiff/dtype/gray_u2_deflate.tif
+xpaget DS9Test fits bitpix >> ${tt}.out
+xpaget DS9Test data image 37 1 1 1 yes >> ${tt}.out
+xpaset -p DS9Test tiff photo tiff/dtype/gray_u2_deflate.tif
+xpaget DS9Test fits bitpix >> ${tt}.out
+xpaget DS9Test data image 37 1 1 1 yes >> ${tt}.out
+cat tiff/dtype/gray_u2_deflate.tif | xpaset DS9Test tiff
+xpaget DS9Test fits bitpix >> ${tt}.out
+xpaget DS9Test data image 37 1 1 1 yes >> ${tt}.out
+# 16-bit RGB in auto: native, as luminance
+xpaset -p DS9Test tiff new tiff/rgb/rgb_u2_contig_strip.tif
+xpaget DS9Test fits bitpix >> ${tt}.out
+xpaget DS9Test data image 19 12 1 1 yes >> ${tt}.out
+# a 16-bit stack: a cube
+xpaset -p DS9Test tiff new tiff/pages/stack3_u2_deflate.tif
+xpaget DS9Test fits depth >> ${tt}.out
+xpaset -p DS9Test frame delete all
+# an RGB frame takes R, G, B
+xpaset -p DS9Test frame new rgb
+xpaset -p DS9Test tiff tiff/rgb/rgb_u2_contig_strip.tif
+xpaset -p DS9Test rgb channel green
+xpaget DS9Test data image 19 12 1 1 yes >> ${tt}.out
+xpaset -p DS9Test rgb channel red
+xpaset -p DS9Test frame delete
+# slice and mask, natively
+xpaset -p DS9Test frame new
+xpaset -p DS9Test tiff native tiff/dtype/gray_u2_deflate.tif
+xpaset -p DS9Test tiff slice native tiff/dtype/gray_u2_lzw.tif
+xpaget DS9Test fits depth >> ${tt}.out
+xpaset -p DS9Test tiff mask native tiff/dtype/gray_u2_none.tif
+xpaset -p DS9Test mask clear
+xpaset -p DS9Test frame delete
+
 endtest
 testit $tt
 fi

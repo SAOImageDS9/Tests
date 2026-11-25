@@ -1,0 +1,9 @@
+size 50 40
+depth 3
+value 1 1 2520.35
+value 25 20 3869.65
+value 50 40 4642.51
+slice 1 limits 2335.48 5350.78
+slice 2 limits 5688.55 11675.7
+slice 3 limits 9986.85 19016.9
+wcs none

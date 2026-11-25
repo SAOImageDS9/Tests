@@ -3180,6 +3180,15 @@ testit "-frame new"
 testit "-tiff photo/rose.tiff"
 testit "-tiff -slice photo/rose.tiff -noslice"
 testit "-frame delete"
+# full depth (TODO_TIFF16.md; tiff.sh is the full suite)
+testit "-frame new"
+testit "-tiff tiff/dtype/gray_u2_deflate.tif"
+testit "-tiff native tiff/dtype/gray_u1_none.tif"
+testit "-tiff photo tiff/dtype/gray_u2_deflate.tif"
+testit "-tiff auto tiff/rgb/rgb_u2_contig_strip.tif"
+testit "-tiff tiff/pages/stack3_u2_deflate.tif"
+testit "-mask -tiff native tiff/dtype/gray_u1_none.tif -nomask"
+testit "-frame delete"
 
 doit
 fi
