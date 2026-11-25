@@ -129,7 +129,7 @@ doit "$1" about
 doit "$1" align
 doit "$1" analysis
 doit "$1" array
-#doit "$1" asdf
+doit "$1" asdf
 # backward compatibility prefs
 doit "$1" bg
 doit "$1" bookmark
@@ -256,6 +256,7 @@ doit "$1" vlss
 doit "$1" wcs
 doit "$1" web
 doit "$1" width
+doit "$1" xisf
 doit "$1" xpa
 doit "$1" zscale
 doit "$1" zoom

@@ -1,0 +1,108 @@
+# fixture	expect	bitpix	notes
+formats/uint8.xisf	load	8	baseline sample format
+formats/uint16.xisf	load	-16	baseline sample format
+formats/uint32.xisf	load	64	baseline sample format
+formats/uint64.xisf	load	64	baseline sample format
+formats/float32.xisf	load	-32	baseline sample format
+formats/float64.xisf	load	-64	baseline sample format
+formats/complex32.xisf	refuse		complex samples are refused by name
+formats/complex64.xisf	refuse		complex samples are refused by name
+formats/uint64_overflow.xisf	refuse		a UInt64 value above INT64_MAX: refuse, never wrap
+formats/float32_nonfinite.xisf	load	-32	NaN, +Inf, -Inf under the three probed pixels
+formats/float64_nonfinite.xisf	load	-64	NaN, +Inf, -Inf under the three probed pixels
+formats/float32_bounds_wide.xisf	load	-32	bounds other than 0:1
+formats/float32_no_bounds.xisf	load	-32	bounds is required for float images (spec 11.5.1), but it only sets display range, which DS9 computes anyway: tolerate
+codecs/uint16_zlib.xisf	load	-16	zlib
+codecs/uint16_zlib_sh.xisf	load	-16	zlib+sh
+codecs/uint16_lz4.xisf	load	-16	lz4
+codecs/uint16_lz4_sh.xisf	load	-16	lz4+sh
+codecs/uint16_lz4hc.xisf	load	-16	lz4hc
+codecs/uint16_lz4hc_sh.xisf	load	-16	lz4hc+sh
+codecs/uint16_zstd.xisf	load	-16	zstd
+codecs/uint16_zstd_sh.xisf	load	-16	zstd+sh
+codecs/float32_zlib.xisf	load	-32	zlib
+codecs/float32_zlib_sh.xisf	load	-32	zlib+sh
+codecs/float32_lz4.xisf	load	-32	lz4
+codecs/float32_lz4_sh.xisf	load	-32	lz4+sh
+codecs/float32_lz4hc.xisf	load	-32	lz4hc
+codecs/float32_lz4hc_sh.xisf	load	-32	lz4hc+sh
+codecs/float32_zstd.xisf	load	-32	zstd
+codecs/float32_zstd_sh.xisf	load	-32	zstd+sh
+codecs/float32_zstd_sh_subblocks.xisf	load	-32	three subblocks, shuffled across the whole block first
+codecs/float32_zlib_raw_subblock.xisf	load	-32	subblocks 1 and 3 stored raw (c == u): copy, do not inflate
+codecs/uint16_lz4_odd_sh.xisf	load	-16	itemSize 3 does not divide the block: trailing bytes unshuffled
+storage/rgb_uint16_planar.xisf	load	-16	RGB; plain frame shows a 3-plane cube; R,G,B,R,... corners differ
+storage/rgb_uint16_normal.xisf	load	-16	RGB; plain frame shows a 3-plane cube; R,G,B,R,... corners differ
+storage/rgb_float32_planar.xisf	load	-32	RGB; plain frame shows a 3-plane cube; R,G,B,R,... corners differ
+storage/rgb_float32_normal.xisf	load	-32	RGB; plain frame shows a 3-plane cube; R,G,B,R,... corners differ
+storage/uint16_cube3.xisf	load	-16	geometry W:H:3:1; planes offset by 10000 (cf. asdf int16_cube3)
+storage/uint16_cube3_zstd_sh.xisf	load	-16	cube through a codec
+storage/uint16_plane1.xisf	load	-16	geometry W:H:1:1; depth 1 must not open the Cube panel
+storage/cielab_float32.xisf	load	-32	CIELab: 3-plane cube, no colour conversion
+storage/rgba_float32.xisf	load	-32	4 channels: RGB + alpha; the alpha plane is the 4th
+byteorder/uint16_big.xisf	load	-16	byteOrder=big
+byteorder/uint32_big.xisf	load	64	byteOrder=big
+byteorder/float32_big.xisf	load	-32	byteOrder=big
+byteorder/float64_big.xisf	load	-64	byteOrder=big
+byteorder/float32_big_zlib_sh.xisf	load	-32	byte order applies to the uncompressed, unshuffled data
+location/embedded_base64.xisf	load	-16	location=embedded, <Data encoding=base64>
+location/embedded_hex.xisf	load	-16	location=embedded, <Data encoding=hex>
+location/embedded_base64_zlib.xisf	load	-16	compression and checksum carried on the <Data> child
+location/multi_three.xisf	load-first	-16	ids light/small/preview; default load is the first. Twins for the others: multi_three__<id>.fits
+location/inline_on_image.xisf	refuse		inline: is forbidden on Image (spec 11.5)
+location/url_in_monolithic.xisf	refuse		external block in a monolithic unit; never fetch
+location/path_external.xisf	refuse		distributed XISF is out of scope for v1
+checksum/sha1.xisf	load	-16	good sha-1
+checksum/sha256.xisf	load	-16	good sha-256
+checksum/sha512.xisf	load	-16	good sha-512
+checksum/sha3256.xisf	load	-16	good sha3-256 (sha3 may be 'unsupported' at first)
+checksum/sha3512.xisf	load	-16	good sha3-512 (sha3 may be 'unsupported' at first)
+checksum/sha256_zstd.xisf	load	-16	digest is over the stored (compressed) bytes
+checksum/sha256_bad.xisf	refuse		checksum mismatch: the block is unavailable
+checksum/sha256_bad_zstd.xisf	refuse		bad checksum: must not even decompress
+header/keywords.xisf	load	-32	FITSKeywords incl. & and < escapes, empty HISTORY/COMMENT, stale NAXIS1/BITPIX/BZERO the reader must override
+header/signed.xisf	load	-16	detached <Signature> after </xisf>: two top-level elements
+header/comment_and_foreign.xisf	load	-16	XML comment, foreign-namespace and unknown elements and attributes are ignored; orientation is a display hint only
+header/with_thumbnail.xisf	load	-16	a <Thumbnail> child is not an image to load; its bogus location must not break the parent
+header/empty_vector_property.xisf	load	-16	empty vector/matrix = inline block with no content (spec 11.1.8); libXISF writes one and crashed sergio-dr/xisf; plus an inline ICCProfile, as PixInsight writes
+header/long_values.xisf	load	-16	property strings, a keyword value and comments far past 80 columns, quotes inside a string: every card must be truncated at column 80, never overflow it
+header/offset_pedestal.xisf	load	-16	offset is recorded, pixels are not changed
+wcs/layer1_tan.xisf	load	-32	Gnomonic -> TAN; 10"/px so the projection matters
+wcs/layer1_stg.xisf	load	-32	Stereographic -> STG; 10"/px so the projection matters
+wcs/layer1_zea.xisf	load	-32	ZenithalEqualArea -> ZEA; 10"/px so the projection matters
+wcs/layer1_sin.xisf	load	-32	Orthographic -> SIN; 10"/px so the projection matters
+wcs/layer1_car.xisf	load	-32	PlateCarree -> CAR; 10"/px so the projection matters
+wcs/layer1_mer.xisf	load	-32	Mercator -> MER; 10"/px so the projection matters
+wcs/layer1_ait.xisf	load	-32	HammerAitoff -> AIT; 10"/px so the projection matters
+wcs/layer1_tan_northup.xisf	load	-32	rotation 0: north up, east left; easiest to eyeball
+wcs/layer1_tan_gcrs.xisf	load	-32	GCRS: no FITS RADESYS value; expected mapped to ICRS + warning
+wcs/unknown_projection.xisf	load	-32	unknown ProjectionSystem disables the solution: image, no WCS
+wcs/layer3_incomplete.xisf	load	-32	an incomplete layer 3 falls back to layer 1
+wcs/layer3_unknown_basis.xisf	load	-32	unknown BasisFunction: layer 3 unavailable, layer 1 stands
+wcs/properties_beat_keywords.xisf	load	-32	stale WCS FITSKeywords + a solution: the solution wins
+wcs/keywords_only.xisf	load	-32	WCS from FITSKeywords alone. Per PCL, keywords refer to rows in storage order (row 1 = top), so the twin's cards are MirrorVertically'd: CRPIX2 1 -> H, CDELT2 negated
+wcs/keywords_only_sip.xisf	load	-32	keyword-only TAN-SIP with a rotated CD matrix and every SIP term to order 3: exercises each sign rule of PCL's MirrorVertically (the twin's mirror is verified independently with astropy when it is generated)
+wcs/legacy_pcl_prefix.xisf	load	-32	pre-standard PixInsight block (PCL:AstrometricSolution:*, no Version); PCL still reads it, same semantics
+wcs/solution_version_2.xisf	load	-32	AstrometricSolution:Version major != 1: PCL ignores the whole block. Image, no WCS
+wcs/pcl_shaped.xisf	load	-32	what PCL 2.15 writes: the full layer 1 set incl. native and pole coordinates, plus the WCS keywords ComputeWCSKeywords emits (bottom-up: they equal the twin's cards). Properties win, so the answer is the same either way
+wcs/layer1_missing_matrix.xisf	load	-32	a required layer 1 property is missing: image, no WCS
+malformed/bad_magic.xisf	refuse		wrong signature
+malformed/header_len_past_eof.xisf	refuse		header length runs past end of file
+malformed/header_len_short.xisf	refuse		header length cuts the XML short
+malformed/attachment_past_eof.xisf	refuse		attachment position + size past end of file
+malformed/version_2.xisf	refuse		unsupported XISF version
+malformed/wrong_namespace.xisf	refuse		root is not in the XISF namespace
+header/reserved_nonzero.xisf	load	-16	reserved bytes 12-15 nonzero: 'shall be zero' binds writers; readers tolerate it
+header/xml_decl_no_encoding.xisf	load	-16	libXISF omits encoding=UTF-8 (spec says must begin with it); real files do this, so tolerate
+malformed/size_lie.xisf	refuse		declared uncompressed size != actual: invalid block
+malformed/subblock_size_lie_zlib.xisf	refuse		subblocks really hold 3000+3144 bytes but declare 3072+3072: the total matches the geometry, so only a per-subblock size check catches it
+malformed/subblock_short_zlib.xisf	refuse		both subblocks decode to 3000 bytes but declare 3072: nothing overflows, so only checking each decoded size against its declaration catches it
+malformed/subblock_size_lie_lz4.xisf	refuse		subblocks really hold 3000+3144 bytes but declare 3072+3072: the total matches the geometry, so only a per-subblock size check catches it
+malformed/subblock_short_lz4.xisf	refuse		both subblocks decode to 3000 bytes but declare 3072: nothing overflows, so only checking each decoded size against its declaration catches it
+malformed/subblock_size_lie_zstd.xisf	refuse		subblocks really hold 3000+3144 bytes but declare 3072+3072: the total matches the geometry, so only a per-subblock size check catches it
+malformed/subblock_short_zstd.xisf	refuse		both subblocks decode to 3000 bytes but declare 3072: nothing overflows, so only checking each decoded size against its declaration catches it
+malformed/unknown_codec.xisf	refuse		unknown codec: image unavailable. Stored size == declared size, so a reader that applies the raw-subblock rule before checking the codec name loads it by mistake
+malformed/geometry_zero.xisf	refuse		zero dimension
+malformed/geometry_mismatch.xisf	refuse		geometry needs 100x more bytes than the block holds
+malformed/geometry_overflow.xisf	refuse		geometry product overflows 64 bits
+malformed/no_images.xisf	refuse		valid unit with no Image: nothing to load

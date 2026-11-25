@@ -260,6 +260,42 @@ fi
 fi
 
 # XPA, with baseline comparison
+# Refusals only the C++ reader can make - a block that does not decode, a
+# shape it cannot address - must reach the caller with the reader's reason.
+# They used to arrive as a bare "Unable to load", because FitsImage's
+# process() deleted the invalid file before Base::loadAsdfCmd asked it why.
+if [ "$mode" = "errors" -o -z "$mode" ]; then
+echo "Testing Error Messages"
+StartDS9
+epassed=0
+efailed=0
+for spec in "malformed/lz4_bad_chunk.asdf|truncated lz4 chunk" \
+	    "malformed/block_huge_decoded.asdf|unable to allocate" \
+	    "malformed/shape_overflow.asdf|too large to address"; do
+    f=${spec%%|*}
+    want=${spec#*|}
+    xpaset -p DS9Test frame new
+    msg=`xpaset -p DS9Test asdf $where/$f 2>&1`
+    xpaset -p DS9Test frame delete
+    if echo "$msg" | grep -q "$want"; then
+	echo "  PASSED $f"
+	epassed=`expr $epassed + 1`
+    else
+	echo "  FAILED $f"
+	echo "    expected the message to say: $want"
+	echo "    got: $msg"
+	efailed=`expr $efailed + 1`
+    fi
+done
+xpaset -p DS9Test quit
+echo "$epassed passed, $efailed failed"
+if [ "$efailed" = "0" ]; then
+    echo "PASSED"
+else
+    echo "FAILED"
+fi
+fi
+
 if [ "$mode" = "xpa" -o "$mode" = "$save" -o -z "$mode" ]; then
 if [ "$mode" = "$save" ]; then
     echo "Testing XPA File -- creating baselines"

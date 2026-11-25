@@ -1,0 +1,15 @@
+set {} frame new
+set {} xisf xisf/codecs/float32_zstd.xisf
+set {} xisf mask xisf/codecs/float32_zstd.xisf
+set {} mask clear
+set {} frame delete
+
+set {} xisf new xisf/codecs/float32_zstd.xisf
+set {} frame delete
+
+set {} frame new rgb
+set {} xisf xisf/storage/rgb_float32_planar.xisf
+set {} frame delete
+
+set {} single
+set {} raise

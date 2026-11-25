@@ -1,0 +1,7 @@
+size 255 255
+bitpix -64
+blank none
+value 1 1 1
+value 127 127 1
+value 255 255 1
+wcs 127 127 none
