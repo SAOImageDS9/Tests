@@ -759,6 +759,7 @@ xpaset -p DS9Test contour smooth 5
 xpaset -p DS9Test contour method block
 xpaset -p DS9Test contour nlevels 10
 xpaset -p DS9Test contour width 2
+xpaset -p DS9Test contour scale ghs
 xpaset -p DS9Test contour scale sqrt
 xpaset -p DS9Test contour log exp 1000
 xpaset -p DS9Test contour mode zscale
@@ -4223,6 +4224,9 @@ starttest
 echo -n "$tt..."
 xpaget DS9Test scale >> ${tt}.out
 xpaget DS9Test scale log exp >> ${tt}.out
+xpaget DS9Test scale ghs >> ${tt}.out
+xpaget DS9Test scale ghs stretch >> ${tt}.out
+xpaget DS9Test scale ghs sp >> ${tt}.out
 xpaget DS9Test scale limits >> ${tt}.out
 xpaget DS9Test scale mode >> ${tt}.out
 xpaget DS9Test scale scope >> ${tt}.out
@@ -4241,6 +4245,17 @@ xpaset -p DS9Test scale sinh
 xpaset -p DS9Test scale histequ
 xpaset -p DS9Test scale log exp 1000
 xpaset -p DS9Test scale log exp 10000
+xpaset -p DS9Test scale ghs
+xpaset -p DS9Test scale ghs stretch 8
+xpaset -p DS9Test scale ghs intensity 5
+xpaset -p DS9Test scale ghs sp 50
+xpaset -p DS9Test scale ghs lp 10
+xpaset -p DS9Test scale ghs hp 200
+xpaset -p DS9Test scale ghs sp auto
+xpaset -p DS9Test scale ghs lp auto
+xpaset -p DS9Test scale ghs hp auto
+xpaset -p DS9Test scale ghs stretch 5
+xpaset -p DS9Test scale ghs intensity 0
 xpaset -p DS9Test scale linear
 xpaset -p DS9Test scale minmax
 xpaset -p DS9Test scale zscale

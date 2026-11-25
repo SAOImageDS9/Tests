@@ -1,5 +1,8 @@
 get scale
 get scale log exp
+get scale ghs
+get scale ghs stretch
+get scale ghs sp
 get scale limits
 get scale mode
 get scale scope
@@ -17,6 +20,17 @@ set {} scale sinh
 set {} scale histequ
 set {} scale log exp 1000
 set {} scale log exp 10000
+set {} scale ghs
+set {} scale ghs stretch 8
+set {} scale ghs intensity 5
+set {} scale ghs sp 50
+set {} scale ghs lp 10
+set {} scale ghs hp 200
+set {} scale ghs sp auto
+set {} scale ghs lp auto
+set {} scale ghs hp auto
+set {} scale ghs stretch 5
+set {} scale ghs intensity 0
 set {} scale linear
 set {} scale minmax
 set {} scale zscale
