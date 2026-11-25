@@ -20,3 +20,26 @@ local
 3 color=yellow dash=yes
 2 color=cyan width=1 dash=yes dashlist=4 2
 3 color=yellow dash=yes
+1 ds9.ctr 5
+2 ds9.ctr 5
+0 -1 color=blue width=1 dash=no dashlist=8 3
+1 15.78775 color=red width=1 dash=no dashlist=8 3
+2 32.5755 color=yellow width=1 dash=no dashlist=8 3
+3 49.36325 color=cyan width=1 dash=no dashlist=8 3
+4 66.151 color=magenta width=1 dash=no dashlist=8 3
+0 -1 color=blue width=2 dash=no dashlist=8 3
+1 15.78775 color=red width=2 dash=no dashlist=8 3
+2 32.5755 color=red width=2 dash=no dashlist=8 3
+3 49.36325 color=cyan width=2 dash=yes dashlist=4 2
+4 66.151 color=magenta width=2 dash=no dashlist=8 3
+0 -1 color=yellow width=1 dash=yes dashlist=8 3
+1 15.78775 color=red width=1 dash=no dashlist=8 3
+2 32.5755 color=yellow width=1 dash=no dashlist=8 3
+3 49.36325 color=cyan width=1 dash=no dashlist=8 3
+4 66.151 color=magenta width=1 dash=no dashlist=8 3
+0 -1 color=blue width=1 dash=no dashlist=8 3
+1 15.78775 color=red width=1 dash=no dashlist=8 3
+2 32.5755 color=yellow width=1 dash=no dashlist=8 3
+3 49.36325 color=cyan width=1 dash=no dashlist=8 3
+4 66.151 color=magenta width=1 dash=no dashlist=8 3
+2 {my contours} 5
