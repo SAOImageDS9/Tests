@@ -10,8 +10,12 @@ ciaoregs.sh
 pixmask.sh
 moc.sh
 hips.sh
+hpxproj.sh
 composites.sh
 ghs.sh
+contourstyle.sh
+auxcontour.sh
+color.sh
 
 parse.sh
 crop.sh

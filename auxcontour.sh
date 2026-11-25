@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # Loaded (aux) contour set tests: the frame commands that list, restyle,
 # reset, rename, save and delete each loaded contour file or paste
 # (get contour aux, contour aux style/reset/name, contour delete/save aux
@@ -13,7 +13,7 @@ T=$PWD
 X="xpaset"
 G="xpaget"
 D=DS9Test
-O=$(mktemp -d -t auxcontour)
+O=$(mktemp -d "${TMPDIR:-/tmp}/auxcontour.XXXXXX")
 
 launch() {
     $X -p $D exit 2>/dev/null
@@ -129,7 +129,7 @@ f 'contour create polygon' > /dev/null
 reg=`$G $D regions -format ds9 -system wcs -sky fk5`
 eq "polygons: no sets left" "`f 'get contour aux'`" ""
 has "polygons take the restyled color" "$reg" "color=orange width=2"
-eq "polygons: none in the file colors" "`echo $reg | grep -c 'color=red'`" "0"
+eq "polygons: none in the file colors" "`echo "$reg" | grep -c 'color=red'`" "0"
 $X -p $D regions delete all
 
 echo "== mosaic file: one row per level value"
