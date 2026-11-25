@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # GHS (Generalized Hyperbolic Stretch) scale tests: the transfer curve
 # (tksao/frame/ghs.h, compiled standalone), set/get over XPA and the
 # command line, rendering and banding, colorbar inverse, match/lock,
@@ -10,13 +10,12 @@
 # Exits non-zero if any check fails. Work files go to a temp dir.
 
 echo "GHS Scale Tests"
-zmodload zsh/mathfunc
 
 X="xpaset"
 G="xpaget"
 D=DS9Test
 SKY=ghs/sky.fits          # made by ghs/mksky.py; minmax 92.5 .. 100105.8
-O=$(mktemp -d -t ghs)
+O=$(mktemp -d "${TMPDIR:-/tmp}/ghs.XXXXXX")
 
 pass=0; fail=0
 ok()   { echo "PASSED $1"; pass=$((pass+1)); }
@@ -24,9 +23,13 @@ bad()  { echo "FAILED $1"; echo "       got: $2"; fail=$((fail+1)); }
 eq()   { [[ "$2" == "$3" ]] && ok "$1" || bad "$1" "[$2] expected [$3]"; }
 ne()   { [[ "$2" != "$3" ]] && ok "$1" || bad "$1" "both [$2]"; }
 has()  { [[ "$2" == *"$3"* ]] && ok "$1" || bad "$1" "[$2] lacks [$3]"; }
-# numeric test, e.g. num "name" "$v < 20"
-num()  { (( $2 )) && ok "$1" || bad "$1" "$2 is false"; }
-sha()  { shasum -a 256 $1 | cut -c1-16; }
+# numeric (floating point) test via awk, e.g. num "name" "$v < 20"
+num()  { awk "function abs(x) {return x < 0 ? -x : x} BEGIN {exit !($2)}" < /dev/null && ok "$1" || bad "$1" "$2 is false"; }
+if command -v sha256sum > /dev/null; then
+    sha() { sha256sum < "$1" | cut -c1-16; }
+else
+    sha() { shasum -a 256 < "$1" | cut -c1-16; }
+fi
 # run tcl in ds9, and return a value through a file
 t()    { echo "$1" | $X $D tcl; }
 tval() { t "set ::_f [open $O/tval w]; puts -nonewline \$::_f [eval {$1}]; close \$::_f"; cat $O/tval; }
@@ -36,12 +39,12 @@ xport() { $X -p $D export png $O/$1.png; }
 
 launch() {
     $X -p $D exit 2>/dev/null
-    for i in $(seq 1 300); do xpaaccess $D 2>/dev/null | grep -q yes || break; done
+    for i in $(seq 1 300); do xpaaccess $D 2>/dev/null | grep -q yes || break; sleep 0.1; done
     (nohup ds9 -title $D "$@" > $O/ds9.log 2>&1 &)
-    for i in $(seq 1 600); do xpaaccess $D 2>/dev/null | grep -q yes && break; done
+    for i in $(seq 1 600); do xpaaccess $D 2>/dev/null | grep -q yes && break; sleep 0.1; done
 }
 # wait for the command line to be fully processed
-settle() { for i in $(seq 1 600); do [[ -n "$(eval $1 2>/dev/null)" ]] && break; done; }
+settle() { for i in $(seq 1 600); do [[ -n "$(eval "$1" 2>/dev/null)" ]] && break; sleep 0.1; done; }
 
 # Tcl helpers loaded into ds9
 helpers() {
@@ -208,21 +211,21 @@ $X -p $D scale mode minmax
 
 echo "== colorbar / inverse"
 lims=($($G $D scale limits))
-lev=$(tval "\$::current(frame) get colorscale level 5 $lims[1] $lims[2] ghs 1000")
-levs=(${=lev})
-eq "inverse has 5 levels" "${#levs}" "5"
+lev=$(tval "\$::current(frame) get colorscale level 5 ${lims[0]} ${lims[1]} ghs 1000")
+levs=($lev)
+eq "inverse has 5 levels" "${#levs[@]}" "5"
 eq "inverse is non-decreasing" "$(tval "rising {$lev}")" "1"
-num "inverse starts at low [$levs[1]]" "abs($levs[1] - $lims[1]) < 1e-3"
-num "inverse ends at high [$levs[5]]" "abs($levs[5] - $lims[2]) < 1"
-num "inverse bunches near the sky: 25% level < 110 [$levs[2]]" "$levs[2] < 110"
-linlev=($(tval "\$::current(frame) get colorscale level 5 $lims[1] $lims[2] linear 1000"))
-num "linear 25% level is far above [$linlev[2]]" "$linlev[2] > 20000"
+num "inverse starts at low [${levs[0]}]" "abs(${levs[0]} - ${lims[0]}) < 1e-3"
+num "inverse ends at high [${levs[4]}]" "abs(${levs[4]} - ${lims[1]}) < 1"
+num "inverse bunches near the sky: 25% level < 110 [${levs[1]}]" "${levs[1]} < 110"
+linlev=($(tval "\$::current(frame) get colorscale level 5 ${lims[0]} ${lims[1]} linear 1000"))
+num "linear 25% level is far above [${linlev[1]}]" "${linlev[1]} > 20000"
 # colorbar labels come from the inverse; contrast/bias recolours the cells
 # but must not move the labels
 cbv='lassign [$::ds9(canvas) bbox $::current(colorbar)] x0 y0 x1 y1; lmap fr {.1 .25 .5 .75 .9} {$::current(colorbar) get value [expr {round($x0+($x1-$x0)*$fr)}] [expr {($y0+$y1)/2}]}'
 cb1=$(tval "$cbv")
-cbs=(${=cb1})
-num "colorbar values follow the GHS curve: 25% < 110, 75% > 500 [$cb1]" "$cbs[2] < 110 && $cbs[4] > 500"
+cbs=($cb1)
+num "colorbar values follow the GHS curve: 25% < 110, 75% > 500 [$cb1]" "${cbs[1]} < 110 && ${cbs[3]} > 500"
 $X -p $D cmap value 2 0.3
 eq "colorbar values unchanged by contrast/bias" "$(tval "$cbv")" "$cb1"
 $X -p $D cmap value 1 0.5
@@ -264,8 +267,8 @@ $X -p $D contour nlevels 5
 $X -p $D contour yes
 $X -p $D contour generate
 cl=($($G $D contour levels))
-eq "5 contour levels" "${#cl}" "5"
-num "contour levels bunch near the sky: 2nd < 150 [$cl[2]]" "$cl[2] < 150"
+eq "5 contour levels" "${#cl[@]}" "5"
+num "contour levels bunch near the sky: 2nd < 150 [${cl[1]}]" "${cl[1]} < 150"
 $X -p $D contour no
 
 echo "== RGB frame"
@@ -342,7 +345,7 @@ eq "handles shown for GHS" "$(tval 'lmap m {lp sp hp} {$::dscale(hist) marker cg
 eq "SP guide line shown (data value)" "$(tval '$::dscale(hist) marker cget $::dscale(ghssp) -hide')" "0"
 eq "LP guide line hidden (auto)" "$(tval '$::dscale(hist) marker cget $::dscale(ghslp) -hide')" "1"
 eq "handle stacking: limits, then LP, HP, SP" "$(tval 'set n [$::dscale(hist) marker names]; list [lsearch $n $::dscale(histmax)] [lsearch $n $::dscale(ghslphandle)] [lsearch $n $::dscale(ghshphandle)] [lsearch $n $::dscale(ghssphandle)]')" "3 2 1 0"
-lims=$($G $D scale limits)
+glims=$($G $D scale limits)
 t 'drag sp 120'
 spv=$($G $D scale ghs sp)
 num "drag SP to 120 [$spv]" "abs($spv - 120) < 5"
@@ -358,7 +361,7 @@ t 'drag hp 50'
 eq "HP stops at SP" "$($G $D scale ghs hp)" "$($G $D scale ghs sp)"
 t 'drag sp 1e6'
 eq "SP stops at HP" "$($G $D scale ghs sp)" "$($G $D scale ghs hp)"
-eq "dragging leaves the clip limits alone" "$($G $D scale limits)" "$lims"
+eq "dragging leaves the clip limits alone" "$($G $D scale limits)" "$glims"
 $X -p $D scale close
 $X -p $D scale minmax
 
