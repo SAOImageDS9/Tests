@@ -1,6 +1,12 @@
 StartDS9 () {
     if [ `xpaaccess DS9Test` = no ]; then
-	timeout 2m ds9 -title DS9Test &
+	# Not "timeout 2m": this suite holds one ds9 for its whole run,
+	# which is far longer than two minutes. The bound killed ds9
+	# mid-run (measured: 132 s after launch), and every check past
+	# that point then compared two empty readbacks and reported
+	# PASSED -- so a killed ds9 looked like a clean run. 30m still
+	# guards against a wedged ds9 but never fires in a normal one.
+	timeout 30m ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 10 ]
@@ -87,6 +93,17 @@ moc=fits/ChandraMOC10_nograting.fits
 fixtures=fits/hpxproj
 HPXPY=${HPXPY:-$HOME/miniforge/envs/hpxtest/bin/python}
 tmp=`mktemp -d`
+
+# $tmp is handed to ds9 as well as used here (the readback files behind
+# `xpaset tcl', and saved FITS), and ds9 resolves it itself. A native
+# Windows build reads the shell's POSIX root against the current drive
+# -- /tmp/... becomes C:/tmp/..., which does not exist -- so every file
+# passed to ds9 silently failed to appear. cygpath -m gives the one
+# form both ds9 and the shell understand; where there is no cygpath
+# the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    tmp=$(cygpath -m "$tmp")
+fi
 fail=0
 
 # load FILE -> prints "width height" of the loaded image
@@ -119,6 +136,17 @@ StartDS9
 # frame), so fix it.
 xpaset -p DS9Test width 800
 xpaset -p DS9Test height 600
+# "width/height" size the toplevel; what is left for the frame after the
+# menu bar, panner and info panel is platform-dependent -- 800x552 on
+# X11, 800x550 on Windows -- so the window sizes below are computed from
+# what the frame actually got, not hardwired to one platform's.
+fdim () {
+    printf 'set ch [open %s/fr.txt w]\nputs -nonewline $ch [$ds9(canvas) itemcget $current(frame) %s]\nclose $ch\n' \
+	"${tmp}" "$1" | xpaset DS9Test tcl
+    cat ${tmp}/fr.txt | tr -d '\r\n'
+}
+ww=`expr \`fdim -width\` \* 2`
+wh=`expr \`fdim -height\` \* 2`
 
 # nside=256 -> HPX 1280x1280; AIT/MOL 1418x710; CAR/SFL/PAR 1574x788;
 # CEA 1574x504 (resampled sizes are always rounded up to even)
@@ -155,20 +183,20 @@ TAN proj=tan 504 504
 TANpole proj=tan,lon0=45,lat0=90,fov=40 186 186
 SIN proj=sin,lat0=60 504 504
 STG proj=stg,lon0=120,lat0=-30 1004 1004
-ARC proj=arc,lat0=30 1574 1104
+ARC proj=arc,lat0=30 1574 $wh
 ZEA proj=zea,lat0=-90 1004 1004
-COE proj=coe 1574 1104
-COD proj=cod,lon0=90,lat0=-30 1574 1104
+COE proj=coe 1574 $wh
+COD proj=cod,lon0=90,lat0=-30 1574 $wh
 COO proj=coo,lat0=30,fov=200 876 876
 COP proj=cop,fov=150 658 658
-BON proj=bon,lat0=45 1574 1104
+BON proj=bon,lat0=45 1574 $wh
 LIST
 load "${moc}[proj=tan,lon0=45,lat0=90,fov=40]" > /dev/null
 xpaset -p DS9Test save fits ${tmp}/moc_TANpole.fits
 # windows are display-sized: they start at HEALPix pixels (0.0573 deg at
 # nside 1024) and twice the frame, within the fov (the MOC as a full-sky
 # ARC would be ~6300^2 at that resolution; HPX_WINDOW_MAX still caps it)
-check "initial window: twice the frame" "`load "${moc}[proj=arc,fov=360]"`" "1600 1104"
+check "initial window: twice the frame" "`load "${moc}[proj=arc,fov=360]"`" "$ww $wh"
 xpaset -p DS9Test save fits ${tmp}/moc_ARCcap.fits
 check "initial window: HEALPix pixels" \
     "`head -c 28800 ${tmp}/moc_ARCcap.fits | fold -w 80 | grep -a '^CDELT2 ' | sed 's/^CDELT2 *= *//;s/ .*//' | awk '{printf "%.5f", $1}'`" "0.05726"
@@ -208,7 +236,7 @@ cp ${tmp}/sc.fits ${tmp}/moc_ARCzoom.fits
 xpaset -p DS9Test zoom 0.0625
 s2=`scale`
 check "zoom out: on-screen scale kept" "`same $s2 \`awk -v s=$s0 'BEGIN {printf "%.6g", s*2}'\``" "yes"
-cw=`printf 'set ch [open %s/fr.txt w]\nputs $ch [$ds9(canvas) itemcget $current(frame) -width]\nclose $ch\n' "${tmp}" | xpaset DS9Test tcl; cat ${tmp}/fr.txt`
+cw=`printf 'set ch [open %s/fr.txt w]\nputs $ch [$ds9(canvas) itemcget $current(frame) -width]\nclose $ch\n' "${tmp}" | xpaset DS9Test tcl; cat ${tmp}/fr.txt | tr -d '\r\n'`
 check "zoom out: window <= 2x the frame" \
     "`awk -v n=\`key ${tmp}/sc.fits NAXIS1\` -v w=$cw 'BEGIN {print (n <= 2*w+4) ? "yes" : "no: " n " " w}'`" "yes"
 xpaset -p DS9Test zoom to 1
@@ -217,11 +245,17 @@ xpaset -p DS9Test zoom to 1
 # reached through the tcl access point:
 #   $current(frame) update fits center          (on the current pan)
 #   $current(frame) update fits center lon lat  (map's own sky system)
+# Every readback below goes through a file written by ds9's own Tcl, and
+# on Windows that Tcl writes CRLF (a file opened "w" has -translation
+# crlf). Command substitution strips the newline and leaves the carriage
+# return, so "OK" came back as "OK\r" and compared unequal to
+# everything -- and with that \r in the failure message, the two
+# strings then printed as though they were identical. Strip both.
 # fr CMD -> "OK" or "ERR: msg"
 fr () {
     printf 'set ch [open %s/fr.txt w]\nif {[catch {$current(frame) %s} rr]} {puts $ch "ERR:$rr"} else {puts $ch OK}\nclose $ch\n' \
 	"${tmp}" "$1" | xpaset DS9Test tcl
-    cat ${tmp}/fr.txt
+    cat ${tmp}/fr.txt | tr -d '\r\n'
 }
 # crval2 FITSFILE -> "CRVAL1 CRVAL2" as written
 crval12 () {
@@ -403,14 +437,21 @@ xpaset -p DS9Test lock frame none
 frv () {
     printf 'set ch [open %s/fr.txt w]\nif {[catch {$current(frame) %s} rr]} {puts $ch "ERR:$rr"} else {puts $ch $rr}\nclose $ch\n' \
 	"${tmp}" "$1" | xpaset DS9Test tcl
-    cat ${tmp}/fr.txt | tr -d '\n'
+    cat ${tmp}/fr.txt | tr -d '\r\n'
 }
 regs () {
     xpaget DS9Test regions -format ds9 -system wcs -sky galactic \
 	-skyformat degrees | grep -v '^#\|^global\|^galactic'
 }
 load "${wmap}[system=galactic,proj=tan,fov=60]" > /dev/null
-cat <<REG | xpaset DS9Test regions
+# Regions go in through a file, not through "xpaset ... regions" with
+# the text on stdin: that path reads the XPA data socket with read(2)
+# (boost::fdistream, in Base::markerLoadCmd), which a native Windows
+# build cannot do on a Winsock socket -- it loads nothing and says
+# nothing, so every check below passed or failed on an empty frame.
+# "regions load FILE" is the portable way in, and what these checks
+# are about -- regions remapped through a recentre -- is the same.
+cat > ${tmp}/regs.reg <<REG
 galactic
 circle(20,5,2) # color=red text={c1} tag={t1}
 box(-10,8,4,2,30) # color=cyan
@@ -419,6 +460,7 @@ ellipse(-15,-12,3,1.5,45) # color=magenta dash=1
 point(12,12) # point=diamond color=white
 circle(25,-10,1.5) # color=orange text={far}
 REG
+xpaset -p DS9Test regions load ${tmp}/regs.reg
 frv "marker 2 select" > /dev/null
 frv "marker 5 select" > /dev/null
 regs > ${tmp}/regs0.txt
@@ -440,12 +482,13 @@ xpaset -p DS9Test pan to 200 -30 wcs galactic
 xpaset -p DS9Test regions delete all
 xpaset -p DS9Test pan to 0 0 wcs galactic
 check "regions: delete all while parked" "`frv 'get marker id all'`" ""
-cat <<REG | xpaset DS9Test regions
+cat > ${tmp}/regs.reg <<REG
 galactic
 circle(20,5,2) # tag={t1}
 box(-10,8,4,2,30)
 ellipse(-15,-12,3,1.5,45) # tag={t1}
 REG
+xpaset -p DS9Test regions load ${tmp}/regs.reg
 keep=`frv 'get marker id all' | awk '{print $2}'`
 xpaset -p DS9Test pan to 200 -30 wcs galactic
 frv "marker t1 delete" > /dev/null
@@ -455,7 +498,8 @@ xpaset -p DS9Test regions delete all
 # a region created where the window can't place it is parked, and
 # appears once the window gets there
 xpaset -p DS9Test pan to 200 -30 wcs galactic
-echo 'galactic; circle(10,5,2) # text={late}' | xpaset DS9Test regions
+printf 'galactic\ncircle(10,5,2) # text={late}\n' > ${tmp}/regs.reg
+xpaset -p DS9Test regions load ${tmp}/regs.reg
 check "regions: created out of reach, parked" "`frv 'get marker id all'`" ""
 xpaset -p DS9Test pan to 0 0 wcs galactic
 check "regions: created out of reach, appears" \
@@ -471,7 +515,7 @@ xpaset -p DS9Test regions delete all
 catv () {
     printf 'set ch [open %s/fr.txt w]\nglobal icat\nset cc [lindex $icat(cats) 0]\nupvar #0 $cc var\nif {[catch {%s} rr]} {puts $ch "ERR:$rr"} else {puts $ch $rr}\nclose $ch\n' \
 	"${tmp}" "$1" | xpaset DS9Test tcl
-    cat ${tmp}/fr.txt | tr -d '\n'
+    cat ${tmp}/fr.txt | tr -d '\r\n'
 }
 catlist () {
     printf 'set ch [open %s/fr.txt w]\nputs $ch [$current(frame) marker catalog list ds9 wcs fk5 degrees no]\nclose $ch\n' \
@@ -654,8 +698,9 @@ render () {
     xpaset -p DS9Test grid system wcs
     xpaset -p DS9Test grid sky galactic
     s=$(( ($2 + 180) % 360 ))
-    echo "galactic; circle($((s-2)),20,8); box($s,-50,30,15,0); polygon($((s-10)),0,$((s+10)),0,$((s+10)),10,$((s-10)),10)" | \
-	xpaset DS9Test regions
+    printf 'galactic\ncircle(%d,20,8)\nbox(%d,-50,30,15,0)\npolygon(%d,0,%d,0,%d,10,%d,10)\n' \
+	$((s-2)) $s $((s-10)) $((s+10)) $((s+10)) $((s-10)) > ${tmp}/render.reg
+    xpaset -p DS9Test regions load ${tmp}/render.reg
     xpaset -p DS9Test saveimage png $3
     xpaset -p DS9Test grid no
 }
@@ -685,6 +730,13 @@ while read name spec
 do
     load "$spec" > /dev/null
     xpaset -p DS9Test save fits ${tmp}/t1_$name.fits
+    # Both shasums come back empty when the images are missing, which
+    # reported PASSED -- the quiet way a ds9 that died looked fine.
+    if [ ! -s ${tmp}/t1_$name.fits -o ! -s ${tmp}/$name.fits ]; then
+	echo " threads 1 = threads $nthreads: $name FAILED: image not saved"
+	fail=1
+	continue
+    fi
     check "threads 1 = threads $nthreads: $name" \
 	"`shasum -a 256 < ${tmp}/t1_$name.fits | cut -c1-16`" \
 	"`shasum -a 256 < ${tmp}/$name.fits | cut -c1-16`"

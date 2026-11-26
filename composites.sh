@@ -1,6 +1,9 @@
 StartDS9 () {
     if [ `xpaaccess DS9Test` = no ]; then
-	timeout 2m ds9 -title DS9Test &
+	# 30m, not a couple of minutes: the bound guards against a wedged
+	# ds9, and a suite that outlives it loses ds9 mid-run, after which
+	# checks that compare two empty readbacks report PASSED (hpxproj.sh).
+	timeout 30m ds9 -title DS9Test &
 
 	i=1
 	while [ "$i" -le 10 ]
@@ -258,7 +261,7 @@ doshape () {
 	    shapefail=1
 	fi
 
-	areaok=`cat $areafile 2>/dev/null`
+	areaok=`cat $areafile 2>/dev/null | tr -d '\r'`
 	if [ "$areaok" != "1" ]; then
 	    echo "  $name $opname: composite area 1 (Show Area) failed"
 	    shapefail=1

@@ -224,11 +224,24 @@ check "asdf mask leaves the image WCS alone" \
 # so it has to go through a file; and it evaluates what it receives a line
 # at a time, so a ';'-separated one-liner fails with "wrong # args" -- the
 # script has to be newline separated.
+#
+# The path in that script is resolved by *ds9's* Tcl, not by the shell,
+# and on Windows those are two different namespaces: a native build
+# normalizes the shell's /tmp/... against the current drive, to
+# C:/tmp/..., which does not exist. Every probe_tcl then came back empty
+# behind a "couldn't open ... no such file or directory" on stderr,
+# failing both checks below on a ds9 that was in fact behaving
+# correctly. cygpath -m gives the one form both ds9 and the shell can
+# open; where there is no cygpath the two already share a namespace.
 tmp=`mktemp`
+if command -v cygpath > /dev/null 2>&1; then
+    tmp=`cygpath -m "$tmp"`
+fi
+
 probe_tcl () {
     printf 'set ch [open %s w]\nputs $ch [%s]\nclose $ch\n' "$tmp" "$1" \
 	| xpaset DS9Test tcl
-    cat $tmp
+    cat $tmp | tr -d '\r'
 }
 check "asdf mask leaves the cached tree alone" \
     "gnomonic.asdf" \

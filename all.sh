@@ -1,4 +1,7 @@
-io.sh
+#io.sh
+tiff.sh
+asdf.sh
+xisf.sh
 
 xpa.sh
 command.sh

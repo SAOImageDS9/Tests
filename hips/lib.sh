@@ -21,8 +21,27 @@ fi
 TOP=$PWD
 X=$TOP/bin
 H=$TOP/Tests/hips
+# The suites pass $TOP/... to ds9 (hips, fits), which resolves it
+# itself; a native Windows build reads the shell's POSIX root against
+# the current drive, so /home/... becomes C:/home/..., which does not
+# exist. $X and $H are set above, from the shell-side form, because they
+# name the xpa binaries and the python helpers this script runs itself.
+if command -v cygpath > /dev/null 2>&1; then
+    TOP=$(cygpath -m "$TOP")
+fi
 PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
 W=$(mktemp -d "${TMPDIR:-/tmp}/$(echo $T | tr A-Z a-z).XXXXXX")
+
+# $W is handed to ds9 as well as used here (readback files, saved FITS,
+# and the served HiPS tree), and ds9 resolves it itself. A native
+# Windows build reads the shell's POSIX root against the current drive
+# -- /tmp/... becomes C:/tmp/..., which does not exist -- so every file
+# passed to ds9 silently failed to appear. cygpath -m gives the one
+# form both ds9 and the shell understand; where there is no cygpath
+# the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    W=$(cygpath -m "$W")
+fi
 pass=0; fail=0
 DS9PID=; SRV=; HUB=
 # a crashed or killed earlier run leaves these (AGENTS.md)
@@ -38,7 +57,7 @@ finish() { echo "PASSED $pass, FAILED $fail"; [ $fail = 0 ]; exit; }
 nap() { perl -e 'select(undef,undef,undef,0.3)'; }
 
 # tcl <script>: run Tcl in ds9 (uplevel #0, over XPA) and print its result
-tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null; }
+tcl() { rm -f $W/q; echo 'set f [open '$W'/q w]; puts $f ['"$1"']; close $f' | $X/xpaset $T tcl; cat $W/q 2>/dev/null | tr -d '\r'; }
 size() { tcl '$current(frame) get fits size'; }
 nframes() { $X/xpaget $T frame all | wc -w | tr -d ' '; }
 frames() { nframes; }

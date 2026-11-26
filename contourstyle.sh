@@ -15,6 +15,16 @@ MOS=mosaic/ds9_8amp_2x2.fits
 RGB=rgb
 O=$(mktemp -d "${TMPDIR:-/tmp}/contourstyle.XXXXXX")
 
+# $O is handed to ds9 as well as used here, and ds9 resolves it itself. A
+# native Windows build reads the shell's POSIX root against the current
+# drive -- /tmp/... becomes C:/tmp/..., which does not exist -- so every
+# file passed to ds9 silently failed to appear and the checks below compared
+# against nothing. cygpath -m gives the one form both ds9 and the shell
+# understand; where there is no cygpath the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    O=$(cygpath -m "$O")
+fi
+
 pass=0; fail=0
 ok()   { echo "PASSED $1"; pass=$((pass+1)); }
 bad()  { echo "FAILED $1"; echo "       got: $2"; fail=$((fail+1)); }
@@ -93,7 +103,13 @@ r=$($X -p $D contour style 9 red 2>&1)
 has "out of range level rejected" "$r" "Invalid contour level"
 eq "table matches frame" "$(tval 'lindex [ContourTableRead] 1')" \
     "{color=red width=3} {dash=yes dashlist=4 2} {color=cyan width=2} {color=yellow width=4 dash=yes dashlist=2 2} {}"
-eq "Color menu: Default sits after the tearoff" "$(tval '$::dcontour(tbl).color0.menu entrycget 1 -label')" "Default"
+# contour.tcl inserts Default at the first real index and a separator
+# after it, choosing that index from the menu's own -tearoff -- Windows
+# menus have no tearoff entry. Hardwiring 1 here read the separator
+# instead and failed with `unknown option "-label"'.
+eq "Color menu: Default sits first, after any tearoff" \
+    "$(tval '$::dcontour(tbl).color0.menu entrycget [expr {[$::dcontour(tbl).color0.menu cget -tearoff] ? 1 : 0}] -label')" \
+    "Default"
 t '$::dcontour(tbl).color4.menu invoke Magenta'
 has "row menu restyles frame at once" "$($G $D contour style | tr '\n' ';')" "4 color=magenta;"
 t '$::dcontour(tbl).color0.menu invoke Default'
