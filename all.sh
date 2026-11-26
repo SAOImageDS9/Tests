@@ -10,6 +10,7 @@ command.sh
 regions.sh
 regions3d.sh
 ciaoregs.sh
+decompress.sh
 pixmask.sh
 moc.sh
 hips.sh
