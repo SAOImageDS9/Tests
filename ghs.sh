@@ -17,6 +17,16 @@ D=DS9Test
 SKY=ghs/sky.fits          # made by ghs/mksky.py; minmax 92.5 .. 100105.8
 O=$(mktemp -d "${TMPDIR:-/tmp}/ghs.XXXXXX")
 
+# $O is handed to ds9 as well as used here, and ds9 resolves it itself. A
+# native Windows build reads the shell's POSIX root against the current
+# drive -- /tmp/... becomes C:/tmp/..., which does not exist -- so every
+# file passed to ds9 silently failed to appear and the checks below compared
+# against nothing. cygpath -m gives the one form both ds9 and the shell
+# understand; where there is no cygpath the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    O=$(cygpath -m "$O")
+fi
+
 pass=0; fail=0
 ok()   { echo "PASSED $1"; pass=$((pass+1)); }
 bad()  { echo "FAILED $1"; echo "       got: $2"; fail=$((fail+1)); }

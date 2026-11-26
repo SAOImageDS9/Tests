@@ -10,10 +10,30 @@
 echo "Aux Contour Set Tests"
 
 T=$PWD
+# $T is only ever used to build absolute file names for ds9 (fits,
+# mosaicimage, contour load), and ds9 resolves them itself. A native
+# Windows build reads the shell's POSIX root against the current
+# drive, so /home/... becomes C:/home/..., which does not exist --
+# the contour sets never loaded and every check downstream reported
+# "no loaded contour set". cygpath -m gives the form ds9 can open;
+# where there is no cygpath the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    T=$(cygpath -m "$T")
+fi
 X="xpaset"
 G="xpaget"
 D=DS9Test
 O=$(mktemp -d "${TMPDIR:-/tmp}/auxcontour.XXXXXX")
+
+# $O is handed to ds9 as well as used here, and ds9 resolves it itself. A
+# native Windows build reads the shell's POSIX root against the current
+# drive -- /tmp/... becomes C:/tmp/..., which does not exist -- so every
+# file passed to ds9 silently failed to appear and the checks below compared
+# against nothing. cygpath -m gives the one form both ds9 and the shell
+# understand; where there is no cygpath the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    O=$(cygpath -m "$O")
+fi
 
 launch() {
     $X -p $D exit 2>/dev/null

@@ -114,7 +114,7 @@ if [ $dt -le 5 ]; then ok "  at once (${dt}s)"; else bad "  took ${dt}s"; fi
 mkdir -p $W/deep/Norder12/Dir0
 cp $W/deep/Norder1/Dir0/Npix0.fits $W/deep/Norder12/Dir0/Npix0.fits
 echo "set f [open $W/o.txt w]; puts \$f [HiPSOpenOrderLabel [lindex [HiPSOpenOrders $W/deep 16] 0]]; close \$f" | $X/xpaset $T tcl
-check "dialog: a deep local order" "$(cat $W/o.txt)" "Order 12: NSIDE 65536, tiles, 196608 MB (too large)"
+check "dialog: a deep local order" "$(tr -d '\r' < $W/o.txt)" "Order 12: NSIDE 65536, tiles, 196608 MB (too large)"
 
 $X/xpaset -p $T exit
 finish

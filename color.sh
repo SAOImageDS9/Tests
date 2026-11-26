@@ -151,6 +151,17 @@ xpa_set 'select test illustration' illustrate select all
 
 tag_file=$(mktemp "${TMPDIR:-/tmp}/ds9-color-tags.XXXXXX") || exit 1
 
+# $tag_file is handed to ds9 as well as used here (`cmap tag load'
+# reads it), and ds9 resolves it itself. A native Windows build reads
+# the shell's POSIX root against the current drive -- /tmp/... becomes
+# C:/tmp/..., which does not exist -- so every file passed to ds9
+# silently failed to appear. cygpath -m gives the one form both ds9
+# and the shell understand; where there is no cygpath the two already
+# share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    tag_file=$(cygpath -m "$tag_file")
+fi
+
 printf '\nGeneral color options'
 for color in $colors; do
     printf '\n  %-8s ' "$color"

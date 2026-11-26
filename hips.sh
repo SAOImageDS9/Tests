@@ -17,6 +17,17 @@
 
 cd "$(dirname "$0")/.." || exit 1
 OUT=${OUT:-$(mktemp -d "${TMPDIR:-/tmp}/hips.XXXXXX")}
+
+# $OUT is handed to ds9 as well as used here (each suite's work dir
+# is made under it), and ds9 resolves it itself. A native Windows
+# build reads the shell's POSIX root against the current drive --
+# /tmp/... becomes C:/tmp/..., which does not exist -- so every file
+# passed to ds9 silently failed to appear. cygpath -m gives the one
+# form both ds9 and the shell understand; where there is no cygpath
+# the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    OUT=$(cygpath -m "$OUT")
+fi
 SUITES="hipscmd hipsload hipsbackup hipsdialog hipsview hipsmoc hipsprov
         hipsnet hipspng hipscolour hipsdeep hipscube hipsid hipsformat
         hipssamp hipsref hipspad hipsstress hipsexit"

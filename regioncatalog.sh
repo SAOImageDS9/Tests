@@ -3,8 +3,28 @@
 set -eu
 
 test_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+# $test_root is only ever used to build absolute file names for ds9
+# (the image, -region, -source, and the exported TEST_ROOT), and ds9
+# resolves them itself. A native Windows build reads the shell's POSIX
+# root against the current drive, so /home/... becomes C:/home/...,
+# which does not exist. cygpath -m gives the form ds9 can open; where
+# there is no cygpath the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    test_root=$(cygpath -m "$test_root")
+fi
 ds9_program=${DS9_BIN:-ds9}
 test_tmp=$(mktemp -d "${TMPDIR:-/tmp}/ds9-regioncatalog.XXXXXX")
+
+# $test_tmp is handed to ds9 as well as used here (the region catalog
+# ds9 is asked to load), and ds9 resolves it itself. A native Windows
+# build reads the shell's POSIX root against the current drive --
+# /tmp/... becomes C:/tmp/..., which does not exist -- so every file
+# passed to ds9 silently failed to appear. cygpath -m gives the one
+# form both ds9 and the shell understand; where there is no cygpath
+# the two already share a namespace.
+if command -v cygpath > /dev/null 2>&1; then
+    test_tmp=$(cygpath -m "$test_tmp")
+fi
 xpa_pid=
 cleanup()
 {

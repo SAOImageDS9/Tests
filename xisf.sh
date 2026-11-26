@@ -83,7 +83,7 @@ check () {
 probe_tcl () {
     printf 'set ch [open %s w]\nputs $ch [%s]\nclose $ch\n' "$tmp" "$1" \
 	| xpaset DS9Test tcl
-    cat $tmp
+    cat $tmp | tr -d '\r'
 }
 
 where=xisf
@@ -125,7 +125,18 @@ echo "Testing Mask Layers"
 StartDS9
 cpassed=0
 cfailed=0
+# The path in probe_tcl's script is resolved by *ds9's* Tcl, not by the
+# shell, and on Windows those are two different namespaces: a native
+# build normalizes the shell's /tmp/... against the current drive, to
+# C:/tmp/..., which does not exist, so the readback came back empty
+# behind a "couldn't open ... no such file or directory" and the checks
+# compared against nothing. cygpath -m gives the one form both ds9 and
+# the shell can open; where there is no cygpath the two already share a
+# namespace.
 tmp=`mktemp`
+if command -v cygpath > /dev/null 2>&1; then
+    tmp=`cygpath -m "$tmp"`
+fi
 
 xpaset -p DS9Test frame new
 xpaset -p DS9Test xisf $where/wcs/layer1_tan_northup.xisf
@@ -161,7 +172,11 @@ echo "Testing Selection, Errors, Header, Backup"
 StartDS9
 cpassed=0
 cfailed=0
+# a path ds9 can open too -- see the mask section above
 tmp=`mktemp`
+if command -v cygpath > /dev/null 2>&1; then
+    tmp=`cygpath -m "$tmp"`
+fi
 
 # an image picked by id, and by index, through "<file>:<image>"
 xpaset -p DS9Test frame new
