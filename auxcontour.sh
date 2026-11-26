@@ -17,10 +17,9 @@ O=$(mktemp -d "${TMPDIR:-/tmp}/auxcontour.XXXXXX")
 
 launch() {
     $X -p $D exit 2>/dev/null
-    for i in $(seq 1 300); do xpaaccess $D 2>/dev/null | grep -q yes || break; done
-    rm -rf ~/$D.auto ~/$D.auto.dir
-    (nohup ds9 -title $D -geometry 900x900 > $O/ds9.log 2>&1 &)
-    for i in $(seq 1 600); do xpaaccess $D 2>/dev/null | grep -q yes && break; done
+    for i in $(seq 1 300); do xpaaccess $D 2>/dev/null | grep -q yes || break; sleep 0.1; done
+    (nohup ds9 -title $D "$@" > $O/ds9.log 2>&1 &)
+    for i in $(seq 1 600); do xpaaccess $D 2>/dev/null | grep -q yes && break; sleep 0.1; done
 }
 
 pass=0; fail=0
