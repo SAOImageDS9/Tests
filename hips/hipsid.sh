@@ -160,7 +160,7 @@ check "a window, not modal" "$(tcl 'winfo exists .hips')/$(tcl 'grab current')" 
 check "  its menus" "$(tcl 'mlabels .hipsmb')" "File Edit Cache"
 check "  Cache" "$(tcl 'mlabels .hipsmb.cache')" "Clear"
 check "  File" "$(tcl 'join [mlabels .hipsmb.file] |')" "Open...|Open URL...|Open Selected|Update List|Close"
-check "  Edit" "$(tcl 'mlabels .hipsmb.edit')" "Cut Copy Paste"
+check "  Edit" "$(tcl 'join [mlabels .hipsmb.edit] |')" "Cut|Copy|Copy Cell|Paste"
 check "all listed, the first selected" "$(tcl 'set hipslist(count)')/$(tcl '$hipslist(tree) selection')" "4 / 4/TEST/P/cube"
 check "  columns" "$(tcl '$hipslist(tree) item test/P/Lower -values')" "test/P/Lower {Integer survey (16-bit)} image"
 tcl 'set hipslist(filter) float; HiPSListFill' >/dev/null
