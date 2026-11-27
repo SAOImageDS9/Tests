@@ -108,7 +108,13 @@ eq "gzip region named .reg" "$(reg $F/gzipped.reg)" "$plain"
 $X -p $D regions deleteall
 tc "MarkerLoadFrames {$F/sp ace/r 1.reg.gz} \$current(frame) ds9 wcs fk5" > /dev/null
 eq "region .gz, spaces in path" "$($G $D regions -format ds9 -system wcs -sky fk5)" "$plain"
-eq "file dialog keeps the .gz name" "$(tc 'file join $markerfbox(dir) $markerfbox(file)')" "$F/sp ace/r 1.reg.gz"
+# FileLast only fills the fbox vars on x11; aqua and win32 leave them
+# to the native file dialog (stdfbox.tcl)
+if [[ "$(tc 'set ds9(wm)')" == x11 ]]; then
+    eq "file dialog keeps the .gz name" "$(tc 'file join $markerfbox(dir) $markerfbox(file)')" "$F/sp ace/r 1.reg.gz"
+else
+    echo "SKIPPED file dialog keeps the .gz name (x11 only)"
+fi
 $X -p $D regions deleteall
 has "truncated .gz region errors" "$($X -p $D regions file $F/trunc.reg.gz 2>&1)" "Unable to load compressed region file"
 tc 'set errorInfo {}' > /dev/null
