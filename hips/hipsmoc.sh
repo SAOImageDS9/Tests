@@ -7,8 +7,8 @@
 T=HiPSMoc
 . Tests/hips/lib.sh
 ERRS=1
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-ABELL=$TOP/hips/Abell1763_irac1
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
+ABELL=$TOP/Tests/hipsdata/Abell1763_irac1
 aux() { tcl '$current(frame) get contour aux count'; }
 menu() { tcl '$ds9(mb).analysis entrycget {HiPS Coverage} -state'; }
 # outline <file> <frame>: save the aux contours, in the MOC's frame
@@ -89,13 +89,13 @@ check "  on/off leaves another aux contour" "$(aux)" "1"
 
 # an equatorial MOC (XRISM's, 221 cells) with galactic tiles (Fermi's)
 mkdir -p $W/xmoc; for f in $FERMI/Norder* $FERMI/properties; do ln -s $f $W/xmoc/; done
-ln -s $TOP/hips/XRISM_RESOLVE/Moc.fits $W/xmoc/Moc.fits
+ln -s $TOP/Tests/hipsdata/XRISM_RESOLVE/Moc.fits $W/xmoc/Moc.fits
 $X/xpaset -p $T hips "$W/xmoc[norder=3,proj=MOL]"
 tcl '$current(frame) contour delete aux' >/dev/null
 $X/xpaset -p $T hips coverage
 check "equatorial MOC on a galactic MOL: on" "$($X/xpaget $T hips coverage)/$(aux)" "yes/1"
 outline $W/xrism.ctr fk5
-r=$("$PY" -I $H/mocref.py "$TOP/hips/XRISM_RESOLVE/Moc.fits" $W/xrism.ctr 0.12); rc=$?
+r=$("$PY" -I $H/mocref.py "$TOP/Tests/hipsdata/XRISM_RESOLVE/Moc.fits" $W/xrism.ctr 0.12); rc=$?
 if [ $rc = 0 ]; then ok "  outline follows the MOC (fk5): $r"; else bad "  outline: $r"; fi
 $X/xpaset -p $T zoom to fit
 $X/xpaset -p $T saveimage png $W/xrism.png

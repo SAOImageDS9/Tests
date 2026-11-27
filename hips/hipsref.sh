@@ -10,8 +10,8 @@
 
 T=HiPSRef
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-ABELL=$TOP/hips/Abell1763_irac1
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
+ABELL=$TOP/Tests/hipsdata/Abell1763_irac1
 # agree <label> <ref map> <min % same value> <min % same NaN mask> [ring]
 agree() {
     rm -f $W/d.fits; $X/xpaset -p $T save fits $W/d.fits

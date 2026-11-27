@@ -7,7 +7,7 @@
 
 T=HiPSBck
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
 
 # run Tcl in ds9 and print what it returns
 shot()   { $X/xpaset -p $T saveimage png $W/$1.png; shasum -a 256 $W/$1.png | cut -c1-16; }

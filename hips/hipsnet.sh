@@ -7,8 +7,8 @@
 
 T=HiPSNet
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-ABELL=$TOP/hips/Abell1763_irac1
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
+ABELL=$TOP/Tests/hipsdata/Abell1763_irac1
 CACHE=~/.$T/hips
 # requests since the last mark: reqs [pattern]
 # save the current frame's image, to compare: shot <name>

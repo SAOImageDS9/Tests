@@ -9,7 +9,7 @@
 
 T=HiPSDeep
 . Tests/hips/lib.sh
-ABELL=$TOP/hips/Abell1763_irac1
+ABELL=$TOP/Tests/hipsdata/Abell1763_irac1
 # the window's order, from its HISTORY ("map" if not deep)
 order() { shot o; "$PY" -I -c "
 from astropy.io import fits
@@ -186,7 +186,7 @@ if [ "$n2" -gt "$n1" ]; then ok "  after hips cancel they are tried again"; else
 kill $SRV; wait $SRV 2>/dev/null
 
 echo "6. colour: every channel goes deep"
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=TAN,lon0=0,lat0=0,fov=30]"
+$X/xpaset -p $T hips "$TOP/Tests/hipsdata/XRISM_RESOLVE[proj=TAN,lon0=0,lat0=0,fov=30]"
 $X/xpaset -p $T zoom to 8
 s=""; for c in red green blue; do $X/xpaset -p $T rgb channel $c; s="$s $(order)"; done
 $X/xpaset -p $T rgb channel red

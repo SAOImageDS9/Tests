@@ -1,0 +1,42 @@
+hips_initial_fov     = 0.4580648549089874
+hips_initial_ra      = 64.3359375
+hips_initial_dec     = 37.92165078429179
+creator_did          = ivo://JAXA/P/XRISM/RESOLVE/Image
+#hips_creator        = HiPS creator (institute or person)
+#hips_copyright      = Copyright mention of the HiPS
+obs_title            = XRISM RESOLVE Image
+#obs_collection      = Dataset collection name
+#obs_description     = Dataset text description
+#obs_ack             = Acknowledgement mention
+#prov_progenitor     = Provenance of the original data (free text)
+#bib_reference       = Bibcode for bibliographic reference
+#bib_reference_url   = URL to bibliographic reference
+#obs_copyright       = Copyright mention of the original data
+#obs_copyright_url   = URL to copyright page of the original data
+#t_min               = Start time in MJD ( =(Unixtime/86400)+40587  or https://heasarc.gsfc.nasa.gov/cgi-bin/Tools/xTime/xTime.pl)
+#t_max               = Stop time in MJD
+#obs_regime          = Waveband keyword (Radio Infrared Optical UV X-ray Gamma-ray)
+#em_min              = Start in spectral coordinates in meters ( =2.998E8/freq in Hz, or =1.2398841929E-12*energy in MeV )
+#em_max              = Stop in spectral coordinates in meters
+hips_builder         = Aladin/HipsGen v11.025
+hips_version         = 1.4
+hips_release_date    = 2026-11-15T03:07Z
+hips_frame           = equatorial
+hips_order           = 7
+hips_order_min       = 0
+hips_tile_width      = 512
+hips_service_url     = https://data.darts.isas.jaxa.jp/pub/HiPS/XRISM-RESOLVE_Image/
+hips_status          = public master clonableOnce
+hips_pixel_scale     = 8.946E-4
+dataproduct_type     = image
+hips_rgb_red         = XRISM RESOLVE soft [0.0 NaN 255.0 Log]
+hips_rgb_green       = XRISM RESOLVE med [0.0 NaN 255.0 Log]
+hips_rgb_blue        = XRISM RESOLVE hard [0.0 NaN 255.0 Log]
+moc_sky_fraction     = 0.001185
+hips_estsize         = 8358
+hipsgen_date         = 2026-11-15T03:07Z
+hipsgen_params       = inRed=resolve_soft_hips inGreen=resolve_med_hips inBlue=resolve_hard_hips "cmRed=0 255 log" "cmGreen=0 255 log" "cmBlue=0 255 log" out=resolve_hips creator_did=JAXA/P/XRISM/RESOLVE/Image RGB PNG
+hips_creation_date   = 2026-11-15T03:07Z
+hips_hierarchy       = median
+hips_tile_format     = png
+dataproduct_subtype  = color

@@ -6,14 +6,14 @@
 # Run from the top of the ds9 tree:
 #   Tests/hips/hipsload.sh [python]
 # python defaults to the hpxtest conda env (numpy, astropy, healpy).
-# Test HiPS are in hips/ (see hips/samples.md). Starts and stops its own
-# ds9 (title HiPSTest).
+# Test HiPS are in Tests/hipsdata/ (see hipsdata/samples.md). Starts
+# and stops its own ds9 (title HiPSTest).
 
 T=HiPSTest
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-DSS=$TOP/hips/DSS2_red
-ABELL=$TOP/hips/Abell1763_irac1
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
+DSS=$TOP/Tests/hipsdata/DSS2_red
+ABELL=$TOP/Tests/hipsdata/Abell1763_irac1
 
 # --- references (independent of ds9's reader) ---
 for k in 0 1 2 3; do "$PY" -I $H/mkref.py $FERMI $k $W/fermi_o$k.fits >/dev/null; done
@@ -95,7 +95,7 @@ expect_error "order with no data here" "${DSS}[norder=2]" "no fits tiles or Alls
 # bytes), and the local copy has no order 0-2 tiles
 expect_error "truncated Allsky named" "${DSS}" "Allsky.fits is unreadable"
 expect_error "map too large" "${DSS}[norder=9]" "larger than the limit"
-expect_error "not a HiPS" "$TOP/hips" "can't read"
+expect_error "not a HiPS" "$TOP/Tests/hipsdata" "can't read"
 # options: order= is only the HEALPix ordering, and an option the
 # grammar doesn't know (which it would take for a bin filter) is refused
 expect_error "order=0 (not the HiPS order)" "${FERMI}[order=0]" "unknown option in \[order=0\] (the HiPS order is norder=)"

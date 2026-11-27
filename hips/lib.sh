@@ -10,7 +10,7 @@
 # ds9, server and hub are stopped and W, ~/.$T and ds9's auto-backup
 # files are removed. With KEEPFAIL set, W is kept when a check failed.
 #
-# The sample HiPS a suite reads stay named in the suite ($TOP/hips/...):
+# The sample HiPS a suite reads stay named in the suite ($TOP/Tests/hipsdata/...):
 # Tests/hips.sh reads them there to skip a suite whose data is missing.
 
 # T names ds9's files too (never empty here: ~/.$T is a home directory)

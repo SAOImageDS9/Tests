@@ -13,8 +13,8 @@
 
 T=HiPSView
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
-ABELL=$TOP/hips/Abell1763_irac1
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
+ABELL=$TOP/Tests/hipsdata/Abell1763_irac1
 # near <name> <got "a b"> <want "a b"> <tol>: each pair of numbers within tol
 near() {
     if [ -n "$2" ] && "$PY" -I -c "import sys; g=[float(x) for x in sys.argv[1].split()]; w=[float(x) for x in sys.argv[2].split()]; t=float(sys.argv[3]); sys.exit(0 if len(g)==len(w) and all(min(abs(a-b),abs(abs(a-b)-360))<=t for a,b in zip(g,w)) else 1)" "$2" "$3" "$4"

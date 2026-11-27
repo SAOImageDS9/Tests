@@ -1,0 +1,22 @@
+XTENSION= 'BINTABLE'           /Written by IDL:  Fri Jan 11 10:41:13 2019
+BITPIX  =                    8 /
+NAXIS   =                    2 /Binary table
+NAXIS1  =                 4096 /Number of bytes per row
+NAXIS2  =                 3072 /Number of rows
+PCOUNT  =                    0 /Random parameter count
+GCOUNT  =                    1 /Group count
+TFIELDS =                    1 /Number of columns
+TFORM1  = '1024E   '           /Real*4 (floating point)
+TTYPE1  = 'UNKNOWN1'           /unknown content
+PIXTYPE = 'HEALPIX '           / HEALPIX pixelisation
+ORDERING= 'NESTED  '           / Pixel ordering scheme, either RING or NESTED
+NSIDE   =                  512 / Healpix resolution parameter
+NPIX    =              3145728 / Total number of pixels
+OBJECT  = 'FULLSKY '           / Sky coverage, either FULLSKY or PARTIAL
+FIRSTPIX=                    0 / First pixel # (0 based)
+LASTPIX =              3145727 / Last pixel # (zero based)
+INDXSCHM= 'IMPLICIT'           / indexing : IMPLICIT or EXPLICIT
+GRAIN   =                    0 / GRAIN = 0: No index,
+COMMENT         GRAIN =1: 1 pixel index for each pixel,
+COMMENT         GRAIN >1: 1 pixel index for Grain consecutive pixels
+COORDSYS= 'G       '           /

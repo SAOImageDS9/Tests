@@ -6,7 +6,7 @@
 
 T=HiPSPng
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
 # cmp <a> <b> <tol>: same NaNs, values within tol
 cmp() { "$PY" -I -c "
 import sys, numpy as np; from astropy.io import fits
@@ -74,7 +74,7 @@ dialog() {
 dialog "$W/ppng" 'set ::lab $hpxed(orderlabel); set ::desc [.hipsopen.file.desc cget -text]/$hpxed(reading)' 'set hpxed(ok) 0' >/dev/null
 check "orders from png files" "$(tcl 'set ::lab')" "Automatic (Order 1: NSIDE 32, Allsky, 0.0 MB)"
 check "header says display values" "$(tcl 'set ::desc')" "equatorial, orders 0-1, tile 16, png/Reading png: display values 0-255"
-dialog "$TOP/hips/XRISM_RESOLVE" "" 'set hpxed(ok) 0' >/dev/null
+dialog "$TOP/Tests/hipsdata/XRISM_RESOLVE" "" 'set hpxed(ok) 0' >/dev/null
 check "XRISM (png only) is accepted" "$(tcl 'llength $::errs')" "0"
 
 echo "5. real samples"
@@ -84,9 +84,9 @@ $X/xpaset -p $T hips "$W/fpng"
 check "Fermi from Allsky.png" "$(size)/$(hdr | grep -c 'from Allsky.png')" "2560 2560/1"
 $X/xpaset -p $T hips "$W/fpng[norder=2]"
 check "Fermi from png tiles at order 2" "$(size)/$(hdr | grep -c 'from png tiles: 192 of 192')" "1280 1280/1"
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
+$X/xpaset -p $T hips "$TOP/Tests/hipsdata/XRISM_RESOLVE[proj=MOL]"
 check "XRISM (png only), automatic: order 2 tiles" "$(hdr | grep -c 'order 2, nside 2048, from png tiles: 2 of 192')/$(lasterr)" "1/"
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[norder=3]"
+$X/xpaset -p $T hips "$TOP/Tests/hipsdata/XRISM_RESOLVE[norder=3]"
 check "XRISM order 3: its tile, not the reduced Allsky" "$(hdr | grep -c 'from png tiles: 1 of 768')" "1"
 
 echo "6. remote PNG"

@@ -11,9 +11,9 @@
 # hipsstress and hipsexit also need openssl, for a throwaway certificate
 # for the local https server; hipsexit uses Guard Malloc when there is one.
 # Needs the hpxtest conda env (numpy, astropy, healpy, reproject, PIL;
-# set PY to another python if it lives elsewhere) and, for most suites,
-# the sample HiPS under hips/ (hips/samples.md); a suite whose needs
-# aren't there is reported SKIPPED and doesn't fail the run.
+# set PY to another python if it lives elsewhere). Most suites read the
+# sample HiPS in Tests/hipsdata/ (hipsdata/samples.md); a suite whose
+# needs aren't there is reported SKIPPED and doesn't fail the run.
 
 cd "$(dirname "$0")/.." || exit 1
 OUT=${OUT:-$(mktemp -d "${TMPDIR:-/tmp}/hips.XXXXXX")}
@@ -35,9 +35,9 @@ SUITES="hipscmd hipsload hipsbackup hipsdialog hipsview hipsmoc hipsprov
 PY=${PY:-$HOME/miniforge/envs/hpxtest/bin/python}
 export PY
 # what a suite needs that isn't in the tree: the python packages (all
-# but two), openssl (two), and the sample HiPS under hips/ (most; a copy
-# of the HiPS listed in hips/samples.md, not in git). A suite missing
-# any is skipped, not failed, so all.sh runs elsewhere.
+# but two), openssl (two), and the sample HiPS in Tests/hipsdata/
+# (most; partial copies of the HiPS in hipsdata/samples.md). A suite
+# missing any is skipped, not failed, so all.sh runs elsewhere.
 if "$PY" -I -c 'import numpy, astropy, healpy, reproject, PIL' 2>/dev/null; then
     havepy=1
 else
@@ -52,7 +52,7 @@ for s in $SUITES; do
     elif grep -q openssl $f && ! command -v openssl >/dev/null; then
         why="no openssl"
     else
-        for d in $(grep -o '\$TOP/hips/[A-Za-z0-9_]*' $f | sort -u); do
+        for d in $(grep -o '\$TOP/Tests/hipsdata/[A-Za-z0-9_]*' $f | sort -u); do
             [ -d "${d/\$TOP/$PWD}" ] || why="${why:-no} ${d#\$TOP/}"
         done
     fi

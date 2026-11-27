@@ -95,9 +95,9 @@ kill $SRV; wait $SRV 2>/dev/null
 
 echo "7. XRISM (a real colour HiPS)"
 $X/xpaset -p $T frame delete all
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[norder=3]"
+$X/xpaset -p $T hips "$TOP/Tests/hipsdata/XRISM_RESOLVE[norder=3]"
 check "RGB frame, order 3" "$(ftype)/$(size)" "rgb/20480 20480"
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
+$X/xpaset -p $T hips "$TOP/Tests/hipsdata/XRISM_RESOLVE[proj=MOL]"
 check "MOL" "$(ftype)/$(nframes)/$(lasterr)" "rgb/1/"
 
 echo "8. the coverage overlay of a colour HiPS is the frame's"
@@ -114,7 +114,7 @@ check "  the backup restores it" "$(grep -c 'HiPSRestore.* 0$' $W/c.bck)" "1"
 $X/xpaset -p $T hips coverage no
 check "off from blue" "$($X/xpaget $T hips coverage)/$(aux red)" "no/0"
 $X/xpaset -p $T hips coverage yes
-$X/xpaset -p $T hips "$TOP/hips/XRISM_RESOLVE[proj=MOL]"
+$X/xpaset -p $T hips "$TOP/Tests/hipsdata/XRISM_RESOLVE[proj=MOL]"
 check "loading again: off" "$($X/xpaget $T hips coverage)" "no"
 $X/xpaset -p $T frame delete all
 $X/xpaset -p $T restore $W/c.bck

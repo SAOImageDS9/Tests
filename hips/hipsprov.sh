@@ -10,7 +10,7 @@
 
 T=HiPSProv
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
 # hcount <pattern>: matching header lines
 hcount() { hdr | grep -c "$1"; }
 

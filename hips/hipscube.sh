@@ -9,7 +9,7 @@
 T=HiPSCube
 . Tests/hips/lib.sh
 ERRS=1
-LAB=$TOP/hips/LABHI_cube
+LAB=$TOP/Tests/hipsdata/LABHI_cube
 # the frame and order the values come from (mkcube.py's encoding), at
 # the image centre: "frame order"
 code() { shot c; "$PY" -I -c "

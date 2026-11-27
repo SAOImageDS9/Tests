@@ -13,7 +13,7 @@
 
 T=HiPSDlg
 . Tests/hips/lib.sh
-FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
+FERMI=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS
 
 # run Tcl in ds9 (at global level) and print its result
 
@@ -84,8 +84,8 @@ probe() {
     fail=$((fail+$(grep -c '^  FAIL' $W/probe.out)))
 }
 probe Fermi "$FERMI"
-probe Abell1763 "$TOP/hips/Abell1763_irac1"
-probe DSS2 "$TOP/hips/DSS2_red"
+probe Abell1763 "$TOP/Tests/hipsdata/Abell1763_irac1"
+probe DSS2 "$TOP/Tests/hipsdata/DSS2_red"
 probe synth_f32 "$W/synth_f32"
 probe synth_reduced "$W/synth_reduced"
 tcl 'set ::errs {}' >/dev/null
@@ -119,10 +119,10 @@ check "then cancel: nothing" "$r" ""
 dialog "$FERMI" 'set ::lab $hpxed(orderlabel)' 'set hpxed(ok) 0' >/dev/null
 check "automatic label" "$(tcl 'set ::lab')" \
     "Automatic (Order 3: NSIDE 512, Allsky, 12 MB)"
-dialog "$TOP/hips/DSS2_red" 'set ::lab $hpxed(orderlabel); set ::st [.hipsopen.data.order.m entrycget Automatic* -state]' 'set hpxed(ok) 0' >/dev/null
+dialog "$TOP/Tests/hipsdata/DSS2_red" 'set ::lab $hpxed(orderlabel); set ::st [.hipsopen.data.order.m entrycget Automatic* -state]' 'set hpxed(ok) 0' >/dev/null
 check "DSS2: Automatic disabled" "$(tcl 'set ::st')" "disabled"
 check "DSS2: starts at the smallest order" "$(tcl 'set ::lab')" \
-    "Order 3: NSIDE 4096, $(ls $TOP/hips/DSS2_red/Norder3/Dir*/Npix*.fits | wc -l | tr -d ' ')/768 tiles, 768 MB, Allsky unreadable"
+    "Order 3: NSIDE 4096, $(ls $TOP/Tests/hipsdata/DSS2_red/Norder3/Dir*/Npix*.fits | wc -l | tr -d ' ')/768 tiles, 768 MB, Allsky unreadable"
 
 echo "3. refused before the dialog"
 mkdir -p $W/webp
@@ -132,9 +132,9 @@ check "no FITS, PNG or JPEG tiles" "$(tcl 'lindex $::errs 0')" \
     "Unable to load HiPS $W/webp: no FITS, PNG or JPEG tiles (hips_tile_format = webp)"
 check "  and no dialog" "$(tcl 'winfo exists .hipsopen')" "0"
 tcl 'set ::errs {}' >/dev/null
-dialog "$TOP/hips" "" "" >/dev/null
+dialog "$TOP/Tests/hipsdata" "" "" >/dev/null
 check "not a HiPS" "$(tcl 'lindex $::errs 0')" \
-    "Unable to load HiPS $TOP/hips: no readable properties file"
+    "Unable to load HiPS $TOP/Tests/hipsdata: no readable properties file"
 tcl 'set ::errs {}' >/dev/null
 
 echo "4. File > Open HiPS... from an RGB frame"

@@ -1,0 +1,55 @@
+hips_initial_fov     = 58.6323014283504
+hips_initial_ra      = 270.0
+hips_initial_dec     = -25.0
+creator_did          = ivo://ov-gso/P/Fermi/Band4
+hips_creator         = D. Paradis (IRAP/CADE)
+#hips_copyright      = Copyright mention of the HiPS
+obs_title            = Fermi-LAT 1-3 GeV
+obs_collection       = Fermi-LAT 1-3 GeV
+obs_description      = Fermi-LAT all-sky survey in Band 4 (1-3 GeV), at an angular resolution of 0.4 degrees. Units are cnts/s/cm^2/sr. Healpix map built by D. Paradis (IRAP/CADE)
+#obs_ack             = Acknowledgement mention
+#prov_progenitor     = Provenance of the original data (free text)
+#bib_reference       = Bibcode for bibliographic reference
+#bib_reference_url   = URL to bibliographic reference)
+obs_description      = Fermi-LAT all-sky survey in Band 4 (1-3 GeV), at an angular resolution of 0.4 degrees. Units are cnts/s/cm^2/sr. Healpix map built by D. Paradis (IRAP/CADE)
+#obs_ack             = Acknowledgement mention
+#prov_progenitor     = Provenance of the original data (free text)
+#bib_reference       = Bibcode for bibliographic reference
+#bib_reference_url   = URL to bibliographic reference)
+obs_copyright        = IRAP/CADE
+obs_copyright_url    = http://cade.irap.omp.eu
+t_min                = 54628.0
+t_max                = 56291.0
+obs_regime           = Gamma-ray
+client_category      = Image/Gamma-ray/Fermi
+em_min               = 0.4132e-15
+em_max               = 1.24e-15
+hips_builder         = Aladin/HipsGen v10.131
+hips_version         = 1.4
+hips_release_date    = 2019-10-08T12:54Z
+hips_frame           = galactic
+hips_order           = 3
+hips_order_min       = 0
+hips_tile_width      = 64
+hips_service_url     = http://cade.irap.omp.eu/documents/Ancillary/4Aladin/Fermi_Band4
+hips_status          = public master unclonable
+hips_tile_format     = png jpeg fits
+hips_pixel_bitpix    = -32
+hips_pixel_cut       = 2.0E-9 8.0E-7
+hips_data_range      = -1.028E-5 3.086E-5
+hips_pixel_scale     = 0.01431
+dataproduct_type     = image
+moc_sky_fraction     = 1
+hips_estsize         = 1149036
+hips_creation_date   = 2019-01-11T12:41Z
+#bib_reference_url   = URL to bibliographic reference
+hipsgen_date         = 2019-01-11T12:41Z
+hipsgen_params       = in=/Users/paradis/For_Aladin/Fermi_Band4_1_512.fits out=/Users/paradis/For_Aladin/Fermi_Band4/ id=ivo://ov-gso/P/Fermi/Band4/ -blank=-32768 "pixelcut=2E-9 8E-7"
+hipsgen_date_1       = 2019-01-11T12:41Z
+hipsgen_params_1     = in=/Users/paradis/For_Aladin/Fermi_Band4_1_512.fits out=/Users/paradis/For_Aladin/Fermi_Band4/ id=ivo://ov-gso/P/Fermi/Band4/ -blank=-32768 "pixelcut=2E-9 8E-7"
+hipsgen_date_2       = 2019-01-11T12:41Z
+hipsgen_params_2     = in=/Users/paradis/For_Aladin/Fermi_Band4_1_512.fits out=/Users/paradis/For_Aladin/Fermi_Band4/ id=ivo://ov-gso/P/Fermi/Band4/ -blank=-32768 "pixelcut=2E-9 8E-7" jpeg
+hipsgen_date_3       = 2019-10-03T12:34Z
+hipsgen_params_3     = in=/data1/ancillary/missions/Fermi_Band4/HiPS creator_did=ivo://ov-gso/P/Fermi/Band4 out=/data1/ancillary/missions/Fermi_Band4/HiPS "hips_pixel_cut=2.0E-9 8.0E-7" -blank=-32768 UPDATE
+hipsgen_date_4       = 2019-10-08T12:54Z
+hipsgen_params_4     = in=/data1/ancillary/missions/Fermi_Band4/HiPS creator_did=ivo://ov-gso/P/Fermi/Band4 out=/data1/ancillary/missions/Fermi_Band4/HiPS "hips_pixel_cut=2.0E-9 8.0E-7" -blank=-32768 UPDATE

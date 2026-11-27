@@ -1,0 +1,46 @@
+hips_initial_fov     = 58.63230142835039
+hips_initial_ra      = 203.95
+hips_initial_dec     = 41.15
+creator_did          = ivo://ov-gso/P/Abell1763/irac1
+hips_creator         = D. Paradis (IRAP/CADE)
+#hips_copyright      = Copyright mention of the HiPS
+obs_title            = Abell 1763 IRAC1
+obs_collection       = Spitzer Abell 1763 IRAC1
+obs_description      = Spitzer Legacy Program "Abell 1763" at 3.6 microns. PI : D. Fadda. This map has been smoothed to 40''. Units are MJy/sr. Healpix map built by D. Paradis (IRAP/CADE) 
+#obs_ack             = Acknowledgement mention
+#prov_progenitor     = Provenance of the original data (free text)
+#bib_reference       = Bibcode for bibliographic reference
+#bib_reference_url   = URL to bibliographic reference)
+obs_copyright        = IRAP/CADE
+obs_copyright_url    = https://cade.irap.omp.eu
+t_min                = 52876
+t_max                = 54966
+obs_regime           = infrared
+client_category      = Image/Infrared/Spitzer
+em_min               = 3.6E-6
+em_max               = 3.6E-6
+hips_builder         = Aladin/HipsGen v10.130
+hips_version         = 1.4
+hips_release_date    = 2019-11-25T14:25Z
+hips_frame           = galactic
+hips_order           = 5
+hips_order_min       = 0
+hips_tile_width      = 512
+hips_service_url     = https://cade.irap.omp.eu/documents/Ancillary/4Aladin/Abell1763_irac1
+hips_status          = public master unclonable
+hips_tile_format     = png jpeg fits
+hips_pixel_bitpix    = -32
+hips_pixel_cut       = -0.1 0.3
+hips_data_range      = -101.2 35.34
+hips_pixel_scale     = 0.003579
+dataproduct_type     = image
+moc_sky_fraction     = 3.560E-5
+hips_estsize         = 661
+hips_creation_date   = 2019-11-25T14:25Z
+#bib_reference_url   = URL to bibliographic reference
+hipsgen_date         = 2019-11-25T14:25Z
+hipsgen_params       = in=/sno/CADE/data/ancillary/missions/Abell1763_irac1/Healpix/16384/Partial/Abell_irac1_1_16384_partial.fits creator_did=ivo://ov-gso/P/Abell1763/irac1 out=/sno/CADE/data/ancillary/missions/temp/Abell1763_irac1/HiPS "hips_pixel_cut=-0.1 0.3" -blank=-32768
+hipsgen_date_1       = 2019-11-25T14:25Z
+hipsgen_params_1     = in=/sno/CADE/data/ancillary/missions/Abell1763_irac1/Healpix/16384/Partial/Abell_irac1_1_16384_partial.fits creator_did=ivo://ov-gso/P/Abell1763/irac1 out=/sno/CADE/data/ancillary/missions/temp/Abell1763_irac1/HiPS "hips_pixel_cut=-0.1 0.3" -blank=-32768
+hipsgen_date_2       = 2019-11-25T14:25Z
+hipsgen_params_2     = in=/sno/CADE/data/ancillary/missions/Abell1763_irac1/Healpix/16384/Partial/Abell_irac1_1_16384_partial.fits creator_did=ivo://ov-gso/P/Abell1763/irac1 out=/sno/CADE/data/ancillary/missions/temp/Abell1763_irac1/HiPS "hips_pixel_cut=-0.1 0.3" -blank=-32768 jpeg

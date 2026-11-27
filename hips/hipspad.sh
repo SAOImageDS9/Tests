@@ -14,7 +14,7 @@
 T=HiPSPad
 KEEPFAIL=1
 . Tests/hips/lib.sh
-TILE=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS/Norder3/Dir0/Npix0.fits
+TILE=$TOP/Tests/hipsdata/data1/ancillary/missions/Fermi_Band4/HiPS/Norder3/Dir0/Npix0.fits
 
 # --- test files ---
 mkdir -p $W/pad $W/out
