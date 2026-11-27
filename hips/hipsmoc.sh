@@ -10,6 +10,7 @@ ERRS=1
 FERMI=$TOP/hips/data1/ancillary/missions/Fermi_Band4/HiPS
 ABELL=$TOP/hips/Abell1763_irac1
 aux() { tcl '$current(frame) get contour aux count'; }
+menu() { tcl '$ds9(mb).analysis entrycget {HiPS Coverage} -state'; }
 # outline <file> <frame>: save the aux contours, in the MOC's frame
 outline() { tcl "\$current(frame) contour save aux {$1} wcs $2" >/dev/null; }
 
@@ -73,11 +74,14 @@ tcl '$current(frame) contour delete aux' >/dev/null
 
 echo "4. a full-sky MOC; an equatorial MOC on a galactic survey"
 $X/xpaset -p $T hips "${FERMI}[norder=2,proj=MOL]"
+check "Fermi (moc_sky_fraction 1): menu disabled" "$(menu)" "disabled"
 $X/xpaset -p $T hips coverage
 check "Fermi (full-sky MOC): on" "$($X/xpaget $T hips coverage)" "yes"
 check "  no edge, nothing drawn" "$(aux)" "0"
+check "  menu enabled while on, to turn it off" "$(menu)" "normal"
 $X/xpaset -p $T hips coverage no
 check "  off" "$($X/xpaget $T hips coverage)" "no"
+check "  menu disabled again" "$(menu)" "disabled"
 tcl "\$current(frame) contour load {$W/user.ctr}" >/dev/null
 $X/xpaset -p $T hips coverage yes
 $X/xpaset -p $T hips coverage no
